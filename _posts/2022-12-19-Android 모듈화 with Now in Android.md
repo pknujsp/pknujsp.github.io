@@ -3,6 +3,8 @@ layout: post
 title: Android 모듈화 with 'Now in Android'
 subtitle: Android modularization with 'Now in Android'
 published: true
+categories: Android
+tags: [Android, Modularization]
 ---
 
 Now in Android, Modularization  
