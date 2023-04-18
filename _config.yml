@@ -24,9 +24,10 @@
 # You can create any custom variable you would like, and they will be accessible
 # in the templates via {{ site.myvariable }}.
 
-title: Your awesome title
-email: your-email@domain.com
-author: GitHub User
+title:              Jsp Notes
+email:              jesp0305@gmail.com
+description:        tech, study etc...
+author:             Jsp
 
 # Copyright setting
 # You can use any html code, currently below placeholders are available:
@@ -40,7 +41,7 @@ author: GitHub User
 #   "Copyright (c) 2017-{currentYear} <a href="https://example.com">{author}</a>"
 #   "Copyright © 2017-2021 Foobar"
 #
-copyright: "Unpublished Work (cleft) 2017-{currentYear} {author}"
+copyright: "{currentYear} {author}"
 
 description: >- # this means to ignore newlines until "baseurl:"
   Write an awesome description for your new site here. You can edit this
@@ -48,13 +49,13 @@ description: >- # this means to ignore newlines until "baseurl:"
   Google search results) and in your feed.xml site description.
 
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "" # the base hostname & protocol for your site, e.g. https://example.com
+url:  "https://pknujsp.github.io/" # the base hostname & protocol for your site, e.g. https://example.com
 favicon: "" # the favicon for your site
 
 # Yat date format
 # refer to https://shopify.github.io/liquid/filters/date/ if you want to customize this
 yat:
-  date_format: "%b %d, %Y"
+  date_format: "%Y %b %d"
 
 # If you want more debug log, you can set true
 # debug: false
@@ -208,6 +209,7 @@ yat:
 # Build settings
 # highlighter: none
 markdown: kramdown
+timezone: "Asia/Seoul"
 kmarkdown:
   input: GFM
 
@@ -217,3 +219,12 @@ plugins:
   - jekyll-sitemap
   - jekyll-paginate
   - jekyll-spaceship
+
+tipue_search:
+    include:
+         pages: false
+         collections: []
+    exclude:
+         files: [search.html, index.html, tags.html]
+         categories: []
+         tags: []
