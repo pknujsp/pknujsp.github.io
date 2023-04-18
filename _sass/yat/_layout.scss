@@ -17,7 +17,7 @@ html {
 
       &.site-header {
         .site-brand-inner, .page-link {
-          color: #fff;
+          color: white;
           transition: 0.1s color;
         }
 
@@ -96,7 +96,7 @@ html {
   margin-right: 50px;
 
   .site-brand-inner {
-    @include relative-font-size(1.125);
+    @include relative-font-size(1.7);
     font-weight: $base-font-weight;
     letter-spacing: -1px;
     transition: 0.1s filter color;
@@ -107,14 +107,14 @@ html {
 
     .site-favicon {
       display: inline-block;
-      height: $header-height / 1.5;
+      height:  calc($header-height / 1.5);
       margin-right: 5px;
     }
   }
 }
 
 .site-nav {
-  @include relative-font-size(1.125);
+  @include relative-font-size(1.2);
   line-height: $header-height;
   position: absolute;
   right: 0;
