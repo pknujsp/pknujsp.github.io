@@ -69,6 +69,7 @@ var tipuesearch_string_12 = 'Should be';
 var tipuesearch_string_13 = 'characters or more.';
 var tipuesearch_string_14 = 'seconds';
 var tipuesearch_string_15 = 'Searches related to';
+var tipuesearch_string_16 = 'Search time';
 
 
 // Internals
