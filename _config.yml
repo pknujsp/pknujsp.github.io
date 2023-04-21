@@ -70,7 +70,7 @@ yat:
 # google_analytics: [Tracking ID]
 
 # If you want to generate website sitemap, you can set true
-# sitemap: false
+sitemap: true
 
 # If you want to change site language, you can set lang option
 lang: "ko"  # default lang is ko
@@ -177,7 +177,7 @@ repo: "pknujsp/Blogcomments"
 issue_term: "pathname"
 label: "comments"
 theme: "github-light"
-follow_site_theme: true
+follow_site_theme: false
 
 # Build settings
 # highlighter: none
