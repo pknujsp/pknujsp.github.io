@@ -160,10 +160,6 @@ lang: "ko"  # default lang is ko
 # Pagination setting
 # paginate: 5
 
-# Disqus comments
-# disqus:
-#   shortname: "Your Disqus username"
-
 # Gitment comments
 # gitment:
 #   username: "Your GitHub username"
@@ -176,8 +172,8 @@ lang: "ko"  # default lang is ko
 # See https://utteranc.es/
 # set follow_site_theme true to make utterances' theme follow the site's
 
-# utterances:
-repo: "utterances"
+utterances:
+repo: "pknujsp/Blogcomments"
 issue_term: "pathname"
 label: "comments"
 theme: "github-light"

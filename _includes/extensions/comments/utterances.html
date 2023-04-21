@@ -2,6 +2,11 @@
 <div id="utterances-placeholder"></div>
 <script>
 
+const utterancesThemeFromDataTheme = () => {
+    const dataTheme = document.documentElement.getAttribute('data-theme');
+    return `github-${dataTheme}`;
+  };
+
   const setUtterancesTheme = () => {
     const iframe = document.querySelector('.utterances-frame');
     if (iframe) {
@@ -30,7 +35,7 @@
   utterancesScript.setAttribute('issue-term', '{{ site.utterances.issue_term }}');
   utterancesScript.setAttribute('label', '{{ site.utterances.label }}');
   utterancesScript.setAttribute('repo', '{{ site.utterances.repo }}');
-  utterancesScript.setAttribute('theme', 'github-light');
+  utterancesScript.setAttribute('theme', utterancesThemeFromDataTheme());
 
   const placeholder = document.getElementById('utterances-placeholder');
   placeholder.parentNode.replaceChild(utterancesScript, placeholder);
