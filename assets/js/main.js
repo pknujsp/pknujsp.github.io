@@ -29,7 +29,7 @@ var _scrollTimer = [];
 
 // Smooth scroll
 function smoothScrollTo(y, time) {
-  time = time == undefined ? 500 : time;
+  time = time == undefined ? 400 : time;
 
   var scrollPos = getScrollPos();
   var count = 60;

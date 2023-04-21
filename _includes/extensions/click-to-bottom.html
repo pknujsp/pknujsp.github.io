@@ -1,0 +1,18 @@
+<div id="click-to-bottom" class="click-to-bottom">
+  <i class="fa fa-arrow-down"></i>
+</div>
+<script>
+  (function () {
+    const clickToBottom = document.getElementById('click-to-bottom');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 100) {
+        clickToBottom.classList.add('show')
+      }else {
+        clickToBottom.classList.remove('show')
+      }
+    });
+    clickToBottom.addEventListener('click', () => {
+      window.smoothScrollTo(document.body.scrollHeight);
+    });
+  })();
+</script>
