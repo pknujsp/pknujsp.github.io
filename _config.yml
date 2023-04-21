@@ -173,11 +173,11 @@ lang: "ko"  # default lang is ko
 # set follow_site_theme true to make utterances' theme follow the site's
 
 utterances:
-repo: "pknujsp/Blogcomments"
-issue_term: "pathname"
-label: "comments"
-theme: "github-light"
-follow_site_theme: false
+  repo: "pknujsp/Blogcomments"
+  issue_term: "pathname"
+  label: "comments"
+  theme: "github-light"
+  follow_site_theme: true
 
 # Build settings
 # highlighter: none
