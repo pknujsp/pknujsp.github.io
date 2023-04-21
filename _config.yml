@@ -177,11 +177,11 @@ lang: "ko"  # default lang is ko
 # set follow_site_theme true to make utterances' theme follow the site's
 
 # utterances:
-#   repo: "owner/repo"
-#   issue_term: "title"
-#   label: "utterances comment"
-#   theme: "github-light"
-#   follow_site_theme: true
+repo: "utterances"
+issue_term: "pathname"
+label: "comments"
+theme: "github-light"
+follow_site_theme: true
 
 # Build settings
 # highlighter: none
