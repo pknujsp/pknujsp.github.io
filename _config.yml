@@ -70,7 +70,7 @@ yat:
 google_analytics: "G-LZC1TDTS26"
 
 # If you want to generate website sitemap, you can set true
-# sitemap: false
+sitemap: true
 
 # If you want to change site language, you can set lang option
 lang: "ko"  # default lang is ko
