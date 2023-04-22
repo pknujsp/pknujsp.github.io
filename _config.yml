@@ -119,7 +119,7 @@ lang: "ko"  # default lang is ko
 # it will be always kept on every visit (i.e. no matter
 # the browser is closed or not)
 #
-# night_mode: "auto"
+night_mode: "manual"
 
 # Code badge setting
 # You can enable or disable the code badge and so on
@@ -127,7 +127,7 @@ code_badge:
   enabled: "true"
   color: "#fff"
   background_color: "#ff4e00"
-  text_transform: "uppercase"  # ("uppercase", "lowercase", "capitalize")
+  text_transform: "lowercase"  # ("uppercase", "lowercase", "capitalize")
 
 # If you want to link only specific pages in your header, uncomment
 # this and add the path to the pages in order as they should show up

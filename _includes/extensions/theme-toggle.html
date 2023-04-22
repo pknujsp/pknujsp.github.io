@@ -52,15 +52,15 @@
       var now = new Date();
       var toggleAt = new Date();
       var hours = now.getHours();
-      var nightShift = hours >= 2 && hours <=5;
+      var nightShift = !(hours >= 2 && hours <=5);
 
       if (nightShift) {
-        if (hours > 7) {
+        if (hours > 5) {
           toggleAt.setDate(toggleAt.getDate() + 1);
         }
-        toggleAt.setHours(7);
+        toggleAt.setHours(5);
       } else {
-        toggleAt.setHours(19);
+        toggleAt.setHours(2);
       }
 
       toggleAt.setMinutes(0);
