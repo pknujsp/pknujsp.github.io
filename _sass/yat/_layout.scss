@@ -107,8 +107,9 @@ html {
 
     .site-favicon {
       display: inline-block;
-      height:  calc($header-height / 1.55);
-      width: auto;
+      height:  calc($header-height / 1.7);
+      width: fit-content;
+      aspect-ratio: auto;
       margin-right: 5px;
     }
   }
