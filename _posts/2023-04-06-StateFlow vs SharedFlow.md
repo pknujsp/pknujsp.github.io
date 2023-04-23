@@ -46,7 +46,7 @@ class CounterModel {
 
     fun increment() {
         _counter.update {
-            count -> count + 1
+            count $\rightarrow$ count + 1
         }
     }
 }
@@ -57,7 +57,7 @@ class CounterModel {
 val aModel = CounterModel()
 val bModel = CounterModel()
 val sumFlow : Flow<Int> = aModel.counter.combine(bModel.counter) {
-    a, b -> a + b
+    a, b $\rightarrow$ a + b
 }
 ```  
 

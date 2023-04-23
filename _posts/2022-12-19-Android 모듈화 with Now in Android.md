@@ -42,7 +42,7 @@ Google에서 제작 중인 안드로이드 개발용 샘플 App으로,
 **개발 성능 향상(빌드 속도), 코드 분할(의존성 최소화)이 큰 목적**
 - App의 크기가 커지면서, 개발자들이 각자의 모듈을 만들어서 개발을 진행하게 됨
 - 이러한 모듈들을 하나의 App으로 묶어서 배포하기 위해 필요함
-- 기존은 Package단위로 분할 -> Module단위로 분할
+- 기존은 Package단위로 분할 $\rightarrow$ Module단위로 분할
 - 수정하지 않은 모듈은 re-build가 불필요  
 
 ## Now in Android의 아키텍처
@@ -238,7 +238,7 @@ for(project in rootProject.children) {
 }
 ```  
 
-**코드 작성하고 저장 -> Sync gradle**  
+**코드 작성하고 저장 $\rightarrow$ Sync gradle**  
 
 ## build.gradle 파일 관리가 중요  
 

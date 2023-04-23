@@ -8,7 +8,7 @@ tags: [Compiler]
 ---
 
 # Compiler(컴파일러) 란?
->입력 : High-level 프로그래밍 언어 => **컴파일러** => 출력 : Low-level 어셈블리 언어
+>입력 : High-level 프로그래밍 언어 $\rightarrow$ **컴파일러** $\rightarrow$ 출력 : Low-level 어셈블리 언어
 >컴파일러는 어떤 언어로 작성된 프로그램을 컴파일 시간과 런타임 시간에 다른 언어로 번역하는 역할을 한다.
 
 * 컴파일러 동작 시점
@@ -74,8 +74,9 @@ tags: [Compiler]
 
 | 처리 | Scanning | Parsing |
 | :---: | :---: | :---: |
+| | Vocabulary | Grammer |
 | 사용 구문 | 정규 표현식 | Context-free 문법 |
-| 인식기 구현 | DFA(결정적 유한 오토마타)  | Push-down automaton |
+| 인식기 구현 | DFA(결정론적 유한 오토마타)  | Push-down automaton |
 | 작업 수행 | automaton에서 전환 작업 |
 
 
@@ -100,7 +101,7 @@ tags: [Compiler]
     * 괄호, 숫자, 식별자, +, -, new, while, if, comma(,) 와 같은 것
     * <type, value> 의 쌍이다.
     * 구문의 기본 단위이다.
-    * x = x + y => <id,x> = <id,x> + <id,y>
+    * x = x + y $\rightarrow$ <id,x> = <id,x> + <id,y>
   * 공백(주석 포함)을 제거한다.
 
 
@@ -119,8 +120,25 @@ tags: [Compiler]
 
 ### Parser
 ---
->코드 문맥과 무관한(Context-free) 구문과 문맥에 따른(Context-sensitive) 문법을 분석하고, 오류를 보고한다.  
->IR을 생성한다.
+>Scanner에서 받은 Token stream에 대해서 코드 문맥과 무관한(Context-free) 구문과 문맥에 따른(Context-sensitive) 문법을 분석하고, 오류를 보고한다.  
+>IR을 생성한다.  
+>오류 수정을 한다.
+
+### Parsing시 필요한 것
+#### Parsing할 내용이 어느 문법에 적합한지 찾을때 필요한 것
+---
+>Parsing의 가장 중요한 부분은 Derivation을 만드는 것이다!
+
+
+* 문법 G
+  * 구문의 수학적 모델
+* 알고리즘
+  * L(G)를 테스트 하기 위해 필요하다.
+
+### Parsing 방법
+---
+1. Top-down parsing
+2. Bottom-up parsing
 
 
 ### Syntax analyzer(Context-free)
@@ -146,7 +164,7 @@ test(start : Int, end :Int, v : Int)): Int {
 
 ### Semantic analyzer(Context-sensitive)
 ---
->코드의 문맥과 관련된 문법을 분석한다. 데이터 유형과 변수 선언과 같은 문법을 분석하는 것이다.
+>코드의 문맥과 관련된 **문법**을 분석한다. 데이터 유형과 변수 선언과 같은 문법을 분석하는 것이다.
 
 ```kotlin
 // v의 유형이 정의되어 있지 않다
@@ -159,7 +177,7 @@ fun test(start : Int, end :Int, v)): Int {
         x += idxs
     }
     
-    // 반환 데이터 유형이 다르다, Double -> Int
+    // 반환 데이터 유형이 다르다, Double $\rightarrow$ Int
     return x
 }
 ```
