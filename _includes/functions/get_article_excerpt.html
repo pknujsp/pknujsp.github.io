@@ -5,7 +5,7 @@
 {% if include.params.lang %}
   {% assign lang = include.params.lang %}
 {% else %}
-  {% assign lang = lang | default: site.lang | default: "en" %}
+  {% assign lang = lang | default: site.lang | default: "ko" %}
 {% endif %}
 
 {% if include.params.excerpt_size %}
@@ -24,7 +24,7 @@
 
 {% assign _size = excerpt_size %}
 
-{% if lang != "en" %}
+{% if lang != "ko" %}
   {% assign _size = words
     | times: 1.0
     | divided_by: _words

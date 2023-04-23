@@ -5,12 +5,12 @@
 {% if include.params.lang %}
   {% assign lang = include.params.lang %}
 {% else %}
-  {% assign lang = lang | default: site.lang | default: "en" %}
+  {% assign lang = lang | default: site.lang | default: "ko" %}
 {% endif %}
 
 {% assign words = article | number_of_words %}
 
-{% if lang != "en" %}
+{% if lang != "ko" %}
   {% assign words = words
     | times: 0.6
     | round %}

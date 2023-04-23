@@ -46,7 +46,8 @@ http://www.tipue.com/search
 	-webkit-appearance: none;
      box-shadow: none; 
 	outline: 0;
-	margin: 0;
+     margin: 0 4px;
+
 }
 .tipue_search_icon
 {
