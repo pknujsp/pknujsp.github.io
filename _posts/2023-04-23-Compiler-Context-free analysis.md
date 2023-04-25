@@ -13,7 +13,7 @@ tags: [Compiler]
 
 ## Context-free grammer(CGF)
 ---
->모든 생성 규칙이 **V $\rightarrow$ w** 를 따르는 형식적인 문법이다.  
+>모든 생성 규칙이 **V → w** 를 따르는 형식적인 문법이다.  
 >V : Non-terminal 기호, w : Non-terminal과 Terminal로 구성된 문자열  
 
 * 구성
@@ -29,7 +29,7 @@ tags: [Compiler]
       * words
     * P
       * 생성 규칙
-      * P : NT $\rightarrow$(NT$\cup$T)+
+      * P : NT →(NT∪T)+
 
 
 ### Terminal/Non-terminal Symbol
@@ -54,7 +54,8 @@ tags: [Compiler]
 
 S = {SheepNoise}  
 NT = {SheepNoise}  
-P = {SheepNoise $\rightarrow$ SheepNoise *baa*  , SheepNoise $\rightarrow$ *baa*}  
+P = {SheepNoise → SheepNoise *baa*  , SheepNoise → *baa*}  
+
 * 규칙
   1. 표현식은 양의 울음 소리 baa를 추가하여 확장가능 하다.  
   2. 표현식은 단일 양의 울음 소리로 구성가능 하다.  
@@ -125,14 +126,14 @@ Parser는 유도를 통해 올바른 문법으로 작성된 트리를 만드는�
 
 **유도는 재 작성 단계로 구성된다.**
 
->S $\rightarrow$ $\gamma$<sub>0</sub>$\rightarrow$ $\gamma$<sub>1</sub>$\rightarrow$ $\gamma$<sub>2</sub>$\rightarrow$ ... $\rightarrow$ $\gamma$<sub>n-1</sub> $\rightarrow$ $\gamma$<sub>n</sub> $\rightarrow$ sentence
+>S → γ<sub>0</sub>→ γ<sub>1</sub>→ γ<sub>2</sub>→ ... → γ<sub>n-1</sub> → γ<sub>n</sub> → sentence
 
-* $\gamma$<sub>i</sub>는 문장 형태이다.
-  * $\gamma$가 단말 심볼만 가진다면, 그 $\gamma$는 L(G)의 문장이다.
-  * $\gamma$가 비단말 심볼을 가진다면, 그 $\gamma$는 문장 형태이다.
-* $\gamma$<sub>i‒1</sub> 에서 $\gamma$<sub>i</sub>를 얻으려면 A $\rightarrow$ β 를 사용하여 일부 NT A ∈ $\gamma$<sub>i-1</sub> 을 확장합니다.
-  * A ∈ $\gamma$<sub>i‒1</sub> 발생을 $\beta$로 교체하여 $\gamma$<sub>i</sub>를 얻습니다.
-  * Leftmost derivation에서 첫 번째 NT A ∈ $\gamma$<sub>i‒1</sub>
+* γ<sub>i</sub>는 문장 형태이다.
+  * γ가 단말 심볼만 가진다면, 그 γ는 L(G)의 문장이다.
+  * γ가 비단말 심볼을 가진다면, 그 γ는 문장 형태이다.
+* γ<sub>i‒1</sub> 에서 γ<sub>i</sub>를 얻으려면 A → β 를 사용하여 일부 NT A ∈ γ<sub>i-1</sub> 을 확장합니다.
+  * A ∈ γ<sub>i‒1</sub> 발생을 β로 교체하여 γ<sub>i</sub>를 얻습니다.
+  * Leftmost derivation에서 첫 번째 NT A ∈ γ<sub>i‒1</sub>
 
 * 왼쪽 문장 형태는 Leftmost derivation에서 생긴다.
 * 오른쪽 문장 형태는 Rightmost derivation에서 생긴다.
@@ -143,7 +144,7 @@ Parser는 유도를 통해 올바른 문법으로 작성된 트리를 만드는�
 
 ![](https://user-images.githubusercontent.com/48265129/233845715-b9776e57-066b-4e36-9287-5e7d9f31f7d6.png)
 
-두 경우 모두 Expr $\rightarrow$ * id - num * id 로 유도해낸다.
+두 경우 모두 Expr → * id - num * id 로 유도해낸다.
 
 그러나 문장 형태가 다르다.
 
@@ -232,14 +233,14 @@ Context-sensitive에서 모호성을 처리하려면 다음과 같은 부분이 
 
 | 규칙 | 기호 |  | 내용 |
 | :---: | :---: | :---: | --- |
-| 0 | Goal | $\rightarrow$ | Expr |
-| 1 | Expr | $\rightarrow$ | Expr + Term |
+| 0 | Goal | → | Expr |
+| 1 | Expr | → | Expr + Term |
 | 2 |  | \|  | Expr - Term |
 | 3 |  | \| | Term |
-| 4 | Term | $\rightarrow$ | Term * Factor |
+| 4 | Term | → | Term * Factor |
 | 5 |  | \| | Term / Factor |
 | 6 |  | \| | Factor |
-| 7 | Factor | $\rightarrow$ | (Expr) |
+| 7 | Factor | → | (Expr) |
 | 8 |  | \| | number |
 | 9 |  | \| | id |
 
@@ -259,7 +260,7 @@ Top-down parsing에서 무한 루프를 일으킬 수 있기 때문에 없애야
 
 |  |  |  |
 | :---: | :---: | --- |
- | Expr | $\rightarrow$ | Expr + Term |
+ | Expr | → | Expr + Term |
 | | \| | Expr - Term |
  | | \| | Term |
 
@@ -268,10 +269,10 @@ Left recursion을 없애기 위해 비단말 기호를 추가한다.
 
 |  |  |  |
 | :---: | :---: | --- |
- | Expr | $\rightarrow$ | Term Expr' |
- | Expr | $\rightarrow$ | + Term Expr' |
+ | Expr | → | Term Expr' |
+ | Expr | → | + Term Expr' |
 | | \| | - Term Expr' |
- | | \| | $\epsilon$ |
+ | | \| | ε |
 
 ### 필요한 look-ahead의 횟수
 ---
@@ -290,57 +291,57 @@ Left recursion을 없애기 위해 비단말 기호를 추가한다.
 
 ### Predictive parsing
 ---
->A $\rightarrow$ $\alpha$ | $\beta$ 를 만들때, 우리는 $\alpha$ 또는 $\beta$ 로 확장하는 정확한 production을 선택하는 확실한 방법을 원한다.
+>A → α | β 를 만들때, 우리는 α 또는 β 로 확장하는 정확한 production을 선택하는 확실한 방법을 원한다.
 
-$\alpha$ $\in$ G인 일부 RHS에 대해서, $\alpha$ 로 부터 유도된 일부 문자열의 첫번째 토큰 집합을 **FIRST($\alpha$)** 로 정의한다.
+α ∈ G인 일부 RHS에 대해서, α 로 부터 유도된 일부 문자열의 첫번째 토큰 집합을 **FIRST(α)** 로 정의한다.
 
-일부 $\gamma$ 에 대해 $\alpha$ $\rightarrow$ $\ast$ x $\gamma$ 일때, x $\in$ FIRST($\alpha$) 이다.
+일부 γ 에 대해 α → * x γ 일때, x ∈ FIRST(α) 이다.
 
-A $\rightarrow$ $\alpha$ 와 A $\rightarrow$ $\beta$ 이 두 production이 문법에서 같이 존재할때, FIRST($\alpha$) $\cap$ FIRST($\beta$) = $\emptyset$ 이어야 한다.
+A → α 와 A → β 이 두 production이 문법에서 같이 존재할때, FIRST(α) ∩ FIRST(β) = ∅ 이어야 한다.
 
 이는 파서가 하나의 기호를 미리보면서 올바른 선택을 하도록 한다.
 
-A $\rightarrow$ $\alpha$ 와 A $\rightarrow$ $\beta$ 이고, $\epsilon$ $\in$ FIRST($\alpha$) 일때, FIRST($\beta$)는 FOLLOW(A)와 분리되어야 한다.
+A → α 와 A → β 이고, ε ∈ FIRST(α) 일때, FIRST(β)는 FOLLOW(A)와 분리되어야 한다.
 
 **FOLLOW(A)**  
-한 문장 형태에서 A(A $\in$ NT)를 바로 따를 수 있는 단말 기호 집합이다.  
+한 문장 형태에서 A(A ∈ NT)를 바로 따를 수 있는 단말 기호 집합이다.  
 시작 기호 S에 대해서 FOLLOW(S) = {EOF} 이다.  
 
 **FOLLOW 집합을 만들기 위해서 FIRST 집합을 사용한다.**
 
-**FIRST+(A $\rightarrow$ $\alpha$)** 를 정의한다.  
-$\epsilon$ $\in$ FIRST($\alpha$)이라면, FIRST($\alpha$) $\cup$ FOLLOW(A) 이다.  
-그렇지 않으면, FIRST($\alpha$)이다.
+**FIRST+(A → α)** 를 정의한다.  
+ε ∈ FIRST(α)이라면, FIRST(α) ∪ FOLLOW(A) 이다.  
+그렇지 않으면, FIRST(α)이다.
 
 
-A $\rightarrow$ $\alpha$ 와 A $\rightarrow$ $\beta$ 를 처리한다면 그 때 문법은 LL(1)이다.  
-FIRST+(A $\rightarrow$ $\alpha$) $\cap$ FIRST+(A $\rightarrow$ $\beta$) = $\emptyset$
+A → α 와 A → β 를 처리한다면 그 때 문법은 LL(1)이다.  
+FIRST+(A → α)  ∩  FIRST+(A → β) = ∅
 
 ### FIRST 집합 예제
 ---
 
 | 규칙 | 기호 |  | 내용 |
-| :---: | :---: | :---: | --- |
-| 0 | Goal | $\rightarrow$ | Expr |
-| 1 | Expr | $\rightarrow$ | Term Expr' |
-| 2 | Expr' | $\rightarrow$ | + Term Expr' |
+| :---: | :---: | :---: | - |
+| 0 | Goal | → | Expr |
+| 1 | Expr | → | Term Expr' |
+| 2 | Expr' | → | + Term Expr' |
 | 3 |  | \| | - Term Expr' |
-| 4 |  | $\rightarrow$ | $\epsilon$ |
-| 5 | Term | $\rightarrow$ | Factor Term' |
-| 6 | Term' | $\rightarrow$ | * Factor Term' |
+| 4 |  | → | ε |
+| 5 | Term | → | Factor Term' |
+| 6 | Term' | → | * Factor Term' |
 | 7 |  | \| | / Factor Term' |
-| 8 |  | \| | $\epsilon$ |
-| 9 | Factor | $\rightarrow$ | ( Expr ) |
+| 8 |  | \| | ε |
+| 9 | Factor | → | ( Expr ) |
 | 10 |  | \| | number |
 | 11 |  | \| | id |
 
-| 기호 $\alpha$ | FIRST($\alpha$) |
+| 기호 α | FIRST(α) |
 | ---| --- |
-number, id, +, -, *, /, $\epsilon$ | number, id, +, -, *, /, $\epsilon$
+number, id, +, -, *, /, ε | number, id, +, -, *, /, ε
 Expr | (, number, id
-Expr' | +, -, $\epsilon$
+Expr' | +, -, ε
 Term | (, number, id
-Term' | *, /, $\epsilon$
+Term' | *, /, ε
 Factor | (, number, id
 
 
@@ -352,11 +353,11 @@ Factor | (, number, id
   1.  비단말 노드 A에 대해서 반복
        * 공통 Prefix가 있는 대체 RHS'를 가지는 비단말 기호가 없을 때까지 반복합니다.
   2. A에 대한 2개 이상의 대안에 공통되는 가장 긴 Prefix a를 찾는다.
-  3. 만약 $\alpha$ != $\epsilon$ 이라면
+  3. 만약 α != ε 이라면
      1. 모든 유도 결과를 바꾼다.
-     2. A $\rightarrow$ $\alpha$$\beta$<sub>1</sub> | $\beta$<sub>2</sub> | $\beta$<sub>3</sub> | ... | $\alpha$$\beta$<sub>n</sub> | $\gamma$ 를 아래와 같이 바꾼다.
-        1. A $\rightarrow$ $\alpha$A' | $\gamma$
-        2. A' $\rightarrow$ $\beta$<sub>1</sub> | $\beta$<sub>2</sub> | $\beta$<sub>3</sub> | ... | $\beta$<sub>n</sub>
+     2. A → αβ<sub>1</sub> | β<sub>2</sub> | β<sub>3</sub> | ... | αβ<sub>n</sub> | γ 를 아래와 같이 바꾼다.
+        1. A → αA' | γ
+        2. A' → β<sub>1</sub> | β<sub>2</sub> | β<sub>3</sub> | ... | β<sub>n</sub>
 
 ### Left factoring 예제
 ---
@@ -397,10 +398,10 @@ Factor | (, number, id
 
 | 규칙 | 기호 |  | 내용 |
 | :---: | :---: | :---: | --- |
-| 1 | S | $\rightarrow$ | aABe |
+| 1 | S | → | aABe |
 | 2 | A | \|  | Abc |
 | 3 |  | \| | b |
-| 4 | B | $\rightarrow$ | d |
+| 4 | B | → | d |
 
 **stack**
 

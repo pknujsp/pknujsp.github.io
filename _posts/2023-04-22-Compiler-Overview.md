@@ -8,7 +8,7 @@ tags: [Compiler]
 ---
 
 # Compiler(컴파일러) 란?
->입력 : High-level 프로그래밍 언어 $\rightarrow$ **컴파일러** $\rightarrow$ 출력 : Low-level 어셈블리 언어
+>입력 : High-level 프로그래밍 언어 → **컴파일러** → 출력 : Low-level 어셈블리 언어
 >컴파일러는 어떤 언어로 작성된 프로그램을 컴파일 시간과 런타임 시간에 다른 언어로 번역하는 역할을 한다.
 
 * 컴파일러 동작 시점
@@ -101,7 +101,7 @@ tags: [Compiler]
     * 괄호, 숫자, 식별자, +, -, new, while, if, comma(,) 와 같은 것
     * <type, value> 의 쌍이다.
     * 구문의 기본 단위이다.
-    * x = x + y $\rightarrow$ <id,x> = <id,x> + <id,y>
+    * x = x + y → <id,x> = <id,x> + <id,y>
   * 공백(주석 포함)을 제거한다.
 
 
@@ -177,7 +177,7 @@ fun test(start : Int, end :Int, v)): Int {
         x += idxs
     }
     
-    // 반환 데이터 유형이 다르다, Double $\rightarrow$ Int
+    // 반환 데이터 유형이 다르다, Double → Int
     return x
 }
 ```
