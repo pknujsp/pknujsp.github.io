@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Media Access Control
+title: 12. Media Access Control
 subtitle: Data communication - 12. Media Access Control
 published: true
 categories: Data communication

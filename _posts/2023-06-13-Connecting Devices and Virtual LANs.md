@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Connecting Devices and Virtual LANs
+title: 17. Connecting Devices and Virtual LANs
 subtitle: Data communication - 17. Connecting Devices and Virtual LANs
 published: true
 categories: Data communication

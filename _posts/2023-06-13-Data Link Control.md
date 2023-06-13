@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Data Link Control
+title: 11. Data Link Control
 subtitle: Data communication - 11. Data Link Control
 published: true
 categories: Data communication

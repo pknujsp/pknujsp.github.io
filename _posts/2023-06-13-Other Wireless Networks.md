@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Other Wireless Networks
+title: 16. Other Wireless Networks
 subtitle: Data communication - 16. Other Wireless Networks
 published: true
 categories: Data communication

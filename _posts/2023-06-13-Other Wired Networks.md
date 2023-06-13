@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Other Wired Networks
+title: 14. Other Wired Networks
 subtitle: Data communication - 14. Other Wired Networks
 published: true
 categories: Data communication
