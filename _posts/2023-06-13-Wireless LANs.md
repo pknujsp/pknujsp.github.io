@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Wireless LANs
-subtitle: Data communication - 13. Wireless LANs
+subtitle: Data communication - 15. Wireless LANs
 published: true
 categories: Data communication
 tags: [Data communication]

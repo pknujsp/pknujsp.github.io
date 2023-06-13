@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Wired LANs Ethernet
-subtitle: Data communication - 12. Wired LAN
+subtitle: Data communication - 13. Wired LANs Ethernet
 published: true
 categories: Data communication
 tags: [Data communication]

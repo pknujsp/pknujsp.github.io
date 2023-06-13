@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Other Wired Networks
-subtitle: Data communication - 13. Other Wired Networks
+subtitle: Data communication - 14. Other Wired Networks
 published: true
 categories: Data communication
 tags: [Data communication]
