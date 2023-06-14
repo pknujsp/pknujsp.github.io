@@ -26,20 +26,26 @@ tags: [Data communication]
 ## 특징
 ---
 
-* Attenuation
-* Interference
-* Multipath Propagation
+* 감쇠
+* 간섭
+* 다중 경로 전파
   * 전파 반사로 인해 매우 다양한 경로가 만들어 진다.
-* Error
+* 오류
 
 ## Access Control
 ---
 
 * CSMA/CD는 무선랜으로 동작하지 않는다.
   * 충돌 탐지 문제
+    * 노드가 데이터를 송신하는 동안 다른 노드의 데이터 전송과 충돌을 탐지하는 것이 어렵다.
   * Hidden station 문제
+    * 두 노드가 같은 전파 범위 내에 있지 않는 경우, 노드 간에 감지를 할 수 없는 문제가 발생한다.
+    * 두 노드가 동시에 데이터를 보내게 되어, 충돌이 발생한다.
   * 신호 약화 문제
 * 이러한 문제를 극복하기 위해, CSMA/CA를 사용한다.
+  * 충돌을 피하기 위해 3-way handshake방식을 채택
+
+
 
 ## 802.11
 ---
@@ -51,9 +57,9 @@ MAC Layers 802.11 standard
 <img width="823" alt="image" src="https://github.com/pknujsp/android-smartdeeplink/assets/48265129/1bd722bd-7829-4e60-952d-9442c257983a">
 
 * MAC Sublayer
-  * Distributed Coordination Function(DCF)
+  * 분산 조정 기능(DCF)
     * CSMA/CA
-  * Point Coordination Function(PCF)
+  * 포인트 조정 기능(PCF)
     * in an infrastructure network
     * not in an ad hoc network
 
@@ -81,6 +87,8 @@ Frame format
 <img width="666" alt="image" src="https://github.com/pknujsp/android-smartdeeplink/assets/48265129/14f5af27-0691-4bd4-8c06-f5f8d10f3e1b">
 
 <img width="993" alt="image" src="https://github.com/pknujsp/android-smartdeeplink/assets/48265129/f0d38d54-8b64-4c2d-a2e2-a9f7c9c5ae40">
+
+
 
 
 ## 802.11 Series

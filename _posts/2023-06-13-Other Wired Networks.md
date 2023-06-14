@@ -34,5 +34,3 @@ tags: [Data communication]
 ## Cable TV for Data Transfer
 
 ## CM and CMTS
-
-## 

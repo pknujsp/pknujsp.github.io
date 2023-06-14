@@ -29,7 +29,7 @@ Frame format
 
 * preamble
   * 7 bytes 0101...
-* start frame delimiter
+* start frame delimiter(sfd)
   * 1 byte 10101011
 * destination address
   * 6 bytes
@@ -109,7 +109,7 @@ No need for CSMA/CD
 ## Gigabit Ethernet
 ---
 
-* 1000 Mbps 이더넷
+* 1 Gbps 이더넷
   * 48비트 주소
   * 같은 프레임 포맷
     * 최소/최대 프레임 길이 유지

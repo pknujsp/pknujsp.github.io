@@ -11,7 +11,7 @@ tags: [Data communication]
 
 Cellular Telephony는 두 움직이는 객체 간에 통신을 지원하기 위해 설계되었다.
 
-Mobile stations라고 한다.
+Mobile stations 이라고 한다.
 
 <img width="537" alt="image" src="https://github.com/pknujsp/android-smartdeeplink/assets/48265129/023503b2-cd34-4149-a205-feab9ec4137f">
 

@@ -128,7 +128,7 @@ Error Detection
 
 송신 중에 오류가 발생하면 대처가 어렵다.
 
-개선 방법 : `Slide Window`
+개선 방법 : Slide Window
 
 ### Slide Window
 ---
@@ -177,6 +177,10 @@ pipelining을 하고 오류 처리를 개선한다.
   * 데이터 순서가 보장되지 않음.
   * P2P
 
+* HDLC파생 프로토콜
+  * SDLC
+  * PPP
+
 
 ### HDLC Frame
 ---
@@ -195,10 +199,18 @@ pipelining을 하고 오류 처리를 개선한다.
 * FCS(Frame Check Sequence)
   * CRC
 
+bit stuffing 방식을 사용한다.
+
 * Frame 종류
   * I : 정보 프레임
-  * S : 제어 프레임
-  * U : 비정형 프레임
+    * 실제 데이터를 전송
+    * 데이터 순서를 유지하기 위해 관리
+  * S : 감독 프레임
+    * 흐름 제어, 오류 복구
+    * I-Frame에 대한 응답으로 사용
+    * 정보 전송은 하지 않음
+  * U : 비정보 프레임
+    * 다양한 제어, 관리 기능
 
 * 각 프레임 별 Control field
   * I
@@ -218,6 +230,7 @@ Internet, OSI, Xerox, AppleTalk, DECnet, IPX/SPX 등을 지원한다.
 
 * Service
   * Format of the frame
+  * 링크를 수립하고 데이터를 교환한다
   * 몇몇 네트워크 계층으로 부터의 데이터를 허용
   * 인증
   * Multilink PPP
@@ -274,3 +287,24 @@ IPCP역시 마찬가지이다. IPCP는 NCP에 종속되므로 프로토콜 값�
 
 <img width="540" alt="image" src="https://github.com/pknujsp/android-smartdeeplink/assets/48265129/58663ad1-fe48-484e-9247-e16b21f66f0a">
 
+
+
+## 정리
+---
+
+### DataLink Layers Protocols
+---
+
+|                    | Stop-And-Wait                                     | Go-Back-N                                                                                            | Selective Repeat                                                                                       |
+| ------------------ | ------------------------------------------------- | ---------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| 통신 속도          | 느림                                              | 빠름                                                                                                 | 빠름                                                                                                   |
+| 재전송 프레임 개수 | 1                                                 | N                                                                                                    | 1, 손상된 프레임만 재전송                                                                              |
+| 동작 방식          | 프레임 하나씩 처리, ACK를 받아야 다음 프레임 전송 | Window Size만큼 프레임을 보내고, 특정 프레임이 손상되어 ACK를 받지 못하면, 그 프레임부터 다시 재전송 | Window Size만큼 프레임을 보내고, 손상된 프레임에 대해서만 재전송, ACK를 받지 못한 프레임만 재전송 한다 |
+
+
+### HDLC, PPP 프레임 비교
+---
+
+| | HDLC | PPP |
+| --- | --- | --- |
+| 프레임 종류 | I, S, U | 
