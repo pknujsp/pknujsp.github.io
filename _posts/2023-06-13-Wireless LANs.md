@@ -57,7 +57,6 @@ MAC Layers 802.11 standard
     * in an infrastructure network
     * not in an ad hoc network
 
-
 ## CSMA/CA and NAV
 ---
 
@@ -86,7 +85,6 @@ Frame format
 
 ## 802.11 Series
 ---
-
 
 ## Bluetooth
 ---

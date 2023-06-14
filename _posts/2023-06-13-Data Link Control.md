@@ -8,7 +8,6 @@ tags: [Data communication]
 ---
 
 # DLC Services
----
 
 1. Framing
 2. Flow Control
@@ -23,6 +22,8 @@ tags: [Data communication]
 
 데이터를 구별하기 위해 flag를 앞 뒤에 추가한다.
 
+데이터 안에 flag패턴이 포함되어 있으면, 혼동이 생기므로, 데이터 내에 추가적인 패턴을 삽입하여 구분하게 된다. 이를 byte stuffing이라고 한다.
+
 Header에 검증을 위한 데이터를 추가한다.
 
 아스키 코드 전달이 목적
@@ -33,14 +34,10 @@ Header에 검증을 위한 데이터를 추가한다.
 ---
 <img width="508" alt="image" src="https://github.com/pknujsp/android-smartdeeplink/assets/48265129/2709a90b-2438-40fb-ad67-fe3d7712d632">
 
-위의 방식은 비효율적이다.
 
 비트 단위로 데이터를 구별하기 위해 flag를 사용한다.
 
-flag는 01111110으로 구성되어 있다.
-
-* 비트 처리 방법
-  * Bit stuffing/unstuffing
+Character 방식과 마찬가지로 flag와 같은 패턴이 데이터에 나타날 수 있으므로, Bit stuffing/unstuffing 기법을 사용한다.
 
 
 ## Flow Control
@@ -71,13 +68,18 @@ Error Detection
 
 손상되지 않은 경우, ACK를 보낸다.
 
-### Connectionkess & Connection-Oriented
+### Connectionless & Connection-Oriented protocol
 ---
 
 * Connectionless
-  * 대부분의 데이터 링크 프로토콜
-* Connection-Oriented
+  * 데이터를 전송하기 전에, 연결을 설정하지 않는다.
+  * 신속한 데이터 처리에 목적
+  * 데이터 순서 유지 보장이 없다.
+  * UDP
+* Connection-Oriented(연결 지향적)
   * 장거리 통신시 사용
+  * 데이터 전송의 신뢰성을 보장.
+  * TCP
 
 ### Data Link Layer Protocols
 ---
@@ -98,13 +100,17 @@ Error Detection
 <img width="536" alt="image" src="https://github.com/pknujsp/android-smartdeeplink/assets/48265129/157db311-483d-4e49-9743-56c2806cfe50">
 
 * 송신 측
-  * 데이터를 전송하고 ACK를 기다린다.
-  * ACK를 받으면 다음 데이터를 전송한다.
-  * ACK를 받지 못하면 재전송한다.
-  * 프레임을 보낸 직후에는 타이머를 시작하고 Blocking 모드로 전환한다.
+  * 네트워크 계층에서 패킷을 수신
+  * 프레임 생성
+  * 복사하고 저장
+  * 프레임 전송
+  * 타이머 시작하고 Blocking 모드로 전환
+  * ACK를 기다린다.
+    * 정상적인 ACK를 받으면 타이머를 멈추고, 저장한 프레임을 제거한 뒤 다음 프레임을 보낸다.
+    * 오류있는 ACK를 받으면 버린다.
+    * 타임 아웃될 때 까지 ACK를 받지 못하면 프레임을 재 전송한다.
 * 수신 측
-  * 데이터를 받으면 ACK를 보낸다.
-  * ACK를 받으면 다음 데이터를 받는다.
+  * 프레임을 받으면 ACK를 보낸다.
   * 이미 받은 프레임이 중복되어 오면 그 프레임은 버린다.
     * 이 경우에도 ACK는 보낸다.
 
@@ -122,7 +128,7 @@ Error Detection
 
 송신 중에 오류가 발생하면 대처가 어렵다.
 
-개선 방법 : Slide Window
+개선 방법 : `Slide Window`
 
 ### Slide Window
 ---
@@ -167,7 +173,7 @@ pipelining을 하고 오류 처리를 개선한다.
   * 하나의 주요 스테이션과 여러 개의 보조 스테이션으로 구성된다.
 * ABM
   * 비동기 전송 모드
-  * 데이터가 동시에 전송 가능
+  * 데이터를 동시에 전송 가능
   * 데이터 순서가 보장되지 않음.
   * P2P
 
@@ -184,6 +190,8 @@ pipelining을 하고 오류 처리를 개선한다.
 * control
 * information
   * 서로 간에 프로토콜의 정하기 위해 사용
+  * User information
+  * Management information
 * FCS(Frame Check Sequence)
   * CRC
 
@@ -209,7 +217,7 @@ pipelining을 하고 오류 처리를 개선한다.
 Internet, OSI, Xerox, AppleTalk, DECnet, IPX/SPX 등을 지원한다.
 
 * Service
-  * Format of frame
+  * Format of the frame
   * 몇몇 네트워크 계층으로 부터의 데이터를 허용
   * 인증
   * Multilink PPP
@@ -231,6 +239,10 @@ Internet, OSI, Xerox, AppleTalk, DECnet, IPX/SPX 등을 지원한다.
   * 데이터가 포함된다
 * fcs
 
+byte stuffing을 사용한다.
+
+escape byte는 01111101 이다.
+
 address, control field는 실제로 사용되지 않는다.
 
 address의 값이 1이면, 브로드 캐스트 전송을 한다.
@@ -242,6 +254,10 @@ address의 값이 1이면, 브로드 캐스트 전송을 한다.
 <img width="602" alt="image" src="https://github.com/pknujsp/android-smartdeeplink/assets/48265129/0e6d3462-cd99-40d9-9c90-60095cd8eb9f">
 
 PPP는 여러 개의 네트워크 계층 프로토콜을 지원한다.
+
+LCP 패킷은 프레임의 payload에 포함된다. 프로토콜 값은 0xC021이다.
+
+IPCP역시 마찬가지이다. IPCP는 NCP에 종속되므로 프로토콜 값이 0x8021이다.
 
 ### 인증 프로토콜
 ---
