@@ -387,3 +387,267 @@ Liveness information을 모으는 것은 CFG에 대한 data flow analysis를 수
   2. L1 : b = a + 1, c = c + b, a = b * 2, if a < 9 goto L1
   3. return c
 
+## Register allocation
+---
+
+* N개의 레지스터에 대한 정확한 코드를 생성한다.
+* live 레지스터의 재사용을 최대화한다.
+  * load, store 를 최소화한다.
+* Spill 을 최소화한다,
+  * save a stack space
+
+
+### Register allocation 과정
+---
+
+N register code -> Register allocation -> K register code
+
+1. liveness analysis로 부터 interference graph(간섭 그래프)를 생성한다.
+2. ig 에 대한 k-coloring을 분석한다. 또는 코드를 k-color가 될수 있는 문제에 근접하도록 바꾼다.
+3. 각 k-colored 변수(임시 레지스터)를 k registers로 매핑한다.
+
+### Graph coloring problem
+---
+> 그래프는 동일한 에지를 공유하는 두 노드가 동일한 색상을 갖지 않는 색상으로 그래프의 노드에 레이블을 지정하는 경우에만 k-colorable이 가능하다.(한 에지에 연결된 노드는 서로 다른 색상을 가져야 한다)
+
+각 색상은 고유한 논리 레지스터에 매핑된다.
+
+### IG
+---
+
+* 노드는 변수를 나타낸다.
+* 에지는 변수가 동일한 레지스터에 할당될 수 없음을 나타낸다.
+
+**IG의 k-coloring은 k 레지스터 할당으로 매핑될 수 있다.**
+
+이웃이 k개 미만인 정점 v는 항상 색상이 지정될 수 있다.
+
+### 레지스터 할당 문제를 해결하는 방법
+---
+
+1. Chaitin's algorithm
+2. Chaitin-Briggs algorithm
+
+### Chaitin's algorithm
+---
+
+1. IG 생성
+2. 노드 제거
+   * 이웃이 k개 미만인 노드를 제거하고, 스택에 추가한다.
+   * IG에서 이러한 노드가 완전히 사라질때 까지 작업을 반복한다.
+3. 스킬링
+   * k보다 많은 이웃을 가진 노드를 제거한다.
+4. 레지스터 할당
+   * 스택에서 노드를 꺼내면서 레지스터를 할당(색을 입힘)한다.
+   * 색은 다른 노드에 할당되지 않은 색이어야 한다.
+
+### Improvement of Color scheme
+---
+
+모든 정점이 최소 k개의 이웃을 가질 때 멈추는 것 보다, 우선 순위에 따라 스택에 추가하는 것이 더 낫다.
+
+
+### 간단한 레지스터 할당 방식
+---
+
+1. Build
+2. Simplify
+3. Spill
+4. Select
+5. Finish
+
+
+## Instruction selection
+---
+
+* 고려 사항
+ * 실행 시간을 줄이기 위해 명령어 순서 재조정
+ * 정확성을 유지하면서 성능 향상
+ * 최적화
+
+* 스케줄링 방식
+  * 동적
+  * 정적
+
+* Hazard in pipeline
+  * Structural hazard
+    * 하드웨어 자원이 충분하지 않은 경우
+  * Data hazard
+    * 피연산자는 이전 명령어에 의존함
+  * Control hazard
+    * 조건 분기
+
+### 프로세서 수행 과정
+---
+
+1. Fetch
+2. Decode
+3. Fetch
+4. Execute
+5. Store
+6. Next
+
+### Multi-cycle design 장단점
+---
+
+* 장점
+  * 사이클 시간을 줄인다
+  * 프로세스가 파이프라이닝하는 것이 가능함
+* 단점
+  * 단계 사이에서 데이터를 저장할 때 추가적인 레지스터가 필요하다
+  * HW 설계가 복잡해진다
+
+### Pipelining
+---
+> 수행 시 여러 명령어가 동시에 실행되도록 해주는 기술
+
+* 장점
+  * 기능 단위의 사용을 더욱 향상시킨다.
+* 단점
+  * HW 성능 요구가 더 높다.
+  * hazard를 발생시킨다.
+
+
+### Instruction scheduling
+---
+> slow code -> Scheduler -> fast code
+
+* 특징
+  * 올바른 코드를 만든다.
+  * 불필요한 사이클을 줄인다.
+  * 레지스터 스플링을 피한다.
+    * Spill register : 변수의 값을 메모리로 옮기는 작업이 일어나는 레지스터, 레지스터 공간이 부족한 경우에 Spilling이 발생한다.
+  * 작동 효율성
+  
+To capture properties of the code, build a precedence graph G.
+
+instruction -> node
+
+dependency -> edge
+
+### Data dependencies
+---
+
+- 의존성은 아래의 두 조건을 만족할 때에 나타난다.
+  - 두 메모리 참조가 같은 위치에 접근할 때
+  - 최소한 하나의 메모리 참조가 쓰기를 수행할 때
+
+- 종류
+   - RAW : read after write
+     - True dependence
+     - 지울수 없다
+   - WAR : write after read
+     - Anti dependence
+     - 변수명 변경으로 제거 가능
+   - WAW : write after write
+     - Output dependence
+     - 변수명 변경으로 제거 가능
+   - RAR : read after read
+     - Input dependence
+     - 의존성이 없다
+
+- 이러한 위험 중 일부를 제거하기 위해 컴파일러를 제한할 수 있지만 이러한 위험은 자주 발생하며 하드웨어에서 문제를 해결하는 것이 좋다.
+  - NOP : 목적지에 의존성이 없는 것을 load delay slot에 채운다.
+- 여전히 미세하게 조정된 최적화를 위해서는 컴파일러가 지연 동작을 고려해야 한다.
+  - 파이프라인 스케줄링 또는 명령어 스케줄링은 컴파일러가 stall을 피하기 위해 명령어를 재배치하는 방법이다.
+
+### Instruction scheduling(Scope)
+---
+
+- Basic blocks
+  - List scheduling
+  - trace로 바꾼다
+- Branches
+  - Trace scheduling
+  - control hazard를 줄이기 위해, superblock인 trace scheduling을 이용한다.
+- Loops
+  - Unrolling
+  - Software pipelining
+
+
+### List scheduling
+---
+
+1. RAW/WAW를 없애기 위해 이름을 바꾼다.
+2. 우선 Graph를 만든다.
+3. 명령어에 우선 순위를 부여한다.
+4. select 와 명령어 스케줄링을 반복한다.
+   - Candidates : Roots of graph, 실행 가능한 명령어들
+   - Candidates가 남아있을때
+     1. 최고 우선 순위 후보를 선택한다.
+     2. 명령어를 스케줄링 한다.
+     3. 노출된 명령어를 후보에 추가한다.
+  
+  
+* Two flavors of list scheduling
+  * Forward
+  * Backward
+
+### 스케줄링 휴리스틱
+---                                                                                                                                              
+- 고려사항
+  - 준비된 명령어들 중 얼마나 선택해야 하는가?
+  - NP-hard for straight-line code
+- 후보의 우선 순위를 설정하는 방법
+  - pipeline stall을 발생시키지 않는다.
+  - 루트까지의 가장 큰 가중치인 경로(critical path)
+  - 가장 긴 지연시간(more overlap)
+  - Most immediate successors(후보를 만듦)
+  - Most descendants(후보를 더 만듦)
+
+- Trace scheduling
+
+
+
+## Trace scheduling
+---
+- parallelism across if branches
+  1. trace selection
+  2. trace compaction
+
+<img src="https://github.com/skydoves/chatgpt-android/assets/48265129/2a95550a-d5c7-4c8c-a5f3-2f1bf39aaafd">
+
+
+## Optimization
+---
+
+### 잠재적으로 컴파일 시 최적화 가능한 영역
+---
+
+* Source language(AST)
+  * Constant bounds in loops and arrays
+  * Loop unrolling
+  * Suppressing runtime check
+  * Enable later optimizations
+* IR : Local and Global
+  * CSE
+  * Liveness analysis
+  * Code hoisting
+  * Enable later optimizations
+* Code generation
+  * Register allocation
+  * Instruction scheduling
+  * Peephole optimization
+
+### Classical Distinction
+---
+
+* Machine-independent transformations
+  * Applicable across broad range of machines
+  * Remove redundant computations
+  * Find useless code and remove it
+  * More evaluation to a less frequently executed place
+  * Specialize some general purpose code
+  * Expose opportunities for other optimizations
+* Machine-dependent transformations
+  * Capitalize on machine-specific properties
+  * Improve mapping from IR onto machine
+  * Replace a costly operation with a cheaper one
+  * Replace a sequence of instructions with a more powerful one
+
+### Scope of Optimization
+---
+
+* Local
+* Intraprocedural(global)
+* Interprocedural(whole program)
