@@ -9,6 +9,8 @@ $theme-colors: (
   "snowwhite": #ffffff,
 );
 
+
+
 // Default brand colors
 $brand-colors: (
   "orangered": #ff5100,
@@ -34,6 +36,13 @@ $brand-color: map-get($brand-colors, "orangered");
 }
 
 $content-width: {{ site.content_width | default: '920px' }};
+
+$is-dark: false;
+@if $theme-color ==  '#ffffff' {
+  $is-dark: true;
+} @else {
+  $is-dark: false;
+}
 
 @import "yat";
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic:wght@400;700;800&display=swap');

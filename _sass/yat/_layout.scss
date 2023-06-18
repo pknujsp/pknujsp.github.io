@@ -20,7 +20,21 @@ html {
           color: white;
           transition: 0.1s color;
 
-          
+          @if $is-dark {
+            .site-favicon {
+              visibility: hidden;
+            }
+            .site-white_favicon {
+              visibility: visible;
+            }
+          }@else {
+            .site-favicon {
+              visibility: hidden;
+            }
+            .site-white_favicon {
+              visibility: visible;
+            }
+          }
         }
 
         @include media-query($on-laptop) {
@@ -113,6 +127,22 @@ html {
       width: fit-content;
       aspect-ratio: auto;
       margin-right: 5px;
+    }
+
+    @if $is-dark {
+      .site-favicon {
+        visibility: hidden;
+      }
+      .site-white_favicon {
+        visibility: visible;
+      }
+    }@else {
+      .site-favicon {
+        visibility: visible;
+      }
+      .site-white_favicon {
+        visibility: hidden;
+      }
     }
   }
 }
