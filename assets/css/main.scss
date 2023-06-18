@@ -39,9 +39,9 @@ $content-width: {{ site.content_width | default: '920px' }};
 
 $is-dark: false;
 @if $theme-color ==  '#ffffff' {
-  $is-dark: true;
-} @else {
   $is-dark: false;
+} @else {
+  $is-dark: true;
 }
 
 @import "yat";

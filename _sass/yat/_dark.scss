@@ -51,6 +51,12 @@ html[data-theme="dark"]  {
         &, &:visited {
           color: #f8f8f8;
         }
+        .site-favicon {
+          display: none;
+        }
+        .site-white_favicon {
+          display: inline-block;
+        }
       }
     }
 

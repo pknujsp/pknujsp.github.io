@@ -22,17 +22,17 @@ html {
 
           @if $is-dark {
             .site-favicon {
-              visibility: hidden;
+              display: none;
             }
             .site-white_favicon {
-              visibility: visible;
+              display: inline-block;
             }
           }@else {
             .site-favicon {
-              visibility: hidden;
+              display: none;
             }
             .site-white_favicon {
-              visibility: visible;
+              display: inline-block;
             }
           }
         }
@@ -122,27 +122,17 @@ html {
     }
 
     .site-favicon, .site-white_favicon {
-      display: inline-block;
       height:  $header-height / 1.7;
       width: fit-content;
       aspect-ratio: auto;
       margin-right: 5px;
     }
 
-    @if $is-dark {
-      .site-favicon {
-        visibility: hidden;
-      }
-      .site-white_favicon {
-        visibility: visible;
-      }
-    }@else {
-      .site-favicon {
-        visibility: visible;
-      }
-      .site-white_favicon {
-        visibility: hidden;
-      }
+    .site-favicon {
+      display: inline-block;
+    }
+    .site-white_favicon {
+      display: none;
     }
   }
 }
