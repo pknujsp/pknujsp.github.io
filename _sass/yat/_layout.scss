@@ -19,6 +19,8 @@ html {
         .site-brand-inner, .page-link {
           color: white;
           transition: 0.1s color;
+
+          
         }
 
         @include media-query($on-laptop) {
