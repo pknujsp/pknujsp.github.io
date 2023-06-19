@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Code shape & Instruction selection
+title: Compiler backend
 subtitle: code shape & instruction selection
 published: true
 categories: Compiler
@@ -38,7 +38,6 @@ tags: [Compiler]
 
 ## Code shape
 ---
-
 > 성능에 영향을 미치는 코드의 모든 모호한 속성
 
 알고리즘 선택과 결과에 영향을 준다.
@@ -47,7 +46,6 @@ tags: [Compiler]
 
 ### Example
 ---
-
 * case 문에 대한 처리를 하는 경우
   * if-then-else
     * 성능은 case의 개수에 의존적
@@ -73,7 +71,6 @@ case 에 따른 분기 처리는 다양한 방법이 있고, 컴파일러는 최
 
 ### Low-level Representation
 ---
-
 * Instrinsic operations
   * AST
 * String
@@ -85,7 +82,7 @@ case 에 따른 분기 처리는 다양한 방법이 있고, 컴파일러는 최
 
 A : [
   (1,1),(1,2),(1,3),(1,4),
-  (2,1),(2,2),(2,3),(2,4),
+  (2,1),(2,2),(2,3),(2,4)
 ]
 
 * Arrays
@@ -94,7 +91,7 @@ A : [
     * 연속 행의 시퀀스로 배치
     * 가장 오른쪽 아래 첨자가 가장 빠르게 변함
     * A : [
-      (1,1),(1,2),(1,3),(1,4),(2,1),(2,2),(2,3),(2,4),
+      (1,1),(1,2),(1,3),(1,4),(2,1),(2,2),(2,3),(2,4)
     ]
   * Column major
     * Fortran에서 채택
@@ -102,7 +99,7 @@ A : [
     * 가장 왼쪽 위 첨자가 가장 빠르게 변함
     * Cache miss가 많이 발생
     * A : [
-      (1,1),(2,1),(1,2),(2,2),(1,3),(2,3),(1,4),(2,4),
+      (1,1),(2,1),(1,2),(2,2),(1,3),(2,3),(1,4),(2,4)
     ]
 
 * Loops
@@ -142,7 +139,6 @@ A : [
 
 ### Optimal tiling
 ---
-
 * Greedy
   * Tree의 루트에서 시작
   * 가장 큰 tile을 찾는다
@@ -176,10 +172,11 @@ A : [
 ### Sethi-Ullman Numbering
 ---
 
-- Numbering
+1. Numbering
+  - 레지스터를 최소한으로 사용하기 위한 과정
   - Spiling 없는 서브 트리를 평가하기 위해 필요한 레지스터들을 계산한다.
   - 번호로 각 내부 노드에 레이블을 지정한다.
-- Code generation
+2. Code generation
   - 트리를 순회하고 코드를 생성한다.
   - 라벨에 따라 순서를 평가함
 
@@ -187,11 +184,11 @@ A : [
   * 간단한 기계 모델에 최적화 되어 있다.
   * 레지스터와 명령어를 줄인다.
 
-* 실제 기계 모델에 최적화를 위해서는
+* 실제 기계 모델 최적화를 위해서는
   * 동작이 지연되는 아키텍처는 매우 복잡하며 아래의 문제를 고려해야 한다.
     * Issue LOAD, 결과가 나중에 지연 주기로 나타난다.
     * 결과가 참조되지 않는 한 계속 실행된다.
-    * 너무 이른 참조로 인해 hw 정지가 발생하거나 컴파일러가 지연 슬롯을 NOPs로 채울 수 있다.
+    * 너무 이른 참조로 인해 HW정지가 발생하거나 컴파일러가 지연 슬롯을 NOPs로 채울 수 있다.
 
 
 ### Code generation for DAGs
@@ -208,7 +205,6 @@ A : [
   1. Schedule
   2. Allocate virtual registers
   3. Map virtual registers to hard registers
-
 
 ### Local optimization
 ---
@@ -239,9 +235,13 @@ A : [
 ---
 > 정적 코드만 검사하여 프로그램의 동적 동작에 대한 정보를 도출한다.
 
+불필요한 계산을 제거하거나, 코드의 실행 로직을 단순화하는 등 최적화 수행에 필요한 정보를 분석한다.
+
 ### Liveness analysis
 ---
 > 컴파일러는 임시 레지스터에 대해 Liveness analysis 를 수행해야 한다.
+
+어떤 변수가 프로그램에서 사용되지 않는다면, 메모리를 회수하여 최적화 한다.
 
 나중에 사용되는 레지스터가 값을 가지고 있으면, Live 상태이다.
 
@@ -348,13 +348,13 @@ Liveness information을 모으는 것은 CFG에 대한 data flow analysis를 수
 ---
 
 * Basic blocks
-  * single predecessor/successor를 가지는 노드를 합쳐서 CFG의 크기를 줄인다.
+  * single predecessor/successor를 가지는 노드를 합쳐서 Basic block으로 만들어 CFG의 크기를 줄인다.
 * One variables at a time
   * 모든 변수에 대해서 data flow analysis를 수행하는 것보다, 하나의 변수에 대해서 단순화한 분석을 하는 것이 더 낫다.
 * Representation of sets
   * For dense sets
     * 정수형 배열에서 1인 비트를 원소로 간주하는 경우에 사용한다.
-    * 0또한 저장되므로 메모리 사용이 비 효율적이다.
+    * 쓰이지 않는 0이 저장되므로 메모리 사용에서 비효율적이다.
   * For sparse sets
     * 원소가 존재하는 메모리 위치를 저장하므로, 메모리 사용량이 적다.
 
@@ -371,6 +371,8 @@ Liveness information을 모으는 것은 CFG에 대한 data flow analysis를 수
 
 ### Example
 ---
+
+<img src="https://github.com/pknujsp/android-smartdeeplink/assets/48265129/8c95a61e-ef9f-49ea-994d-ceb51e0751ff">
 
 1. a = 0
 2. L1 : b = a + 1
@@ -400,10 +402,10 @@ Liveness information을 모으는 것은 CFG에 대한 data flow analysis를 수
 ### Register allocation 과정
 ---
 
-N register code -> Register allocation -> K register code
+N register code -> `Register allocation` -> K register code
 
-1. liveness analysis로 부터 interference graph(간섭 그래프)를 생성한다.
-2. ig 에 대한 k-coloring을 분석한다. 또는 코드를 k-color가 될수 있는 문제에 근접하도록 바꾼다.
+1. liveness analysis로 부터 interference graph(간섭 그래프, IG)를 생성한다.
+2. IG 에 대한 k-coloring을 분석한다. 또는 코드를 k-color가 될수 있는 문제에 근접하도록 바꾼다.
 3. 각 k-colored 변수(임시 레지스터)를 k registers로 매핑한다.
 
 ### Graph coloring problem
@@ -508,16 +510,32 @@ N register code -> Register allocation -> K register code
   * hazard를 발생시킨다.
 
 
+### Hazards
+---
+
+* Structural hazard
+  * HW자원의 충돌
+  * 두 명령어가 동시에 같은 자원을 사용하려고 할 때 발생
+* Data hazard
+  * 데이터 의존성
+  * 한 명령어가 다른 명령어의 결과에 의존하는 경우
+* Control hazard
+  * 분기 명령어와 같은 제어 명령어로 인해 파이프라인의 흐름이 변경되는 경우에 발생
+  * 분기 명령어가 실행되어야 다음에 어떤 명령어가 실행될 지 결정되기 때문이다.
+
+
+
+
 ### Instruction scheduling
 ---
-> slow code -> Scheduler -> fast code
+> slow code -> `Scheduler` -> fast code
 
 * 특징
   * 올바른 코드를 만든다.
   * 불필요한 사이클을 줄인다.
-  * 레지스터 스플링을 피한다.
+  * Avoid spill registers
     * Spill register : 변수의 값을 메모리로 옮기는 작업이 일어나는 레지스터, 레지스터 공간이 부족한 경우에 Spilling이 발생한다.
-  * 작동 효율성
+  * 작동 효율성 향상
   
 To capture properties of the code, build a precedence graph G.
 
@@ -547,18 +565,18 @@ dependency -> edge
      - 의존성이 없다
 
 - 이러한 위험 중 일부를 제거하기 위해 컴파일러를 제한할 수 있지만 이러한 위험은 자주 발생하며 하드웨어에서 문제를 해결하는 것이 좋다.
-  - NOP : 목적지에 의존성이 없는 것을 load delay slot에 채운다.
-- 여전히 미세하게 조정된 최적화를 위해서는 컴파일러가 지연 동작을 고려해야 한다.
-  - 파이프라인 스케줄링 또는 명령어 스케줄링은 컴파일러가 stall을 피하기 위해 명령어를 재배치하는 방법이다.
+  - `NOP` : 목적지에 의존성이 없는 것을 load delay slot에 채운다.
+- 여전히 미세한 최적화를 위해서는 컴파일러가 지연 동작을 고려해야 한다.
+  - 파이프라인 스케줄링 또는 명령어 스케줄링은 컴파일러가 stall을 피하기 위해 명령어를 재 배치하는 방법이다.
 
 ### Instruction scheduling(Scope)
 ---
 
 - Basic blocks
-  - List scheduling
+  - `List scheduling`
   - trace로 바꾼다
 - Branches
-  - Trace scheduling
+  - `Trace scheduling`
   - control hazard를 줄이기 위해, superblock인 trace scheduling을 이용한다.
 - Loops
   - Unrolling
@@ -567,24 +585,24 @@ dependency -> edge
 
 ### List scheduling
 ---
-
 1. RAW/WAW를 없애기 위해 이름을 바꾼다.
 2. 우선 Graph를 만든다.
-3. 명령어에 우선 순위를 부여한다.
-4. select 와 명령어 스케줄링을 반복한다.
+3. 명령어에 우선순위를 부여한다.
+4. select와 명령어 스케줄링을 반복한다.
    - Candidates : Roots of graph, 실행 가능한 명령어들
    - Candidates가 남아있을때
-     1. 최고 우선 순위 후보를 선택한다.
+     1. 최고 우선순위 후보를 선택한다.
      2. 명령어를 스케줄링 한다.
      3. 노출된 명령어를 후보에 추가한다.
-  
+
   
 * Two flavors of list scheduling
   * Forward
   * Backward
 
 ### 스케줄링 휴리스틱
----                                                                                                                                              
+---
+
 - 고려사항
   - 준비된 명령어들 중 얼마나 선택해야 하는가?
   - NP-hard for straight-line code
@@ -595,13 +613,9 @@ dependency -> edge
   - Most immediate successors(후보를 만듦)
   - Most descendants(후보를 더 만듦)
 
-- Trace scheduling
-
-
-
 ## Trace scheduling
 ---
-- parallelism across if branches
+- Parallelism across if branches
   1. trace selection
   2. trace compaction
 
@@ -624,7 +638,7 @@ dependency -> edge
   * Liveness analysis
   * Code hoisting
   * Enable later optimizations
-* Code generation
+* Code generation(machine code)
   * Register allocation
   * Instruction scheduling
   * Peephole optimization
@@ -632,18 +646,18 @@ dependency -> edge
 ### Classical Distinction
 ---
 
-* Machine-independent transformations
-  * Applicable across broad range of machines
-  * Remove redundant computations
-  * Find useless code and remove it
-  * More evaluation to a less frequently executed place
-  * Specialize some general purpose code
-  * Expose opportunities for other optimizations
-* Machine-dependent transformations
-  * Capitalize on machine-specific properties
-  * Improve mapping from IR onto machine
-  * Replace a costly operation with a cheaper one
-  * Replace a sequence of instructions with a more powerful one
+* 머신 '비의존적' 변환 
+  * 광범위한 머신에 적용 가능 
+  * 중복 계산 제거 
+  * 쓸모없는 코드 찾아 제거 
+  * 실행 빈도가 낮은 곳으로 더 많은 평가 수행
+  * 일부 범용 코드 전문화
+  * 다른 최적화를 위한 기회 노출
+* 머신 '의존적' 변환
+  * 머신별 속성 활용
+  * IR에서 머신으로의 매핑 개선
+  * 비용이 많이 드는 작업을 더 저렴한 작업으로 대체
+  * 명령어 시퀀스를 더 강력한 것으로 대체
 
 ### Scope of Optimization
 ---
@@ -651,3 +665,41 @@ dependency -> edge
 * Local
 * Intraprocedural(global)
 * Interprocedural(whole program)
+
+
+### 최적화 시 핵심 목표
+---
+
+* Safety
+* Profitability
+* Opportunity
+
+### Safety
+---
+> 최적화 시에 발생한 변화가 프로그램의 실행 결과를 바꾸지 않는다는 것을 보장하는 것이 중요
+
+* 컴파일 시 분석
+  * Loop unrolling
+    * 대부분의 경우에 안전함
+  * DAGs and CSEs
+    * 간단한 분석이다
+  * Dataflow analysis
+    * 복잡한 추론이 필요할 수 있다
+
+### Profitability
+---
+> 최적화를 통해 프로그램의 실행 속도가 빨라지는 것을 보장하는 것이 중요
+
+* 컴파일 시 추정
+  * Always profitable
+  * Heuristic rules
+  * Compute benefit
+
+### Opportunity
+---
+> 최적화를 해야 하는 적절한 지점을 찾는 것이 중요
+
+* Issues
+  * 변환을 적용하는 프레임워크를 제공
+  * 체계적으로 모든 지점을 찾기
+  * 이전 변경 사항을 반영하도록 안전 정보를 업데이트 하기
