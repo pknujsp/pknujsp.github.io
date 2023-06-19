@@ -703,3 +703,35 @@ dependency -> edge
   * 변환을 적용하는 프레임워크를 제공
   * 체계적으로 모든 지점을 찾기
   * 이전 변경 사항을 반영하도록 안전 정보를 업데이트 하기
+
+
+### Loop unrolling
+---
+
+* Safety
+  * Always safe
+  * Loop interchange/unrolling/fusion??
+* Profitability
+  * Reduce overhead
+  * Machine-dependent
+* Opportunity
+  * Loops
+  * Find memory-bound loop nests
+
+### Hoisting loop-invariant
+---
+
+* Loop invariant
+  * Expressions constant with loop body
+* Relevant variables
+  * Those used to compute an expression
+* Opportunity
+  * Identity variables defined in body of loop
+  * Loop invariants have no relevant variables in LoopDef
+  * Assign each loop-invariant to temporary in loop header
+  * Use temporary in loop body
+* Safety
+  * Faults in loop-invariant expression may be triggered earlier
+* Profitability
+  * Loop may execute 0 times
+  * Loop-invariant may not be needed on every path through loop body
