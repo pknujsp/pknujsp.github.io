@@ -330,7 +330,7 @@ html {
   }
 
   .post-meta {
-    font-size: $base-font-size;
+    font-size: $base-font-size * 1.1;
     color: $grey-color;
     margin-bottom: $spacing-unit * 0.5;
   }
@@ -483,13 +483,19 @@ html {
     &>*:first-child {
       @include relative-font-size(1.425);
       color: #333;
-      margin-bottom: 14px;
+      margin-bottom: 12px;
     }
 
     ul {
       margin-left: 15px;
       .post-link {
-        @include relative-font-size(1.075);
+        @include relative-font-size(1.08);
+      }
+
+      .datetime {
+        font-size: $small-font-size;
+        color: $grey-color;
+        margin-left: 8px;
       }
 
       a {
@@ -510,6 +516,7 @@ html {
           font-size: 10px;
           font-weight: 600;
           border-radius: 2px;
+          display: none;
         }
 
         &:visited:after {
@@ -521,7 +528,7 @@ html {
 }
 
 .post-comments {
-  padding-top: 25px;
+  padding-top: 20px;
 }
 
 
@@ -766,7 +773,7 @@ html {
 
   li a {
     &.post-link {
-      margin-left: 5px;
+      margin-left: 6px;
     }
 
     color: #303030;
