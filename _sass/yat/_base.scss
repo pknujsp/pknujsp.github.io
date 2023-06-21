@@ -2,7 +2,7 @@
  * Reset some basic elements
  */
 body, h1, h2, h3, h4, h5, h6,
-p, blockquote, pre, hr,
+p, blockquote, pre,
 dl, dd, ol, ul, figure {
   margin: 0;
   padding: 0;
@@ -37,8 +37,7 @@ body {
 /**
  * Set `margin-bottom` to maintain vertical rhythm
  */
-h1, h2, h3, h4, h5, h6,
-p, blockquote, pre,
+h1, h2, h3, h4, h5, h6, blockquote, pre,
 ul, ol, dl, figure,
 %vertical-rhythm {
   margin-bottom: $spacing-unit / 2;
@@ -124,20 +123,72 @@ a {
 /**
  * Blockquotes
  */
+ /*
 blockquote {
-  color: $grey-color;
-  @include relative-font-size(1.1);
+  color: #5995f0;
+  @include relative-font-size(1.05);
   font-weight: bold;
   background-color: #eee;
-  border-radius: 8px; /* 똑같은 크기의 10px 반지름 */
-  padding : 4px 8px 4px 8px;
+  border-radius: 10px;
+  padding : 4px 6px 4px 6px;
+}
+blockquote {
+  border: 1px solid #27a9e3;
+  margin-left: 0px;
+  margin-right: 0px;
+  padding-left: 20px;
+  padding-right: 20px;
+  border-left: 10px solid #27a9e3;
+  border-radius: 8px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  width: fit-content;
+}
+*/
 
-  > :last-child {
-    margin-bottom: 0;
+blockquote {
+  width: fit-content;
+  padding: 16px 20px;
+  position: relative;
+  background: #e3e3e3;
+  &::before, &::after {
+    top: 0;
+    bottom: 0;
+    content: '';
+    position: absolute;
+    background: #e3e3e3;
+    box-shadow: 0 2px rgba(0,0,0,.25);
+  }
+  &::before {
+    right: 100%;
+  }
+  &::after {
+    left: 100%;
+  }   
+  p {
+    margin: 0;
+    font-size: 1.1em;
+    color: $text-color;
+    &::before {
+      top: 0;
+      left: 12px;
+      color: #2790ec;
+      content: '“';
+      font-size: 1.8em;
+      position: absolute;
+      text-shadow: -3px 0 #e3e3e3;
+    }
+    &::after {
+      right: 12px;
+      color: #2790ec;
+      content: '”';
+      bottom: -20px;
+      font-size: 1.8em;
+      position: absolute;
+      text-shadow: 3px 0 #e3e3e3;
+    }
   }
 }
-
-
 
 /**
  * Code formatting
@@ -288,5 +339,43 @@ table {
   background-size: cover;
   background-position: center center;
   overflow: hidden;
+}
+
+$bg: #fff;
+
+.quote {
+  display:inline-block;
+  margin:1em;
+  overflow:hidden;
+  blockquote {
+    background-color:$bg;
+    border: solid 2px #757575;
+    display: inline-block;
+    margin: 0;
+    padding: 1em;
+    position: relative;
+    &:before {
+      background-color: $bg;
+      bottom: -10%;
+      content: "";
+      left: 0;
+      position: absolute;
+      right: 0;
+      top: -10%;
+      transform: rotate(-15deg) skew(5deg);
+    }
+    cite {
+      display: block;
+      font-style: italic;
+      text-align: right;
+      &:before {
+        content: "- ";
+      }
+    }
+    > * {
+      position: relative;
+      z-index: 1;
+    }
+  }
 }
 
