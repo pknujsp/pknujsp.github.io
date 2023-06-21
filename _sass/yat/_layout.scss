@@ -273,7 +273,7 @@ html {
 .page-content {
   @extend %flex-1; /* <-- Keep footer on the bottom */
   padding: $spacing-unit * 2 0;
-  padding-top: 64px;
+  padding-top: 24px;
 }
 
 .page-heading {
