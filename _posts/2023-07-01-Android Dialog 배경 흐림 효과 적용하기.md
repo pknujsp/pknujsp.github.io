@@ -112,16 +112,30 @@ tags: [Android]
 
 ViewRootImpl의 Surface를 받아서, Surface에 Blur를 적용하면 될 것 같습니다.
 
-그러나 ViewRootImpl과 Surface를 직접받아서 로직을 제작하는 것은 불가능 합니다.
-
-그 이유는 ViewRootImpl은 안드로이드 내부 클래스이기 때문입니다.
+그러나 ViewRootImpl과 Surface를 직접받아서 로직을 제작하는 것은 불가능 한 것 같습니다.
 
 
-### 연구중인 방법을 나열하겠습니다.
+### 구현 방법
+---
 
-1. DecorView를 Bitmap으로 받아서, 이 Bitmap에 대해서 Blur를 적용하고, 이 Bitmap을 다시 DecorView에 적용하는 방법을 사용하는 방법
-   1. 안드로이드 프레임워크의 Blur는 가우시안 블러를 사용합니다.
-   2. 우회해서 로직을 만들어야 하므로, 더 빠른게 필요했고 StackBlur라는 방식을 사용합니다.
-   3. 먼저 Kotlin으로 블러 효과를 처리하는 로직을 만들어서 적용하였습니다. 그러나 동작 속도가 느려서 사용하기 힘들었습니다.
-   4. 그래서 C++로 블러 효과를 처리하는 로직을 만들어서 적용하였습니다. 속도가 빠르고 실제 적용이 가능합니다.
-   5. 그런데 실시간으로 계속 블러를 하기에는 느립니다.
+1. Blur처리를 할 View의 ViewTreeObserver에 `OnPreDrawListener`를 등록합니다.
+   - 해당 View가 그려지기 전에 위 Listener가 호출됩니다.
+   - View가 다시 그려질 때 마다 호출됩니다.
+2. Blur처리된 Bitmap을 그려줄 View를 Dialog가 그려지는 Window에 추가합니다.
+   - GLSurfaceView를 사용합니다.
+3. `OnPreDrawListener`가 호출될 때 마다, 해당 View를 Bitmap으로 변환합니다.
+   - `View.drawToBitmap()`을 사용합니다.
+4. Bitmap을 Blur처리 합니다.
+   - RenderScript, Intrinsic Blur를 사용합니다.
+5. Blur처리된 Bitmap을 GLSurfaceView에서 그려주도록 합니다.
+   - GLSurfaceView의 Renderer를 구현합니다.
+   - `onDrawFrame()`에서 Blur처리된 Bitmap을 그려줍니다.
+6. 2~5번 과정이 계속 반복됩니다.
+
+RenderScript가 Android 12부터 Deprecated되었고, 대체하기 위해 Google에서 Toolkit을 제공합니다.
+
+해당 Toolkit을 적용해보았으나, RenderScript보다 Blur를 처리하는데에 약 1.5배의 시간이 더 소요 되는 것을 확인하였습니다.
+
+다른 StackBlur라는 알고리즘을 적용하는 등, 여러 방법을 시도해보았지만, RenderScript를 대체할만한 Blur처리 방법을 찾지 못하였습니다.
+
+Continue...
