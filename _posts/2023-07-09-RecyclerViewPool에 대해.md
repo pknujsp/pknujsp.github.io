@@ -16,12 +16,13 @@ tags: [Android]
 
 * RecyclerView
   * 가장 중요한 클래스
+  * ViewGroup을 상속받는다.
   * 총 감독 역할을 한다.
 * LayoutManager
   * 레이아웃과 관련된 작업을 처리
 * Adapter
-  * 데이터를 관리하고 ViewHolder를 생성
-* CachesViews
+  * 데이터를 관리하고 ViewHolder를 생성하고 Bind를 처리
+* CachedViews
   * RecyclerView를 스크롤 할 때 가장 먼저 탐색하는 곳
   * `onBindViewHolder()` , `onCreateViewHolder()`를 사용할 필요없이 바로 보여줄 수 있는 View를 저장
   * Array로 관리되고, 크기를 개발자가 지정할 수 있다.
@@ -40,6 +41,7 @@ tags: [Android]
 * List를 스크롤 할 때, RecyclerView에서 스크롤을 감지하고, LayoutManager에게 스크롤을 처리하라고 요청합니다.
 * 처리 요청을 받으면, 새로운 ItemView의 표시 위치를 계산하고, RecyclerView에게 ItemView를 달라고 요청합니다.
 * RecyclerView로 부터 ItemView를 받으면, 해당 ItemView를 표시합니다.
+  * `ChildHelper` 클래스를 사용하여 RecyclerView자체에 `addView()` , `removeView()`등의 작업을 처리합니다.
 
 ### Adapter
 ---
