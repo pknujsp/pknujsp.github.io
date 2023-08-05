@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Kotlin sealed class/interface 확장함수 자동 생성하기
+title: Kotlin sealed class/interface 각각에 대하여 상태 함수 자동 생성하기
 subtitle: Kotlin Symbol Processing을 사용해서, 바인딩 파일을 자동 생성시키는 방법
 published: true
 categories: Kotlin
