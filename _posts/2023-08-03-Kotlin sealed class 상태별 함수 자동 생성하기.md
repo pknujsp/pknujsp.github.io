@@ -1,7 +1,7 @@
 ---
 layout: post
-title: Kotlin sealed class/interface 각각에 대하여 상태 함수 자동 생성하기
-subtitle: Kotlin Symbol Processing을 사용해서, 바인딩 파일을 자동 생성시키는 방법
+title: Kotlin sealed class/interface 사용 시 하위 클래스에 대응되는 함수를 자동으로 만드는 방법
+subtitle: (KSP)Kotlin Symbol Processing을 사용해서, 바인딩 파일을 자동 생성하는 방법을 알아봅시다.
 published: true
 categories: Kotlin
 tags: [Kotlin]
@@ -10,7 +10,8 @@ tags: [Kotlin]
 ## sealed interface/class 를 사용하는 경우
 ---
 
-> 아래의 코드 처럼 데이터의 상태에 따라 다른 동작을 수행해야 하는 경우가 있습니다.
+> `sealed class`를 사용하여 각 상태에 따른 동작을 수행하도록 할 수 있습니다.
+
 
 ```kotlin
 sealed interface UiState<out T> {
@@ -25,20 +26,18 @@ sealed interface UiState<out T> {
 ```kotlin
 when (uiState) {
   is UiState.Success -> {
-    // uiState.data
+    // 성공 시
   }
   is UiState.Error -> {
-    // uiState.exception
+    // 오류 발생 시
   }
   is UiState.Loading -> {
-    // 로딩 처리
+    // 로딩 중
   }
 }
 ```
 
-when 처리를 매번 하기는 여간 귀찮고 불편한 일이 아닙니다.
-
-`when` 분기를 처리하는 대신에 각 클래스에 따른 함수를 만들어서, 상태에 따른 동작을 수행하도록 하는 방법도 있습니다.
+`when` 분기를 처리하는 대신에 각 클래스에 따른 함수를 만들어서 동작을 수행하도록 하는 방법도 있습니다.
 
 ```kotlin
 inline fun <T> UiState<T>.onError(block: (Throwable) -> Unit): UiState<T> {
@@ -60,31 +59,31 @@ inline fun <T> UiState<T>.onSuccess(block: (T) -> Unit): UiState<T> {
 }
 ```
 
-이렇게 하면, `when` 분기를 처리하는 대신에, 각 상태에 따른 함수를 호출되면서 동작이 수행됩니다.
+이렇게 하면, `when` 분기를 처리하는 대신에, 상태에 따라 함수가 호출되면서 동작이 수행됩니다.
 
 ```kotlin
 uiState
   .onSuccess { data ->
-    // data
+ 
   }
   .onError { exception ->
-    // exception
+ 
   }
   .onLoading {
-    // 로딩 처리
+
   }
 ```
 
-하지만, `UiState` 클래스 내용이 변경되면, 각 상태에 따른 함수도 변경해야 합니다.
+하지만, `UiState` 클래스 내용이 변경되면, 각 함수를 변경해야 합니다.
 
-이런 불편함을 개선시키고자 KSP(Kotlin Symbol Processing)을 사용해서, `UiState` 클래스에 따른 함수를 자동 생성시키는 방법을 알아보겠습니다.
+이런 불편함을 없애기 위해 KSP(Kotlin Symbol Processing)을 사용해서, `sealed class`에 대응되는 함수를 컴파일 할 때 자동을 생성시켜서 편하게 쓸 수 있습니다.
 
-알려드릴 방법을 사용하면, 컴파일시에 자동으로 sealed interface/class에 대해서 각 상태별로 함수를 만들게 됩니다.
+먼저 KSP에 대해 알아보겠습니다.
 
 
 ## KSP(Kotlin Symbol Processing) 란?
 ---
-> 코틀린 컴파일러의 확장 기능으로, 컴파일 시간에 코드를 분석하고 생성하는 기능을 제공합니다. KSP를 사용하면, 컴파일러가 코드를 분석하여 새로운 코드를 생성할 수 있습니다. 이를 통해, 코드 생성을 자동화하고, 코드의 반복 작성을 줄일 수 있습니다.
+> Kotlin Compiler의 확장 기능으로, 컴파일 시에 코드를 분석하고 생성하는 기능을 제공합니다. 이를 통해, 코드 생성을 자동화하고, 코드의 반복 작성을 줄일 수 있습니다.
 
 KSP가 아닌 KAPT(Kotlin Annotation Processing Tool)도 있습니다. 이것도 같은 역할을 수행하지만 다음과 같은 차이점이 있습니다.
 
@@ -97,7 +96,7 @@ KSP가 아닌 KAPT(Kotlin Annotation Processing Tool)도 있습니다. 이것도
 
 ## KSP를 사용하기 위한 사전설정
 
-**project build.gradle**
+**Project build.gradle**
 
 version은 현재 사용중인 Kotlin version에 맞게 설정합니다.
 
@@ -109,13 +108,13 @@ plugins {
 ```
 
 ## sealed interface/class에 대한 함수 자동 생성하는 과정
+---
 
 ### 1. Annotation, Compiler Module 생성
 ---
 > Annotation, Compiler 두 개의 모듈을 만들어야 합니다.
 
-**Annotation Module**  
-**build.gradle**
+**Annotation Module, build.gradle**
 
 ```
 plugins {
@@ -124,8 +123,7 @@ plugins {
 }
 ```
 
-**Compiler Module**  
-**build.gradle**
+**Compiler Module, build.gradle**
 
 ```
 plugins {
@@ -137,22 +135,21 @@ dependencies {
 }
 ```
 
-**src/main**
 
-- 폴더 생성
+- **src/main에 파일 생성하기**
   - resources/META-INF/services
     - com.google.devtools.ksp.processing.SymbolProcessorProvider 파일 생성
+    - 컴파일 시에 동작시킬 Processor를 등록하는 과정입니다.
 
-**com.google.devtools.ksp.processing.SymbolProcessorProvider** 파일의 내용으로
+**com.google.devtools.ksp.processing.SymbolProcessorProvider** 파일 내에 다음과 같이 작성합니다.
+
 
 ```
 io.github.pknujsp.core.compiler.BindFuncProcessorProvider
 ```
 
-를 작성합니다.
 
-
-### 2. Annotation Module에 Annotation 생성
+### 2. Annotation Module에 Annotation.kt 생성
 ---
 Annotation Module에 Annotation.kt를 생성하고, 아래의 내용을 작성합니다.
 
@@ -162,7 +159,7 @@ Annotation Module에 Annotation.kt를 생성하고, 아래의 내용을 작성�
 annotation class KBindFunc
 ```
 
-@KBindFunc로 사용할 수 있게 되며, `sealed interface/class`에 붙여서 사용합니다.
+`@KBindFunc`로 사용할 수 있게 되며, `sealed interface/class`에 붙여서 사용합니다.
 
 ### 3. Compiler Module에 Processor 생성
 ---
@@ -171,7 +168,6 @@ Compiler Module에 두 개의 파일을 만들어야 합니다.
 
 1. BindFuncProcessorProvider.kt
 2. BindFuncKspProcessor.kt
-
 
 **BindFuncProcessorProvider.kt**
 
@@ -199,36 +195,29 @@ class BindFuncKspProcessor(
 ) : SymbolProcessor {
 
   private companion object {
+    // Annotation의 이름
     val ANNOTATION_TYPE: String = KBindFunc::class.java.canonicalName
+    // 생성할 바인딩 파일의 앞에 붙일 이름, ex) KBindFuncUiState.kt
     val PREFIX_OUTPUT_FILE_NAME = ANNOTATION_TYPE
   }
 
   // KSP에서 핵심 함수
   override fun process(resolver: Resolver): List<KSAnnotated> {
+    // KBindFunc Annotation이 붙은 모든 클래스를 가져옵니다.
     val declarations = resolver.getSymbolsWithAnnotation(ANNOTATION_TYPE).filterIsInstance<KSClassDeclaration>().toList()
-
-    val files = declarations.map { declaration ->
-      val typeParams = declaration.typeParameters.mapTo(mutableListOf()) { parameter ->
-        "$parameter, ${parameter.variance.name}, ${parameter.isReified}, ${parameter.bounds.map { it.element }.toList()}"
-      }
-      val properties = declaration.getDeclaredProperties().mapTo(mutableListOf()) { property ->
-        "${property.simpleName.asString()} : ${property.type.resolve()}"
-      }
-      val impls = declaration.getSealedSubclasses().mapTo(mutableListOf()) { impl ->
-        "${impl.simpleName.asString()}"
-      }
-
-      declaration
-    }
-    files.forEach { createBindingFile(it) }
+    // 각 클래스에 대한 바인딩 파일을 생성합니다.
+    declarations.forEach { createBindingFile(it) }
     return declarations.toList()
   }
 
   // 바인딩 파일을 생성하는 함수
   private fun createBindingFile(declaration: KSClassDeclaration) {
+    // Generic인 import T와 같은 불필요한 import를 제거하기 위한 Set
     val removeImports = mutableSetOf<String>()
+    // 함수 정보를 가지는 List
     val funcSpecs = declaration.getSealedSubclasses().map { createMethods(declaration, it, removeImports) }
 
+    // 바인딩 파일 정보
     val newFileSpec = FileSpec.builder(declaration.packageName.asString(), "${PREFIX_OUTPUT_FILE_NAME}${declaration.simpleName.asString()}").apply {
       funcSpecs.forEach {
         addFunction(it)
@@ -236,6 +225,7 @@ class BindFuncKspProcessor(
     }.build()
 
     try {
+      // 바인딩 파일 생성
       codeGenerator.createNewFile(
         dependencies = Dependencies(false, declaration.containingFile!!),
         packageName = declaration.packageName.asString(),
@@ -243,6 +233,7 @@ class BindFuncKspProcessor(
       ).bufferedWriter().use {
         it.write(
           newFileSpec.toString().run {
+            // import T와 같은 불필요한 import문을 제거합니다.
             removeUnnecessaryImports(this, removeImports)
           },
         )
@@ -262,24 +253,37 @@ class BindFuncKspProcessor(
 
   // sealed interface/class에 대하여 바인딩 함수를 생성하는 함수
   private fun createMethods(parent: KSClassDeclaration, sub: KSClassDeclaration, removes: MutableSet<String>): FunSpec {
-    print("${sub}--------------------------")
-
+    // Generic인지 여부
     val isGeneric = parent.typeParameters.isNotEmpty()
+
+    // Generic인 경우, Generic 타입을 가져옵니다.
     val typeParameters = if (isGeneric) parent.typeParameters
     else emptyList()
+
+    // sealed interface/class에 선언된 모든 속성을 가져옵니다.
     val properties = sub.getDeclaredProperties().toList()
 
-    logger.info("fields: $properties")
-
+    // 바인딩 함수의 이름을 생성합니다.
+    // ex) onXXX 형식
     return FunSpec.builder("on${sub.simpleName.asString()}").run {
+      // public, inline 함수로 설정합니다.
+      // ex) public inline fun
       addModifiers(KModifier.PUBLIC)
       addModifiers(KModifier.INLINE)
+
+    
+      // 함수의 수신 객체 정보를 설정합니다.
+      // ex) public inline fun <T> UiState<T>.onXXX() <- UiState<T>가 수신 객체
       receiver(
         ClassName.bestGuess(parent.qualifiedName!!.asString()).run {
           if (isGeneric) parameterizedBy(typeParameters.map { TypeVariableName(it.name.asString()) }.toList())
           else this
         },
       )
+
+      // 타입 변수를 추가합니다.
+      // Generic이 아닌 경우, 타입 변수를 추가하지 않습니다.
+      // ex) public inline fun <T> UiState<T>.onXXX() <- T가 타입 변수
       addTypeVariables(
         typeParameters.map { ksTypeParameter ->
           TypeVariableName(
@@ -298,6 +302,9 @@ class BindFuncKspProcessor(
           }
         }.toList(),
       )
+
+      // 함수의 Parameter를 추가합니다.
+      // ex) public inline fun <T> UiState<T>.onXXX(block: (T) -> Unit) <- block이 Parameter
       addParameter(
         ParameterSpec.builder(
           "block",
@@ -322,12 +329,17 @@ class BindFuncKspProcessor(
           ),
         ).build(),
       )
+
+      // 함수의 반환 타입을 설정합니다.
+      // ex) public inline fun <T> UiState<T>.onXXX(block: (T) -> Unit): UiState<T> <- UiState<T>가 반환 타입
       returns(
         ClassName.bestGuess(parent.qualifiedName!!.asString()).run {
           if (isGeneric) parameterizedBy(typeParameters.map { TypeVariableName(it.name.asString()) }.toList())
           else this
         },
       )
+
+      // 함수의 구현 코드를 추가합니다.
       addStatement("if (this is ${parent.simpleName.asString()}.${sub.simpleName.asString()})")
 
       val block = if (properties.isNotEmpty()) {
@@ -351,10 +363,10 @@ class BindFuncKspProcessor(
 }
 ```
 
-### 3. Annotation 사용법
+### 4. Annotation 사용법
 ---
 
-sealed class에 @KBindFunc를 붙여주고 컴파일하면 끝입니다.
+`sealed class`에 `@KBindFunc`를 붙여주고 컴파일하면 즉시 바인딩 함수 사용이 가능합니다.
 
 ```kotlin
 @KBindFunc
@@ -387,24 +399,24 @@ public inline fun <T> UiState<T>.onSuccess(block: (T) -> Unit): UiState<T> {
 }
 ```
 
-빌더 패턴으로 되어있으므로 함수를 붙여서 사용하면 됩니다.
+함수를 이어서 사용하면 됩니다.
 
 ```
 uiState.onSuccess {
-  // UiState.Success
+
 }.onError {
-  // UiState.Error
+
 }.onLoading {
-  // UiState.Loading
+
 }
 ```
 
-## 라이브러리 배포
+## 라이브러리로 배포
 ---
 
 > 사용하기 쉽도록 라이브러리로 배포하였습니다.
 
-아래 처럼 build.gradle에 추가하고 사용하면 됩니다.
+아래 처럼 build.gradle에 추가하고 `@KBindFunc`를 붙인 후 컴파일 한 다음 사용하면 됩니다.
 
 ```
 plugins {
