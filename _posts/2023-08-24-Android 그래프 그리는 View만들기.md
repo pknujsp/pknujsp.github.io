@@ -211,11 +211,11 @@ View의 레이아웃이 계산된 후 `invalidate()`가 호출될 때 `onDraw()`
                     val newPoint = PointF(lastPoint.x + xAxisValueInterval,
                         graphYAxisTop + calculateYPosition(value.toFloat(), minValue.toFloat
                             (), valueLength) * graphYAxisHeight)
-                    val leftPoint = PointF(lastPoint.x + xAxisValueInterval / 2, lastPoint.y)
-                    val centerPoint = PointF(leftPoint.x, newPoint.y)
+                    val point1 = PointF(lastPoint.x + xAxisValueInterval / 2, lastPoint.y)
+                    val point2 = PointF(point1.x, newPoint.y)
 
                     // 곡선을 그리기 위해서 좌표값을 설정합니다.
-                    path.cubicTo(leftPoint.x, leftPoint.y, centerPoint.x, centerPoint.y, newPoint.x, newPoint.y)
+                    path.cubicTo(point1.x, point1.y, point2.x, point2.y, newPoint.x, newPoint.y)
                     lastPoint = newPoint
                 }
                 points.add(lastPoint)
@@ -249,6 +249,24 @@ View의 레이아웃이 계산된 후 `invalidate()`가 호출될 때 `onDraw()`
         return min to max
     }
 ```
+
+#### cubicTo()
+
+
+`fun cubicTo(x1: Float, y1: Float, x2: Float, y2: Float, x3: Float, y3: Float): Unit`
+
+- bezier 곡선을 그립니다.
+  - x1 : 첫 번째 제어점의 x좌표
+  - y1 : 첫 번째 제어점의 y좌표
+  - x2 : 두 번째 제어점의 x좌표
+  - y2 : 두 번째 제어점의 y좌표
+  - x3 : 끝 점의 x좌표
+  - y3 : 끝 점의 y좌표
+
+<img src="https://github.com/pknu-wap/2023_1_WAP_APP_TEAM_MEDI/assets/48265129/c970224e-f948-4fd8-ae74-93f27964bcdb" width="60%">
+
+그림에서 **2, 3, 4** 점이 **(x1, y1), (x2, y2), (x3, y3)** 에 해당합니다.
+
 
 #### calculateYPosition()
 
@@ -325,6 +343,8 @@ View의 레이아웃이 계산된 후 `invalidate()`가 호출될 때 `onDraw()`
 
 ## 활용
 
-> 시간 별 날씨예보의 기온 그래프와 같은 화면을 그리는 경우에 사용할 수 있습니다.
+> 시간 별 날씨예보의 기온 그래프와 같은 화면을 그리는 경우 등에 사용할 수 있습니다.
+
+그 외에도 수학적인 그래프나, 값들 간에 비교를 위한 경우에도 사용할 수 있습니다.
 
 <img src="https://github.com/pknujsp/BestWeather/assets/48265129/24e6f7d1-57ba-408b-b203-0831574f8eac" width="60%">
