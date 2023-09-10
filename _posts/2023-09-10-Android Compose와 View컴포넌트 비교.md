@@ -192,9 +192,3 @@ LazyColumn {
 
 
 `LazyColumn`을 `LazyRow`로 바꾸면 가로 스크롤 리스트가 된다.
-
-
-### Scaffold와 CoordinatorLayout
-
-Compose에서 CoordinatorLayout에 가장 가까운 것은 Scaffold이다. 컴포넌트들간의 상호작용을 위한 기능을 제공한다.
-
