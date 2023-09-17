@@ -128,19 +128,21 @@ GC가 동작할 때에는, 다른 모든 스레드가 멈추기 때문에, GC �
 
 ## GC의 종류(Jvm 기준)
 
-### Serial GC(~JDK 1.5)
+현재 기본 GC는 JDK 8까지는 Parallel GC, JDK 9부터는 G1 GC가 사용된다.
+
+### Serial GC
 
 GC가 동작할 때, GC를 담당하는 스레드가 하나이다. GC가 동작하는 동안에는 다른 모든 스레드가 멈춘다.
 
-### Parallel GC(JDK 1.5~)
+### Parallel GC
 
 멀티 스레드로 Young generation GC를 처리, Old generation GC는 단일 Thread로 처리한다.
 
-### Parallel Old GC(JDK 1.6~)
+### Parallel Old GC
 
 Old generation GC도 멀티 스레드로 처리한다.
 
-### G1(Garbage First) GC(JDK 1.7~)
+### G1(Garbage First) GC
 
 Heap을 Region이라는 영역으로 나눈다.
 
@@ -160,20 +162,26 @@ Mark and Sweep에 추가로 Compaction이라는 단계가 추가되었다.
 
 JVM을 사용하는 프로그램에 대해서 GC설정을 직접 수정할 수 있다. 간단하게 Heap의 크기를 설정하는 방법이 있다.
 
-Android studio의 경우, Android/Android Studio/bin 디렉토리 내에 studio64.vmoptions 파일을 수정하면 된다.
+Android studio의 경우, `Android/Android Studio/bin` 디렉토리 내에 studio64.vmoptions 파일을 수정하면 된다.
 
 다른 IDE도 마찬가지로 이러한 파일을 수정하면 된다.
 
-**-Xms7g**
+
+**-Xms7g**  
 **-Xmx7g**
+
 
 vmoptions파일을 열면 위와 같은 설정이 있다.
 
+
 Xms는 JVM 시작 시 Heap의 크기, Xmx는 Heap의 최대 크기를 의미한다.
+
 
 본인 PC의 메모리 용량에 맞게 적절히 값을 수정하면 되고, 크게 할 수록 GC의 동작 빈도가 줄어들기 때문에 어느 정도 성능 향상을 기대할 수 있다.
 
+
 보통 Xms와 Xmx의 크기를 같게 설정한다. 왜냐하면 Heap의 크기가 동적으로 변하는 것을 방지하기 위해서이다. 만약 Xms와 Xmx의 크기가 다르다면, Heap의 크기가 동적으로 변하게 되는데, 이는 GC의 동작 빈도를 높일 수 있기 때문이다.
+
 
 아래와 같이 추가적인 설정이 가능하다. 그러나 적절한 값을 찾는 과정은 많은 테스트를 통해 찾아야 한다.
 
