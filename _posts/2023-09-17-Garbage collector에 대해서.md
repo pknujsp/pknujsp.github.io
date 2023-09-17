@@ -8,7 +8,7 @@ tags: [GarbageCollector]
 ---
 ## Garbage collector(GC)란
 
-C, C++과 같이 GC가 없는 언어에서는 동적으로 할당한 메모리를 모두 개발자가 직접 관리해야 한다. 
+C, C++과 같이 GC가 없는 언어에서는 동적으로 할당한 메모리를 모두 개발자가 직접 관리해야 한다.   
 
 ```c++
 // int array를 동적 할당
@@ -37,7 +37,7 @@ GC는 크게 3가지 영역으로 나뉘어져 있다.
 - Old generation : Young generation에서 살아남은 객체가 특정 조건을 넘어서면 이곳으로 이동한다.(Promotion)
   - Major GC가 발생.
 
-![gc drawio](https://github.com/pknujsp/android-smartdeeplink/assets/48265129/3228d5ea-f91a-496b-b67c-96456e513127)
+![gc drawio](https://github.com/pknujsp/android-smartdeeplink/assets/48265129/3228d5ea-f91a-496b-b67c-96456e513127)  
 
 
 #### 용어
@@ -53,7 +53,7 @@ GC는 크게 3가지 영역으로 나뉘어져 있다.
 
 Mark and Sweep 이라는 알고리즘으로 동작한다.
 
-![gcactions drawio](https://github.com/pknujsp/android-smartdeeplink/assets/48265129/fa314b28-01e2-4342-9ff6-89690af8c366)
+![gcactions drawio](https://github.com/pknujsp/android-smartdeeplink/assets/48265129/fa314b28-01e2-4342-9ff6-89690af8c366)  
 
 
 1. Young(Eden, Survivor), Old에서 어떤 영역의 용량이 가득차게 된다면 GC는 해당 영역의 객체들을 검사한다.
@@ -113,7 +113,7 @@ val softRef = SoftReference(Object())
 val obj = softRef.get()
 ```
 
-![gc-weak-strong](https://github.com/pknujsp/android-smartdeeplink/assets/48265129/520a7fb3-3150-4841-89db-d42b8cc655e5)
+![gc-weak-strong](https://github.com/pknujsp/android-smartdeeplink/assets/48265129/520a7fb3-3150-4841-89db-d42b8cc655e5)  
 
 
 Weak Reference로 할당된 객체와 연결된 하위 객체는 모두 Weak로 참조되기 떄문에, 상위 Weak Reference가 회수되면  모두 따라서 회수가 된다.
@@ -164,26 +164,19 @@ JVM을 사용하는 프로그램에 대해서 GC설정을 직접 수정할 수 �
 
 Android studio의 경우, `Android/Android Studio/bin` 디렉토리 내에 studio64.vmoptions 파일을 수정하면 된다.
 
-다른 IDE도 마찬가지로 이러한 파일을 수정하면 된다.
-
+다른 IDE도 마찬가지로 이러한 파일을 수정하면 된다.  
 
 **-Xms7g**  
 **-Xmx7g**
 
-
-vmoptions파일을 열면 위와 같은 설정이 있다.
-
+vmoptions파일을 열면 위와 같은 설정이 있다.  
 
 Xms는 JVM 시작 시 Heap의 크기, Xmx는 Heap의 최대 크기를 의미한다.
-
-
 본인 PC의 메모리 용량에 맞게 적절히 값을 수정하면 되고, 크게 할 수록 GC의 동작 빈도가 줄어들기 때문에 어느 정도 성능 향상을 기대할 수 있다.
+  
+보통 Xms와 Xmx의 크기를 같게 설정한다. 왜냐하면 Heap의 크기가 동적으로 변하는 것을 방지하기 위해서이다. 만약 Xms와 Xmx의 크기가 다르다면, Heap의 크기가 동적으로 변하게 되는데, 이는 GC의 동작 빈도를 높일 수 있기 때문이다.  
 
-
-보통 Xms와 Xmx의 크기를 같게 설정한다. 왜냐하면 Heap의 크기가 동적으로 변하는 것을 방지하기 위해서이다. 만약 Xms와 Xmx의 크기가 다르다면, Heap의 크기가 동적으로 변하게 되는데, 이는 GC의 동작 빈도를 높일 수 있기 때문이다.
-
-
-아래와 같이 추가적인 설정이 가능하다. 그러나 적절한 값을 찾는 과정은 많은 테스트를 통해 찾아야 한다.
+아래와 같이 추가적인 설정이 가능하다. 그러나 적절한 값을 찾는 과정은 많은 테스트를 통해 찾아야 한다.  
 
 - -XX:NewRatio : Young, Old generation의 비율
 - -XX:SurvivorRatio : Eden, Survivor의 비율
