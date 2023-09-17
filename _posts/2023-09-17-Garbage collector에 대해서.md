@@ -1,12 +1,11 @@
 ---
 layout: post
-title: Garbage collector에 대해서
+title: Garbage collector에 대해서 알아보자
 subtitle: 역할, 동작 방식
 published: trueas
 categories: GarbageCollector
 tags: [GarbageCollector]
 ---
-asd as
 ## Garbage collector(GC)란
 
 C, C++과 같이 GC가 없는 언어에서는 동적으로 할당한 메모리를 모두 개발자가 직접 관리해야 한다. 
@@ -40,12 +39,14 @@ GC는 크게 3가지 영역으로 나뉘어져 있다.
 
 ![gc drawio](https://github.com/pknujsp/android-smartdeeplink/assets/48265129/3228d5ea-f91a-496b-b67c-96456e513127)
 
+
 #### 용어
 
 - Minor GC : Young generation에서 발생하는 GC
 - Major(Full) GC : Old generation에서 발생하는 GC
 - Reacheable : 객체가 **참조되고 있는** 상태, 다른 영역으로 이동하게 된다.
 - Unreacheable : 객체가  **참조되고 있지 않은** 상태, 회수 대상
+- Age bit : 객체가 Young generation에서 살아남은 횟수를 기록한다.(보통 정수로 표현)
 
 ## 동작 방식
 
@@ -53,19 +54,21 @@ Mark and Sweep 이라는 알고리즘으로 동작한다.
 
 ![gcactions drawio](https://github.com/pknujsp/android-smartdeeplink/assets/48265129/fa314b28-01e2-4342-9ff6-89690af8c366)
 
+
 1. Young(Eden, Survivor), Old에서 어떤 영역의 용량이 가득차게 된다면 GC는 해당 영역의 객체들을 검사한다.
 2. GC Root로부터 참조되고 있는 객체를 따라가며 참조 상태를 확인한다.
 3. 여전히 참조되고 있는(유효한, Reachable) 객체는 살아남고, 그렇지 않은(Unreacheable) 객체는 회수된다.
 4. 이동할 때 Age bit를 1씩 증가시킨다.
 5. 이때, Reacheable 객체가 존재하는 영역이 바뀐다.
-   - Eden에 있다면 Survivor 영역으로 이동.
+   - Eden에 있다면 Survivor 영역으로 이동.(두 영역 중 하나로 이동)
    - Survivor 0/1 에 있다면 Survivor 1/0으로 이동.
    - Age bit가 특정 조건을 넘어서면 Old 영역으로 이동.
 
+동작 시에 Survivor 두 영역 중 하나는 반드시 비어있는 상태이다.
 
 GC가 동작할 때에는 GC가 동작하는 스레드를 제외한 나머지 모든 스레드가 일시 정지된다. 이를 **Stop the world**라고 한다. 만약 스레드가 정지되지 않는다면 GC가 동작하는 동안에도 객체가 생성되어 GC가 제대로 동작하지 않을 수 있는 등 여러 문제가 발생할 수 있다.
 
-#### Unreacheble 상태가 되는 경우
+#### Unreachable 상태가 되는 경우
 
 - 할당된 객체가 연결된 변수가 없을 때
   - 객체가 생성된 메서드가 종료될 때(Stack에서 pop) 객체와 연결된 변수가 사라짐.
@@ -109,8 +112,9 @@ val softRef = SoftReference(Object())
 val obj = softRef.get()
 ```
 
-
 ![gc-weak-strong](https://github.com/pknujsp/android-smartdeeplink/assets/48265129/520a7fb3-3150-4841-89db-d42b8cc655e5)
 
+
 Weak Reference로 할당된 객체와 연결된 하위 객체는 모두 Weak로 참조되기 떄문에, 최상위 Weak Reference가 회수되면 같이 모두 회수가 된다.
+
 
