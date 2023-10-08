@@ -2,7 +2,7 @@
 layout: post
 title: Garbage collector에 대해서 알아보자
 subtitle: 역할, 동작 방식
-published: trueas
+published: true
 categories: GarbageCollector
 tags: [GarbageCollector]
 ---
