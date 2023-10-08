@@ -30,8 +30,6 @@ C와 같은 Native 언어는 컴파일러를 통해 기계어로 변환되어 �
 
 ![](https://miro.medium.com/v2/resize:fit:1100/format:webp/1*slIuYO633BCuBh_gfYRmGg.png)
 
-#### https://medium.com/@lazysoul/jvm-%EC%9D%B4%EB%9E%80-c142b01571f2
-
 
 - Class Loader
   - .class 파일을 불러와서 JVM 메모리에 탑재하는 역할을 수행한다.
