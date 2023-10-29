@@ -24,10 +24,13 @@ tags: [Dalvik, ART, Android]
   - 앱 빌드 시 **.class** 파일을 **.dex** 파일로 변환한다.
   - `.dex` 파일을 **Dalvik**에서 실행한다.
 - CMS(Concurrent Mark Sweep) Garbage Collector 사용
-  - ![Java Garbage Collection](https://d2.naver.com/helloworld/1329)
+  - [Java Garbage Collection](https://d2.naver.com/helloworld/1329)
   - GC동작 시 스레드가 멈추는 시간이 다른 알고리즘들 보다 짧다.
 - 메모리 효율 향상
-  - **레지스터 기반**이기 때문에 **스택 기반**인 **JVM**보다 메모리를 적게 사용한다.
+  - **레지스터 기반**으로 **스택 기반**인 **JVM**보다 메모리를 적게 사용한다.
+  - **JVM**은 연산 수행 시 피연산자를 스택을 사용하여 처리한다.
+  - 반면 **DVM**은 레지스터를 사용하여 처리한다.
+  - **레지스터 머신**의 속도가 **스택 머신**보다 **32%** 더 빠르다는 연구 결과도 있다. [Virtual Machine Showdown: Stack Versus Registers](https://www.usenix.org/legacy/events/vee05/full_papers/p153-yunhe.pdf)
 
 
 Android 기기의 보급이 늘어나기 시작했던 2010년 즈음에는 메모리의 용량이 요즘 나오는 고성능 기기의 1/10 수준(512MB 이하)으로 매우 작았다.
