@@ -58,7 +58,10 @@ LayoutFileParser의 `parseXml()`을 호출하여 XML을 파싱한다.
 
 원본 파일이 `activity_main.xml` 이라면 `activity_main-layout.xml`이름으로 생성한다.
 
+
 #### 원본 레이아웃 파일
+
+[코드 출처 : https://viblo.asia/p/understanding-data-bindings-generated-code-and-how-does-android-data-binding-compiler-work-Ljy5Vd1yZra](https://viblo.asia/p/understanding-data-bindings-generated-code-and-how-does-android-data-binding-compiler-work-Ljy5Vd1yZra)
 
 ```xml
 R.layout.activity_main
@@ -136,17 +139,17 @@ activity_main-layout.xml
     android:tag="layout/activity_main_0" />
 ```
 
-루트 뷰 타입을 분석하기도 한다
-
 ### 6. writeLayoutInfoFiles()
 
-`writeXmlFile()`을 호출하여 layout xml파일을 생성
+`writeXmlFile()`을 호출하여 바인딩 정보를 담은 XML파일을 생성
 
-불필요한 파일은 제거
+이때 불필요한 파일(제거된 레이아웃에 대한 바인딩 파일)이 있다면 제거한다.
 
 ### 7. java, kotlin 파일 생성
 
 BaseDataBinder `generateAll()`을 호출하여 생성
+
+`ActivityMainBinding.java`파일을 생성한다.
 
 ```xml
 <LinearLayout
@@ -158,19 +161,19 @@ BaseDataBinder `generateAll()`을 호출하여 생성
     <TextView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@{ viewModel.text }"
+        android:text="@{viewModel.text}"
         />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:visibility="@{ viewModel.isVisible ? View.VISIBLE : View.INVISIBLE }"
+        android:visibility="@{viewModel.isVisible ? View.VISIBLE : View.INVISIBLE}"
         />
 </LinearLayout>
 
 ```
 
-```kotlin
+```java
 public class ActivityMainBinding extends android.databinding.ViewDataBinding  {
 
     private static final android.databinding.ViewDataBinding.IncludedLayouts sIncludes;
