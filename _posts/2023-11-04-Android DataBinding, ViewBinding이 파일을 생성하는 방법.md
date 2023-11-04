@@ -1,11 +1,13 @@
 ---
 layout: post
-title: Android DataBinding라이브러리 동작 원리
+title: Android DataBinding, ViewBinding이 파일을 생성하는 방법
 subtitle: DataBinding, ViewBinding
 published: true
 categories: [ Android]
 tags: [Android]
 ---
+
+[Android DataBinding](https://developer.android.com/topic/libraries/data-binding)에 대한 이해가 있다는 전제하에 작성하였습니다.
 
 
 ## 주요 클래스
