@@ -10,15 +10,16 @@ tags: [Android]
 
 ## 주요 클래스
 
-| 클래스명                      | 설명                                                                                                                                           |
-| ----------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------- |
-| AndroidDataBinding            | 데이터바인딩의 핵심 클래스, 데이터 바인딩 작업을 총괄한다                                                                                      |
-| LayoutFileParser              | XML 파일 목록을 읽고, 파싱하여 뷰바인딩과 데이터바인딩을 구분하여 처리하고 ResourceBundle 목록을 만든다                                        |
-| LayoutXmlProcessor            | 개발자가 작성한 레이아웃 XML에서 바인딩 속성과 요소를 지우고, 어노테이션 프로세서가 처리하도록 어노테이션이 달린 클래스 파일에 정보를 작성한다 |
-| BaseDataBinder                | 바인딩 클래스 파일을 생성/삭제한다                                                                                                             |
-| ResourceBundle                | 레이아웃 파일 구문 분석 결과를 보관한다. 레이아웃 XML파일 내의 코드를 분석한다                                                                 |
-| DataBindingGenBaseClassesTask | 데이터바인딩 클래스 생성을 위한 작업을 처리한다.(데이터바인딩 라이브러리가 아닌 Android Gradle Plugin에 포함되어있다)                          |
-| LayoutInfoInput               | XML 파일에 대한 바인딩 정보를 담고 있다                                                                                                        |
+| 클래스명                      | 설명                                                                                                                  |
+| ----------------------------- | --------------------------------------------------------------------------------------------------------------------- |
+| AndroidDataBinding            | 데이터바인딩의 핵심 클래스, 데이터 바인딩 작업을 총괄한다                                                             |
+| LayoutFileParser              | XML을 파싱하여 ResourceBundle 목록을 만든다                                                                           |
+| LayoutXmlProcessor            | 레이아웃 XML파일을 읽고 처리한다. 내부적으로 사용할 XML파일도 만든다                                                  |
+| BaseDataBinder                | 바인딩 클래스 파일을 생성/삭제한다                                                                                    |
+| ResourceBundle                | 레이아웃 파일 구문 분석 결과를 보관한다. 레이아웃 XML파일 내의 코드를 분석한다                                        |
+| DataBindingGenBaseClassesTask | 데이터바인딩 클래스 생성을 위한 작업을 처리한다.(데이터바인딩 라이브러리가 아닌 Android Gradle Plugin에 포함되어있다) |
+| LayoutInfoInput               | XML 파일에 대한 바인딩 정보를 담고 있다                                                                               |
+| LayoutFileBundle              | XML 파일에서 데이터 바인딩 관련 정보를 파싱한 결과를 가진다                                                           |
 
 
 ## DataBinding 파일의 생성 과정
@@ -37,35 +38,157 @@ LayoutXmlProcessor를 초기화한다.
 
 ### 3. LayoutXmlProcessor의 `processResources()` 호출
 
-ProcessFileCallback에서 응답을 받아 처리한다
+### 4. LayoutXmlProcessor의 `processAllInputFiles()` 호출
 
-### 4. LayoutXmlProcessor의 processAllInputFiles() 호출
-
-XML파일이며 <layout>태그가 있는 파일에 대해서 processLayoutFile()를 호출
+- 입력으로 받은 폴더의 모든 파일을 하나씩 확인한다.
+- layout 폴더 내에 있는 파일에 대해서 `processLayoutFile()`을 호출한다.
+- `processLayoutFile()`에서는 `processSingleFile()`을 호출한다.
 
 ### 5. processSingleFile()
 
-LayoutFileParser의 parseXml()을 사용해서 파싱
+LayoutFileParser의 `parseXml()`을 호출하여 XML을 파싱한다.
 
-### 6. parseOriginalXml()
+`parseOriginalXml()`를 호출하여 실제로 파싱을 한다.
 
-뷰바인딩, 데이터바인딩 인지에 따라 분리하여 처리
+- RootView 분석
+- data태그 내의 import, variable, class 정보를 분석하고, LayoutFileBundle에 저장한다.
+- 배치된 View에 대한 정보(id, tag, class)와 바인딩 정보(@{}과 같은 표현식)를 분석하여 LayoutFileBundle에 저장한다.
 
-ResourceBundle.LayoutFileBundle를 만들어 파싱 결과를 저장
+분석한 데이터 바인딩 정보는 추가적으로 XML파일을 만들어 저장해둔다.
+
+원본 파일이 `activity_main.xml` 이라면 `activity_main-layout.xml`이름으로 생성한다.
+
+#### 원본 레이아웃 파일
+
+```xml
+R.layout.activity_main
+
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.example.main.MainViewModel" />
+
+    </data>
+
+    <TextView android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@{viewModel.text}" />
+
+</layout>
+
+```
+
+#### 바인딩 정보만을 담고있는 추가로 생성된 파일
+
+```xml
+activity_main-layout.xml
+
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<Layout layout="activity_main" absoluteFilePath="/home/framgia/Projects/harpa-crista/harpacrista/android/app/src/main/res/layout/activity_main.xml"
+    directory="layout"
+    isMerge="false" modulePackage="com.harpacrista">
+    <Variables declared="true" name="viewModel" type="com.example.main.MainViewModel">
+        <location endLine="8" endOffset="51" startLine="6" startOffset="8" />
+    </Variables>
+    <Imports name="View" type="android.view.View">
+        <location endLine="10" endOffset="42" startLine="10" startOffset="8" />
+    </Imports>
+    <Targets>
+        <Target tag="layout/activity_main_0" view="TextView">
+            <Expressions>
+                <Expression attribute="android:text" text=" viewModel.text ">
+                    <Location endLine="16" endOffset="41" startLine="16" startOffset="8" />
+                    <TwoWay>false</TwoWay>
+                    <ValueLocation endLine="16" endOffset="39" startLine="16" startOffset="24" />
+                </Expression>
+            </Expressions>
+            <location endLine="16" endOffset="44" startLine="14" startOffset="4" />
+        </Target>
+    </Targets>
+</Layout>
+```
+
+`android:text="@{ viewModel.text }"`은 아래와 같이 변환된다.
+
+```xml
+<Expression attribute="android:text" text=" viewModel.text ">
+    <Location endLine="23" endOffset="45" startLine="23" startOffset="12" />
+    <TwoWay>false</TwoWay>
+    <ValueLocation endLine="23" endOffset="43" startLine="23" startOffset="28" />
+</Expression>
+```
+
+- `<Expression attribute="android:text" text="viewModel.text">` : `android:text="@{ viewModel.text }"`
+- `<location endLine="16" endOffset="44" startLine="14" startOffset="4" />` : `android:text="@{viewModel.text}"`가 위치한 라인과 오프셋
+- `<TwoWay>false</TwoWay>` : 양방향 바인딩의 여부
+- `<ValueLocation endLine="16" endOffset="39" startLine="16" startOffset="24" />` : `viewModel.text`가 위치한 라인과 오프셋
+
+
+```xml
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:tag="layout/activity_main_0" />
+```
 
 루트 뷰 타입을 분석하기도 한다
 
-### 7. writeLayoutInfoFiles()
+### 6. writeLayoutInfoFiles()
 
-writeXmlFile()로 layout xml파일을 생성
+`writeXmlFile()`을 호출하여 layout xml파일을 생성
 
 불필요한 파일은 제거
 
-### 8. java, kotlin 파일 생성
+### 7. java, kotlin 파일 생성
 
-BaseDataBinder generateAll()을 사용하여 생성
+BaseDataBinder `generateAll()`을 호출하여 생성
 
+```xml
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@{ viewModel.text }"
+        />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="@{ viewModel.isVisible ? View.VISIBLE : View.INVISIBLE }"
+        />
+</LinearLayout>
+
+```
+
+```kotlin
+public class ActivityMainBinding extends android.databinding.ViewDataBinding  {
+
+    private static final android.databinding.ViewDataBinding.IncludedLayouts sIncludes;
+    private static final android.util.SparseIntArray sViewsWithIds;
+
+    static {
+        sIncludes = null;
+        sViewsWithIds = null;
+    }
+    
+    private final android.widget.LinearLayout mboundView0;
+    private final android.widget.TextView mboundView1;
+    private final android.widget.Button mboundView2;
+    ...
+}
+```
+
+View 변수명은 XML에 id가 지정되어있으면 `id`를 사용하고, 지정되어있지 않다면 `mBoundView + index`로 만들어진다.
 
 ## View의 Binding 클래스 파일이 자동으로 생성되는 과정
 
