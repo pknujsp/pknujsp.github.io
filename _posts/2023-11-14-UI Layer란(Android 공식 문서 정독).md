@@ -120,3 +120,58 @@ data class NewsItemUiState(
 
 ## 단방향 데이터 흐름(UDF, Unidirectional Data Flow)으로 UI 상태를 관리하기
 
+위에서 UI 상태가 UI를 표시하기 위해 필요한 세부 사항의 불변 스냅샷이라고 설명했습니다. 그러나 보통 데이터는 동적으로 바뀌고 따라서 상태도 계속 변경됩니다. 사용자가 앱을 쓰기 때문입니다. 
+
+이러한 상호작용은 중개자(이벤트에 적용할 로직을 정의하고 UI 상태를 만들기 위한 데이터를 가공하는 작업을 수행)의 도움을 받아야 합니다. 이런 상호작용과 로직은 UI 자체에 포함될 수는 있지만, UI가 이를 처리하는 것은 좋지 않습니다. 왜냐하면 UI는 UI 상태를 표시하는 것에만 집중해야 하기 때문입니다. 데이터 소유, 생산, 변환과 같은 역할까지 해야 한다면 UI는 너무 많은 역할을 하게 됩니다. 이는 코드를 이해하기 어렵게 만들고, 테스트하기 어렵게 만들며, 유지보수하기 어렵게 만듭니다.
+
+UI는 오직 UI 상태를 가지고 화면에 보여주는 역할만을 하여야 합니다.
+
+### 상태 홀더(State holders)
+
+> 상태 홀더 : UI 상태를 만들고 관련 로직을 가지고 있는 클래스
+
+상태 홀더 클래스의 규모는 관리하는 UI 요소(App bar와 같은 작은 요소에서 부터 화면 전체 또는 화면 이동 대상)에 따라 다양합니다.
+
+> Data 계층에 접근하는 화면 수준의 UI 상태를 관리하는 경우에는 `ViewModel`을 사용하는 것을 권장합니다. `ViewModel`은 구성이 변경되더라도 데이터를 유지할 수 있습니다.`ViewModel`은 앱의 이벤트를 처리하는 로직을 정의하고 처리 결과를 상태로 만들어 내는데 사용합니다.
+
+UI와 상태 생성간의 상호 의존성을 만드는 방법은 다양합니다. 그러나 UI와 ViewModel간의 상호작용은 크게 이벤트의 입력과 그에 따른 상태를 출력하는 것으로 이해할 수 있는데, 다이어그램으로 표현하면 다음과 같습니다.
+
+<img src="https://developer.android.com/static/topic/libraries/architecture/images/mad-arch-ui-udf.png" width="70%">
+
+***앱 아키텍처에서 UDF의 흐름***
+
+상태가 아래로 흐르고 이벤트가 위로 흐르는 이러한 패턴이 바로 `단방향 데이터 흐름(UDF)`입니다. UDF를 통해 앱 아키텍처는 다음과 같이 변화합니다.
+
+- ViewModel은 UI가 사용할 상태를 보유하고 노출시킵니다. UI 상태는 ViewModel에서 변환되는 앱 데이터입니다.
+- UI는 ViewModel에 사용자 이벤트를 알립니다.
+- ViewModel은 사용자 이벤트를 처리하고 상태를 업데이트합니다.
+- 업데이트된 상태는 UI에 전달됩니다.
+- 위 과정은 상태를 바꾸는 이벤트에 의해서 반복됩니다.
+
+네비게이션 목적지나 화면에 대해서 ViewModel은 Repository 또는 UseCase에 접근하여 데이터를 가져오고, 이를 UI 상태로 변환합니다. 이때 상태를 변화시킬수 있는 이벤트(사용자 입력, 데이터 변경 등)의 영향을 고려하여 처리합니다. 현재 문서의 예제에서 기사 목록의 경우는 제목, 내용, 출처, 기자, 작성 날짜, 북마크 여부를 포함하고 있고 목록 내 각 아이템에 대한 UI는 다음과 같습니다.
+
+<img src="https://developer.android.com/static/topic/libraries/architecture/images/mad-arch-ui-basic-case-study-item.png" width="70%">
+
+***기사 하나를 표현하는 아이템의 UI***
+
+기사를 북마크에 추가하는 사용자는 상태를 변화시키는 이벤트입니다. ViewModel은 상태를 생산하는 역할을 맡고 있으므로 UI 상태 내의 모든 필드를 다루고 UI가 표시되기 위해 필요한 이벤트를 처리하여야 합니다.
+
+<img src="https://developer.android.com/static/topic/libraries/architecture/images/mad-arch-ui-udf-in-action.png" width="70%">
+
+***UDF에서 이벤트와 데이터가 처리되는 흐름***
+
+아래에서는 상태 변경을 일으키는 이벤트와 이를 UDF를 사용하여 처리하는 방법을 자세히 설명합니다.
+
+### 로직의 유형
+
+기사를 북마크하는 것은 비즈니스 로직의 예입니다. (이 부분에 대한 자세한 내용은 [Data 계층](https://developer.android.com/jetpack/guide/data-layer)페이지를 살펴보세요.) 정의해야하는 주요 로직의 유형은 다음과 같습니다.
+
+- Business logic: 앱의 데이터에 대한 요구 사항을 구현하는 로직
+  - 예시: 기사를 북마크하는 것
+  - 보통 도메인 또는 Data 계층에서 구현합니다.
+  - UI 계층에서는 구현하지 않도록 합니다.
+- UI behavior logic, UI logic: 화면에 상태 변경을 보여주는 로직
+  - 예시: `Resource`를 사용하여 표시할 문자열을 가져오는 것, 사용자가 버튼을 눌렀을때 다른 화면으로 이동하는 것, toast 또는 snackbar를 표시하는 것
+  - `Context`와 같은 UI 유형과 관련된 로직의 경우, ViewModel이 아닌 UI에서 구현해야 합니다.
+  - 해당 로직이 너무 복잡해진다면 `State holder`와 같이 간단한 클래스를 만들어서 위임하면 됩니다.
+  - [Jetpack Compose State guide](https://developer.android.com/jetpack/compose/state#managing-state)에서 State holder와 UI 생성과 관련된 내용을 살펴보실수 있습니다. 
