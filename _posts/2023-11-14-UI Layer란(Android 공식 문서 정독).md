@@ -164,7 +164,7 @@ UI와 상태 생성간의 상호 의존성을 만드는 방법은 다양합니�
 
 ### 로직의 유형
 
-기사를 북마크하는 것은 비즈니스 로직의 예입니다. (이 부분에 대한 자세한 내용은 [Data 계층](https://developer.android.com/jetpack/guide/data-layer)페이지를 살펴보세요.) 정의해야하는 주요 로직의 유형은 다음과 같습니다.
+기사를 북마크하는 것은 비즈니스 로직의 예입니다. (이 부분에 대한 자세한 내용은 [Data 계층](https://developer.android.com/jetpack/guide/data-layer)페이지를 살펴보세요) 정의해야하는 주요 로직의 유형은 다음과 같습니다.
 
 - Business logic: 앱의 데이터에 대한 요구 사항을 구현하는 로직
   - 예시: 기사를 북마크하는 것
@@ -174,4 +174,128 @@ UI와 상태 생성간의 상호 의존성을 만드는 방법은 다양합니�
   - 예시: `Resource`를 사용하여 표시할 문자열을 가져오는 것, 사용자가 버튼을 눌렀을때 다른 화면으로 이동하는 것, toast 또는 snackbar를 표시하는 것
   - `Context`와 같은 UI 유형과 관련된 로직의 경우, ViewModel이 아닌 UI에서 구현해야 합니다.
   - 해당 로직이 너무 복잡해진다면 `State holder`와 같이 간단한 클래스를 만들어서 위임하면 됩니다.
-  - [Jetpack Compose State guide](https://developer.android.com/jetpack/compose/state#managing-state)에서 State holder와 UI 생성과 관련된 내용을 살펴보실수 있습니다. 
+  - [Jetpack Compose State guide](https://developer.android.com/jetpack/compose/state#managing-state)에서 State holder와 UI 생성과 관련된 내용을 살펴보실수 있습니다.
+
+
+### UDF를 사용해야 하는 이유
+
+UDF로 상태를 생성하는 흐름을 모델링할 수 있습니다. 또한 상태 변화가 일어나는 곳/변환되는 곳/최종적으로 소비되는 곳 세 가지를 명확하게 분리할 수 있습니다. 이를 통해 UI는 상태를 관찰하면서 데이터를 표시하고 변경 사항을 ViewModel에 전달하여 사용자의 의도를 전달할 수 있습니다.
+
+- UDF 사용의 이점
+  - **데이터 일관성 유지**: UI에 대한 데이터는 하나의 출처만 존재하게 됩니다.
+  - **테스트 용이성**: 상태 소스가 분리되어 있어 UI와 독립적으로 테스트 가능합니다.
+  - **유지보수성**: 상태의 변화는 잘 정의된 패턴을 따르며, 변화는 사용자의 이벤트와 이벤트에 의해 얻은 데이터 소스의 결과입니다.
+
+## UI 상태 노출
+
+UI 상태를 정의하고 해당 상태의 생성을 관리하는 방법을 결정한 후, 다음 단계는 생성된 상태를 UI에 표시하는 것입니다. UDF를 사용하여 상태 생성을 관리하기 때문에 생성된 상태를 스트림(흐름)으로 간주할 수 있습니다. 다시 말해, 시간이 지남에 따라 여러 버전의 상태가 생성될 것입니다. 따라서 UI 상태를 `LiveData` 또는 `StateFlow`와 같은 관찰 가능한 데이터 홀더에 노출해야 합니다. 그 이유는 ViewModel에서 직접 데이터를 수동으로 가져올 필요 없이 UI가 상태의 모든 변경 사항에 반응할 수 있도록 하기 위해서입니다. 또한 이러한 유형은 항상 최신의 UI 상태가 캐시되어 있어 구성 변경 후 상태를 빠르게 복원하는 데 유용합니다.
+
+```kotlin
+class NewsViewModel(...) : ViewModel() {
+    // Compose
+    val uiState: NewsUiState = …
+
+    // Views
+    val uiState: StateFlow<NewsUiState> = …
+}
+```
+
+> 참고: Compose에서는 Compose 전용인 관찰 가능한 `State APIs`를 사용할 수 있습니다. `mutableStateOf`, `snapshotFlow`등이 있으며 UI 상태를 노출하는데에 쓰입니다. 물론 `LiveData`와 `StateFlow`도 추가적인 [확장 함수](https://developer.android.com/jetpack/compose/libraries#streams)를 통해 쓸수 있습니다.
+
+
+UI에 노출되는 데이터가 단순하다면, 데이터를 UI 상태로 감싸는 것이 좋습니다. 왜냐하면 UI 상태는 State holder의 방출과 관련된 화면 또는 UI 요소 사이의 관계를 전달하기 때문입니다. 또한 UI 요소가 더 복잡해진다면 UI 요소를 표시하는데 필요한 추가 정보를 수용하기 위해 UI 상태 정의에 추가하는게 더 낫습니다.
+
+`UiState` 스트림을 만들려면 ViewModel의 가변 스트림을 불변 스트림으로 노출시키면 됩니다.
+
+```kotlin
+class NewsViewModel(...) : ViewModel() {
+    // Compose
+    var uiState by mutableStateOf(NewsUiState())
+        private set
+
+    // Views
+    private val _uiState = MutableStateFlow(NewsUiState())
+    val uiState: StateFlow<NewsUiState> = _uiState.asStateFlow()
+}
+
+ViewModel은 내부적으로 상태를 바꾸는 메서드를 노출시켜서 UI가 사용할 업데이트를 만들어 낼 수 있습니다. 예를 들어, 다음과 같은 비동기 작업을 가정해봅시다. `viewModelScope`에서 동작하는 코루틴이 있고 코루틴이 완료될 때 상태가 업데이트 되는 로직입니다.
+
+
+```kotlin
+class NewsViewModel(
+    private val repository: NewsRepository,
+    ...
+) : ViewModel() {
+    // Compose
+    var uiState by mutableStateOf(NewsUiState())
+        private set
+
+    // Views
+    private val _uiState = MutableStateFlow(NewsUiState())
+    val uiState: StateFlow<NewsUiState> = _uiState.asStateFlow()
+
+    private var fetchJob: Job? = null
+
+    fun fetchArticles(category: String) {
+        fetchJob?.cancel()
+        fetchJob = viewModelScope.launch {
+            try {
+                val newsItems = repository.newsItemsForCategory(category)
+
+                // Compose
+                uiState = uiState.copy(newsItems = newsItems)
+
+                // Views
+                _uiState.update {
+                    it.copy(newsItems = newsItems)
+                }
+            } catch (ioe: IOException) {
+                // 오류를 처리하여 UI에 알립니다
+                // Compose
+                val messages = getMessagesFromThrowable(ioe)
+                uiState = uiState.copy(userMessages = messages)
+
+                // Views
+                _uiState.update {
+                    val messages = getMessagesFromThrowable(ioe)
+                    it.copy(userMessages = messages)
+                 }
+            }
+        }
+    }
+}
+```
+
+`NewsViewModel`은 특정 카테고리의 기사들을 가져와서 UI가 반응할 수 있도록 UI 상태에 성공 또는 실패의 결과를 반영하는 작업을 합니다.
+
+> 위의 예제에서 ViewModel의 메서드로 상태가 변경되는 것은 가장 널리쓰이는 UDF의 구현 방식입니다.
+
+### 추가 고려 사항
+
+UI 상태를 노출할 때에는 다음의 내용들을 고려해야 합니다.
+
+#### UI 상태 객체는 서로 연관된 상태들을 다루어야 합니다.
+
+이를 지키면 상태의 불일치가 줄어들고 코드를 이해하기 더 수월해집니다. 만약 뉴스 기사 목록과 북마크한 개수를 서로 다른 스트림에 노출시킨다면, 한 스트림이 제대로 업데이트 되지 않는 오류가 발생할 수 있습니다. 이를 방지하기 위해서 단일 스트림에 두 개를 노출시켜야 합니다. 또한 일부 비즈니스 로직에는 여러 개의 소스들의 조합이 필요할 수도 있습니다. 예를 들어, 사용자가 로그인한 상태이면서 프리미엄 뉴스 구독자인 경우에만 북마크 버튼을 보여줘야 하는 경우가 있습니다. 이때 다음과 같이 UI 상태를 정의할 수 있습니다.
+
+```kotlin
+data class NewsUiState(
+    val isSignedIn: Boolean = false,
+    val isPremium: Boolean = false,
+    val newsItems: List<NewsItemUiState> = listOf()
+)
+
+val NewsUiState.canBookmarkNews: Boolean get() = isSignedIn && isPremium
+```
+
+북마크 버튼의 표시 여부를 두 개의 속성을 조합하여 결정하고 있습니다. 비즈니스 로직이 복잡해짐에 따라 모든 속성을 즉시 사용할 수 있는 단일 `UiState`클래스가 점점 더 중요해지고 있습니다.
+
+#### UI 상태: 단일 스트림 또는 복수 스트림
+
+UI 상태를 단일과 복수 스트림 중 어디로 노출시켜야 할지 결정할때 핵심 원칙은 앞서 설명했던 항목 간의 관계입니다. 단일 스트림 노출의 큰 이점은 편의성과 데이터 일관성에 있습니다. 상태를 소비하는 측에서는 항상 최신의 정보를 가질 수 있습니다. 그러나 분리된 상태 스트림을 쓰는게 더 적절한 경우도 있습니다.
+
+- 서로 관련이 없는 데이터 유형일 때
+  - UI를 표시할 때 필요한 일부 상태는 서로 관련이 없을 수도 있습니다.
+  - 이러한 상태 중 하나가 다른 것보다 훨씬 빈번하게 업데이트 된다면 스트림을 분리하는게 더 낫습니다. 서로 다른 상태를 묶는데 쓰이는 비용이 엄청나게 커질 수 있기 때문입니다.
+- UI 상태 차이
+  - 
