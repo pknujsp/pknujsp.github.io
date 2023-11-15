@@ -186,6 +186,7 @@ markdown: kramdown
 timezone: "Asia/Seoul"
 kmarkdown:
   input: GFM
+  syntax_highlighter: coderay
 
 plugins:
   - jekyll-feed
