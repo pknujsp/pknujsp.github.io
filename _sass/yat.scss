@@ -3,12 +3,12 @@
 // Define defaults for each variable.
 
 $base-font-family: Nanum Gothic, sans-serif, !default;
-$base-font-size: 14px !default;
+$base-font-size: 15px !default;
 $base-font-weight: 400 !default;
-$small-font-size:  $base-font-size * 0.875 !default;
-$base-line-height: 1.6 !default;
+$small-font-size:  $base-font-size * 0.9 !default;
+$base-line-height: 1.65 !default;
 
-$spacing-unit:     30px !default;
+$spacing-unit:     32px !default;
 
 $text-color:       #454545 !default;
 $background-color: #fff !default;
@@ -36,8 +36,8 @@ $banner-background: rgba(0,0,0,0.8) !default;
 // Width of the content area
 // $content-width:    920px !default;
 
-$on-palm:          600px !default;
-$on-laptop:        800px !default;
+$on-palm:          650px !default;
+$on-laptop:        920px !default;
 
 // Use media queries like this:
 // @include media-query($on-palm) {
