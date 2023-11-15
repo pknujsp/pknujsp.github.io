@@ -292,10 +292,141 @@ val NewsUiState.canBookmarkNews: Boolean get() = isSignedIn && isPremium
 
 #### UI 상태: 단일 스트림 또는 복수 스트림
 
-UI 상태를 단일과 복수 스트림 중 어디로 노출시켜야 할지 결정할때 핵심 원칙은 앞서 설명했던 항목 간의 관계입니다. 단일 스트림 노출의 큰 이점은 편의성과 데이터 일관성에 있습니다. 상태를 소비하는 측에서는 항상 최신의 정보를 가질 수 있습니다. 그러나 분리된 상태 스트림을 쓰는게 더 적절한 경우도 있습니다.
+UI 상태를 단일과 복수 스트림 중 무엇으로 노출시켜야 할지를 결정할 때 중요한 것은 앞서 방출되는 항목 간의 관계를 살피는 것 입니다. 단일 스트림 노출의 장점은 편의성과 데이터 일관성에 입니다. 상태를 소비하는 측에서는 항상 최신의 정보를 사용할 수 있습니다. 하지만 분리된 상태 스트림을 쓰는게 더 적절한 경우도 있습니다.
 
 - 서로 관련이 없는 데이터 유형일 때
-  - UI를 표시할 때 필요한 일부 상태는 서로 관련이 없을 수도 있습니다.
-  - 이러한 상태 중 하나가 다른 것보다 훨씬 빈번하게 업데이트 된다면 스트림을 분리하는게 더 낫습니다. 서로 다른 상태를 묶는데 쓰이는 비용이 엄청나게 커질 수 있기 때문입니다.
+  - UI를 표시하기 위해 필요한 일부 상태는 서로 관련이 없을 수도 있습니다.
+  - 이러한 상태 중 하나가 다른 것보다 훨씬 빈번하게 업데이트 된다면 스트림을 분리하는게 더 낫습니다. 서로 다른 상태를 묶는 비용이 이점보다 더 클 수 있기 때문입니다.
 - UI 상태 차이
-  - 
+  - `UiState` 객체에 필드가 많을수록 필드 중 하나가 업데이트될 때 스트림이 생성될 가능성이 높아집니다. 뷰는 연속적인 방출이 같거나 다른지의 여부를 파악할 수 없기 때문에, 모든 방출은 뷰의 업데이트를 발생시킵니다. 이러한 부분은  `Flow` 또는 `LiveData`의 `distinctUntilChanged`같은 메서드를 사용하여 완화시킬 수 있습니다.
+
+
+## UI 상태를 사용(소비)
+
+UI에서 `UiState` 객체의 스트림을 사용하려면, 사용중인 관찰 가능한 데이터 유형에 대해 종단(terminal) 연산자를 사용하면 됩니다. 예를 들어, `LiveData`에는 `observe()`메서드를, `Flow`에는 `collect()`메서드, 또는 그 변형을 사용합니다.
+
+UI에서 관찰 가능한 Data holders를 사용할 때는, UI의 생명 주기를 따라야 합니다. 뷰가 화면에 보이지 않을 때는 UI가 UI 상태를 관찰하지 않아야 하기 때문입니다. 이와 관련된 내용은 [A safer way to collect flows from Android UIs](https://medium.com/androiddevelopers/a-safer-way-to-collect-flows-from-android-uis-23080b1f8bda) 페이지를 추천드립니다. `LiveData`를 쓰는 경우에는, `LifecyclerOwner`는 암시적으로 생명 주기 문제를 처리하며, `Flow`를 쓴다면 적절한 `Coroutine scope`와 `repeatOnLifecycle API`를 사용하여 생명 주기에 따른 로직을 처리해야 합니다.
+
+```kotlin
+// Views
+class NewsActivity : AppCompatActivity() {
+
+    private val viewModel: NewsViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        ...
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                viewModel.uiState.collect {
+                    // UI 요소를 업데이트
+                }
+            }
+        }
+    }
+}
+
+// Compose
+@Composable
+fun LatestNewsScreen(
+    viewModel: NewsViewModel = viewModel()
+) {
+    // viewModel.uiState에 따라 UI 요소를 업데이트
+}
+```
+
+> 예제의 `StateFlow` 객체는 활성화된 수집기가 없을 때 작업을 중단하지 않지만, flow로 작업할 때 그것들이 어떻게 구현되는지 모를 수 있습니다. 생명 주기를 인식하는 flow를 사용하면 나중에 ViewModel flow에 이러한 변경을 하더라도 하위 수집 코드를 다시 검토할 필요 없이 조정할 수 있습니다.
+
+### 작업 중임을 나타내기
+
+`UiState`에서 로딩중이라는 것을 나타내는 가장 쉬운 방법은 `boolean` 필드를 사용하는 것입니다.
+
+```kotlin
+data class NewsUiState(
+    val isFetchingArticles: Boolean = false,
+    ...
+)
+
+이 flag의 값은 UI에서 progress bar의 표시 여부를 나타냅니다.
+
+```kotlin
+// Views
+class NewsActivity : AppCompatActivity() {
+
+    private val viewModel: NewsViewModel by viewModels()
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        ...
+
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                // progressBar의 가시성을 isFetchingArticles의 상태와 결합
+                viewModel.uiState
+                    .map { it.isFetchingArticles }
+                    .distinctUntilChanged()
+                    .collect { progressBar.isVisible = it }
+            }
+        }
+    }
+}
+
+// Compose
+@Composable
+fun LatestNewsScreen(
+    modifier: Modifier = Modifier,
+    viewModel: NewsViewModel = viewModel()
+) {
+    Box(modifier.fillMaxSize()) {
+
+        if (viewModel.uiState.isFetchingArticles) {
+            CircularProgressIndicator(Modifier.align(Alignment.Center))
+        }
+
+        // 리스트같은 다른 UI 요소를 업데이트
+    }
+}
+```
+
+### 화면에서 오류 발생을 나타내기
+
+화면에서 오류 발생을 표시하는 것과 로딩 중임을 표시하는 것 모두 유사합니다. 왜냐하면 둘다 `boolean` 필드로 간단히 표현될 수 있기 때문입니다. 그러나 오류는 때에 따라서 사용자에게 관련한 메시지를 보여주거나 실패한 작업을 재시도하는 작업을 포함하기도 합니다. 따라서 진행 중인 작업을 로딩 중이거나 로딩 중이지 않은 두 가지로 분류하는 것처럼 오류 상태는 오류와 관련된 데이터를 포함하는 데이터 클래스로 모델링될 필요가 있습니다.
+
+예를 들어, 기사 목록을 가져오고 있을 때 progress bar를 보여주는 작업을 생각해보세요. 만약 작업이 실패한다면 사용자에게 오류 메시지를 보여줘야 할 수 있습니다.
+
+```kotlin
+data class Message(val id: Long, val message: String)
+
+data class NewsUiState(
+    val userMessages: List<Message> = listOf(),
+    ...
+)
+```
+
+오류 메시지는 snackbar와 같은 UI 요소로 사용자에게 보여져야 합니다. 왜냐하면 이는 UI 요소가 어떻게 생성/소비되는지와 연관되어있기 때문입니다. 더 자세한 내용은 [UI events](https://developer.android.com/jetpack/guide/ui-layer/events) 페이지를 참고하세요.
+
+## 스레드와 동시성
+
+ViewModel에서 수행되는 작업은 메인 스레드에서 호출되어도 안전해야합니다. 왜냐하면 Data/Domain 계층은 다른 스레드로 작업을 넘기는 것에 대한 책임이 있기 때문입니다.
+
+만약 ViewModel에서 오래 걸리는 작업을 수행한다면, 백그라운드 스레드에서 수행하는게 좋습니다. 코루틴은 동시 작업을 관리하는 데 좋은 방법입니다. 그리고 Jetpack 아키텍처 컴포넌트는 이를 위한 기능을 지원하고 있습니다. [Kotlin coroutines on Android](https://developer.android.com/kotlin/coroutines) 페이지를 살펴보세요.
+
+## 네비게이션
+
+앱 네비게이션의 변경은 종종 이벤트와 같은 방출로 인해 일어납니다. 예를 들어, `SignInViewModel`에서 로그인 작업을 수행한 후에 UI 상태 클래스는 `isSignedIn`의 값을 `true`로 설정되어야 합니다. 이러한 트리거는 [UI 상태를 사용(소비)]()에서 다룬 것과 같이 소비되어야 하지만, 소비 로직의 구현은 [Navigation component](https://developer.android.com/guide/navigation)에 의존해야 합니다.
+
+## 페이징
+
+[Paging library](https://developer.android.com/topic/libraries/architecture/paging/v3-overview)는 `PagingData`라는 타입으로 UI에서 소비됩니다. `PagingData`는 시간이 지남에 따라 바뀔 수 있는 데이터를 보여주고 표현한다는 점에서 불변 타입이 아니므로 불변 UI 상태로 표시되어선 안됩니다. 대신 독립적인 스트림으로 ViewModel에서 노출시켜야 합니다. 자세한 내용은 [Android Paging](https://developer.android.com/codelabs/android-paging)을 참고해보세요.
+
+## 애니메이션
+
+자연스럽고 부드러운 최상위 수준의 네비게이션 전환을 제공하려면, 애니메이션이 시작되기 전에 데이터를 불러고기 위해 잠시동안 화면을 대기 상태로 만들어야 합니다. Android View 프레임워크는 `postponeEnteTransition()`, `startPostponedEnterTransition()`으로 프래그먼트 목적지 간 전환에 지연을 시키는 기능을 제공합니다. 이런 API는 두 번째 화면(네트워크에서 가져온 사진)으로 전환하는 애니메이션을 시작하기 전에 화면의 UI 요소가 준비되었는지 확인하는 방법을 제공합니다. 자세한 내용은 [Android Motion sample](https://github.com/android/animation-samples/tree/main/Motion)을 참고해보세요.
+
+## 샘플
+
+|                                                                                             |                                                                                     |                                                                                           |
+| :-----------------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------: | :---------------------------------------------------------------------------------------: |
+| ![](https://raw.github.com/android/sunflower//main//screenshots/SunflowerM3Screenshots.png) | ![](https://raw.github.com/android/nowinandroid//main//docs/images/screenshots.png) |      ![](https://github.com/android/architecture-templates/raw/main/screenshots.png)      |
+|                                   Sunflower with Compose                                    |                                 Now in Android App                                  |                       Architecture starter template(single module)                        |
+| ![](https://raw.github.com/android/architecture-samples//main//screenshots/screenshots.png) |   ![](https://github.com/android/architecture-templates/raw/main/screenshots.png)   | ![](https://raw.github.com/android/compose-samples//main/Jetcaster//docs/screenshots.png) |
+|                                        Architecture                                         |                     Architecture starter template(multi-module)                     |                                     Jetcaster sample                                      |
