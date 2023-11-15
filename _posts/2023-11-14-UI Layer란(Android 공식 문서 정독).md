@@ -9,7 +9,7 @@ tags: [Android]
 
 ## UI layer
 
-[](https://developer.android.com/topic/architecture/ui-layer#compose_2)
+[UI layer 공식문서](https://developer.android.com/topic/architecture/ui-layer#compose_2)를 정리한 내용입니다.
 
 > UI : 앱의 데이터를 화면에 표시하고 사용자와 상호 작용하는 부분입니다, Data 계층으로 부터 변경되는 앱의 상태를 시각적으로 표현하는 역할
 
@@ -116,7 +116,7 @@ data class NewsItemUiState(
 
 현재 문서에서는 UI 상태 클래스의 이름을 화면의 기능 또는 데이터가 표현되는 화면의 일부를 기반으로 하여 짓습니다.  
 
-**functionality + UiState.kt**  
+`functionality + UiState.kt`
 
 - NewsUiState: 뉴스를 표시하는 화면의 상태
 - NewsItemUiState: 기사 목록내 각 아이템의 상태

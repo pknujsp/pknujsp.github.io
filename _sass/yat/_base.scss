@@ -150,13 +150,13 @@ blockquote {
   width: fit-content;
   padding: 16px 20px;
   position: relative;
-  background: #e3e3e3;
+  background: #e7e7e7;
   &::before, &::after {
     top: 0;
     bottom: 0;
     content: '';
     position: absolute;
-    background: #e3e3e3;
+    background: #e7e7e7;
     box-shadow: 0 2px rgba(0,0,0,.25);
   }
   &::before {
@@ -173,7 +173,7 @@ blockquote {
       top: 0;
       left: 12px;
       color: #2790ec;
-      content: '“';
+      content: '';
       font-size: 1.8em;
       position: absolute;
       text-shadow: -3px 0 #e3e3e3;
@@ -181,7 +181,7 @@ blockquote {
     &::after {
       right: 12px;
       color: #2790ec;
-      content: '”';
+      content: '';
       bottom: -20px;
       font-size: 1.8em;
       position: absolute;
@@ -195,13 +195,14 @@ blockquote {
  */
 pre,
 code {
-  @include relative-font-size(0.9375);
+  @include relative-font-size(0.95);
   color: $text-color;
 }
 
 *:not(pre) > code {
   padding: 3px 6px;
   border-radius: 3px;
+  font-weight: bold;
   background-color: #eee;
   margin: 0 5px;
 }
@@ -210,12 +211,12 @@ pre {
   overflow-x: auto;
   position: relative;
   background-color: #f0f0f0;
+  border-radius: 6px;
 
   > code {
     display: inline-block;
     padding: 20px!important;
     background-color: transparent;
-    border: 0;
   }
 
   table, pre {
