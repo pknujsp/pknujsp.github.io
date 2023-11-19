@@ -336,10 +336,10 @@ table {
  */
 @mixin center-image {
   height: 100%;
-  max-width: 100%;
+  max-width: 1000%;
   background-size: cover;
   background-position: center center;
-  overflow: auto;
+  overflow: hidden;
 }
 
 $bg: #fff;
