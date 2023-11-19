@@ -148,9 +148,10 @@ blockquote {
 
 blockquote {
   width: fit-content;
-  padding: 16px 20px;
+  padding: 14px 24px;
   position: relative;
-  background: #e7e7e7;
+  border-radius: 8px;
+  background: #ebebeb;
   &::before, &::after {
     top: 0;
     bottom: 0;
@@ -167,11 +168,11 @@ blockquote {
   }   
   p {
     margin: 0;
-    font-size: 1.1em;
+    font-size: 1.15em;
     color: $text-color;
     &::before {
       top: 0;
-      left: 12px;
+      left: 8px;
       color: #2790ec;
       content: '';
       font-size: 1.8em;
@@ -179,10 +180,10 @@ blockquote {
       text-shadow: -3px 0 #e3e3e3;
     }
     &::after {
-      right: 12px;
+      right: 8px;
       color: #2790ec;
       content: '';
-      bottom: -20px;
+      bottom: -16px;
       font-size: 1.8em;
       position: absolute;
       text-shadow: 3px 0 #e3e3e3;
@@ -201,21 +202,20 @@ code {
 
 *:not(pre) > code {
   padding: 3px 6px;
-  border-radius: 3px;
   font-weight: bold;
-  background-color: #eee;
-  margin: 0 5px;
+  background-color: #e9e9e9;
+  border-radius: 4px;
 }
 
 pre {
   overflow-x: auto;
   position: relative;
   background-color: #f0f0f0;
-  border-radius: 6px;
+  border-radius: 8px;
 
   > code {
     display: inline-block;
-    padding: 20px!important;
+    padding: 16px!important;
     background-color: transparent;
   }
 
@@ -348,9 +348,10 @@ $bg: #fff;
   display:inline-block;
   margin:1em;
   overflow:hidden;
+  
   blockquote {
     background-color:$bg;
-    border: solid 2px #757575;
+    border: solid 8px #757575;
     display: inline-block;
     margin: 0;
     padding: 1em;
