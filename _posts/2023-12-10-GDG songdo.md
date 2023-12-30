@@ -2,7 +2,7 @@
 layout: post
 title: GOG songdo
 subtitle: ss
-published: true
+published: false
 categories: [Conference]
 tags: [Conference]
 ---
