@@ -429,7 +429,6 @@ html {
     overflow-wrap: normal;
     word-wrap: normal;
     word-break: normal;
-    /*
 
     h2 {
       @include relative-font-size(2);
@@ -455,13 +454,6 @@ html {
       }
     }
 
-    hr {
-      height: 1px;
-      background-color: #ebebeb;
-      border: none;
-    }
-    */
-
     img, svg, iframe {
       margin-left: auto;
       margin-right: auto;
@@ -472,13 +464,17 @@ html {
     }
 
     h2, h3, h4, h5, h6 {
-      margin: 48px 0 16px;
+      margin: 60px 0 19px;
+    }
+
+    p, hr {
+      margin-bottom: 24px;
     }
 
     hr {
-      margin-bottom: 16px;
-      margin-left: 4px;
-      margin-right: 4px;
+      height: 1px;
+      background-color: #ebebeb;
+      border: none;
     }
   }
 
