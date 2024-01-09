@@ -26,6 +26,7 @@ Text를 화면에 보여줄 때, 값의 길이가 길어지면 위와 같이 내
   - `BoxWithConstraints`를 사용하면 화면상에 그려질 수 있는 크기를 알 수 있다.
 - `TextMeasurer`를 사용해 Text가 화면에서 실제로 보여지는 크기를 구하고, 폰트 크기를 바꿔준다.
 
+### 구현 1
 
 ```kotlin
 @Composable
@@ -76,7 +77,7 @@ fun AutoText(
 
 
 
-## 최종 구현 코드
+## 구현 2, 최종
 
 ```kotlin
 private const val MIN_AUTO_SIZING_TEXT_SIZE = 12
