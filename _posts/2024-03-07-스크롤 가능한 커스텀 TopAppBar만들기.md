@@ -7,6 +7,8 @@ categories: [Android]
 tags: [Android, Compose]
 ---
 
+## 내용이 심하게 부실해서 수정하고 있습니다. 
+
 ## 다음과 같이 스크롤 할 수 있는 TopAppBar를 만들어 보고자 합니다.
 
 ![](https://github.com/pknujsp/pknujsp/assets/48265129/19c9e7b8-1c58-4886-9291-dad3e2104703)
