@@ -172,14 +172,15 @@ blockquote {
 pre,
 code {
   @include relative-font-size(0.95);
-  color: $text-color;
+  color: $code-text-color;
 }
 
 *:not(pre) > code {
-  padding: 4px 6px;
-  font-weight: normal;
+  padding: 4px 4px;
+  font-weight: bold;
   background-color: #dcdcdc;
-  border-radius: 4px;
+  border-radius: 6px;
+  margin: 0px 2px 0px 2px;
 }
 
 pre {
