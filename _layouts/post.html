@@ -56,7 +56,7 @@ sidebar:
               | escape | truncatewords: 14 }}</a></span><span>
             <time class="dt-published datetime" datetime="{{ post.date | date_to_xmlschema }}" itemprop="datePublished">
               {%- assign date_format = site.yat.date_format | default: "%b %-d, %Y" -%}
-              <i class="fa fa-calendar"></i> {{ post.date | date: date_format }}
+              {{ post.date | date: date_format }}
             </time></span>
         </li>
         {%- endfor -%}
