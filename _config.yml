@@ -27,7 +27,7 @@
 title:              Jsp Notes
 email:              jesp0305@gmail.com
 description:        tech, study etc...
-author:             Jsp
+author:             Junsung Park
 
 # Copyright setting
 # You can use any html code, currently below placeholders are available:
@@ -127,8 +127,8 @@ night_mode: "manual"
 code_badge:
   enabled: "true"
   color: "#fff"
-  background_color: "#ff4e00"
-  text_transform: "capitalize"  # ("uppercase", "lowercase", "capitalize")
+  background_color: "#7800ff"
+  text_transform: "lowercase"  # ("uppercase", "lowercase", "capitalize")
 
 # If you want to link only specific pages in your header, uncomment
 # this and add the path to the pages in order as they should show up
