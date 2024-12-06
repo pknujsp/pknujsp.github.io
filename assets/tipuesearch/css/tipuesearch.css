@@ -12,19 +12,19 @@ http://www.tipue.com/search
 
 #tipue_search_input, #tipue_search_foot_boxes
 {
-     font: 300 14px/1  Nanum Gothic, sans-serif;
+     font: 300 14px/1  Pretendard, sans-serif;
 }
 #tipue_search_results_count, #tipue_search_warning, .tipue_search_content_url, .tipue_search_content_debug, .tipue_search_related_text
 {
-     font: 300 16px/1.7  Nanum Gothic, sans-serif;
+     font: 300 16px/1.7  Pretendard, sans-serif;
 }
 .tipue_search_content_title
 {
-     font: 400 26px/1.7  Nanum Gothic, sans-serif;
+     font: 400 26px/1.7  Pretendard, sans-serif;
 }
 .tipue_search_content_text, .tipue_search_related_title
 {
-     font: 400 15px/1.7  Nanum Gothic, sans-serif;
+     font: 400 15px/1.7  Pretendard, sans-serif;
 }
 .tipue_search_content_bold, .tipue_search_related_bold
 {
