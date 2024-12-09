@@ -57,11 +57,35 @@ main {
 /**
  * Images
  */
-img {
+ img {
   max-width: 100%;
   vertical-align: middle;
+  
+  // iOS 스타일 곡률 적용
+  @media screen and (min-width: 768px) {
+    border-radius: 12px;
+    -webkit-border-radius: 12px;
+  }
+  
+  @media screen and (max-width: 767px) {
+    border-radius: 8px;
+    -webkit-border-radius: 8px;
+  }
+
+  overflow: hidden;
 }
 
+// 큰 곡률이 필요한 경우
+.img-rounded-large {
+  border-radius: 24px;
+  -webkit-border-radius: 24px;
+}
+
+// 원형 이미지
+.img-circle {
+  border-radius: 50%;
+  -webkit-border-radius: 50%;
+}
 
 
 /**

@@ -43,15 +43,10 @@ author:             Junsung Park
 #
 copyright: "{currentYear} @ {author}"
 
-description: >- # this means to ignore newlines until "baseurl:"
-  Write an awesome description for your new site here. You can edit this
-  line in _config.yml. It will appear in your document head meta (for
-  Google search results) and in your feed.xml site description.
-
 baseurl: "" # the subpath of your site, e.g. /blog
 url:  "https://pknujsp.github.io/"
-favicon: "https://github.com/pknujsp/android-smartdeeplink/assets/48265129/a930a337-86e6-42fa-bf8d-7c5ab0c39224" # the favicon for your site
-white_favicon: "https://github.com/pknu-wap/2023_1_WAP_APP_TEAM_MEDI/assets/48265129/34c63918-3f5b-46ca-b4f4-49a4b1a5cc48" # the favicon for your site
+favicon: "https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592" # the favicon for your site
+white_favicon: "https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592" # the favicon for your site
 
 # Yat date format
 # refer to https://shopify.github.io/liquid/filters/date/ if you want to customize this
