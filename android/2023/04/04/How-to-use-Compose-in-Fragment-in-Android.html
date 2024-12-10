@@ -1,0 +1,1205 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>How to use Compose in XML layout in Android | Jsp Notes</title>
+<meta name="generator" content="Jekyll v4.3.4">
+<meta property="og:title" content="How to use Compose in XML layout in Android">
+<meta name="author" content="Junsung Park">
+<meta property="og:locale" content="ko">
+<meta name="description" content="View기반 화면(XML)에서 Compose를 사용하는 방법">
+<meta property="og:description" content="View기반 화면(XML)에서 Compose를 사용하는 방법">
+<link rel="canonical" href="https://pknujsp.github.io//jekyll-theme-yat/android/2023/04/04/How-to-use-Compose-in-Fragment-in-Android.html">
+<meta property="og:url" content="https://pknujsp.github.io//jekyll-theme-yat/android/2023/04/04/How-to-use-Compose-in-Fragment-in-Android.html">
+<meta property="og:site_name" content="Jsp Notes">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-04-04T00:00:00+09:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="How to use Compose in XML layout in Android">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junsung Park"},"dateModified":"2023-04-04T00:00:00+09:00","datePublished":"2023-04-04T00:00:00+09:00","description":"View기반 화면(XML)에서 Compose를 사용하는 방법","headline":"How to use Compose in XML layout in Android","mainEntityOfPage":{"@type":"WebPage","@id":"https://pknujsp.github.io//jekyll-theme-yat/android/2023/04/04/How-to-use-Compose-in-Fragment-in-Android.html"},"url":"https://pknujsp.github.io//jekyll-theme-yat/android/2023/04/04/How-to-use-Compose-in-Fragment-in-Android.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="icon" href="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script>
+
+  <!-- tipuesearch -->
+  <link rel="stylesheet" href="/assets/tipuesearch/css/tipuesearch.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_content.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_set.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch.min.js"></script><link type="application/atom+xml" rel="alternate" href="https://pknujsp.github.io//jekyll-theme-yat/feed.xml" title="Jsp Notes">
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LZC1TDTS26"></script>
+<script>
+  function initGoogleAnalytics() {
+    var doNotTrack = (window.doNotTrack === "1" || navigator.doNotTrack === "1" ||
+      navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1");
+    var enableDNT = "true" == "true";
+
+    if (!enableDNT || !doNotTrack) {
+      /*
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'G-LZC1TDTS26', 'auto');
+      ga('send', 'pageview');
+      */
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { window.dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-LZC1TDTS26');
+    }
+  }
+  window.addEventListener("load", initGoogleAnalytics);
+
+</script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/intellij-light.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/kotlin.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #7800ff;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: lowercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <img class="site-white_favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+</a></span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/about.html">About</a><a class="page-link" href="/jekyll-theme-yat/categories.html">Categories</a><a class="page-link" href="/jekyll-theme-yat/">Home</a><a class="page-link" href="/jekyll-theme-yat/posts.html">Posts</a><a class="page-link" href="/jekyll-theme-yat/tags.html">Tags</a><input id="tipue_search_input" type="search" placeholder="Search" aria-label="Search" title="Please enter at least 1 character" required>
+
+          <script>
+            document.getElementById("tipue_search_input").addEventListener("keydown", function (event) {
+              if (event.keyCode === 13) {
+                event.preventDefault();
+                window.location.href = "../search?q=" + this.value;
+              }
+            });
+          </script>
+<!--
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="en">
+        
+        <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+        to English
+        
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="ko">
+        
+        <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+        to Korean
+        
+      </a>
+    </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'ko',
+      autoDisplay: false,
+      layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+    }, 'google_translate_element');
+
+    // Links to cross-origin destinations are unsafe
+    var gll = document.getElementsByClassName('goog-logo-link')[0];
+    if (gll) {
+      gll.setAttribute('rel', 'noopener');
+    }
+
+    function restoreLang() {
+      var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+      if (!iframe) return;
+
+      var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+      var restore_el = innerDoc.getElementsByTagName("button");
+
+      for (var i = 0; i < restore_el.length; i++) {
+        if (restore_el[i].id.indexOf("restore") >= 0) {
+          restore_el[i].click();
+          var close_el = innerDoc.getElementsByClassName("goog-close-link");
+          close_el[0].click();
+          return;
+        }
+      }
+    }
+
+    function triggerHtmlEvent(element, eventName) {
+      var event;
+      if (document.createEvent) {
+        event = document.createEvent('HTMLEvents');
+        event.initEvent(eventName, true, true);
+        element.dispatchEvent(event);
+      } else {
+        event = document.createEventObject();
+        event.eventType = eventName;
+        element.fireEvent('on' + event.eventType, event);
+      }
+    }
+
+    var googleCombo = document.querySelector("select.goog-te-combo");
+    var langSelect = document.querySelector('.ct-language');
+    langSelect.addEventListener('click', function (event) {
+      if (!event.target) {
+        return;
+      }
+
+      var selected = document.querySelector('.ct-language .ct-language-selected');
+      if (selected) {
+        selected.classList.remove('ct-language-selected');
+      }
+
+      var target = event.target;
+      while (target && target !== langSelect) {
+        if (target.matches('.lang-select')) {
+          break;
+        }
+        target = target.parentElement;
+      }
+
+      if (target && target.matches('.lang-select')) {
+        var lang = target.getAttribute('data-lang');
+        if (googleCombo.value == lang) {
+          restoreLang();
+        } else if (lang == 'ko') {
+          var googleTranslateElement = document.getElementById('google_translate_element');
+          if (googleTranslateElement) {
+            googleTranslateElement.parentNode.removeChild(googleTranslateElement);
+            $('#google_translate_element').empty();
+          }
+        } else {
+          target.parentElement.classList.add('ct-language-selected');
+          googleCombo.value = lang;
+          triggerHtmlEvent(googleCombo, 'change');
+        }
+      }
+
+      event.preventDefault();
+    });
+  }
+</script>
+
+<script type="text/javascript"
+  src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script></span>-->
+          </div>
+
+          
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('manual' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = !(hours >= 2 && hours <=5);
+
+      if (nightShift) {
+        if (hours > 5) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(5);
+      } else {
+        toggleAt.setHours(2);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<div id="click-to-bottom" class="click-to-bottom">
+  <i class="fa fa-arrow-down"></i>
+</div>
+<script>
+  (function () {
+    const clickToBottom = document.getElementById('click-to-bottom');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToBottom.classList.add('show')
+      }else {
+        clickToBottom.classList.remove('show')
+      }
+    });
+    clickToBottom.addEventListener('click', () => {
+      window.smoothScrollTo(document.body.scrollHeight);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">How to use Compose in XML layout in Android</h1>
+  <h2 class="post-subtitle">Compose in XML</h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2023-04-04T00:00:00+09:00" itemprop="datePublished">2023-04-04, Tue
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 2 minutes</span>
+  </p>
+<div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#Android">#Android</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#Compose">#Compose</a>
+</div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h1 id="view기반-화면xml에서-compose를-사용하는-방법">View기반 화면(XML)에서 Compose를 사용하는 방법</h1>
+
+<blockquote>
+  <p>Compose는 상호 운용이 가능하여 뷰 기반(XML) 화면 에서도 사용할 수 있다.</p>
+</blockquote>
+
+<h3 id="1-compose화면-코드-제작">1. Compose화면 코드 제작</h3>
+
+<p>Compose를 사용하기 위해서는 Composable 함수를 만들어야 합니다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">MyComposable</span><span class="p">.</span><span class="n">kt</span>  
+  
+<span class="nd">@Composable</span>
+<span class="k">fun</span> <span class="nf">MyComposable</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nc">Scaffold</span><span class="p">(</span>
+        <span class="n">topBar</span> <span class="p">=</span> <span class="p">{</span>
+            <span class="nc">TopAppBar</span><span class="p">(</span>
+                <span class="n">title</span> <span class="p">=</span> <span class="p">{</span>  <span class="nc">Text</span><span class="p">(</span><span class="n">text</span> <span class="p">=</span> <span class="s">"Compose in Fragment"</span><span class="p">)</span>  <span class="p">}</span>
+            <span class="p">)</span>
+        <span class="p">},</span>
+        <span class="n">content</span> <span class="p">=</span> <span class="p">{</span>
+            <span class="nc">Column</span><span class="p">(</span>
+                <span class="n">modifier</span> <span class="p">=</span> <span class="nc">Modifier</span><span class="p">.</span><span class="nf">padding</span><span class="p">(</span><span class="mi">16</span> <span class="n">dp</span><span class="p">),</span>
+                <span class="n">verticalArrangement</span> <span class="p">=</span> <span class="nc">Arrangement</span><span class="p">.</span><span class="nc">Center</span><span class="p">,</span>
+                <span class="n">horizontalAlignment</span> <span class="p">=</span> <span class="nc">Alignment</span><span class="p">.</span><span class="nc">CenterHorizontally</span>
+            <span class="p">)</span> <span class="p">{</span>
+                <span class="nc">TextField</span><span class="p">(</span>
+                    <span class="n">value</span> <span class="p">=</span> <span class="s">"이름 입력"</span><span class="p">,</span>
+                    <span class="n">onValueChange</span> <span class="p">=</span> <span class="p">{</span> <span class="cm">/* 이름 입력 시 로직 */</span>  <span class="p">},</span>
+                    <span class="n">label</span> <span class="p">=</span> <span class="p">{</span> <span class="nc">Text</span><span class="p">(</span><span class="s">"이름"</span><span class="p">)</span> <span class="p">}</span>
+                <span class="p">)</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="2-view기반-화면-제작">2. View기반 화면 제작</h3>
+
+<h3 id="fragment를-사용하는-경우"><strong>Fragment를 사용하는 경우</strong></h3>
+<p>MyComposable을 사용할 Fragment를 제작합니다.</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span>
+<span class="nt">&lt;androidx.constraintlayout.widget.ConstraintLayout</span> <span class="na">xmlns:android=</span><span class="s">"http://schemas.android.com/apk/res/android"</span>
+    <span class="na">xmlns:tools=</span><span class="s">"http://schemas.android.com/tools"</span>
+    <span class="na">android:layout_width=</span><span class="s">"match_parent"</span>
+    <span class="na">android:layout_height=</span><span class="s">"match_parent"</span>
+	<span class="nt">&gt;</span>
+
+    // ComposeView를 추가합니다.
+    <span class="nt">&lt;androidx.compose.ui.platform.ComposeView</span>
+        <span class="na">android:id=</span><span class="s">"@+id/compose_view"</span>
+        <span class="na">android:layout_width=</span><span class="s">"match_parent"</span>
+        <span class="na">android:layout_height=</span><span class="s">"match_parent"</span>
+        <span class="nt">/&gt;</span>
+
+<span class="nt">&lt;/androidx.constraintlayout.widget.ConstraintLayout&gt;</span>  
+</code></pre></div></div>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">MyComposeFragment</span> <span class="p">:</span> <span class="nc">Fragment</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreateView</span><span class="p">(</span>
+        <span class="n">inflater</span><span class="p">:</span> <span class="nc">LayoutInflater</span><span class="p">,</span>
+        <span class="n">container</span><span class="p">:</span> <span class="nc">ViewGroup</span><span class="p">?,</span>
+        <span class="n">savedInstanceState</span><span class="p">:</span> <span class="nc">Bundle</span><span class="p">?</span>
+    <span class="p">):</span> <span class="nc">View</span> <span class="p">{</span>
+        <span class="n">binding</span> <span class="p">=</span> <span class="nc">FragmentMyComposeBinding</span><span class="p">.</span><span class="nf">inflate</span><span class="p">(</span><span class="n">inflater</span><span class="p">,</span> <span class="n">container</span><span class="p">,</span> <span class="k">false</span><span class="p">)</span>
+        <span class="n">binding</span><span class="p">.</span><span class="n">composeView</span><span class="p">.</span><span class="nf">apply</span> <span class="p">{</span>
+            <span class="nf">setViewCompositionStrategy</span><span class="p">(</span><span class="nc">ViewCompositionStrategy</span><span class="p">.</span><span class="nc">DisposeOnLifecycleDestroyed</span><span class="p">)</span>
+            <span class="nf">setContent</span> <span class="p">{</span>
+                <span class="c1">// 여기에 Composable을 넣습니다.</span>
+                <span class="nc">MyComposable</span><span class="p">()</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="k">return</span> <span class="n">binding</span><span class="p">.</span><span class="n">root</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="activity를-사용하는-경우"><strong>Activity를 사용하는 경우</strong></h3>
+<p>MyComposable을 사용할 Activity를 제작합니다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">MyComposeActivity</span> <span class="p">:</span> <span class="nc">AppCompatActivity</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">:</span> <span class="nc">Bundle</span><span class="p">?)</span> <span class="p">{</span>
+        <span class="k">super</span><span class="p">.</span><span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">)</span>
+        <span class="n">binding</span> <span class="p">=</span> <span class="nc">ActivityMyComposeBinding</span><span class="p">.</span><span class="nf">inflate</span><span class="p">(</span><span class="n">layoutInflater</span><span class="p">)</span>
+        <span class="n">binding</span><span class="p">.</span><span class="n">composeView</span><span class="p">.</span><span class="nf">apply</span> <span class="p">{</span>
+            <span class="nf">setViewCompositionStrategy</span><span class="p">(</span><span class="nc">ViewCompositionStrategy</span><span class="p">.</span><span class="nc">DisposeOnLifecycleDestroyed</span><span class="p">)</span>
+            <span class="nf">setContent</span> <span class="p">{</span>
+                <span class="c1">// 여기에 Composable을 넣습니다.</span>
+                <span class="nc">MyComposable</span><span class="p">()</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>Activity class</strong> 를 제작할 때, 보통 <strong>ComponentActivity</strong> 또는 <strong>AppCompatActivity를</strong> 상속받아 사용하는데, 
+<strong>Android</strong> 하위 버전 호환 없이, 최신 버전만 지원하고자 하거나, <strong>Compose</strong> 만으로 <strong>App</strong> 을 제작하려고 하면 <strong>ComponentActivity</strong> 를 상속받아 사용하면 됩니다.</p>
+
+<p><strong>보통은 AppCompatActivity를 사용하면 됩니다.</strong></p>
+
+<p><strong>setContent에 보여줄 화면 함수를 넣어주면 됩니다.</strong></p>
+
+<h3 id="화면이-나오고-compose를-사용할-수-있습니다">화면이 나오고, Compose를 사용할 수 있습니다.</h3>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/android/2023/04/04/Activity-%EC%95%8C%EC%95%84%EB%B3%B4%EA%B8%B0.html" title="Activity 알아보기">Activity 알아보기</a><a class="next" href="/jekyll-theme-yat/android/2023/04/06/StateFlow-vs-SharedFlow.html" title="StateFlow vs SharedFlow">StateFlow vs SharedFlow</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li>
+<span><a class="post-link" href="/jekyll-theme-yat/compose/2023/05/09/Android-Compose-%EC%B2%AB-%EB%8F%84%EC%9E%85-%ED%9B%84%EA%B8%B0.html" title="StateFlow vs SharedFlow">Android Compose 첫 도입 후기</a></span><span>
+            <time class="dt-published datetime" datetime="2023-05-09T00:00:00+09:00" itemprop="datePublished">2023-05-09, Tue
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/compiler/2023/04/23/Compiler-Context-free-analysis.html" title="StateFlow vs SharedFlow">Compiler Context-free analysis</a></span><span>
+            <time class="dt-published datetime" datetime="2023-04-23T00:00:00+09:00" itemprop="datePublished">2023-04-23, Sun
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/jvm/2023/10/08/JVM(Java-Virtual-Machine)%EC%9D%B4%EB%9E%80.html" title="StateFlow vs SharedFlow">JVM (Java Virtual Machine)이란?</a></span><span>
+            <time class="dt-published datetime" datetime="2023-10-08T00:00:00+09:00" itemprop="datePublished">2023-10-08, Sun
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/android/2023/07/22/Android-%EC%8B%9C%EC%8A%A4%ED%85%9C%EB%B0%94-%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83-%EB%B3%80%EA%B2%BD%ED%95%98%EA%B8%B0.html" title="StateFlow vs SharedFlow">Android 시스템 바 레이아웃 변경하기</a></span><span>
+            <time class="dt-published datetime" datetime="2023-07-22T00:00:00+09:00" itemprop="datePublished">2023-07-22, Sat
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/kotlin/2023/09/02/Kotlin-1.9,-2.0-%EB%AF%B8%EB%A6%AC%EB%B3%B4%EA%B8%B0.html" title="StateFlow vs SharedFlow">Kotlin 1.9, 2.0 미리보기</a></span><span>
+            <time class="dt-published datetime" datetime="2023-09-02T00:00:00+09:00" itemprop="datePublished">2023-09-02, Sat
+            </time></span>
+        </li>
+</ul>
+    </div>
+<div class="post-comments">
+<div id="utterances-placeholder"></div>
+<script>
+
+const utterancesThemeFromDataTheme = () => {
+    const dataTheme = document.documentElement.getAttribute('data-theme');
+    return `github-${dataTheme}`;
+  };
+
+  const setUtterancesTheme = () => {
+    const iframe = document.querySelector('.utterances-frame');
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: utterancesThemeFromDataTheme()
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+    }
+  }
+
+  // dynamic change
+  const observer = new MutationObserver((mutationsList, observer) => {
+    for (let mutation of mutationsList) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        setUtterancesTheme();
+      }
+    }
+  });
+  observer.observe(document.documentElement, { attributes: true, childList: false, subtree: false });
+
+  let utterancesScript = document.createElement('script');
+  utterancesScript.async = true;
+  utterancesScript.src = 'https://utteranc.es/client.js';
+  utterancesScript.crossOrigin = 'anonymous';
+  utterancesScript.setAttribute('issue-term', 'pathname');
+  utterancesScript.setAttribute('label', 'comments');
+  utterancesScript.setAttribute('repo', 'pknujsp/Blogcomments');
+  utterancesScript.setAttribute('theme', utterancesThemeFromDataTheme());
+
+  const placeholder = document.getElementById('utterances-placeholder');
+  placeholder.parentNode.replaceChild(utterancesScript, placeholder);
+</script>
+</div></section>
+</div>
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">Contents</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">· ' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>2024 @ Junsung Park</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

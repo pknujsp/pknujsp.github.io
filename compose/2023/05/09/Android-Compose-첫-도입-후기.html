@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Android Compose 첫 도입 후기 | Jsp Notes</title>
+<meta name="generator" content="Jekyll v4.3.4">
+<meta property="og:title" content="Android Compose 첫 도입 후기">
+<meta name="author" content="Junsung Park">
+<meta property="og:locale" content="ko">
+<meta name="description" content="tech, study etc…">
+<meta property="og:description" content="tech, study etc…">
+<link rel="canonical" href="https://pknujsp.github.io//jekyll-theme-yat/compose/2023/05/09/Android-Compose-%EC%B2%AB-%EB%8F%84%EC%9E%85-%ED%9B%84%EA%B8%B0.html">
+<meta property="og:url" content="https://pknujsp.github.io//jekyll-theme-yat/compose/2023/05/09/Android-Compose-%EC%B2%AB-%EB%8F%84%EC%9E%85-%ED%9B%84%EA%B8%B0.html">
+<meta property="og:site_name" content="Jsp Notes">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-05-09T00:00:00+09:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Android Compose 첫 도입 후기">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junsung Park"},"dateModified":"2023-05-09T00:00:00+09:00","datePublished":"2023-05-09T00:00:00+09:00","description":"tech, study etc…","headline":"Android Compose 첫 도입 후기","mainEntityOfPage":{"@type":"WebPage","@id":"https://pknujsp.github.io//jekyll-theme-yat/compose/2023/05/09/Android-Compose-%EC%B2%AB-%EB%8F%84%EC%9E%85-%ED%9B%84%EA%B8%B0.html"},"url":"https://pknujsp.github.io//jekyll-theme-yat/compose/2023/05/09/Android-Compose-%EC%B2%AB-%EB%8F%84%EC%9E%85-%ED%9B%84%EA%B8%B0.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="icon" href="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script>
+
+  <!-- tipuesearch -->
+  <link rel="stylesheet" href="/assets/tipuesearch/css/tipuesearch.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_content.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_set.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch.min.js"></script><link type="application/atom+xml" rel="alternate" href="https://pknujsp.github.io//jekyll-theme-yat/feed.xml" title="Jsp Notes">
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LZC1TDTS26"></script>
+<script>
+  function initGoogleAnalytics() {
+    var doNotTrack = (window.doNotTrack === "1" || navigator.doNotTrack === "1" ||
+      navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1");
+    var enableDNT = "true" == "true";
+
+    if (!enableDNT || !doNotTrack) {
+      /*
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'G-LZC1TDTS26', 'auto');
+      ga('send', 'pageview');
+      */
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { window.dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-LZC1TDTS26');
+    }
+  }
+  window.addEventListener("load", initGoogleAnalytics);
+
+</script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/intellij-light.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/kotlin.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #7800ff;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: lowercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <img class="site-white_favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+</a></span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/about.html">About</a><a class="page-link" href="/jekyll-theme-yat/categories.html">Categories</a><a class="page-link" href="/jekyll-theme-yat/">Home</a><a class="page-link" href="/jekyll-theme-yat/posts.html">Posts</a><a class="page-link" href="/jekyll-theme-yat/tags.html">Tags</a><input id="tipue_search_input" type="search" placeholder="Search" aria-label="Search" title="Please enter at least 1 character" required>
+
+          <script>
+            document.getElementById("tipue_search_input").addEventListener("keydown", function (event) {
+              if (event.keyCode === 13) {
+                event.preventDefault();
+                window.location.href = "../search?q=" + this.value;
+              }
+            });
+          </script>
+<!--
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="en">
+        
+        <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+        to English
+        
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="ko">
+        
+        <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+        to Korean
+        
+      </a>
+    </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'ko',
+      autoDisplay: false,
+      layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+    }, 'google_translate_element');
+
+    // Links to cross-origin destinations are unsafe
+    var gll = document.getElementsByClassName('goog-logo-link')[0];
+    if (gll) {
+      gll.setAttribute('rel', 'noopener');
+    }
+
+    function restoreLang() {
+      var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+      if (!iframe) return;
+
+      var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+      var restore_el = innerDoc.getElementsByTagName("button");
+
+      for (var i = 0; i < restore_el.length; i++) {
+        if (restore_el[i].id.indexOf("restore") >= 0) {
+          restore_el[i].click();
+          var close_el = innerDoc.getElementsByClassName("goog-close-link");
+          close_el[0].click();
+          return;
+        }
+      }
+    }
+
+    function triggerHtmlEvent(element, eventName) {
+      var event;
+      if (document.createEvent) {
+        event = document.createEvent('HTMLEvents');
+        event.initEvent(eventName, true, true);
+        element.dispatchEvent(event);
+      } else {
+        event = document.createEventObject();
+        event.eventType = eventName;
+        element.fireEvent('on' + event.eventType, event);
+      }
+    }
+
+    var googleCombo = document.querySelector("select.goog-te-combo");
+    var langSelect = document.querySelector('.ct-language');
+    langSelect.addEventListener('click', function (event) {
+      if (!event.target) {
+        return;
+      }
+
+      var selected = document.querySelector('.ct-language .ct-language-selected');
+      if (selected) {
+        selected.classList.remove('ct-language-selected');
+      }
+
+      var target = event.target;
+      while (target && target !== langSelect) {
+        if (target.matches('.lang-select')) {
+          break;
+        }
+        target = target.parentElement;
+      }
+
+      if (target && target.matches('.lang-select')) {
+        var lang = target.getAttribute('data-lang');
+        if (googleCombo.value == lang) {
+          restoreLang();
+        } else if (lang == 'ko') {
+          var googleTranslateElement = document.getElementById('google_translate_element');
+          if (googleTranslateElement) {
+            googleTranslateElement.parentNode.removeChild(googleTranslateElement);
+            $('#google_translate_element').empty();
+          }
+        } else {
+          target.parentElement.classList.add('ct-language-selected');
+          googleCombo.value = lang;
+          triggerHtmlEvent(googleCombo, 'change');
+        }
+      }
+
+      event.preventDefault();
+    });
+  }
+</script>
+
+<script type="text/javascript"
+  src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script></span>-->
+          </div>
+
+          
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('manual' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = !(hours >= 2 && hours <=5);
+
+      if (nightShift) {
+        if (hours > 5) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(5);
+      } else {
+        toggleAt.setHours(2);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<div id="click-to-bottom" class="click-to-bottom">
+  <i class="fa fa-arrow-down"></i>
+</div>
+<script>
+  (function () {
+    const clickToBottom = document.getElementById('click-to-bottom');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToBottom.classList.add('show')
+      }else {
+        clickToBottom.classList.remove('show')
+      }
+    });
+    clickToBottom.addEventListener('click', () => {
+      window.smoothScrollTo(document.body.scrollHeight);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">Android Compose 첫 도입 후기</h1>
+  <h2 class="post-subtitle">View 만 사용하다가 Compose 첫 사용</h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2023-05-09T00:00:00+09:00" itemprop="datePublished">2023-05-09, Tue
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 12 minutes</span>
+  </p>
+<div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Android">#Android</a></div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <p><img src="https://github.com/pknujsp/Blogcomments/assets/48265129/60052a35-db1e-4404-b7c3-615d6d1eadd1" height="30%" width="auto"></p>
+
+<h3 id="먼저-코드를-보면-전체적인-구조가-기존-view와는-상당히-다른-것을-알-수-있습니다">먼저, 코드를 보면 전체적인 구조가 기존 View와는 상당히 다른 것을 알 수 있습니다.</h3>
+<hr>
+
+<h3 id="대한민국-식약처가-제약사에-대해-회수폐기와-행정-처분을-내린-목록을-표시하는-화면입니다">대한민국 식약처가 제약사에 대해 회수/폐기와 행정 처분을 내린 목록을 표시하는 화면입니다.</h3>
+
+<p><strong>예제 코드 클래스 구성</strong></p>
+<ul>
+  <li>NewsFragment
+    <ul>
+      <li>뉴스 화면을 표시할 메인 Fragment</li>
+    </ul>
+  </li>
+  <li>NewsScreen
+    <ul>
+      <li>위 Fragment에 나타나는 Compose 기반 뉴스 화면</li>
+    </ul>
+  </li>
+  <li>RecallSuspensionScreen
+    <ul>
+      <li>회수 폐기 목록 화면</li>
+    </ul>
+  </li>
+  <li>RecallSuspensionViewModel
+    <ul>
+      <li>위 화면에서 쓰이는 ViewModel</li>
+    </ul>
+  </li>
+</ul>
+
+<p>View위에서도 Compose를 사용할 수 있습니다!</p>
+
+<p><a href="https://pknujsp.github.io/android/2023/04/04/How-to-use-Compose-in-Fragment-in-Android.html">How to use Compose in XML layout in Android</a></p>
+
+<h3 id="newsscreen">NewsScreen</h3>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+<span class="cm">/**
+ * 뉴스 타입
+ */</span>
+<span class="k">enum</span> <span class="kd">class</span> <span class="nc">ChipType</span> <span class="p">{</span>
+    <span class="nc">RECALLS_SUSPENSION</span><span class="p">,</span> <span class="nc">ADMIN_ACTION</span>
+<span class="p">}</span>
+
+<span class="cm">/**
+ * 뉴스 화면
+ */</span>
+<span class="nd">@Preview</span>
+<span class="nd">@Composable</span>
+<span class="k">fun</span> <span class="nf">NewsScreen</span><span class="p">()</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="py">selectedChip</span> <span class="k">by</span> <span class="nf">remember</span> <span class="p">{</span> <span class="nf">mutableStateOf</span><span class="p">(</span><span class="nc">ChipType</span><span class="p">.</span><span class="nc">RECALLS_SUSPENSION</span><span class="p">)</span> <span class="p">}</span>
+
+    <span class="nc">Column</span> <span class="p">{</span>
+        <span class="nc">Text</span><span class="p">(</span>
+            <span class="n">text</span> <span class="p">=</span> <span class="nf">stringResource</span><span class="p">(</span><span class="n">id</span> <span class="p">=</span> <span class="n">com</span><span class="p">.</span><span class="n">android</span><span class="p">.</span><span class="n">mediproject</span><span class="p">.</span><span class="n">core</span><span class="p">.</span><span class="n">ui</span><span class="p">.</span><span class="nc">R</span><span class="p">.</span><span class="n">string</span><span class="p">.</span><span class="n">news</span><span class="p">),</span>
+            <span class="n">style</span> <span class="p">=</span> <span class="nc">MaterialTheme</span><span class="p">.</span><span class="n">typography</span><span class="p">.</span><span class="n">headlineMedium</span><span class="p">,</span>
+            <span class="n">modifier</span> <span class="p">=</span> <span class="nc">Modifier</span><span class="p">.</span><span class="nf">padding</span><span class="p">(</span><span class="n">top</span> <span class="p">=</span> <span class="mi">16</span><span class="p">.</span><span class="n">dp</span><span class="p">,</span> <span class="n">start</span> <span class="p">=</span> <span class="mi">24</span><span class="p">.</span><span class="n">dp</span><span class="p">,</span> <span class="n">end</span> <span class="p">=</span> <span class="mi">24</span><span class="p">.</span><span class="n">dp</span><span class="p">)</span>
+        <span class="p">)</span>
+
+        <span class="nc">ChipGroup</span><span class="p">(</span><span class="n">selectedChip</span><span class="p">,</span> <span class="n">onChipSelected</span> <span class="p">=</span> <span class="p">{</span> <span class="n">chip</span> <span class="p">-&gt;</span>
+            <span class="n">selectedChip</span> <span class="p">=</span> <span class="n">chip</span>
+        <span class="p">})</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">selectedChip</span> <span class="p">==</span> <span class="nc">ChipType</span><span class="p">.</span><span class="nc">RECALLS_SUSPENSION</span><span class="p">)</span> <span class="nc">RecallDisposalScreen</span><span class="p">()</span>
+        <span class="k">else</span> <span class="nc">Text</span><span class="p">(</span><span class="n">text</span> <span class="p">=</span> <span class="s">"AdminAction"</span><span class="p">)</span>
+
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cm">/**
+ * 뉴스 타입 선택
+ *
+ * @param selectedChip 선택된 뉴스 타입
+ * @param onChipSelected 뉴스 타입 선택 시 호출되는 콜백
+ */</span>
+<span class="nd">@Composable</span>
+<span class="k">fun</span> <span class="nf">ChipGroup</span><span class="p">(</span><span class="n">selectedChip</span><span class="p">:</span> <span class="nc">ChipType</span><span class="p">,</span> <span class="n">onChipSelected</span><span class="p">:</span> <span class="p">(</span><span class="nc">ChipType</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nc">Row</span><span class="p">(</span>
+        <span class="n">verticalAlignment</span> <span class="p">=</span> <span class="nc">Alignment</span><span class="p">.</span><span class="nc">CenterVertically</span><span class="p">,</span> <span class="n">modifier</span> <span class="p">=</span> <span class="nc">Modifier</span><span class="p">.</span><span class="nf">padding</span><span class="p">(</span><span class="n">top</span> <span class="p">=</span> <span class="mi">16</span><span class="p">.</span><span class="n">dp</span><span class="p">,</span> <span class="n">bottom</span> <span class="p">=</span> <span class="mi">8</span><span class="p">.</span><span class="n">dp</span><span class="p">,</span> <span class="n">start</span> <span class="p">=</span> <span class="mi">24</span><span class="p">.</span><span class="n">dp</span><span class="p">,</span> <span class="n">end</span> <span class="p">=</span> <span class="mi">24</span><span class="p">.</span><span class="n">dp</span><span class="p">)</span>
+    <span class="p">)</span> <span class="p">{</span>
+        <span class="nc">CustomFilterChip</span><span class="p">(</span>
+            <span class="n">title</span> <span class="p">=</span> <span class="nf">stringResource</span><span class="p">(</span><span class="n">id</span> <span class="p">=</span> <span class="nc">R</span><span class="p">.</span><span class="n">string</span><span class="p">.</span><span class="n">recallSuspension</span><span class="p">),</span>
+            <span class="n">isSelected</span> <span class="p">=</span> <span class="n">selectedChip</span> <span class="p">==</span> <span class="nc">ChipType</span><span class="p">.</span><span class="nc">RECALLS_SUSPENSION</span><span class="p">,</span>
+            <span class="n">type</span> <span class="p">=</span> <span class="nc">ChipType</span><span class="p">.</span><span class="nc">RECALLS_SUSPENSION</span>
+        <span class="p">)</span> <span class="p">{</span>
+            <span class="nf">onChipSelected</span><span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="n">selectedChip</span> <span class="p">==</span> <span class="nc">ChipType</span><span class="p">.</span><span class="nc">RECALLS_SUSPENSION</span><span class="p">)</span> <span class="nc">ChipType</span><span class="p">.</span><span class="nc">RECALLS_SUSPENSION</span> <span class="k">else</span> <span class="nc">ChipType</span><span class="p">.</span><span class="nc">ADMIN_ACTION</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="nc">Spacer</span><span class="p">(</span><span class="nc">Modifier</span><span class="p">.</span><span class="nf">width</span><span class="p">(</span><span class="mi">8</span><span class="p">.</span><span class="n">dp</span><span class="p">))</span>
+        <span class="nc">CustomFilterChip</span><span class="p">(</span>
+            <span class="n">title</span> <span class="p">=</span> <span class="nf">stringResource</span><span class="p">(</span><span class="n">id</span> <span class="p">=</span> <span class="nc">R</span><span class="p">.</span><span class="n">string</span><span class="p">.</span><span class="n">adminAction</span><span class="p">),</span>
+            <span class="n">isSelected</span> <span class="p">=</span> <span class="n">selectedChip</span> <span class="p">==</span> <span class="nc">ChipType</span><span class="p">.</span><span class="nc">ADMIN_ACTION</span><span class="p">,</span>
+            <span class="n">type</span> <span class="p">=</span> <span class="nc">ChipType</span><span class="p">.</span><span class="nc">ADMIN_ACTION</span>
+        <span class="p">)</span> <span class="p">{</span>
+            <span class="nf">onChipSelected</span><span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="n">selectedChip</span> <span class="p">==</span> <span class="nc">ChipType</span><span class="p">.</span><span class="nc">RECALLS_SUSPENSION</span><span class="p">)</span> <span class="nc">ChipType</span><span class="p">.</span><span class="nc">RECALLS_SUSPENSION</span> <span class="k">else</span> <span class="nc">ChipType</span><span class="p">.</span><span class="nc">ADMIN_ACTION</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cm">/**
+ * 뉴스 타입 Chip
+ */</span>
+<span class="nd">@OptIn</span><span class="p">(</span><span class="nc">ExperimentalMaterial3Api</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
+<span class="nd">@Composable</span>
+<span class="k">fun</span> <span class="nf">CustomFilterChip</span><span class="p">(</span><span class="n">type</span><span class="p">:</span> <span class="nc">ChipType</span><span class="p">,</span> <span class="n">title</span><span class="p">:</span> <span class="nc">String</span><span class="p">,</span> <span class="n">isSelected</span><span class="p">:</span> <span class="nc">Boolean</span><span class="p">,</span> <span class="n">onClick</span><span class="p">:</span> <span class="p">(</span><span class="nc">ChipType</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nc">FilterChip</span><span class="p">(</span>
+        <span class="n">selected</span> <span class="p">=</span> <span class="n">isSelected</span><span class="p">,</span>
+        <span class="n">onClick</span> <span class="p">=</span> <span class="p">{</span> <span class="n">onClick</span><span class="p">.</span><span class="nf">invoke</span><span class="p">(</span><span class="n">type</span><span class="p">)</span> <span class="p">},</span>
+        <span class="n">label</span> <span class="p">=</span> <span class="p">{</span> <span class="nc">Text</span><span class="p">(</span><span class="n">title</span><span class="p">,</span> <span class="n">fontSize</span> <span class="p">=</span> <span class="mi">13</span><span class="p">.</span><span class="n">sp</span><span class="p">)</span> <span class="p">},</span>
+        <span class="n">shape</span> <span class="p">=</span> <span class="nc">RoundedCornerShape</span><span class="p">(</span><span class="mi">36</span><span class="p">.</span><span class="n">dp</span><span class="p">),</span>
+        <span class="n">colors</span> <span class="p">=</span> <span class="nc">FilterChipDefaults</span><span class="p">.</span><span class="nf">filterChipColors</span><span class="p">(</span>
+            <span class="n">selectedContainerColor</span> <span class="p">=</span> <span class="nc">Color</span><span class="p">.</span><span class="nc">Blue</span><span class="p">,</span>
+            <span class="n">selectedLabelColor</span> <span class="p">=</span> <span class="nc">Color</span><span class="p">.</span><span class="nc">White</span><span class="p">,</span>
+            <span class="n">disabledContainerColor</span> <span class="p">=</span> <span class="nc">Color</span><span class="p">.</span><span class="nc">White</span><span class="p">,</span>
+            <span class="n">disabledLabelColor</span> <span class="p">=</span> <span class="nc">Color</span><span class="p">.</span><span class="nc">Blue</span>
+        <span class="p">),</span>
+    <span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="newsfragment">NewsFragment</h3>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">NewsFragment</span><span class="p">.</span><span class="n">kt</span>
+
+<span class="nd">@AndroidEntryPoint</span>
+<span class="kd">class</span> <span class="nc">NewsFragment</span> <span class="p">:</span> <span class="nc">BaseFragment</span><span class="p">&lt;</span><span class="nc">FragmentNewsBinding</span><span class="p">,</span> <span class="nc">NewsViewModel</span><span class="p">&gt;(</span><span class="nc">FragmentNewsBinding</span><span class="o">::</span><span class="n">inflate</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="k">override</span> <span class="kd">val</span> <span class="py">fragmentViewModel</span><span class="p">:</span> <span class="nc">NewsViewModel</span> <span class="k">by</span> <span class="nf">viewModels</span><span class="p">()</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onViewCreated</span><span class="p">(</span><span class="n">view</span><span class="p">:</span> <span class="nc">View</span><span class="p">,</span> <span class="n">savedInstanceState</span><span class="p">:</span> <span class="nc">Bundle</span><span class="p">?)</span> <span class="p">{</span>
+        <span class="k">super</span><span class="p">.</span><span class="nf">onViewCreated</span><span class="p">(</span><span class="n">view</span><span class="p">,</span> <span class="n">savedInstanceState</span><span class="p">)</span>
+        <span class="n">binding</span><span class="p">.</span><span class="nf">apply</span> <span class="p">{</span>
+            <span class="n">lifecycleOwner</span> <span class="p">=</span> <span class="n">viewLifecycleOwner</span>
+            <span class="n">composeView</span><span class="p">.</span><span class="nf">setContent</span> <span class="p">{</span>
+                <span class="nc">NewsScreen</span><span class="p">()</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="recallsuspensionscreen">RecallSuspensionScreen</h3>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="err">회수</span> <span class="err">폐기</span> <span class="n">chip</span><span class="err">클릭</span> <span class="err">시</span> <span class="err">나오는</span> <span class="err">화면</span>
+<span class="nc">RecallSuspensionScreen</span><span class="p">.</span><span class="n">kt</span>
+
+<span class="cm">/**
+ * 회수 폐기 목록 표시
+ */</span>
+<span class="nd">@Preview</span>
+<span class="nd">@Composable</span>
+<span class="k">fun</span> <span class="nf">RecallDisposalScreen</span><span class="p">(</span><span class="n">viewModel</span><span class="p">:</span> <span class="nc">RecallSuspensionViewModel</span> <span class="p">=</span> <span class="nf">hiltViewModel</span><span class="p">())</span> <span class="p">{</span>
+
+    <span class="kd">val</span> <span class="py">list</span> <span class="p">=</span> <span class="n">viewModel</span><span class="p">.</span><span class="n">recallDisposalList</span><span class="p">.</span><span class="nf">collectAsLazyPagingItems</span><span class="p">()</span>
+
+    <span class="nc">LazyColumn</span><span class="p">(</span><span class="n">modifier</span> <span class="p">=</span> <span class="nc">Modifier</span><span class="p">.</span><span class="nf">fillMaxWidth</span><span class="p">())</span> <span class="p">{</span>
+        <span class="nf">items</span><span class="p">(</span>
+            <span class="n">count</span> <span class="p">=</span> <span class="n">list</span><span class="p">.</span><span class="n">itemCount</span><span class="p">,</span> <span class="n">key</span> <span class="p">=</span> <span class="n">list</span><span class="p">.</span><span class="nf">itemKey</span><span class="p">(),</span> <span class="n">contentType</span> <span class="p">=</span> <span class="n">list</span><span class="p">.</span><span class="nf">itemContentType</span><span class="p">(</span>
+            <span class="p">)</span>
+        <span class="p">)</span> <span class="p">{</span> <span class="n">index</span> <span class="p">-&gt;</span>
+            <span class="n">list</span><span class="p">[</span><span class="n">index</span><span class="p">]</span><span class="o">?.</span><span class="nf">let</span> <span class="p">{</span> <span class="nc">ListItem</span><span class="p">(</span><span class="n">it</span><span class="p">)</span> <span class="p">}</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="p">&lt;</span> <span class="n">list</span><span class="p">.</span><span class="n">itemCount</span> <span class="p">-</span> <span class="mi">1</span><span class="p">)</span> <span class="nc">Divider</span><span class="p">(</span><span class="n">modifier</span> <span class="p">=</span> <span class="nc">Modifier</span><span class="p">.</span><span class="nf">padding</span><span class="p">(</span><span class="n">horizontal</span> <span class="p">=</span> <span class="mi">24</span><span class="p">.</span><span class="n">dp</span><span class="p">))</span>
+        <span class="p">}</span>
+
+        <span class="k">when</span> <span class="p">(</span><span class="n">list</span><span class="p">.</span><span class="n">loadState</span><span class="p">.</span><span class="n">append</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">is</span> <span class="nc">LoadState</span><span class="p">.</span><span class="nc">NotLoading</span> <span class="p">-&gt;</span> <span class="nc">Unit</span>
+            <span class="k">is</span> <span class="nc">LoadState</span><span class="p">.</span><span class="nc">Loading</span> <span class="p">-&gt;</span> <span class="p">{</span>
+                <span class="nf">item</span> <span class="p">{</span>
+                    <span class="nc">Column</span><span class="p">(</span><span class="n">horizontalAlignment</span> <span class="p">=</span> <span class="nc">Alignment</span><span class="p">.</span><span class="nc">CenterHorizontally</span><span class="p">)</span> <span class="p">{</span>
+                        <span class="nc">CircularProgressIndicator</span><span class="p">()</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+
+            <span class="k">is</span> <span class="nc">LoadState</span><span class="p">.</span><span class="nc">Error</span> <span class="p">-&gt;</span> <span class="nc">TODO</span><span class="p">()</span>
+            <span class="k">else</span> <span class="p">-&gt;</span> <span class="nc">TODO</span><span class="p">()</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="cm">/**
+ * 회수 폐기 목록 아이템
+ *
+ * @param recallSuspensionListItemDto 회수 폐기 목록 아이템
+ */</span>
+<span class="nd">@OptIn</span><span class="p">(</span><span class="nc">ExperimentalMaterial3Api</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
+<span class="nd">@Composable</span>
+<span class="k">fun</span> <span class="nf">ListItem</span><span class="p">(</span><span class="n">recallSuspensionListItemDto</span><span class="p">:</span> <span class="nc">RecallSuspensionListItemDto</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nc">Surface</span><span class="p">(</span>
+        <span class="n">modifier</span> <span class="p">=</span> <span class="nc">Modifier</span>
+            <span class="p">.</span><span class="nf">fillMaxWidth</span><span class="p">()</span>
+            <span class="p">.</span><span class="nf">padding</span><span class="p">(</span><span class="n">horizontal</span> <span class="p">=</span> <span class="mi">24</span><span class="p">.</span><span class="n">dp</span><span class="p">,</span> <span class="n">vertical</span> <span class="p">=</span> <span class="mi">9</span><span class="p">.</span><span class="n">dp</span><span class="p">),</span>
+        <span class="n">shape</span> <span class="p">=</span> <span class="nc">RectangleShape</span><span class="p">,</span>
+        <span class="n">onClick</span> <span class="p">=</span> <span class="p">{</span>
+            <span class="n">recallSuspensionListItemDto</span><span class="p">.</span><span class="n">onClick</span><span class="o">?.</span><span class="nf">invoke</span><span class="p">(</span><span class="n">recallSuspensionListItemDto</span><span class="p">)</span>
+        <span class="p">},</span>
+    <span class="p">)</span> <span class="p">{</span>
+        <span class="nc">Column</span><span class="p">(</span>
+            <span class="n">modifier</span> <span class="p">=</span> <span class="nc">Modifier</span><span class="p">.</span><span class="nf">fillMaxWidth</span><span class="p">()</span>
+        <span class="p">)</span> <span class="p">{</span>
+            <span class="nc">Row</span><span class="p">(</span>
+                <span class="n">horizontalArrangement</span> <span class="p">=</span> <span class="nc">Arrangement</span><span class="p">.</span><span class="nf">spacedBy</span><span class="p">(</span><span class="mi">8</span><span class="p">.</span><span class="n">dp</span><span class="p">),</span>
+                <span class="n">verticalAlignment</span> <span class="p">=</span> <span class="nc">CenterVertically</span><span class="p">,</span>
+            <span class="p">)</span> <span class="p">{</span>
+                <span class="nc">Text</span><span class="p">(</span>
+                    <span class="n">text</span> <span class="p">=</span> <span class="n">recallSuspensionListItemDto</span><span class="p">.</span><span class="n">product</span><span class="p">,</span>
+                    <span class="n">style</span> <span class="p">=</span> <span class="nc">MaterialTheme</span><span class="p">.</span><span class="n">typography</span><span class="p">.</span><span class="n">titleMedium</span><span class="p">,</span>
+                    <span class="n">fontSize</span> <span class="p">=</span> <span class="mi">14</span><span class="p">.</span><span class="n">sp</span><span class="p">,</span>
+                    <span class="n">color</span> <span class="p">=</span> <span class="nc">Color</span><span class="p">.</span><span class="nc">Black</span><span class="p">,</span>
+                    <span class="n">modifier</span> <span class="p">=</span> <span class="nc">Modifier</span>
+                        <span class="p">.</span><span class="nf">align</span><span class="p">(</span><span class="nc">Alignment</span><span class="p">.</span><span class="nc">CenterVertically</span><span class="p">)</span>
+                        <span class="p">.</span><span class="nf">weight</span><span class="p">(</span><span class="mf">1f</span><span class="p">),</span>
+                    <span class="n">overflow</span> <span class="p">=</span> <span class="nc">TextOverflow</span><span class="p">.</span><span class="nc">Ellipsis</span><span class="p">,</span>
+                    <span class="n">maxLines</span> <span class="p">=</span> <span class="mi">1</span>
+                <span class="p">)</span>
+                <span class="nc">Text</span><span class="p">(</span>
+                    <span class="n">text</span> <span class="p">=</span> <span class="n">recallSuspensionListItemDto</span><span class="p">.</span><span class="nf">let</span> <span class="p">{</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="n">it</span><span class="p">.</span><span class="n">recallCommandDate</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span> <span class="n">it</span><span class="p">.</span><span class="n">recallCommandDate</span>
+                        <span class="k">else</span> <span class="n">it</span><span class="p">.</span><span class="n">rtrlCommandDt</span>
+                    <span class="p">}</span><span class="o">!!</span><span class="p">.</span><span class="nf">toJavaLocalDate</span><span class="p">().</span><span class="nf">format</span><span class="p">(</span><span class="n">dateFormat</span><span class="p">),</span>
+                    <span class="n">fontSize</span> <span class="p">=</span> <span class="mi">12</span><span class="p">.</span><span class="n">sp</span><span class="p">,</span>
+                    <span class="n">modifier</span> <span class="p">=</span> <span class="nc">Modifier</span><span class="p">.</span><span class="nf">align</span><span class="p">(</span><span class="nc">Alignment</span><span class="p">.</span><span class="nc">CenterVertically</span><span class="p">),</span>
+                    <span class="n">color</span> <span class="p">=</span> <span class="nc">Color</span><span class="p">.</span><span class="nc">Gray</span><span class="p">,</span>
+                    <span class="n">maxLines</span> <span class="p">=</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">}</span>
+            <span class="nc">Spacer</span><span class="p">(</span><span class="n">modifier</span> <span class="p">=</span> <span class="nc">Modifier</span><span class="p">.</span><span class="nf">height</span><span class="p">(</span><span class="mi">8</span><span class="p">.</span><span class="n">dp</span><span class="p">))</span>
+            <span class="nc">Text</span><span class="p">(</span>
+                <span class="n">text</span> <span class="p">=</span> <span class="n">recallSuspensionListItemDto</span><span class="p">.</span><span class="n">rtrvlResn</span><span class="p">,</span> <span class="n">fontSize</span> <span class="p">=</span> <span class="mi">12</span><span class="p">.</span><span class="n">sp</span><span class="p">,</span> <span class="n">color</span> <span class="p">=</span> <span class="nc">Color</span><span class="p">.</span><span class="nc">Gray</span><span class="p">,</span> <span class="n">maxLines</span> <span class="p">=</span> <span class="mi">1</span>
+            <span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">private</span> <span class="kd">val</span> <span class="py">dateFormat</span> <span class="p">=</span> <span class="nc">DateTimeFormatter</span><span class="p">.</span><span class="nf">ofPattern</span><span class="p">(</span><span class="s">"yyyy-MM-dd"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="결과-화면">결과 화면</h3>
+<hr>
+<p><img width="70%" height="auto" src="https://github.com/pknujsp/Blogcomments/assets/48265129/9c02c47f-6567-4c79-958d-5391cfc1a077"></p>
+
+<h3 id="view-compose-비교">View, Compose 비교</h3>
+<hr>
+
+<p>ViewModel은 View, Compose 모두 같습니다.</p>
+
+<p>Compose를 사용하면서 알게된 View와 Compose의 차이점 및 장단점 입니다.</p>
+
+<ul>
+  <li>View의 장점
+    <ol>
+      <li>안드로이드 개발의 기존 방식으로, 다양한 자료와 커뮤니티 지원이 있습니다.</li>
+      <li>현재까지의 모든 안드로이드 버전과 호환됩니다.</li>
+    </ol>
+  </li>
+  <li>View의 단점
+    <ol>
+      <li>상태 관리와 레이아웃 업데이트를 수동으로 처리해야 합니다.</li>
+      <li>XML을 사용하기 때문에 코드와 레이아웃 파일 간에 이동이 필요합니다.</li>
+      <li>코드가 깁니다.</li>
+    </ol>
+  </li>
+  <li>Compose의 장점
+    <ol>
+      <li>선언적 UI로 인해 상태 관리가 쉽고, 코드 가독성이 높습니다.</li>
+      <li>코틀린 DSL을 사용하여 코드 작성과 동시에 UI를 프리뷰할 수 있습니다.</li>
+      <li>커스텀 뷰를 쉽게 만들 수 있으며, 재사용이 용이합니다.</li>
+      <li>Compose를 사용하면 UI 작성 시 더 성능이 좋습니다.</li>
+    </ol>
+  </li>
+  <li>Compose의 단점
+    <ol>
+      <li>최소 API 레벨 21(Android 5.0 Lollipop) 이상만 지원합니다.</li>
+      <li>상대적으로 새로운 기술로서, 자료와 커뮤니티 지원이 View에 비해 상대적으로 적습니다.</li>
+    </ol>
+  </li>
+</ul>
+
+<h3 id="compose의-주요-개념">Compose의 주요 개념</h3>
+<hr>
+<ul>
+  <li>State</li>
+  <li>@Composable 함수로 화면 레이아웃을 구성</li>
+  <li>Modifier</li>
+  <li>Row, Column</li>
+</ul>
+
+<h3 id="state상태">State(상태)</h3>
+<hr>
+<p>Compose는 상태에 따라 UI가 자동으로 갱신 됩니다.</p>
+
+<p>상태를 관리하기 위해 remember와 mutableStateOf와 같은 함수를 사용하여 상태를 저장하고 변경할 수 있습니다.</p>
+
+<p>상태가 변경되면, 관련된 Composable 함수가 자동으로 재구성되어 UI를 갱신 합니다.</p>
+
+<h3 id="state-와-viewmodel">State 와 ViewModel</h3>
+<hr>
+<p>State와 ViewModel은 서로 유사한 역할을 합니다.</p>
+
+<p>ViewModel에서 LiveData, Flow등으로 관련 화면의 생명주기 동안 필요한 데이터를 저장하고 유지하는 것이 가능한 것 처럼,</p>
+
+<p>Compose의 State도 이와 유사한 역할을 합니다.</p>
+
+<p>ViewModel에서 데이터를 저장 유지 하는 기능에 특화되었다고 생각하면 됩니다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">var</span> <span class="py">selectedChip</span> <span class="k">by</span> <span class="nf">remember</span> <span class="p">{</span> <span class="nf">mutableStateOf</span><span class="p">(</span><span class="nc">ChipType</span><span class="p">.</span><span class="nc">RECALLS_SUSPENSION</span><span class="p">)</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>위 코드는 enum class 의 속성을 State로 관리하는 것을 의미합니다.</p>
+
+<p>만약 selectedChip의 값이 바뀐다면 자동으로 selectedChip의 값을 사용하는 레이아웃을 갱신합니다.</p>
+
+<h3 id="composable-함수로-화면-레이아웃을-구성">@Composable 함수로 화면 레이아웃을 구성</h3>
+<hr>
+<p>Compose에서 UI는 작은 조각으로 나누어진 Composable 함수로 구성됩니다.</p>
+
+<p>이 함수를 통해 레이아웃을 구성합니다.</p>
+
+<p>Composable 함수는 다른 Composable 함수를 호출하여 계층적인 레이아웃을 구성하는 것이 가능합니다.</p>
+
+<p>ViewGroup내에 ViewGroup을 선언하는 것과 같은 역할입니다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Composable</span>
+<span class="k">fun</span> <span class="nf">RecallDisposalScreen</span><span class="p">(</span><span class="n">viewModel</span><span class="p">:</span> <span class="nc">RecallSuspensionViewModel</span> <span class="p">=</span> <span class="nf">hiltViewModel</span><span class="p">())</span> <span class="p">{</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>위와 같은 방식으로 코드를 작성합니다.</p>
+
+<blockquote>
+  <p>Compose에서 ViewModel을 사용하려면 매개변수에 위와 같이 viewmodel()을 하면됩니다.</p>
+</blockquote>
+
+<h3 id="modifier">Modifier</h3>
+<hr>
+<p>Composable 함수의 레이아웃 디자인에 관한 설정을 할 때 사용합니다.</p>
+
+<p>여러 가지 Modifier를 사용하여 레이아웃, 패딩, 배경색 등의 속성을 설정할 수 있습니다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code>      <span class="n">modifier</span> <span class="p">=</span> <span class="nc">Modifier</span><span class="p">.</span><span class="nf">padding</span><span class="p">(</span><span class="n">top</span> <span class="p">=</span> <span class="mi">16</span><span class="p">.</span><span class="n">dp</span><span class="p">,</span> <span class="n">start</span> <span class="p">=</span> <span class="mi">24</span><span class="p">.</span><span class="n">dp</span><span class="p">,</span> <span class="n">end</span> <span class="p">=</span> <span class="mi">24</span><span class="p">.</span><span class="n">dp</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>위 내용은, View에서 setPadding() 또는 XML내에서 android:padding 속성으로 지정하는 것을 의미합니다.</p>
+
+<h3 id="row-column">Row, Column</h3>
+<hr>
+
+<ul>
+  <li>Row
+    <ul>
+      <li>수평 방향으로 레이아웃을 배치할 수 있습니다.</li>
+      <li>LinearLayout 속성을 Horizontal로 설정한 것과 유사합니다.</li>
+    </ul>
+  </li>
+  <li>Column
+    <ul>
+      <li>수직 방향으로 레이아웃을 배치할 수 있습니다.</li>
+      <li>LinearLayout 속성을 Vertical로 설정한 것과 유사합니다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>위 두 개를 이용해서 List화면을 구성하는 것이 가능합니다.</p>
+
+<p>그러나 모든 List의 Item을 로드하여 화면에 표시하기 때문에 오버헤드가 큰 <strong>문제점</strong>이 있습니다.</p>
+
+<p>View에서 <strong>ListView</strong>를 사용하는 것과 같다고 생각하면 됩니다.</p>
+
+<p>오버헤드를 줄이기 위해 <strong>LazyColumn</strong>, <strong>LazyRow</strong>를 사용하는 것이 좋습니다.</p>
+
+<p><strong>LazyColumn</strong>와 <strong>LazyRow</strong> 는 View의 <strong>RecyclerView</strong>와 같은 역할을 합니다.</p>
+
+<h3 id="정리">정리</h3>
+<hr>
+
+<p>써보니 생각보다 어렵지 않고, 코드가 확실히 줄어서 편합니다.</p>
+
+<h2 id="하루라도-빨리-compose로-개발을-시작해야-하는게-좋을-듯합니다">하루라도 빨리 Compose로 개발을 시작해야 하는게 좋을 듯합니다!</h2>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/compiler/2023/04/25/Compiler-IR.html" title="Compiler IR">Compiler IR</a><a class="next" href="/jekyll-theme-yat/navigation/2023/05/23/%EB%84%A4%EB%B9%84%EA%B2%8C%EC%9D%B4%EC%85%98-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EB%94%A5%EB%A7%81%ED%81%AC-%EC%82%AC%EC%9A%A9%EC%84%B1-%EA%B0%9C%EC%84%A0%ED%95%98%EA%B8%B0.html" title="Navigation Component DeepLink로 이동시 Arguments 전달 편의성 개선하기">Navigation Component DeepLink로 이동시...</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li>
+<span><a class="post-link" href="/jekyll-theme-yat/data/communication/2023/06/13/Wired-LANs-Ethernet.html" title="Navigation Component DeepLink로 이동시 Arguments 전달 편의성 개선하기">13. Wired LANs Ethernet</a></span><span>
+            <time class="dt-published datetime" datetime="2023-06-13T00:00:00+09:00" itemprop="datePublished">2023-06-13, Tue
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/android/2023/08/13/androidx.collection-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-%EC%82%B4%ED%8E%B4%EB%B3%B4%EA%B8%B0(SparseArray,-ArrayMap,-LruCache-/).html" title="Navigation Component DeepLink로 이동시 Arguments 전달 편의성 개선하기">ArrayMap, SparseArray, LruCache에 대해서 알아보기</a></span><span>
+            <time class="dt-published datetime" datetime="2023-08-13T00:00:00+09:00" itemprop="datePublished">2023-08-13, Sun
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/compiler/2023/04/24/Compiler-Context-sensitive-analysis.html" title="Navigation Component DeepLink로 이동시 Arguments 전달 편의성 개선하기">Compiler Context-sensitive analysis</a></span><span>
+            <time class="dt-published datetime" datetime="2023-04-24T00:00:00+09:00" itemprop="datePublished">2023-04-24, Mon
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/kotlin/2023/08/03/Kotlin-sealed-class-%EC%83%81%ED%83%9C%EB%B3%84-%ED%95%A8%EC%88%98-%EC%9E%90%EB%8F%99-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0.html" title="Navigation Component DeepLink로 이동시 Arguments 전달 편의성 개선하기">Kotlin sealed class/interface 사용 시 하위 클래스에 대응되는 함수를 자동으로 만드는 방법</a></span><span>
+            <time class="dt-published datetime" datetime="2023-08-03T00:00:00+09:00" itemprop="datePublished">2023-08-03, Thu
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/sql/2023/04/18/JOIN-%EC%A0%95%EB%B3%B5%ED%95%98%EA%B8%B0.html" title="Navigation Component DeepLink로 이동시 Arguments 전달 편의성 개선하기">JOIN 정복하기</a></span><span>
+            <time class="dt-published datetime" datetime="2023-04-18T00:00:00+09:00" itemprop="datePublished">2023-04-18, Tue
+            </time></span>
+        </li>
+</ul>
+    </div>
+<div class="post-comments">
+<div id="utterances-placeholder"></div>
+<script>
+
+const utterancesThemeFromDataTheme = () => {
+    const dataTheme = document.documentElement.getAttribute('data-theme');
+    return `github-${dataTheme}`;
+  };
+
+  const setUtterancesTheme = () => {
+    const iframe = document.querySelector('.utterances-frame');
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: utterancesThemeFromDataTheme()
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+    }
+  }
+
+  // dynamic change
+  const observer = new MutationObserver((mutationsList, observer) => {
+    for (let mutation of mutationsList) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        setUtterancesTheme();
+      }
+    }
+  });
+  observer.observe(document.documentElement, { attributes: true, childList: false, subtree: false });
+
+  let utterancesScript = document.createElement('script');
+  utterancesScript.async = true;
+  utterancesScript.src = 'https://utteranc.es/client.js';
+  utterancesScript.crossOrigin = 'anonymous';
+  utterancesScript.setAttribute('issue-term', 'pathname');
+  utterancesScript.setAttribute('label', 'comments');
+  utterancesScript.setAttribute('repo', 'pknujsp/Blogcomments');
+  utterancesScript.setAttribute('theme', utterancesThemeFromDataTheme());
+
+  const placeholder = document.getElementById('utterances-placeholder');
+  placeholder.parentNode.replaceChild(utterancesScript, placeholder);
+</script>
+</div></section>
+</div>
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">Contents</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">· ' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>2024 @ Junsung Park</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

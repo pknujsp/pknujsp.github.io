@@ -1,0 +1,1292 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>DroidKnights 2023 ‘빈혈 도메인 모델과 쓸모없는 유스케이스 그리고 비대한 뷰모델에 대해 생각해보기’내용 정리 | Jsp Notes</title>
+<meta name="generator" content="Jekyll v4.3.4">
+<meta property="og:title" content="DroidKnights 2023 ‘빈혈 도메인 모델과 쓸모없는 유스케이스 그리고 비대한 뷰모델에 대해 생각해보기’내용 정리">
+<meta name="author" content="Junsung Park">
+<meta property="og:locale" content="ko">
+<meta name="description" content="이번 글은 아래의 영상으로 부터 얻은 내용을 바탕으로 작성하였습니다.">
+<meta property="og:description" content="이번 글은 아래의 영상으로 부터 얻은 내용을 바탕으로 작성하였습니다.">
+<link rel="canonical" href="https://pknujsp.github.io//jekyll-theme-yat/android/2023/11/27/%EB%B9%88%ED%98%88-%EB%8F%84%EB%A9%94%EC%9D%B8-%EB%AA%A8%EB%8D%B8,-%EC%93%B8%EB%AA%A8%EC%97%86%EB%8A%94-%EC%9C%A0%EC%8A%A4%EC%BC%80%EC%9D%B4%EC%8A%A4,-%EB%B9%84%EB%8C%80%ED%95%9C-%EB%B7%B0%EB%AA%A8%EB%8D%B8%EC%97%90-%EB%8C%80%ED%95%98%EC%97%AC-DroidKnights-2023.html">
+<meta property="og:url" content="https://pknujsp.github.io//jekyll-theme-yat/android/2023/11/27/%EB%B9%88%ED%98%88-%EB%8F%84%EB%A9%94%EC%9D%B8-%EB%AA%A8%EB%8D%B8,-%EC%93%B8%EB%AA%A8%EC%97%86%EB%8A%94-%EC%9C%A0%EC%8A%A4%EC%BC%80%EC%9D%B4%EC%8A%A4,-%EB%B9%84%EB%8C%80%ED%95%9C-%EB%B7%B0%EB%AA%A8%EB%8D%B8%EC%97%90-%EB%8C%80%ED%95%98%EC%97%AC-DroidKnights-2023.html">
+<meta property="og:site_name" content="Jsp Notes">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-11-27T00:00:00+09:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="DroidKnights 2023 ‘빈혈 도메인 모델과 쓸모없는 유스케이스 그리고 비대한 뷰모델에 대해 생각해보기’내용 정리">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junsung Park"},"dateModified":"2023-11-27T00:00:00+09:00","datePublished":"2023-11-27T00:00:00+09:00","description":"이번 글은 아래의 영상으로 부터 얻은 내용을 바탕으로 작성하였습니다.","headline":"DroidKnights 2023 ‘빈혈 도메인 모델과 쓸모없는 유스케이스 그리고 비대한 뷰모델에 대해 생각해보기’내용 정리","mainEntityOfPage":{"@type":"WebPage","@id":"https://pknujsp.github.io//jekyll-theme-yat/android/2023/11/27/%EB%B9%88%ED%98%88-%EB%8F%84%EB%A9%94%EC%9D%B8-%EB%AA%A8%EB%8D%B8,-%EC%93%B8%EB%AA%A8%EC%97%86%EB%8A%94-%EC%9C%A0%EC%8A%A4%EC%BC%80%EC%9D%B4%EC%8A%A4,-%EB%B9%84%EB%8C%80%ED%95%9C-%EB%B7%B0%EB%AA%A8%EB%8D%B8%EC%97%90-%EB%8C%80%ED%95%98%EC%97%AC-DroidKnights-2023.html"},"url":"https://pknujsp.github.io//jekyll-theme-yat/android/2023/11/27/%EB%B9%88%ED%98%88-%EB%8F%84%EB%A9%94%EC%9D%B8-%EB%AA%A8%EB%8D%B8,-%EC%93%B8%EB%AA%A8%EC%97%86%EB%8A%94-%EC%9C%A0%EC%8A%A4%EC%BC%80%EC%9D%B4%EC%8A%A4,-%EB%B9%84%EB%8C%80%ED%95%9C-%EB%B7%B0%EB%AA%A8%EB%8D%B8%EC%97%90-%EB%8C%80%ED%95%98%EC%97%AC-DroidKnights-2023.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="icon" href="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script>
+
+  <!-- tipuesearch -->
+  <link rel="stylesheet" href="/assets/tipuesearch/css/tipuesearch.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_content.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_set.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch.min.js"></script><link type="application/atom+xml" rel="alternate" href="https://pknujsp.github.io//jekyll-theme-yat/feed.xml" title="Jsp Notes">
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LZC1TDTS26"></script>
+<script>
+  function initGoogleAnalytics() {
+    var doNotTrack = (window.doNotTrack === "1" || navigator.doNotTrack === "1" ||
+      navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1");
+    var enableDNT = "true" == "true";
+
+    if (!enableDNT || !doNotTrack) {
+      /*
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'G-LZC1TDTS26', 'auto');
+      ga('send', 'pageview');
+      */
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { window.dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-LZC1TDTS26');
+    }
+  }
+  window.addEventListener("load", initGoogleAnalytics);
+
+</script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/intellij-light.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/kotlin.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #7800ff;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: lowercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <img class="site-white_favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+</a></span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/about.html">About</a><a class="page-link" href="/jekyll-theme-yat/categories.html">Categories</a><a class="page-link" href="/jekyll-theme-yat/">Home</a><a class="page-link" href="/jekyll-theme-yat/posts.html">Posts</a><a class="page-link" href="/jekyll-theme-yat/tags.html">Tags</a><input id="tipue_search_input" type="search" placeholder="Search" aria-label="Search" title="Please enter at least 1 character" required>
+
+          <script>
+            document.getElementById("tipue_search_input").addEventListener("keydown", function (event) {
+              if (event.keyCode === 13) {
+                event.preventDefault();
+                window.location.href = "../search?q=" + this.value;
+              }
+            });
+          </script>
+<!--
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="en">
+        
+        <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+        to English
+        
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="ko">
+        
+        <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+        to Korean
+        
+      </a>
+    </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'ko',
+      autoDisplay: false,
+      layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+    }, 'google_translate_element');
+
+    // Links to cross-origin destinations are unsafe
+    var gll = document.getElementsByClassName('goog-logo-link')[0];
+    if (gll) {
+      gll.setAttribute('rel', 'noopener');
+    }
+
+    function restoreLang() {
+      var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+      if (!iframe) return;
+
+      var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+      var restore_el = innerDoc.getElementsByTagName("button");
+
+      for (var i = 0; i < restore_el.length; i++) {
+        if (restore_el[i].id.indexOf("restore") >= 0) {
+          restore_el[i].click();
+          var close_el = innerDoc.getElementsByClassName("goog-close-link");
+          close_el[0].click();
+          return;
+        }
+      }
+    }
+
+    function triggerHtmlEvent(element, eventName) {
+      var event;
+      if (document.createEvent) {
+        event = document.createEvent('HTMLEvents');
+        event.initEvent(eventName, true, true);
+        element.dispatchEvent(event);
+      } else {
+        event = document.createEventObject();
+        event.eventType = eventName;
+        element.fireEvent('on' + event.eventType, event);
+      }
+    }
+
+    var googleCombo = document.querySelector("select.goog-te-combo");
+    var langSelect = document.querySelector('.ct-language');
+    langSelect.addEventListener('click', function (event) {
+      if (!event.target) {
+        return;
+      }
+
+      var selected = document.querySelector('.ct-language .ct-language-selected');
+      if (selected) {
+        selected.classList.remove('ct-language-selected');
+      }
+
+      var target = event.target;
+      while (target && target !== langSelect) {
+        if (target.matches('.lang-select')) {
+          break;
+        }
+        target = target.parentElement;
+      }
+
+      if (target && target.matches('.lang-select')) {
+        var lang = target.getAttribute('data-lang');
+        if (googleCombo.value == lang) {
+          restoreLang();
+        } else if (lang == 'ko') {
+          var googleTranslateElement = document.getElementById('google_translate_element');
+          if (googleTranslateElement) {
+            googleTranslateElement.parentNode.removeChild(googleTranslateElement);
+            $('#google_translate_element').empty();
+          }
+        } else {
+          target.parentElement.classList.add('ct-language-selected');
+          googleCombo.value = lang;
+          triggerHtmlEvent(googleCombo, 'change');
+        }
+      }
+
+      event.preventDefault();
+    });
+  }
+</script>
+
+<script type="text/javascript"
+  src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script></span>-->
+          </div>
+
+          
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('manual' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = !(hours >= 2 && hours <=5);
+
+      if (nightShift) {
+        if (hours > 5) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(5);
+      } else {
+        toggleAt.setHours(2);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<div id="click-to-bottom" class="click-to-bottom">
+  <i class="fa fa-arrow-down"></i>
+</div>
+<script>
+  (function () {
+    const clickToBottom = document.getElementById('click-to-bottom');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToBottom.classList.add('show')
+      }else {
+        clickToBottom.classList.remove('show')
+      }
+    });
+    clickToBottom.addEventListener('click', () => {
+      window.smoothScrollTo(document.body.scrollHeight);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">DroidKnights 2023 '빈혈 도메인 모델과 쓸모없는 유스케이스 그리고 비대한 뷰모델에 대해 생각해보기'내용 정리</h1>
+  <h2 class="post-subtitle">빈혈 도메인 모델, 쓸모없는 유스케이스, 비대한 뷰모델에 대해 생각해보고 개선 방안을 탐색</h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2023-11-27T00:00:00+09:00" itemprop="datePublished">2023-11-27, Mon
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 5 minutes</span>
+  </p>
+<div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Android">#Android</a></div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <blockquote>
+  <p>이번 글은 아래의 영상으로 부터 얻은 내용을 바탕으로 작성하였습니다.</p>
+</blockquote>
+
+<p><strong>빈혈 도메인, 쓸모없는 유스케이스, 비대한 뷰모델에 대하여</strong>를 주제로 DroidKnights 2023에서 강연하신 박종혁님(카카오스타일)의 영상입니다.</p>
+
+<p><a href="https://youtu.be/3mR8_vT7m1U?si=sIs_2rVc667qZUtC"><img src="https://img.youtube.com/vi/3mR8_vT7m1U/sddefault.jpg" alt="빈혈(anemic) 도메인 모델과 쓸모없는 유스케이스 그리고 비대한(Bloated) 뷰모델에 대해 생각해보기"></a>
+<strong><em>Video: 빈혈(anemic) 도메인 모델과 쓸모없는 유스케이스 그리고 비대한(Bloated) 뷰모델에 대해 생각해보기</em></strong></p>
+
+<p>개발에서 발생할 수 있는 문제점들로 <strong>빈혈 도메인 모델</strong>, <strong>쓸모없는 유스케이스</strong>, <strong>비대한 뷰모델</strong> 세 가지가 소개되었습니다.</p>
+
+<h4 id="--빈혈-무기력한-빈약한anemic-도메인-모델">- 빈혈, 무기력한, 빈약한(Anemic) 도메인 모델</h4>
+
+<blockquote>
+  <p>도메인 모델(클래스)이 데이터만 가지고 있고, 어떠한 로직이 없는 상태, <a href="https://martinfowler.com/bliki/AnemicDomainModel.html">AnemicDomainModel</a></p>
+</blockquote>
+
+<ul>
+  <li>안티 패턴 중 하나(특정 경우에는 적절할 수 있으므로 무조건 사용하지 말아야 하는 것은 아닙니다)</li>
+  <li>객체의 의미와 책임을 제대로 반영하지 못하기 때문에 객체지향적인 설계를 벗어납니다.</li>
+  <li>단순 구조체와 다를 바 없으므로, 모델을 생성하는 의미가 없다고 볼수 있습니다.</li>
+</ul>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">data class</span> <span class="nc">Developer</span><span class="p">(</span>
+    <span class="kd">val</span> <span class="py">name</span><span class="p">:</span> <span class="nc">String</span><span class="p">,</span>
+    <span class="kd">val</span> <span class="py">age</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="kd">data class</span> <span class="nc">DeveloperList</span><span class="p">(</span>
+    <span class="kd">val</span> <span class="py">list</span><span class="p">:</span> <span class="nc">List</span><span class="p">&lt;</span><span class="nc">Developer</span><span class="p">&gt;</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<h4 id="--쓸모없는-유스케이스">- 쓸모없는 유스케이스</h4>
+
+<blockquote>
+  <p>유스케이스(클래스)가 단순히 레포지토리와 뷰모델을 연결만 해주는 상태, 특별한 기능이 없음</p>
+</blockquote>
+
+<ul>
+  <li>비즈니스 로직을 서버에 위임하는 아키텍처에서 주로 보입니다.</li>
+  <li>안티 패턴으로 간주되기도 하지만, 코드 일관성 및 미래의 수정에 대비하는 등의 이유로 사용되기도 합니다.</li>
+</ul>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">SpeakerRepository</span> <span class="p">{</span>
+    <span class="k">suspend</span> <span class="k">fun</span> <span class="nf">getSpeakerList</span><span class="p">():</span> <span class="nc">List</span><span class="p">&lt;</span><span class="nc">Speaker</span><span class="p">&gt;</span>
+<span class="p">}</span>
+
+<span class="kd">class</span> <span class="nc">LoadSpeakerListUseCase</span><span class="p">(</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">speakerRepository</span><span class="p">:</span> <span class="nc">SpeakerRepository</span>
+<span class="p">)</span> <span class="p">{</span>
+    <span class="k">suspend</span> <span class="k">operator</span> <span class="k">fun</span> <span class="nf">invoke</span><span class="p">()</span> <span class="p">=</span> <span class="n">speakerRepository</span><span class="p">.</span><span class="nf">getSpeakerList</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>오직 <code class="language-plaintext highlighter-rouge">speakerRepository.getSpeakerList()</code>를 위해서 유스케이스가 쓰입니다.</p>
+
+<h4 id="--비대한bloated-뷰모델">- 비대한(Bloated) 뷰모델</h4>
+
+<blockquote>
+  <p>뷰모델이 과하게 크고 복잡한 상태</p>
+</blockquote>
+
+<ul>
+  <li>뷰모델이 너무 많은 책임과 로직을 가지고 있으면 유지보수성이 떨어집니다.</li>
+</ul>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">SpeakerListViewModel</span><span class="p">(</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">loadSpeakerList</span><span class="p">:</span> <span class="nc">LoadSpeakerListUseCase</span>
+<span class="p">)</span> <span class="p">:</span> <span class="nc">ViewModel</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">speakerList</span> <span class="c1">// ...</span>
+
+    <span class="k">fun</span> <span class="nf">load</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">viewModelScope</span><span class="p">.</span><span class="nf">launch</span> <span class="p">{</span>
+            <span class="n">speakerList</span> <span class="p">=</span> <span class="nf">loadSpeaker</span><span class="p">()</span>
+            <span class="c1">// ...</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">fun</span> <span class="nf">getYoungDevelopers</span><span class="p">()</span> <span class="p">=</span> <span class="n">speakerList</span><span class="p">.</span><span class="nf">filter</span> <span class="p">{</span> 
+        <span class="n">it</span><span class="p">.</span><span class="n">age</span> <span class="p">&lt;</span> <span class="mi">30</span> 
+    <span class="p">}</span>
+
+    <span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="이러한-문제들을-해결하는-방법">이러한 문제들을 해결하는 방법</h3>
+
+<blockquote>
+  <p>명확한 정답은 없음, 끊임없는 고민으로 적절한 방법을 찾도록 합니다. 팀 프로젝트라면 팀원들과의 끊임없는 토의로 가이드라인을 찾아가는 것이 중요합니다.</p>
+</blockquote>
+
+<h3 id="카카오스타일-지그재그-앱-개발팀이-적용한-방법">카카오스타일 지그재그 앱 개발팀이 적용한 방법</h3>
+
+<p>팀원들과의 토의를 통해 다음과 같은 가이드라인으로 합의점을 찾았다고 합니다.</p>
+
+<ul>
+  <li>가이드라인
+    <ul>
+      <li>프레젠테이션 레이어에 도메인 로직을 구현하지 않는다.</li>
+      <li>단일 도메인 모델에 대한 비즈니스 로직은, 도메인 모델이 책임지도록 한다.</li>
+      <li>여러 도메인 모델에 대한 비즈니스 로직은, 유스케이스가 해결할 수 있다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="1-프레젠테이션-레이어에-도메인-로직을-구현하지-않는다">1. 프레젠테이션 레이어에 도메인 로직을 구현하지 않는다.</h4>
+
+<ul>
+  <li>뷰모델은 프레젠테이션 레이어(UI 레이어)이므로, 뷰모델에는 데이터를 뷰에 표현하거나, 사용자 상호작용을 위한 로직을 구현하도록 한다.</li>
+</ul>
+
+<h4 id="2-단일-도메인-모델에-대한-비즈니스-로직은-도메인-모델이-책임지도록-한다">2. 단일 도메인 모델에 대한 비즈니스 로직은, 도메인 모델이 책임지도록 한다.</h4>
+
+<ul>
+  <li>도메인 모델은 필요한 로직을 직접 구현해야 한다. 빈혈 도메인 모델을 개선시키기 위해 관련 로직을 구현하는 것이다.</li>
+  <li>뷰모델에서 도메인 모델을 직접 다루는 로직은 구현해서는 안된다.</li>
+  <li>프레젠테이션 로직이 아니라면, 도메인 메서드에 구현하는 것을 우선으로 고려한다.</li>
+</ul>
+
+<h4 id="3-여러-도메인-모델에-대한-비즈니스-로직은-유스케이스가-해결할-수-있다">3. 여러 도메인 모델에 대한 비즈니스 로직은, 유스케이스가 해결할 수 있다.</h4>
+
+<ul>
+  <li>도메인 로직은 아래 기준에 따라 유스케이스로 구현되어야 한다.
+    <ul>
+      <li>여러 도메인 모델이 참조되는 복잡한 비즈니스 로직</li>
+      <li>프레젠테이션 레이어에서 직접 데이터 레이어를 참조하지 않도록 하는 Wrapper 레이어 로직
+        <ul>
+          <li>간단하게 SAM interface로 구현 가능</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="개선-예시">개선 예시</h3>
+
+<p>위와 같은 가이드라인에 따라 아래와 같이 개선이 가능합니다.</p>
+
+<h4 id="도메인-모델에-책임을-부여">도메인 모델에 책임을 부여</h4>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">data class</span> <span class="nc">Developer</span><span class="p">(</span>
+    <span class="kd">val</span> <span class="py">name</span><span class="p">:</span> <span class="nc">String</span><span class="p">,</span>
+    <span class="kd">val</span> <span class="py">age</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span>
+<span class="p">){</span>
+    <span class="k">fun</span> <span class="nf">isYoung</span><span class="p">()</span> <span class="p">=</span> <span class="n">age</span> <span class="p">&lt;</span> <span class="mi">30</span>   
+<span class="p">}</span>
+
+<span class="kd">data class</span> <span class="nc">DeveloperList</span><span class="p">(</span>
+    <span class="kd">val</span> <span class="py">list</span><span class="p">:</span> <span class="nc">List</span><span class="p">&lt;</span><span class="nc">Developer</span><span class="p">&gt;</span>
+<span class="p">){</span>
+    <span class="k">fun</span> <span class="nf">getYoungDevelopers</span><span class="p">()</span> <span class="p">=</span> <span class="n">list</span><span class="p">.</span><span class="nf">filter</span> <span class="p">{</span> 
+        <span class="n">it</span><span class="p">.</span><span class="nf">isYoung</span><span class="p">()</span> 
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="여러-도메인-모델에-대한-비즈니스-로직을-유스케이스에서-구현">여러 도메인 모델에 대한 비즈니스 로직을 유스케이스에서 구현</h4>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">LoadSpeakerListWithCompanyNameUseCase</span><span class="p">(</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">speakerRepository</span><span class="p">:</span> <span class="nc">SpeakerRepository</span>
+<span class="p">)</span> <span class="p">{</span>
+    <span class="k">suspend</span> <span class="k">operator</span> <span class="k">fun</span> <span class="nf">invoke</span><span class="p">(</span><span class="n">company</span><span class="p">:</span> <span class="nc">Company</span><span class="p">)</span> <span class="p">=</span> <span class="n">speakerRepository</span><span class="p">.</span><span class="nf">getSpeakerList</span><span class="p">().</span><span class="nf">concatCompanyName</span><span class="p">(</span><span class="n">company</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">SpeakerListViewModel</span><span class="p">(</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">loadSpeakerList</span><span class="p">:</span> <span class="nc">LoadSpeakerListUseCase</span>
+<span class="p">)</span> <span class="p">:</span> <span class="nc">ViewModel</span><span class="p">()</span> <span class="p">{</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">speakerList</span> <span class="c1">// ...</span>
+
+    <span class="k">fun</span> <span class="nf">load</span><span class="p">()</span> <span class="p">{</span>
+        <span class="n">viewModelScope</span><span class="p">.</span><span class="nf">launch</span> <span class="p">{</span>
+            <span class="n">speakerList</span> <span class="p">=</span> <span class="nf">loadSpeaker</span><span class="p">()</span>
+            <span class="c1">// ...</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 도메인 모델 내에서 필터링 로직이 구현된 메서드를 호출하여 사용</span>
+    <span class="k">fun</span> <span class="nf">getYoungDevelopers</span><span class="p">()</span> <span class="p">=</span> <span class="n">speakerList</span><span class="p">.</span><span class="nf">getYoungDevelopers</span><span class="p">()</span>
+    <span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="정리">정리</h3>
+
+<ul>
+  <li>빈혈 도메인 모델을 개선하기 위해서 도메인 모델에 책임을 부여할수 있다.</li>
+  <li>여러 도메인 모델에 대한 비즈니스 로직을 유스케이스에서 구현하여, 유스케이스의 책임을 확장할 수 있다.</li>
+  <li>뷰모델은 프레젠테이션 레이어이므로, 도메인 모델을 직접 다루는 로직은 구현해서는 안된다.</li>
+</ul>
+
+<p>이러한 개선 방법이 무조건 정답이라고 볼수 없으며, 현재 프로젝트의 구조, 상황에 따라 적절한 가이드라인을 찾아가는 것이 중요합니다.</p>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/android/2023/11/14/UI-Layer%EB%9E%80(Android-%EA%B3%B5%EC%8B%9D-%EB%AC%B8%EC%84%9C-%EC%A0%95%EB%8F%85)-copy.html" title="About the UI layer">About the UI layer...</a><a class="next" href="/jekyll-theme-yat/kotlin/2023/12/10/%EC%BD%94%ED%8B%80%EB%A6%B0-%EC%BD%94%EB%A3%A8%ED%8B%B4%EC%9D%84-%ED%99%9C%EC%9A%A9%ED%95%B4-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%BA%90%EC%8B%9C-%EA%B4%80%EB%A6%AC-%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0.html" title="코틀린 코루틴을 활용해 데이터 메모리 캐시 기능 구현하기">코틀린 코루틴을 활용해 데이터...</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li>
+<span><a class="post-link" href="/jekyll-theme-yat/android/2023/08/24/Android-%EA%B7%B8%EB%9E%98%ED%94%84-%EA%B7%B8%EB%A6%AC%EB%8A%94-View%EB%A7%8C%EB%93%A4%EA%B8%B0.html" title="코틀린 코루틴을 활용해 데이터 메모리 캐시 기능 구현하기">그래프 그리는 View만들기</a></span><span>
+            <time class="dt-published datetime" datetime="2023-08-24T00:00:00+09:00" itemprop="datePublished">2023-08-24, Thu
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/data/communication/2023/04/16/%EB%8D%B0%EC%9D%B4%ED%84%B0%ED%86%B5%EC%8B%A01.html" title="코틀린 코루틴을 활용해 데이터 메모리 캐시 기능 구현하기">데이터통신</a></span><span>
+            <time class="dt-published datetime" datetime="2023-04-16T00:00:00+09:00" itemprop="datePublished">2023-04-16, Sun
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/sql/2023/04/18/JOIN-%EC%A0%95%EB%B3%B5%ED%95%98%EA%B8%B0.html" title="코틀린 코루틴을 활용해 데이터 메모리 캐시 기능 구현하기">JOIN 정복하기</a></span><span>
+            <time class="dt-published datetime" datetime="2023-04-18T00:00:00+09:00" itemprop="datePublished">2023-04-18, Tue
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/android/2023/11/27/%EB%B9%88%ED%98%88-%EB%8F%84%EB%A9%94%EC%9D%B8-%EB%AA%A8%EB%8D%B8,-%EC%93%B8%EB%AA%A8%EC%97%86%EB%8A%94-%EC%9C%A0%EC%8A%A4%EC%BC%80%EC%9D%B4%EC%8A%A4,-%EB%B9%84%EB%8C%80%ED%95%9C-%EB%B7%B0%EB%AA%A8%EB%8D%B8%EC%97%90-%EB%8C%80%ED%95%98%EC%97%AC-DroidKnights-2023.html" title="코틀린 코루틴을 활용해 데이터 메모리 캐시 기능 구현하기">DroidKnights 2023 '빈혈 도메인 모델과 쓸모없는 유스케이스 그리고 비대한 뷰모델에 대해 생각해보기'내용 정리</a></span><span>
+            <time class="dt-published datetime" datetime="2023-11-27T00:00:00+09:00" itemprop="datePublished">2023-11-27, Mon
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/kotlin/2023/12/10/%EC%BD%94%ED%8B%80%EB%A6%B0-%EC%BD%94%EB%A3%A8%ED%8B%B4%EC%9D%84-%ED%99%9C%EC%9A%A9%ED%95%B4-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%BA%90%EC%8B%9C-%EA%B4%80%EB%A6%AC-%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0.html" title="코틀린 코루틴을 활용해 데이터 메모리 캐시 기능 구현하기">코틀린 코루틴을 활용해 데이터 메모리 캐시 기능 구현하기</a></span><span>
+            <time class="dt-published datetime" datetime="2023-12-10T00:00:00+09:00" itemprop="datePublished">2023-12-10, Sun
+            </time></span>
+        </li>
+</ul>
+    </div>
+<div class="post-comments">
+<div id="utterances-placeholder"></div>
+<script>
+
+const utterancesThemeFromDataTheme = () => {
+    const dataTheme = document.documentElement.getAttribute('data-theme');
+    return `github-${dataTheme}`;
+  };
+
+  const setUtterancesTheme = () => {
+    const iframe = document.querySelector('.utterances-frame');
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: utterancesThemeFromDataTheme()
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+    }
+  }
+
+  // dynamic change
+  const observer = new MutationObserver((mutationsList, observer) => {
+    for (let mutation of mutationsList) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        setUtterancesTheme();
+      }
+    }
+  });
+  observer.observe(document.documentElement, { attributes: true, childList: false, subtree: false });
+
+  let utterancesScript = document.createElement('script');
+  utterancesScript.async = true;
+  utterancesScript.src = 'https://utteranc.es/client.js';
+  utterancesScript.crossOrigin = 'anonymous';
+  utterancesScript.setAttribute('issue-term', 'pathname');
+  utterancesScript.setAttribute('label', 'comments');
+  utterancesScript.setAttribute('repo', 'pknujsp/Blogcomments');
+  utterancesScript.setAttribute('theme', utterancesThemeFromDataTheme());
+
+  const placeholder = document.getElementById('utterances-placeholder');
+  placeholder.parentNode.replaceChild(utterancesScript, placeholder);
+</script>
+</div></section>
+</div>
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">Contents</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">· ' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>2024 @ Junsung Park</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

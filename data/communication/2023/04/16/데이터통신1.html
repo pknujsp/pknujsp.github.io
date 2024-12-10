@@ -1,0 +1,2752 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>데이터통신 | Jsp Notes</title>
+<meta name="generator" content="Jekyll v4.3.4">
+<meta property="og:title" content="데이터통신">
+<meta name="author" content="Junsung Park">
+<meta property="og:locale" content="ko">
+<meta name="description" content="2장 네트워크 모델 프로토콜 계층화는 통신 프로세스를 특정 기능을 수행하는 개별 계층으로 분할하는 것을 말합니다. 프로토콜 계층화의 원칙에는 양방향 통신, 각 계층 아래 동일한 객체, 계층 간 논리적 연결 등이 포함됩니다.">
+<meta property="og:description" content="2장 네트워크 모델 프로토콜 계층화는 통신 프로세스를 특정 기능을 수행하는 개별 계층으로 분할하는 것을 말합니다. 프로토콜 계층화의 원칙에는 양방향 통신, 각 계층 아래 동일한 객체, 계층 간 논리적 연결 등이 포함됩니다.">
+<link rel="canonical" href="https://pknujsp.github.io//jekyll-theme-yat/data/communication/2023/04/16/%EB%8D%B0%EC%9D%B4%ED%84%B0%ED%86%B5%EC%8B%A01.html">
+<meta property="og:url" content="https://pknujsp.github.io//jekyll-theme-yat/data/communication/2023/04/16/%EB%8D%B0%EC%9D%B4%ED%84%B0%ED%86%B5%EC%8B%A01.html">
+<meta property="og:site_name" content="Jsp Notes">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-04-16T00:00:00+09:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="데이터통신">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junsung Park"},"dateModified":"2023-04-16T00:00:00+09:00","datePublished":"2023-04-16T00:00:00+09:00","description":"2장 네트워크 모델 프로토콜 계층화는 통신 프로세스를 특정 기능을 수행하는 개별 계층으로 분할하는 것을 말합니다. 프로토콜 계층화의 원칙에는 양방향 통신, 각 계층 아래 동일한 객체, 계층 간 논리적 연결 등이 포함됩니다.","headline":"데이터통신","mainEntityOfPage":{"@type":"WebPage","@id":"https://pknujsp.github.io//jekyll-theme-yat/data/communication/2023/04/16/%EB%8D%B0%EC%9D%B4%ED%84%B0%ED%86%B5%EC%8B%A01.html"},"url":"https://pknujsp.github.io//jekyll-theme-yat/data/communication/2023/04/16/%EB%8D%B0%EC%9D%B4%ED%84%B0%ED%86%B5%EC%8B%A01.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="icon" href="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script>
+
+  <!-- tipuesearch -->
+  <link rel="stylesheet" href="/assets/tipuesearch/css/tipuesearch.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_content.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_set.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch.min.js"></script><link type="application/atom+xml" rel="alternate" href="https://pknujsp.github.io//jekyll-theme-yat/feed.xml" title="Jsp Notes">
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LZC1TDTS26"></script>
+<script>
+  function initGoogleAnalytics() {
+    var doNotTrack = (window.doNotTrack === "1" || navigator.doNotTrack === "1" ||
+      navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1");
+    var enableDNT = "true" == "true";
+
+    if (!enableDNT || !doNotTrack) {
+      /*
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'G-LZC1TDTS26', 'auto');
+      ga('send', 'pageview');
+      */
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { window.dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-LZC1TDTS26');
+    }
+  }
+  window.addEventListener("load", initGoogleAnalytics);
+
+</script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/intellij-light.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/kotlin.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #7800ff;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: lowercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <img class="site-white_favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+</a></span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/about.html">About</a><a class="page-link" href="/jekyll-theme-yat/categories.html">Categories</a><a class="page-link" href="/jekyll-theme-yat/">Home</a><a class="page-link" href="/jekyll-theme-yat/posts.html">Posts</a><a class="page-link" href="/jekyll-theme-yat/tags.html">Tags</a><input id="tipue_search_input" type="search" placeholder="Search" aria-label="Search" title="Please enter at least 1 character" required>
+
+          <script>
+            document.getElementById("tipue_search_input").addEventListener("keydown", function (event) {
+              if (event.keyCode === 13) {
+                event.preventDefault();
+                window.location.href = "../search?q=" + this.value;
+              }
+            });
+          </script>
+<!--
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="en">
+        
+        <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+        to English
+        
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="ko">
+        
+        <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+        to Korean
+        
+      </a>
+    </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'ko',
+      autoDisplay: false,
+      layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+    }, 'google_translate_element');
+
+    // Links to cross-origin destinations are unsafe
+    var gll = document.getElementsByClassName('goog-logo-link')[0];
+    if (gll) {
+      gll.setAttribute('rel', 'noopener');
+    }
+
+    function restoreLang() {
+      var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+      if (!iframe) return;
+
+      var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+      var restore_el = innerDoc.getElementsByTagName("button");
+
+      for (var i = 0; i < restore_el.length; i++) {
+        if (restore_el[i].id.indexOf("restore") >= 0) {
+          restore_el[i].click();
+          var close_el = innerDoc.getElementsByClassName("goog-close-link");
+          close_el[0].click();
+          return;
+        }
+      }
+    }
+
+    function triggerHtmlEvent(element, eventName) {
+      var event;
+      if (document.createEvent) {
+        event = document.createEvent('HTMLEvents');
+        event.initEvent(eventName, true, true);
+        element.dispatchEvent(event);
+      } else {
+        event = document.createEventObject();
+        event.eventType = eventName;
+        element.fireEvent('on' + event.eventType, event);
+      }
+    }
+
+    var googleCombo = document.querySelector("select.goog-te-combo");
+    var langSelect = document.querySelector('.ct-language');
+    langSelect.addEventListener('click', function (event) {
+      if (!event.target) {
+        return;
+      }
+
+      var selected = document.querySelector('.ct-language .ct-language-selected');
+      if (selected) {
+        selected.classList.remove('ct-language-selected');
+      }
+
+      var target = event.target;
+      while (target && target !== langSelect) {
+        if (target.matches('.lang-select')) {
+          break;
+        }
+        target = target.parentElement;
+      }
+
+      if (target && target.matches('.lang-select')) {
+        var lang = target.getAttribute('data-lang');
+        if (googleCombo.value == lang) {
+          restoreLang();
+        } else if (lang == 'ko') {
+          var googleTranslateElement = document.getElementById('google_translate_element');
+          if (googleTranslateElement) {
+            googleTranslateElement.parentNode.removeChild(googleTranslateElement);
+            $('#google_translate_element').empty();
+          }
+        } else {
+          target.parentElement.classList.add('ct-language-selected');
+          googleCombo.value = lang;
+          triggerHtmlEvent(googleCombo, 'change');
+        }
+      }
+
+      event.preventDefault();
+    });
+  }
+</script>
+
+<script type="text/javascript"
+  src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script></span>-->
+          </div>
+
+          
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('manual' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = !(hours >= 2 && hours <=5);
+
+      if (nightShift) {
+        if (hours > 5) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(5);
+      } else {
+        toggleAt.setHours(2);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<div id="click-to-bottom" class="click-to-bottom">
+  <i class="fa fa-arrow-down"></i>
+</div>
+<script>
+  (function () {
+    const clickToBottom = document.getElementById('click-to-bottom');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToBottom.classList.add('show')
+      }else {
+        clickToBottom.classList.remove('show')
+      }
+    });
+    clickToBottom.addEventListener('click', () => {
+      window.smoothScrollTo(document.body.scrollHeight);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">데이터통신</h1>
+  <h2 class="post-subtitle">데이터통신1 강의</h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2023-04-16T00:00:00+09:00" itemprop="datePublished">2023-04-16, Sun
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 27 minutes</span>
+  </p>
+<div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Data%20communication">#Data communication</a></div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h2 id="2장-네트워크-모델">2장 네트워크 모델</h2>
+<blockquote>
+  <p>프로토콜 계층화는 통신 프로세스를 특정 기능을 수행하는 개별 계층으로 분할하는 것을 말합니다. 프로토콜 계층화의 원칙에는 양방향 통신, 각 계층 아래 동일한 객체, 계층 간 논리적 연결 등이 포함됩니다.</p>
+</blockquote>
+
+<h3 id="tcpip-계층">TCP/IP 계층</h3>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232508313-0e4283fc-cb8b-444c-bb3e-bea80c213145.png" alt="image"></p>
+
+<ul>
+  <li>응용
+    <ul>
+      <li>앱 프로토콜</li>
+    </ul>
+  </li>
+  <li>전송
+    <ul>
+      <li>전송 프로토콜</li>
+    </ul>
+  </li>
+  <li>네트워크
+    <ul>
+      <li>인터넷 프로토콜</li>
+      <li>Packet을 처리</li>
+    </ul>
+  </li>
+  <li>데이터 링크
+    <ul>
+      <li>LAN,WAN과 연관, HW가 처리</li>
+      <li>Frame를 처리</li>
+    </ul>
+  </li>
+  <li>물리
+    <ul>
+      <li>LAN,WAN과 연관</li>
+      <li>Bit를 처리</li>
+    </ul>
+  </li>
+</ul>
+
+<p>TCP/IP Protocol Suite는 인터넷에 연결된 장치 간 통신에 사용되는 프로토콜의 모음입니다.   응용, 전송, 인터넷 및 네트워크 액세스 계층을 포함하는 계층화 아키텍처를 갖습니다.</p>
+
+<p>캡슐화는 각 계층에서 패킷에 헤더(앞) 및 트레일러(뒤)를 추가하는 과정입니다<br>
+디캡슐화는 이러한 헤더 및 트레일러를 수신 측에서 제거하는 과정입니다.</p>
+
+<p>주소 지정(Addressing)은 네트워크 계층에서 패킷의 출발지와 목적지를 식별하는 데 사용됩니다. IP 주소가 이러한 목적으로 사용됩니다.
+다중화 및 역다중화(Multiplexing and Demultiplexing)는 여러 신호를 하나의 신호로 결합하는 과정입니다. 역다중화는 그 반대의 과정입니다.</p>
+
+<p>OSI Model과 TCP/IP Protocol Suite는 비슷한 기능을 가지고 있지만, 프로토콜 레이어링 접근 방식과 레이어 수에서 차이가 있습니다.</p>
+
+<h2 id="3장-물리-계층-소개">3장 물리 계층 소개</h2>
+<blockquote>
+  <p>이 장에서는 데이터와 신호, 아날로그와 디지털 데이터, 아날로그와 디지털 신호, 주기적과 비주기적 신호, 그리고 대역폭에 대해 논의합니다.</p>
+</blockquote>
+
+<h3 id="디지털과-아날로그-신호와-데이터">디지털과 아날로그, 신호와 데이터</h3>
+
+<table>
+  <thead>
+    <tr>
+      <th>종류</th>
+      <th>데이터</th>
+      <th>신호</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>아날로그</td>
+      <td>연속적인 정보(사람 목소리 등)</td>
+      <td>연속적인 파형</td>
+    </tr>
+    <tr>
+      <td>디지털</td>
+      <td>이산 값을 가짐</td>
+      <td>이산적, 0과 1과 같이 제한된 수의 정의된 값만 가짐, 합성 아날로그 신호</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="주기-아날로그-신호">주기 아날로그 신호</h3>
+<ul>
+  <li>Sine wave
+    <ul>
+      <li>주기적 아날로그 신호의 기본 유형</li>
+      <li>표현
+        <ul>
+          <li>진폭, 주파수, 위상</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="디지털-신호-전송--방법">디지털 신호 전송  방법</h3>
+
+<ul>
+  <li>베이스 밴드(Baseband) 전송
+    <ul>
+      <li>아날로그 신호로 변환 없이 디지털 신호를 채널을 통해 전송</li>
+      <li>Low-pass 채널 필요</li>
+      <li>좁은 대역폭으로 대용량 데이터 전송에 부적합</li>
+      <li>저렴한 비용</li>
+      <li>양방향 통신</li>
+      <li>근거리 전송에 주로 사용</li>
+    </ul>
+  </li>
+  <li>브로드 밴드(Broadband) 전송
+    <ul>
+      <li>디지털 신호를 아날로그 신호로 <strong>변환하여</strong> 전송</li>
+      <li>한 링크에 다수의 채널로 신호를 전송</li>
+      <li>변조(Modulation)를 사용</li>
+      <li>넓은 대역폭</li>
+      <li>장거리 전송에 주로 사용</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="대역폭">대역폭</h3>
+<blockquote>
+  <p>복합 신호에 포함된 주파수 영역</p>
+</blockquote>
+
+<ul>
+  <li>Hz 단위의 대역폭
+    <ul>
+      <li>복합 신호의 주파수 영역 or 채널이 통과 시킬 수 있는 주파수 영역</li>
+    </ul>
+  </li>
+  <li>Bit rate 단위의 대역폭
+    <ul>
+      <li>채널 or 링크의 Bit rate</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="전송-장애의-원인">전송 장애의 원인</h3>
+<blockquote>
+  <p>감쇠(Attenuation), 왜곡(Distortion), 잡음(Noise)은 전송에 장애가 됩니다.</p>
+</blockquote>
+
+<ul>
+  <li>감쇠
+    <ul>
+      <li>에너지 손실</li>
+      <li>대응
+        <ul>
+          <li>신호 증폭기(Amplifier)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>왜곡
+    <ul>
+      <li>신호 형태의 변화</li>
+      <li>대응
+        <ul>
+          <li>반대되는 신호나 다른 주파수로 만든다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>잡음
+    <ul>
+      <li>불필요한 신호가 섞임</li>
+      <li>대응
+        <ul>
+          <li>차폐</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="snrsignal-to-noise-ratio-신호-대-잡음-비율">SNR(Signal-to-Noise Ratio, 신호 대 잡음 비율)</h3>
+<blockquote>
+  <p>SNR이 높을수록 신호가 더 강하고 잡음이 더 약하다는 것을 의미합니다.<br>
+decibel로 표시한다.</p>
+</blockquote>
+
+<h3 id="data-rate와-bit-rate의-차이">Data Rate와 Bit Rate의 차이</h3>
+
+<ul>
+  <li>Bit Rate(비트 속도)
+    <ul>
+      <li>1초 당 전송되는 비트 수를 의미</li>
+      <li>전송되는 데이터의 양을 나타내는 것</li>
+      <li>비트/초(bps)로 표시</li>
+      <li>1 Mbps Bit rate는 1초당 100만 개의 비트를 전송할 수 있다는 것을 의미</li>
+    </ul>
+  </li>
+  <li>Bit Length(비트 길이)
+    <ul>
+      <li>매체를 통해 한 비트를 보내는 데 걸리는 시간</li>
+    </ul>
+  </li>
+  <li>Data Rate(데이터 속도)
+    <ul>
+      <li>1초 당 전송되는 실제 데이터의 양</li>
+      <li>1 Mbps Data rate는 1초 당 1MB의 데이터를 전송할 수 있다는 것을 의미</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="데이터-속도data-rate의-한계">데이터 속도(Data Rate)의 한계</h3>
+<blockquote>
+  <p>Data Rate는 세 가지 요소에 의존(영향을 받음)</p>
+</blockquote>
+
+<ul>
+  <li>가능한 대역폭</li>
+  <li>사용하는 신호 레벨</li>
+  <li>채널의 품질(노이즈)</li>
+</ul>
+
+<h3 id="이론적-최대-bit-rate">이론적 최대 Bit Rate</h3>
+<ul>
+  <li>Nyquist Bit Rate
+    <ul>
+      <li>노이즈가 <strong>없는</strong> 채널의 이론적 최대 Bit Rate</li>
+    </ul>
+  </li>
+  <li>Shannon capacity
+    <ul>
+      <li>노이즈가 <strong>있는</strong> 채널의 이론적 최대 Bit Rate</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="nyquist-bit-rate">Nyquist Bit Rate</h3>
+<blockquote>
+  <p>Bit Rate = 2 * bandwidth * log<sub>2</sub>L  (L은 신호의 레벨)</p>
+</blockquote>
+
+<p>ex) 노이즈가 없는 3000Hz의 채널로 신호를 2 신호 레벨로 전송할때, 최대 Bit Rate는?<br>
+Bit Rate = 2 * 3000 * log<sub>2</sub>2 = 6000bps</p>
+
+<h3 id="shannon-capacity">Shannon capacity</h3>
+<blockquote>
+  <p>Capacity = bandwidth * log<sub>2</sub>(1+SNR)</p>
+</blockquote>
+
+<p>ex) 전화기는 일반적으로 대역폭 3000Hz, SNR 3162 이다.<br>
+C = 3000 * log<sub>2</sub>3163 = 3000 * 11.62 = 34,860bps</p>
+
+<h3 id="요약">요약</h3>
+<p><strong>Shannon capacity</strong> 는 최대 속도의 상한 값을 알려줌<br>
+<strong>Nyquist formula</strong> 는 얼마 만큼의 신호 레벨이 필요한지를 알려줌</p>
+
+<h3 id="성능">성능</h3>
+<ul>
+  <li>대역폭
+    <ul>
+      <li>Hz와 비트/초 단위의 대역폭</li>
+    </ul>
+  </li>
+  <li>처리량
+    <ul>
+      <li>데이터를 얼마나 빨리 네트워크를 통해 전송할 수 있는지를 측정하는 지표</li>
+    </ul>
+  </li>
+  <li>지연 (지연 시간)
+    <ul>
+      <li>전파 시간, 전송 시간, 대기 시간, 처리 지연 시간</li>
+    </ul>
+  </li>
+  <li>전송 시간
+    <ul>
+      <li>매체를 통해 메시지를 보내는 데 걸리는 시간</li>
+    </ul>
+  </li>
+  <li>대기 시간
+    <ul>
+      <li>메시지가 처리되기 전에 보류되는 시간</li>
+    </ul>
+  </li>
+  <li>대역폭-지연 곱
+    <ul>
+      <li>한 번에 네트워크를 통해 전송할 수 있는 데이터 양</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="4장-디지털-전송">4장 디지털 전송</h2>
+<blockquote>
+  <p>컴퓨터 네트워크는 정보를 한 지점에서 다른 지점으로 보내도록 설계되었고, 이 정보는 전송을 위해 디지털 신호 또는 아날로그 신호로 변환해야 합니다.</p>
+</blockquote>
+
+<h3 id="디지털-디지털-변환">디지털-디지털 변환</h3>
+<blockquote>
+  <p>디지털 데이터 → 디지털 신호로 변환</p>
+</blockquote>
+
+<h3 id="signal-element-vs-data-element">Signal Element vs Data Element</h3>
+
+<ul>
+  <li>신호 요소(Signal Element)
+    <ul>
+      <li>디지털 신호(Digital Signal)의 시간 상 가장 짧은 단위</li>
+    </ul>
+  </li>
+  <li>데이터 요소(Data Element)
+    <ul>
+      <li>보내야 하는 것</li>
+    </ul>
+  </li>
+  <li>r
+    <ul>
+      <li>각 <strong>신호 요소</strong> 가 전달하는 <strong>데이터 요소(Data Element)</strong> 의 개수</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232279363-68ed497f-e0ae-43fa-aafc-5aa1b4c5abcd.png" alt="image"></p>
+
+<h3 id="data-rate-vs-signal-rate">Data Rate vs Signal Rate</h3>
+
+<ul>
+  <li>Data Rate
+    <ul>
+      <li>1초 당 전송되는 데이터 요소(Bits)의 개수</li>
+      <li>Bit Rate</li>
+    </ul>
+  </li>
+  <li>Signal Rate
+    <ul>
+      <li>1초 당 전송되는 신호(Signal) 요소의 개수</li>
+      <li>Pulse Rate, Modulation Rate, Baud Rate(디지털 신호에 필요한 대역폭을 결정한다)</li>
+    </ul>
+  </li>
+  <li>Data Rate(N) 와 Signal Rate(S) 의 관계
+    <ul>
+      <li>Signal Rate = Data Rate / r</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="전송-방법-개발-시-고려하는-부분">전송 방법 개발 시 고려하는 부분</h3>
+
+<ul>
+  <li>Baseline Wandering
+    <ul>
+      <li>수신자는 수신된 신호 세기의 평균을 계산합니다. 이 평균을 Baseline이라고 합니다.</li>
+    </ul>
+  </li>
+  <li>DC Components(Direct-Current, 직류)
+    <ul>
+      <li>디지털 신호의 전압 레벨이 일정하게 유지되면 스펙트럼은 매우 낮은 주파수를 만드는데, 이 주파수는 0에 가깝습니다.</li>
+      <li>주파수가 낮은 성분을 통과하지 못하는 시스템이 존재하므로, 직류가 생기지 않도록 해야합니다.</li>
+    </ul>
+  </li>
+  <li>Self-synchronization
+    <ul>
+      <li>송신자가 보낸 신호를 인식하기 위해 수신자의 Bit 간격과 송신자의 Bit 간격이 일치해야 합니다.</li>
+      <li>동기화가 필요합니다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="line-coding회선-부호화"><strong>Line Coding(회선 부호화)</strong></h3>
+<hr>
+<blockquote>
+  <p>디지털 데이터를 디지털 신호로 변환하는 과정(0과 1을 어떻게 할 것인가를 처리)</p>
+</blockquote>
+
+<ul>
+  <li>방식
+    <ul>
+      <li>Unipolar(단극형)
+        <ul>
+          <li>NRZ</li>
+        </ul>
+      </li>
+      <li>Polar(극형)
+        <ul>
+          <li>NRZ-I, NRZ-Z, RZ, Biphase(Manchester, Diff-Manchester)</li>
+        </ul>
+      </li>
+      <li>Bipolar(양극형)
+        <ul>
+          <li>AMI, Pseudoternary</li>
+        </ul>
+      </li>
+      <li>Multilevel
+        <ul>
+          <li>2B/1Q, 8B/6T, 4D-PAM5</li>
+        </ul>
+      </li>
+      <li>Multitransition
+        <ul>
+          <li>MLT-3</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="unipolar단극형-방식">Unipolar(단극형) 방식</h3>
+<hr>
+<blockquote>
+  <p>모든 신호 레벨이 축 아래 또는 위에 있습니다.</p>
+</blockquote>
+
+<h3 id="nrznon-return-to-zero">NRZ(Non-Return-to-Zero)</h3>
+<blockquote>
+  <p>가장 기본적인 방법, 양전압 : 1비트, 음전압 : 0비트로 정의됩니다.</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232280983-e9d2548c-10d3-4109-9849-c65acb60ff8f.png" alt="image"></p>
+
+<p>0이 기준점입니다.</p>
+
+<ul>
+  <li>문제점
+    <ul>
+      <li>DC, Clock synchronization</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="polar극형-방식">Polar(극형) 방식</h3>
+<hr>
+<blockquote>
+  <p>양과 음, 두 가지 전압 준위를 사용한다.</p>
+</blockquote>
+
+<h3 id="nrz-l-nrz-i">NRZ-L, NRZ-I</h3>
+<blockquote>
+  <p>두 가지 레벨의 전압을 사용, 양전압 : 0비트, 음전압 : 1비트로 정의됩니다.</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232281881-48247dae-609b-490e-8f98-f54df36c1737.png" alt="image"></p>
+
+<ul>
+  <li>NRZ-L(Level)
+    <ul>
+      <li>전압 레벨에 따라 Bit 값 결정</li>
+      <li>sync문제가 발생한다.</li>
+    </ul>
+  </li>
+  <li>NRZ-I(Inversion)
+    <ul>
+      <li>다음 Bit가 0 → 반전X, 1 → 반전O</li>
+      <li>Bit 1을 만날때 마다 반전하므로, sync를 제공한다.</li>
+    </ul>
+  </li>
+  <li>문제점
+    <ul>
+      <li>DC</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>평균 신호 속도</strong> = N/2</p>
+
+<h3 id="rzreturn-to-zero">RZ(Return-to-Zero)</h3>
+<blockquote>
+  <p>NRZ의 문제점인 <strong>Sync</strong>를 제공</p>
+</blockquote>
+
+<ul>
+  <li>문제점
+    <ul>
+      <li>NRZ보다 더 많은 대역폭을 차지</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232283563-ef0120a0-33b9-44e5-ba1f-e467ec42c13f.png" alt="image"></p>
+
+<h3 id="biphasemanchester">Biphase(Manchester)</h3>
+<blockquote>
+  <p>두 가지 전압을 사용, Bipolar(AMI, Pseudoternary)와 달리 0이 아닌 모든 비트에 대해 신호가 전송됨, 동기화와 bit를 표현하기 위해 각 bit 간격 중간에서 신호를 반전<br>
+Bit 0 → 양극에서 음극으로 반전, Bit 1 → 음극에서 양극으로 반전 
+DC 해결<br>
+비트 중간에서 반전되므로 Sync문제가 없다.<br>
+NRZ 대비 2배의 대역폭을 가진다.</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232284062-967d15f7-879e-479e-8904-135117a5835c.png" alt="image"></p>
+
+<ul>
+  <li>Differential Manchester
+    <ul>
+      <li>RZ와 NRZ-I의 개념을 결합</li>
+      <li>비트 중간에서 무조건 반전</li>
+      <li>다음 Bit가 0 → 반전O, 1 → 반전X</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="bipolar양극형">Bipolar(양극형)</h3>
+<hr>
+<blockquote>
+  <p>세 가지 레벨(+,0,-) 사용, 장거리 통신에 주로 사용</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232284474-498d2764-80aa-4d77-b0a5-758f93df3d1d.png" alt="image"></p>
+
+<ul>
+  <li>AMI
+    <ul>
+      <li>다음 bit 0 → 0, 1 → 전환</li>
+      <li>0이 연속되면 Sync문제가 발생한다.
+        <ul>
+          <li>해결방안
+            <ul>
+              <li>Scrambling(B8ZS, HDB3)</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Pseudoternary
+    <ul>
+      <li>다음 bit 0 → 전환, 1 → 0</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="multilevel다준위">Multilevel(다준위)</h3>
+<hr>
+<blockquote>
+  <p>m개 데이터 요소의 패턴을 n개 신호 요소의 패턴으로 인코딩하여 전송당 비트 수를 늘림  &gt;한번에 더 많은 정보 전송이 가능해 대역폭 효율성 증가<br>
+mBnL 방식에서 m 데이터 요소의 패턴을 2^m&lt;=L^n인 n 신호 요소의 패턴으로 인코딩한다.</p>
+</blockquote>
+
+<h3 id="2b1q">2B1Q</h3>
+<blockquote>
+  <p>2진수 1개, 4진수 1개, DSL(Digital subscriber line)기술에 사용됩니다.<br>
+4개의 전압 준위를 사용<br>
+각 펄스는 2비트를 표현</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232286412-becb44ad-2bfe-470e-b8a2-a1e06134537f.png" alt="image"></p>
+
+<h3 id="8b6t">8B6T</h3>
+<blockquote>
+  <p>2진수 8개, 3진수 6개, 100BASE-4T 케이블에 사용<br>
+3개의 전압 준위를 사용</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232286503-838c7eda-9c93-46a9-8687-c4eda9730837.png" alt="image"></p>
+
+<p>729(6^3) - 256(268) = 473개의 중복 신호 요소가 있음, 동기화와 에러 검출에 사용</p>
+
+<h3 id="4d-pam54차원-5레벨-펄스-진폭-변조">4D-PAM5(4차원 5레벨 펄스 진폭 변조)</h3>
+<blockquote>
+  <p>4D는 데이터가 동시에 4가닥 선으로 전송되는 것을 의미, 5개의 전압 레벨(-2,-1,0,1,2)사용, 0레벨은 에러 검출에 사용<br>
+기가비트 랜에 사용</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232286642-8b98aee6-96c7-4002-8444-9b1f6281d254.png" alt="image"></p>
+
+<h3 id="mutitransition다중-회선-전송">Mutitransition(다중 회선 전송)</h3>
+<hr>
+<h3 id="mlt-3">MLT-3</h3>
+<blockquote>
+  <p>3개의 전압 준위(-1,0,+1)사용</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/233019182-15df8ae3-54cd-40c3-ade8-68091fa30f94.png" alt="image"></p>
+
+<h3 id="line-coding-요약">Line Coding 요약</h3>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232286727-dae49253-6e7e-4d1d-96f6-a0629389e0e7.png" alt="image"></p>
+
+<ul>
+  <li>DC 있음
+    <ul>
+      <li>NRZ, AMI</li>
+    </ul>
+  </li>
+  <li>DC 없음
+    <ul>
+      <li>Biphase, 8B6T, 4D-PAM5</li>
+    </ul>
+  </li>
+  <li>Sync 문제 있음
+    <ul>
+      <li>NRZ, NRZ-L, AMI, 2B1Q, MLT-3</li>
+    </ul>
+  </li>
+  <li>Sync 문제 없음
+    <ul>
+      <li>NRZ-L, RZ, Biphase, 8B6T, 4D-PAM5</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>Biphase, 8B6T, 4D-PAM5</strong>는 <strong>DC, Sync</strong>문제가 없다!</p>
+
+<h3 id="block-coding블록-부호화">Block Coding(블록 부호화)</h3>
+<hr>
+<blockquote>
+  <p>디지털 데이터 → 디지털 데이터로 변환, mB/nB 부호화<br>
+m bit를 n bit 블록으로 바꾼다.
+Sync와 오류 탐지를 위해 비트를 추가하는 것이다.  <br>
+조건 : m&lt;n</p>
+</blockquote>
+
+<h3 id="4b5b">4B/5B</h3>
+<blockquote>
+  <p>4비트 → 5비트, 동기화 문제 해결, 데이터 크기 증가</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232286841-bcdc6f24-c8f9-4681-b9ba-db333ff37e9f.png" alt="image"></p>
+
+<p>4비트를 바꿀때 없는 5비트는 따로 매핑</p>
+
+<h3 id="8b10b">8B/10B</h3>
+<blockquote>
+  <p>에러 확인(내장 오류 검사 가능)과 동기화 개선에서 더 나음</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232286905-5b3f20c7-f0e4-4880-a84e-612e633e7eb0.png" alt="image"></p>
+
+<h3 id="scrambling">Scrambling</h3>
+<hr>
+<blockquote>
+  <p>동기화를 제공하기 위해 긴 0레벨 펄스를 다른 레벨의 조합으로 대체합니다.</p>
+</blockquote>
+
+<ul>
+  <li>종류
+    <ul>
+      <li>8-0 substitution Bipolar(B8ZS)</li>
+      <li>High Density Bipolar 3-0(HDB3)</li>
+    </ul>
+  </li>
+  <li>Scrambling이 필요한 이유
+    <ul>
+      <li>LAN의 스테이션 간 전용 링크에 적합한 Biphase 체계는 넓은 대역폭 요구로 인해 장거리 통신에 부적합</li>
+      <li>Block coding과 NRZ의 조합은 DC 때문에 장거리 인코딩에 부적합</li>
+      <li>AMI 인코딩은 대역폭이 좁고 DC를 만들지 않으나, 긴 0 시퀀스는 동기화를 방해한다</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="b8zs8-0-substitution-bipolar">B8ZS(8-0 substitution Bipolar)</h3>
+<blockquote>
+  <p>노이즈를 고려해 V,B를 여러개 둬서 DC 문제를 해결함</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232287156-3809a54b-1ab9-4f65-ad53-7caaf8662744.png" alt="image"><br>
+V : Violation</p>
+
+<h3 id="hdb3high-density-bipolar-3-0">HDB3(High Density Bipolar 3-0)</h3>
+<blockquote>
+  <p>B8ZS와 유사, 4개의 0에 대해 변환, 총 펄스의 수를 <strong>짝수</strong>로 만듭니다.</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232288829-9918ab3d-5ed9-45c2-a832-203117921169.png" alt="image"></p>
+
+<ul>
+  <li>마지막 대체 후 0이 아닌 펄스의 수가 홀수이면 대체 패턴은 000V가 됩니다.
+    <ul>
+      <li>이는 0이 아닌 펄스의 총 수를 짝수로 만듭니다.</li>
+    </ul>
+  </li>
+  <li>마지막 치환 후 0이 아닌 펄스의 개수가 짝수이면 치환 패턴은 B00V가 됩니다.
+    <ul>
+      <li>이는 0이 아닌 펄스의 총 수를 짝수로 만듭니다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="아날로그---디지털-변환">아날로그 - 디지털 변환</h3>
+<hr>
+<blockquote>
+  <p>아날로그 신호 → 디지털 데이터로 변환</p>
+</blockquote>
+
+<ul>
+  <li>종류
+    <ul>
+      <li>PCM</li>
+      <li>DM</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="pcmpulse-code-modulation-펄스-코드-변조">PCM(Pulse Code Modulation, 펄스 코드 변조)</h3>
+<blockquote>
+  <p>가장 일반적인 기술</p>
+</blockquote>
+
+<ol>
+  <li>아날로그 신호를 샘플링(신호를 시간 별로 자름, 중간값이 버려짐)</li>
+  <li>샘플링된 신호를 양자화</li>
+  <li>양자화된 값을 비트 스트림으로 인코딩</li>
+</ol>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232289000-9962152d-8638-4848-8079-2ccff5ab88b6.png" alt="image"></p>
+
+<h3 id="샘플링sampling">샘플링(Sampling)</h3>
+<blockquote>
+  <p>아날로그 신호로 표본을 채집하고 그 결과에 근거하여 펄스를 제작<br>
+Nyquist 정리에 따르면 샘플링 속도는 신호에 포함된 최고 주파수의 2배 이상이어야 함, 적절한 샘플링 횟수를 정하는 것이 중요</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232289072-b70041a3-ef9c-44dc-a6bb-434852fbfbe0.png" alt="image"></p>
+
+<ul>
+  <li>문제점
+    <ul>
+      <li>몇 Bit로 나눠야 하는가</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="인코딩">인코딩</h3>
+<blockquote>
+  <p>각 샘플은 n<sub>b</sub>-bit code word로 바뀔 수 있다 
+Bit Rate = Sampling Rate * Number of bits per sample = f<sub>s</sub>n<sub>b</sub></p>
+</blockquote>
+
+<p>ex) 사람 목소리의 샘플링 속도와 비트 속도는 ?<br>
+샘플링 속도 = 4000 * 2 = 8000samples/s<br>
+비트 속도 = 8000 * 8 = 64,000bps = 64kbps</p>
+
+<h3 id="dmdelta-modulation">DM(Delta Modulation)</h3>
+<blockquote>
+  <p>PCM의 복잡성을 줄여 간단함, 아날로그를 바로 디지털로 바꿈</p>
+</blockquote>
+
+<h3 id="data-transmission데이터-전송">Data Transmission(데이터 전송)</h3>
+
+<ul>
+  <li>데이터 전송모드
+    <ul>
+      <li>병렬
+        <ul>
+          <li>한번에 n 개의 그룹의 비트를 전송하는 것</li>
+          <li>n 비트를 전송하기 위해 n 개의 전선을 사용</li>
+          <li>장점
+            <ul>
+              <li>직렬 전송에 비해 n 배만큼 전송속도가 증가</li>
+            </ul>
+          </li>
+          <li>단점
+            <ul>
+              <li>비싼 가격</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>직렬
+        <ul>
+          <li>통신하는 두 장치 간에 하나의 채널만 있으면 된다.</li>
+          <li>비 동기식</li>
+          <li>동기식</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232289518-75634072-fc14-49b1-afce-e9d7de9fa5f4.png" alt="image"></p>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232976002-f2b52502-d620-4ca1-853c-cd231805425c.png" alt="image"></p>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232289529-81ff0a13-0391-4ac2-80d7-3e0b8f867888.png" alt="image"></p>
+
+<ul>
+  <li>Async Transmission
+    <ul>
+      <li>신호 타이밍은 중요하지 않음</li>
+      <li>start bit : 0, stop bit : 1</li>
+    </ul>
+  </li>
+  <li>Sync Transmission
+    <ul>
+      <li>Bit stream이 Frame에 조합됨</li>
+      <li>양쪽 간에 시간 동기화 불필요</li>
+      <li>수신자는 수신된 byte를 8bit 단위의 그룹으로 분리한다.</li>
+      <li>데이터 링크 계층에서 주로 사용
+        <ul>
+          <li>장점
+            <ul>
+              <li>비동기식 보다 빠른 속도</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="5장-아날로그-전송">5장 아날로그 전송</h2>
+<blockquote>
+  <p>아날로그 전송은 진폭, 주파수 또는 위상의 변화로 정보를 전송하는 방식<br>
+이 장에서는 디지털-아날로그 및 아날로그-아날로그 변환에 사용되는 다양한 기술에 대해 논의한다.</p>
+</blockquote>
+
+<h3 id="디지털---아날로그-변환">디지털 - 아날로그 변환</h3>
+<blockquote>
+  <p>디지털 데이터를 기반으로 아날로그 신호의 특성 중 하나를 변경하는 과정입니다.</p>
+</blockquote>
+
+<ul>
+  <li>디지털 데이터 - 아날로그 신호 변환의 네 가지 유형
+    <ul>
+      <li>진폭 편이 변조(ASK)</li>
+      <li>주파수 편이 변조(FSK)</li>
+      <li>위상 편이 변조(PSK)</li>
+      <li>사분면 진폭 변조(QAM)</li>
+    </ul>
+  </li>
+</ul>
+
+<p>ASK, FSK, PSK는 아날로그 전송법입니다.
+QAM은 주파수를 통일하고, 진폭과 위상이 다릅니다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232289782-0acac530-53c3-45b8-a139-2fdbceffd6f0.png" alt="image"></p>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232289850-e800c4f9-4846-42de-8bab-e4fbe8703cd5.png" alt="image"></p>
+
+<h3 id="디지털---아날로그-변환-시-중요한-것들">디지털 - 아날로그 변환 시 중요한 것들</h3>
+<ul>
+  <li>데이터 요소 대 신호 요소</li>
+  <li>데이터 속도 대 신호 속도</li>
+  <li>대역폭</li>
+  <li>Carrier(반송파) 신호
+    <ul>
+      <li>아날로그 전송 시, 송신 장치는 정보 전송 기반이 되는 고주파 신호를 생성하는데, 이 신호를 의미합니다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="askamplitude-shift-keying">ASK(Amplitude Shift Keying)</h3>
+<blockquote>
+  <p>진폭이 다른 신호 요소를 사용, 일반적으로 두 레벨만 사용하여 구현됩니다.<br>
+BASK(Binary amplitude shift keying), OOK(On-Off keying)</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232290732-21811c97-0fc6-4421-a898-fa08230f2c60.png" alt="image"></p>
+
+<ul>
+  <li>ASK의 대역폭
+    <ul>
+      <li>B = (1 + d) x S</li>
+      <li>0 &lt;= d &lt;= 1</li>
+      <li>B는 1에 가까울 수록 좋음</li>
+    </ul>
+  </li>
+  <li>다중 레벨 ASK
+    <ul>
+      <li>QAM으로 구현</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="fskfrequency-shift-keying">FSK(Frequency Shift Keying)</h3>
+<blockquote>
+  <p>Carrier signal의 주파수를 변조하여 데이터를 나타냄<br>
+BFSK(Binary FSK) : 두개의 Carrier 주파수를 고려, 0과 1에 따라 주파수가 다름</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232290980-46b853e3-1b26-44eb-968b-bb884f9ed437.png" alt="image"></p>
+
+<ul>
+  <li>BFSK의 대역폭
+    <ul>
+      <li>B = (1 + d) x S + 2∆∅</li>
+      <li>ASK 대역폭의 절반 수준</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="pskphase-shift-keying">PSK(Phase Shift Keying)</h3>
+<blockquote>
+  <p>Carrier의 위상을 변조하여 2개 이상의 다른 신호 요소를 나타냄<br>
+BPSK(Binary PSK) : 2개의 신호 요소만 사용, 0° 위상과 180° 위상을 가진 요소</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232291230-e62a1942-535b-412b-b1e5-4f8ccbb758f6.png" alt="image"></p>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232291240-4d4d441f-e197-4674-96d7-3a9fb1f986ae.png" alt="image"></p>
+
+<ul>
+  <li>PSK의 대역폭
+    <ul>
+      <li>B = 1 + d x S로 계산됩니다</li>
+      <li>Quadrature PSK (QPSK)는 각 신호 요소에서 두 개의 비트를 한 번에 보내어 구현됩니다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="constellation-diagram">Constellation Diagram</h3>
+<blockquote>
+  <p>두 개의 반송파를 사용할 때 신호 요소의 진폭과 위상을 정의하는 데 도움이 됩니다.</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232291344-01bcd6f8-79ea-4c88-a752-c2263e0a56f2.png" alt="image"></p>
+
+<ul>
+  <li>보통 주파수를 통일시킵니다.</li>
+  <li>크기, 위상으로 구별합니다.</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232291372-e55484ac-281a-4f35-89b5-8d2e3e198de0.png" alt="image"><br>
+모든 위상이 0, 크기 동일/위상 다름, 크기/위상 다름</p>
+
+<h3 id="qamquadrature-amplitude-modulation">QAM(Quadrature Amplitude Modulation)</h3>
+<blockquote>
+  <p>서로 다른 진폭 레벨을 가진 두 개의 반송파를 사용</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232292245-c7a75035-85f2-45be-aa78-bd90124af4a4.png" alt="image"></p>
+
+<h3 id="아날로그----아날로그">아날로그  - 아날로그</h3>
+<blockquote>
+  <p>아날로그를 아날로그로 변환한다.</p>
+</blockquote>
+
+<ul>
+  <li>종류
+    <ul>
+      <li>AM(진폭 변조)</li>
+      <li>FM(주파수 변조)</li>
+      <li>PM(위상 변조)</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="amamplitude-modulation">AM(Amplitude Modulation)</h3>
+<blockquote>
+  <p>신호의 진폭에 따라 반송파의 진폭이 바뀐다.<br>
+Modulating signal * Carrier frequency = Modulated signal<br>
+대역폭 : B<sub>AM</sub> 2B, 변조 신호 대역폭의 2배</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232293136-8dec938d-a996-43dc-9b74-bce632821716.png" alt="image"></p>
+
+<h3 id="fmfrequency-modulation">FM(Frequency Modulation)</h3>
+<blockquote>
+  <p>변조신호의 전압 준위 변화에 따라 반송파의 주파수가 바뀐다.<br>
+대역폭 : 변조신호 대역폭의 10배</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232293912-455f682b-4fad-4bbf-bfb0-ddfde6e5d551.png" alt="image"></p>
+
+<h3 id="라디오가-am-fm으로-구분되는-이유">라디오가 AM, FM으로 구분되는 이유</h3>
+<blockquote>
+  <p>A, B간에 위치 차이(주파수 영역이 다름)를 둬서 radio에 AM, FM이 있음</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232295289-38e215ba-9863-45fc-ba19-31968baf7b1b.png" alt="image"></p>
+
+<h3 id="pmphase-modulation">PM(Phase Modulation)</h3>
+<blockquote>
+  <p>주파수가 위상에 따라 변화</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232295985-a81af06a-7ff0-4b6a-ab1b-e1d78313e5bc.png" alt="image"></p>
+
+<h2 id="6장-대역폭-활용--멀티-플렉싱-스펙트럼-확산">6장 대역폭 활용 : 멀티 플렉싱, 스펙트럼 확산</h2>
+
+<h3 id="multiplexing다중화의-정의-및-범주">Multiplexing(다중화)의 정의 및 범주</h3>
+<blockquote>
+  <p>단일 데이터 링크를 통해 여러 신호를 동시에 전송이 가능한 기술<br>
+두 장치를 연결하는 매체의 대역폭 &gt; 장치에 필요한 대역폭</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232296995-e7e01b08-aec9-40c3-b580-8879973c458c.png" alt="image"></p>
+
+<ul>
+  <li>Link
+    <ul>
+      <li>물리적 경로</li>
+    </ul>
+  </li>
+  <li>Channel
+    <ul>
+      <li>회선 쌍 사이에서 전송을 위한 경로</li>
+      <li>링크는 여러 개의 채널을 가질 수 있음</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232297767-725d0d10-ee72-43fc-b02a-1bce22882a08.png" alt="image"></p>
+
+<ul>
+  <li>범주
+    <ul>
+      <li>FDM(주파수 분할 다중화)</li>
+      <li>WDM(파장 분할 다중화)</li>
+      <li>TDM(시분할 다중화)</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="frequency-division-multiplexing주파수-분할-다중화-fdm">Frequency-Division Multiplexing(주파수 분할 다중화, FDM)</h3>
+<blockquote>
+  <p>전송될 신호들의 대역폭 조합보다 링크의 대역폭이 더 클때 사용된다.<br>
+신호가 겹치지 않도록 보호 대역 만큼 떨어져야 한다.</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232299895-809f6f2b-9ac4-4445-ab6b-d4d88820502d.png" alt="image"></p>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232300116-ecd8bbf0-b8e2-4f0f-8a3f-95d5b0588612.png" alt="image"><br>
+3600개의 채널을 1개의 선으로 처리</p>
+
+<h3 id="wavelength-division-multiplexing파장-분할-다중화-wdm">Wavelength-Division Multiplexing(파장 분할 다중화, WDM)</h3>
+<blockquote>
+  <p>기본 개념은 FDM과 같다.<br>
+광케이블의 고속 데이터 전송에 적합, SONET network에 사용</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232732851-379d225c-1079-4378-a0cf-70ebe54dfe4a.png" alt="image"><br>
+3개의 빛을 전송함</p>
+
+<h3 id="time-division-multiplexing시분할-다중화">Time-Division Multiplexing(시분할 다중화)</h3>
+<blockquote>
+  <p>여러 연결이 링크의 높은 대역폭을 공유하는 디지털 처리<br>
+여러 저속 채널을 하나의 고속 채널로 결합<br>
+Time slot, Frame을 사용한다.</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232733012-488fc12c-ace5-42a5-9fe3-35370d9ed3aa.png" alt="image"></p>
+
+<ul>
+  <li>종류
+    <ul>
+      <li>동기식 TDM</li>
+      <li>통계적 TDM</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="동기식-tdm">동기식 TDM</h3>
+<blockquote>
+  <p>각 입력 연결은 데이터를 전송하지 않더라도 출력에 할당됨<br>
+링크의 데이터 속도는 n배 더 빠르며, 단위 지속 시간은 n배 더 짧음</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232733120-01845202-5ac7-47fd-b8de-907493aaaffd.png" alt="image"><br>
+A, B, C가 시간을 나눔</p>
+
+<h3 id="tdm의-문제점">TDM의 문제점</h3>
+<hr>
+<blockquote>
+  <p>Empty Slots, Data Rate Management</p>
+</blockquote>
+
+<ul>
+  <li>Empty Slots
+    <ul>
+      <li>동기식 TDM은 전송할 데이터가 없다면 빈 슬롯이 생기므로 비효율적 입니다.</li>
+    </ul>
+  </li>
+  <li>Data Rate Management
+    <ul>
+      <li>입력 데이터 속도의 불일치 문제를 가집니다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="empty-slots">Empty Slots</h3>
+<p><img src="https://user-images.githubusercontent.com/48265129/232305365-45587684-b3d3-47be-95ef-3fe7e7b4b104.png" alt="image"></p>
+
+<h3 id="data-rate-management">Data Rate Management</h3>
+<p><img src="https://user-images.githubusercontent.com/48265129/232305415-61070a4e-0421-4f6a-af62-f103497a31fb.png" alt="image"></p>
+
+<h3 id="frame-synchronizing">Frame Synchronizing</h3>
+<blockquote>
+  <p>TDM 구현은 FDM만큼 간단하지 않습니다.<br>
+Multiplexer와 DeMultiplexer간의 동기화는 중요한 문제입니다.<br>
+Frame앞에 Framing bits를 추가하여 동기화 문제를 개선합니다.</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232733264-5d3db2ca-e90f-4b2a-8fbd-d509e5fdb866.png" alt="image"></p>
+
+<h3 id="digital-signal-servicedss">Digital Signal Service(DSS)</h3>
+<blockquote>
+  <p>전화 통신사는 Digital Signals 계층으로 TDM을 구현</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232305717-79a59685-d35c-4196-af27-ba4f8e92e059.png" alt="image"></p>
+<ul>
+  <li>DS-0 : 단일 디지털 채널, 64kbps</li>
+  <li>DS-1 : 1,544mbps, 24개의 DS-0 채널을 다중화</li>
+  <li>DS-2 : 6,312mbps, 4개의 DS-1 채널(96개의 DS-0 채널)을 다중화</li>
+  <li>DS-3 : 44,376mbps, DS-2 채널을 다중화</li>
+  <li>DS-4 : 274,176mbps, DS-3 채널을 다중화</li>
+</ul>
+
+<h3 id="t-lines">T-Lines</h3>
+<blockquote>
+  <p>DS-0, DS-1 등은 서비스 명입니다.
+이를 구현하기 위해 통신사는 T-Lines를 사용합니다</p>
+</blockquote>
+
+<h3 id="e-lines">E-Lines</h3>
+<blockquote>
+  <p>유럽 연합의 T-Lines</p>
+</blockquote>
+
+<h3 id="statistical-time-division-multiplexing통계적-시분할-다중화-stdm">Statistical Time-Division Multiplexing(통계적 시분할 다중화, STDM)</h3>
+<blockquote>
+  <p>대역폭 효율성 향상을 위해 슬롯이 동적으로 할당됩니다.<br>
+동기식 TDM에서, 각 입력에는 출력 프레임에 예약된 슬롯이 있습니다. → 일부 입력 라인에 전송할 데이터가 없으면 비효율적 입니다.</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232306355-9da4ed44-41ae-42f4-ab49-df6b6af3e89b.png" alt="image"></p>
+
+<ul>
+  <li>Addressing
+    <ul>
+      <li>Frame에 추가 정보 삽입</li>
+    </ul>
+  </li>
+  <li>Slot size</li>
+  <li>No synchronization bits</li>
+  <li>Bandwidth</li>
+</ul>
+
+<h3 id="spread-spectrum대역-확산">Spread spectrum(대역 확산)</h3>
+<blockquote>
+  <p>무선 신호를 다양한 주파수 대역으로 분산시켜서 전송한다, 무선 애플리케이션에서 사용(LAN, WAN)<br>
+각 스테이션에는 필요보다 더 넓은 대역폭을 할당해야 한다.<br>
+원래 대역폭 B를 Bss로 확장하는 것은 원래 신호와 독립적으로 수행</p>
+</blockquote>
+
+<ul>
+  <li>종류
+    <ul>
+      <li>FHSS</li>
+      <li>DSSS</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232306998-b5d2952e-2b79-4fdd-87f3-fcf1ef8ccff5.png" alt="image"></p>
+
+<h3 id="frequency-hopping-spread-spectrum주파수-도약-확산-스펙트럼">Frequency Hopping Spread Spectrum(주파수 도약 확산 스펙트럼)</h3>
+<blockquote>
+  <p>랜덤 도약 시퀀스를 통해 발신된 M개의 신호를 서로 다른 반송파를 사용하여 신호를 전송한다.<br>
+대상 채널에 대한 사전 검사 기능이 있어, 대상 채널에 노이즈, 전파 간섭이 있으면 그 채널을 피해 도약하는 것이 가능하다. 이로 인해 노이즈, 전파 간섭의 영향을 받지 않고 안정적인 통신이 가능하다.</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232307286-fa284eda-6bce-47a7-a88e-2c4a96e20f49.png" alt="image"></p>
+
+<h4 id="대역폭-공유">대역폭 공유</h4>
+<p><img src="https://user-images.githubusercontent.com/48265129/232307312-12adec4b-4285-4b21-bae0-da2f9b8cef7e.png" alt="image"><br>
+주기를 랜덤으로 만들면 보안성 향상</p>
+
+<h3 id="direct-sequence-spread-spectrum직접-시퀀스-확산-스펙트럼">Direct Sequence Spread Spectrum(직접 시퀀스 확산 스펙트럼)</h3>
+<blockquote>
+  <p>신호를 확산 코드(무작위 비트 시퀀스)와 XOR연산을 수행하여 변환된 출력 코드를 가지고 다른 주파수 대역으로 분산시켜서 전송한다.<br>
+FHSS에 비해 노이즈, 간섭에 취약하다.</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232307433-0ae6bb73-9e85-43ac-9adf-1e7e16378653.png" alt="image"><br>
+사용자 마다 다른 확산 코드를 사용하도록 하여 주파수 간섭을 감소시킬 수 있다.</p>
+
+<h4 id="대역폭-공유-1">대역폭 공유</h4>
+<blockquote>
+  <p>일부 무선 LAN은 DSSS를 사용하고, 확산 대역폭 공유 불가<br>
+특수 확산 코드를 사용하여, 확산 대역폭을 공유 가능</p>
+</blockquote>
+
+<h2 id="7장-전송-매체">7장 전송 매체</h2>
+<blockquote>
+  <p>전송 매체는 소스에서 목적지까지 정보를 전달할 수 있는 모든 것으로 광범위하게 정의할 수 있고, 물리 계층 아래에 위치하며 물리 계층에 의해 직접 제어된다.</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232307670-ca648f8d-78bc-4e2b-a396-52e3892d2ca1.png" alt="image"><br>
+Unguided는 특정 매체를 사용하지 않음</p>
+
+<h3 id="twisted-pair-cable꼬임-쌍선">Twisted-Pair Cable(꼬임 쌍선)</h3>
+<blockquote>
+  <p>두 개의 도체(일반적으로 구리)로 구성, 전선 중 하나는 수신기로 신호를 전달하는 데 사용되며, 다른 하나는 접지 참조로만 사용됨<br>
+Noise, Crosstalk 는 두 전선 모두에 영향을 미쳐 원치 않는 신호를 생성할 수 있습니다.</p>
+</blockquote>
+
+<ul>
+  <li>종류
+    <ul>
+      <li>UTP</li>
+      <li>STP</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="coaxial-cable동축-케이블">Coaxial Cable(동축 케이블)</h3>
+<blockquote>
+  <p>TP 케이블보다 더 높은 주파수 범위</p>
+</blockquote>
+
+<h3 id="fiber-optic-cable광-케이블">Fiber-Optic Cable(광 케이블)</h3>
+<blockquote>
+  <p>빛으로 신호를 전송한다.</p>
+</blockquote>
+
+<p><strong>Propagation Modes(전파 모드)</strong></p>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232307888-becbfc1d-1fb2-466b-b4d9-7885c71cd32d.png" alt="image"></p>
+
+<ul>
+  <li>장점
+    <ul>
+      <li>더 넓은 대역폭</li>
+      <li>신호 감쇠 감소</li>
+      <li>전파 영향X</li>
+      <li>가벼운 무게</li>
+      <li>부식에 강함</li>
+    </ul>
+  </li>
+  <li>단점
+    <ul>
+      <li>비쌈</li>
+      <li>유지보수성</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="unguided-mediawireless-무선">Unguided Media(Wireless, 무선)</h3>
+<blockquote>
+  <p>전파를 사용<br>
+사용하는 주파수마다 특성이 다름</p>
+</blockquote>
+
+<ul>
+  <li>전파 방법
+    <ul>
+      <li>지표면(2Mhz 미만)</li>
+      <li>대기(2~30Mhz)</li>
+      <li>가시선(30Mhz 이상)</li>
+    </ul>
+  </li>
+  <li>종류
+    <ul>
+      <li>Radiowaves
+        <ul>
+          <li>3khz - 1ghz</li>
+          <li>AM/FM 라디오, 전방향 안테나</li>
+        </ul>
+      </li>
+      <li>Microwaves
+        <ul>
+          <li>1ghz - 300ghz</li>
+          <li>단방향</li>
+          <li>위성 통신, 휴대전화</li>
+        </ul>
+      </li>
+      <li>Infrared
+        <ul>
+          <li>300ghz - 400thz</li>
+          <li>IrDA</li>
+          <li>Remote Control(리모컨)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="8장-스위칭">8장 스위칭</h2>
+<blockquote>
+  <p>장치들을 연결하는 방법</p>
+</blockquote>
+
+<h3 id="전환-방법">전환 방법</h3>
+<ul>
+  <li>Circuit Switching(회선 전환)
+    <ul>
+      <li>두 스테이션 간에 전용 경로가 생성된다. 자원은 전체 연결 기간 동안 할당됨</li>
+      <li>전화망</li>
+      <li>물리 계층에서 사용</li>
+    </ul>
+  </li>
+  <li>Packet Switching(패킷 전환)
+    <ul>
+      <li>메시지는 패킷으로 나뉜다, 자원은 전용이 아니며 서로 다른 연결 간에 공유될 수 있다</li>
+      <li>데이터 링크/네트워크 계층에서 사용</li>
+    </ul>
+  </li>
+  <li>Message Switching(메시지 전환)
+    <ul>
+      <li>데이터 전송은 애플리케이션 계층에서 이루어지며 한 스테이션에서 다음 스테이션으로 전체 메시지를 전달하는 것을 포함</li>
+      <li>애플리케이션 계층에서 사용</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232311524-bd9733ad-4316-4184-b281-753b2eb37bbb.png" alt="image"></p>
+
+<h3 id="circuit-switching회선-전환">Circuit Switching(회선 전환)</h3>
+<hr>
+<blockquote>
+  <p>물리적 링크로 연결되는 스위치들로 구성<br>
+두 스테이션 사이에 전용 경로가 설정되고, 전체 연결 기간 동안 자원이 할당된다<br>
+연결은 각 링크 중 하나의 전용 채널을 사용<br>
+데이터는 패킷화되지 않는다</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232312397-edadfce7-02d3-446f-9bac-315041347960.png" alt="image"></p>
+
+<ul>
+  <li>장점
+    <ul>
+      <li>만들어진 회선의 품질은 일정</li>
+    </ul>
+  </li>
+  <li>단점
+    <ul>
+      <li>안쓰는 회선 낭비
+        <ul>
+          <li>전체 연결 시간동안 자원이 할당 되기 때문입니다.</li>
+        </ul>
+      </li>
+      <li>전송 중 특정 경로에 문제 발생 시 전송 불가</li>
+      <li>지연 시간
+        <ul>
+          <li>요청 - 응답 간에 지연 시간이 있습니다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232312628-4160e7e6-1bb0-4c3c-981a-42b25ca6ca26.png" alt="image"></p>
+
+<h3 id="packet-switching패킷-전환">Packet Switching(패킷 전환)</h3>
+<hr>
+<blockquote>
+  <p>패킷에 자원을 할당하지 않음, 패킷 크기는 고정적이거나 가변적이다.</p>
+</blockquote>
+
+<ul>
+  <li>종류
+    <ul>
+      <li>Datagram networks</li>
+      <li>Virtual circuit networks</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="datagram-networks">Datagram networks</h3>
+<blockquote>
+  <p>여러 개의 라우터를 사용<br>
+연결과정이 없어 지연 시간이 적고, 회선 전환보다 효율적, 단점도 있음</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232312650-cf42e1e1-1fd8-4475-ae63-f4ccd0e7e0c2.png" alt="image"><br>
+<img src="https://user-images.githubusercontent.com/48265129/232312658-d1f4f33f-ac96-4bdf-8954-980b38ae0b41.png" alt="image"><br>
+<img src="https://user-images.githubusercontent.com/48265129/232312726-b8b72891-2cae-46fd-b012-91e6a38e4cf8.png" alt="image"></p>
+
+<ul>
+  <li>특징
+    <ul>
+      <li>각 패킷은 다른 패킷과 무관하다</li>
+      <li>전송 소요 시간이 가변적</li>
+      <li>지연 시간은 짧으나, 대기 시간이 있다</li>
+      <li>데이터 요청 순서와 응답 순서가 일치한다는 보장 없음</li>
+      <li>패킷 내에 주소 정보가 있음</li>
+      <li>패킷 목적지를 위해 Routing table을 사용하고, 패킷 내에 주소 정보가 있음</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="virtual-circuit-networks가상-회선">Virtual circuit networks(가상 회선)</h3>
+<blockquote>
+  <p>회선 전환과 데이터 그램 네트워크를 섞음</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232313006-68a532f0-cc05-4292-97f8-96ea2ef0ecc4.png" alt="image"></p>
+
+<ul>
+  <li>특징
+    <ul>
+      <li>설정 및 해제 단계가 있다.</li>
+      <li>자원은 회선 전환과 같이 설정 중에 할당 가능, 데이터 그램처럼 요청 시 할당도 가능</li>
+      <li>데이터 그램처럼 패킷을 사용, 헤더에 주소를 포함</li>
+      <li>회선 전환처럼 모든 패킷은 연결 중에 설정된 같은 경로를 따른다</li>
+      <li>데이터 링크 계층에서 주로 사용</li>
+      <li>중간에 문제 발생 시 다른 경로로 전송 가능</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232313318-b5fd5007-0925-469b-add7-8cc9f7c94957.png" alt="image"><br>
+<img src="https://user-images.githubusercontent.com/48265129/232313321-a190e261-f928-4aab-9d48-fb0d9e618f14.png" alt="image"></p>
+
+<h3 id="전환-방식-비교-요약">전환 방식 비교 요약</h3>
+<ul>
+  <li>
+<strong>패킷 전환 네트워크</strong> 는 전체 연결 기간 동안 자원이 전용되지 않기 때문에 <strong>회선 전환 네트워크</strong> 보다 효율적이다</li>
+  <li>
+<strong>데이터 그램 네트워크</strong> 는 <strong>가상 회선 네트워크</strong>보다 효율적이지만 개별 패킷 라우팅으로 인해 지연 시간이 더 김</li>
+  <li>
+<strong>가상 회선 네트워크</strong>는 <strong>회선 전환 네트워크</strong>보다 효율적이며 <strong>데이터그램 네트워크</strong>보다 지연이 적다</li>
+  <li>
+<strong>회선 전환 네트워크</strong>는 단순하고 높은 신뢰성으로 인해 여전히 WAN에서 사용된다.</li>
+</ul>
+
+<h2 id="9장-data-link-layer">9장 Data-Link Layer</h2>
+<hr>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232313533-2f08758a-84b1-4f41-be5b-ac574825f530.png" alt="image"></p>
+
+<h3 id="물리-링크와-논리-링크의-차이">물리 링크와 논리 링크의 차이</h3>
+<blockquote>
+  <p>링크 특징이 다름<br>
+전송 계층이 논리 링크를 사용</p>
+</blockquote>
+
+<ul>
+  <li>물리 링크
+    <ul>
+      <li>전송 매체를 통해 전송 되는 Bit stream</li>
+    </ul>
+  </li>
+  <li>논리 링크
+    <ul>
+      <li>네트워크 계층에서 전송되는 패킷</li>
+      <li>물리 링크를 통해 패킷을 전송한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="nodes-links">Nodes, Links</h3>
+<ul>
+  <li>Node
+    <ul>
+      <li>Computer, Router</li>
+    </ul>
+  </li>
+  <li>Link
+    <ul>
+      <li>Communication media connect nodes(노드 간의 통신)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232313711-6d363225-d295-4f77-8086-142dbfbc601c.png" alt="image"><br>
+Link가 Data-link이고, 이 부분에서 이루어짐</p>
+
+<h3 id="services">Services</h3>
+<blockquote>
+  <p>데이터 링크 계층은 네트워크 계층에 서비스를 제공<br>
+네트워크 계층 역시 상위 계층인 전송 계층에 서비스 제공</p>
+</blockquote>
+
+<ul>
+  <li>종류
+    <ul>
+      <li>물리 계층에서 얻은 서비스</li>
+      <li>Framing(Frame 생성)
+        <ul>
+          <li>네트워크 계층에서 받은 패킷을 Frame으로 구성한다.</li>
+        </ul>
+      </li>
+      <li>Flow Control</li>
+      <li>Error Control</li>
+    </ul>
+  </li>
+</ul>
+
+<blockquote>
+  <p>Flow/Error Control은 전송/데이터 링크 계층에서 모두 수행된다<br>
+전송 계층은 Framing을 하지 않고, 비슷한 작업을 패킷에 대해서 진행한다</p>
+</blockquote>
+
+<h3 id="link의-종류">Link의 종류</h3>
+<hr>
+
+<h3 id="point-to-point-link">Point-to-point link</h3>
+<p><img src="https://user-images.githubusercontent.com/48265129/232314033-e1e7bd5b-7403-43e7-be52-879cba1305f6.png" alt="image"></p>
+
+<ul>
+  <li>특징
+    <ul>
+      <li>송,수신 측이 통신</li>
+      <li>통신 시에 추가 작업 불필요</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="broadcastmultipoint-link">Broadcast(Multipoint) link</h3>
+<p><img src="https://user-images.githubusercontent.com/48265129/232314045-7d99351e-bf3c-4bda-9aa3-0ddf0078cbca.png" alt="image"></p>
+
+<ul>
+  <li>특징
+    <ul>
+      <li>수신 측은 공유된 매체를 확보해야함
+        <ul>
+          <li>확보하지 않으면 A-F의 통신은 B-E통신에 노이즈가 된다</li>
+        </ul>
+      </li>
+      <li>확보 후 통신을 한다면 p2p와 사실상 같다</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="data-link-layer-핵심">Data-link layer 핵심</h3>
+<blockquote>
+  <p>Error/Flow Control, MAC</p>
+</blockquote>
+
+<h2 id="10장-error-detectioncorrection">10장 Error Detection/Correction</h2>
+<hr>
+<blockquote>
+  <p>통신 중 예측할 수 없는 간섭으로 인해 오류가 발생할 수 있다. 오류 검출 및 수정 기술은 통신 중 데이터 무결성을 보장하기 위해 사용된다.</p>
+</blockquote>
+
+<h3 id="errors">Errors</h3>
+<blockquote>
+  <p>예측 불가능한 변화</p>
+</blockquote>
+
+<ul>
+  <li>종류
+    <ul>
+      <li>Single Bit Error
+        <ul>
+          <li>Bit 하나가 바뀜</li>
+        </ul>
+      </li>
+      <li>Burst Error
+        <ul>
+          <li>2개 이상의 연속적인 Bit들이 바뀜</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="error-detection">Error Detection</h3>
+<blockquote>
+  <p>송신 측이 Error 검출 목적으로 추가 데이터(Redundancy, 중복)를 보낸다<br>
+수신 측은 유효한 codewords를 가진다</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232314489-f2f6e966-65bd-4d44-8485-1a792cef0741.png" alt="image"></p>
+
+<ul>
+  <li>특징
+    <ul>
+      <li>원본 codeword가 유효하지 않은 것으로 바뀐다</li>
+      <li>Receiver에서 Discard는 오류 확인 후 버리는 것을 의미(Error 처리의 한 방법)</li>
+      <li>codeword의 맨 뒤에 추가된 것이 Redundancy(추가 데이터)이다</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="hamming-distance">Hamming Distance</h3>
+<blockquote>
+  <p>Error Control의 주요 개념<br>
+두 단어(같은 길이)의 비트 차이 수</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232314904-5932c116-fecf-4bd1-bc41-879067f99610.png" alt="image"></p>
+
+<p><strong>Redundancy를 길게 할수록 Hamming distance가 길어진다.</strong></p>
+
+<h3 id="block-codes">Block Codes</h3>
+<blockquote>
+  <p>유효한 두 개의 codeword를 XOR하여 또 다른 유효 codeword를 만드는 코드</p>
+</blockquote>
+
+<ul>
+  <li>종류
+    <ul>
+      <li>Parity-Check code</li>
+      <li>Cyclic code</li>
+      <li>Checksum</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="parity-check-code">Parity Check code</h3>
+<blockquote>
+  <p>데이터 비트에서 0과 1의 개수를 파악하고 결과에 따라 0 또는 1 비트를 추가하는데, 이 추가되는 bit를 Parity bit라고 한다.<br>
+홀수 개의 Error만 검출 가능(짝수 불가)<br>
+Dataword에서 Bit 1의 개수가 짝수 → 0, 홀수 → 1</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232315245-db7df93e-224f-45e7-8832-a34bf252f2de.png" alt="image"></p>
+
+<h3 id="cyclic-code-cyclic-redundancy-checkcrc">Cyclic code, Cyclic Redundancy Check(CRC)</h3>
+<blockquote>
+  <p>Error 검출 실패율이 매우 낮다</p>
+</blockquote>
+
+<ul>
+  <li>dataword : d(x)</li>
+  <li>codeword : c(x)</li>
+  <li>generator : g(x), 송/수신자 간의 약속</li>
+  <li>syndrome : s(x)</li>
+  <li>
+    <p>error : e(x)</p>
+  </li>
+  <li>
+<strong>표기법</strong>
+    <ul>
+      <li>c(x) = d(x) + s(x) = d(x) + d(x) % g(x)</li>
+      <li>s(x) = c(x) / d(x)</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232315429-59b4e40a-2d4f-4875-84a7-6f1ae049222c.png" alt="image"><br>
+<img src="https://user-images.githubusercontent.com/48265129/232315448-6a916054-6e82-407d-9d3b-b090efcc3ab3.png" alt="image"></p>
+
+<ul>
+  <li>특징</li>
+  <li>dataword를 generator로 나눈 계산 결과를 이용한다.</li>
+  <li>syndrome 크기 = generator크기 - 1</li>
+  <li>에러 검출 과정 중, 나머지가 0 → 오류X, 1 → 오류O</li>
+  <li>g(x) == e(x) 이면, Error 검출 불가</li>
+  <li>generator의 앞,뒤는 1이어야 함</li>
+  <li>주로 하드웨어로 연산한다</li>
+  <li>Data-Link Layer에서 유리하다</li>
+  <li>전송 계층에서 수행X</li>
+</ul>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/232315646-3216bada-cc33-4eed-9ae4-ce64ea0f9fdd.png" alt="image"></p>
+
+<ul>
+  <li>장점
+    <ul>
+      <li>높은 에러 검출율</li>
+    </ul>
+  </li>
+  <li>단점
+    <ul>
+      <li>많은 계산량(나눗셈)</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="checksum검사합">Checksum(검사합)</h3>
+<blockquote>
+  <p>간단한 Error 검출법<br>
+네트워크/전송 계층에서 사용된다</p>
+</blockquote>
+
+<h3 id="forward-error-correctionfec-순방향-오류-정정">Forward Error Correction(FEC, 순방향 오류 정정)</h3>
+<blockquote>
+  <p>전송된 데이터에서 발생하는 오류를 수정하기 위한 기술</p>
+</blockquote>
+
+<ul>
+  <li>종류</li>
+  <li>Hamming Distance
+    <ul>
+      <li>데이터 워드에 추가 비트를 추가하여 Hamming Distance를 늘리고, 이 추가된 비트는 수신된 데이터의 오류를 수정하는 데 사용된다</li>
+    </ul>
+  </li>
+  <li>XOR 사용</li>
+  <li>Chunk Interleaving</li>
+</ul>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/android/2023/04/06/StateFlow-vs-SharedFlow.html" title="StateFlow vs SharedFlow">StateFlow vs SharedFlow</a><a class="next" href="/jekyll-theme-yat/sql/2023/04/18/JOIN-%EC%A0%95%EB%B3%B5%ED%95%98%EA%B8%B0.html" title="JOIN 정복하기">JOIN 정복하기</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li>
+<span><a class="post-link" href="/jekyll-theme-yat/garbagecollector/2023/09/17/Garbage-collector%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C.html" title="JOIN 정복하기">Garbage collector에 대해서 알아보자</a></span><span>
+            <time class="dt-published datetime" datetime="2023-09-17T00:00:00+09:00" itemprop="datePublished">2023-09-17, Sun
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/private/2023/12/30/2023%EB%85%84%EC%9D%84-%EB%8F%8C%EC%95%84%EB%B3%B4%EB%A9%B0.html" title="JOIN 정복하기">2023년을 돌아보며</a></span><span>
+            <time class="dt-published datetime" datetime="2023-12-30T00:00:00+09:00" itemprop="datePublished">2023-12-30, Sat
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/data/communication/2023/04/16/%EB%8D%B0%EC%9D%B4%ED%84%B0%ED%86%B5%EC%8B%A01.html" title="JOIN 정복하기">데이터통신</a></span><span>
+            <time class="dt-published datetime" datetime="2023-04-16T00:00:00+09:00" itemprop="datePublished">2023-04-16, Sun
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/compiler/2023/06/16/Code-shape-&amp;-Instruction-selection.html" title="JOIN 정복하기">Compiler backend</a></span><span>
+            <time class="dt-published datetime" datetime="2023-06-16T00:00:00+09:00" itemprop="datePublished">2023-06-16, Fri
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/sql/2023/04/18/SQL-%ED%95%99%EC%8A%B5-%EC%8B%9C%EC%9E%91.html" title="JOIN 정복하기">Oracle SQL 학습 시작</a></span><span>
+            <time class="dt-published datetime" datetime="2023-04-18T00:00:00+09:00" itemprop="datePublished">2023-04-18, Tue
+            </time></span>
+        </li>
+</ul>
+    </div>
+<div class="post-comments">
+<div id="utterances-placeholder"></div>
+<script>
+
+const utterancesThemeFromDataTheme = () => {
+    const dataTheme = document.documentElement.getAttribute('data-theme');
+    return `github-${dataTheme}`;
+  };
+
+  const setUtterancesTheme = () => {
+    const iframe = document.querySelector('.utterances-frame');
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: utterancesThemeFromDataTheme()
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+    }
+  }
+
+  // dynamic change
+  const observer = new MutationObserver((mutationsList, observer) => {
+    for (let mutation of mutationsList) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        setUtterancesTheme();
+      }
+    }
+  });
+  observer.observe(document.documentElement, { attributes: true, childList: false, subtree: false });
+
+  let utterancesScript = document.createElement('script');
+  utterancesScript.async = true;
+  utterancesScript.src = 'https://utteranc.es/client.js';
+  utterancesScript.crossOrigin = 'anonymous';
+  utterancesScript.setAttribute('issue-term', 'pathname');
+  utterancesScript.setAttribute('label', 'comments');
+  utterancesScript.setAttribute('repo', 'pknujsp/Blogcomments');
+  utterancesScript.setAttribute('theme', utterancesThemeFromDataTheme());
+
+  const placeholder = document.getElementById('utterances-placeholder');
+  placeholder.parentNode.replaceChild(utterancesScript, placeholder);
+</script>
+</div></section>
+</div>
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">Contents</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">· ' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>2024 @ Junsung Park</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

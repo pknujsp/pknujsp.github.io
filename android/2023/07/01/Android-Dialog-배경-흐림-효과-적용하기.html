@@ -1,0 +1,1279 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Android Dialog Window 흐림 효과 적용하기 | Jsp Notes</title>
+<meta name="generator" content="Jekyll v4.3.4">
+<meta property="og:title" content="Android Dialog Window 흐림 효과 적용하기">
+<meta name="author" content="Junsung Park">
+<meta property="og:locale" content="ko">
+<meta name="description" content="Window 흐림 효과 적용 전에, 흐림 효과 적용 가능 대상 종류를 알아봅시다. 두 가지 대상에 대하여 흐림 효과 적용이 가능합니다.">
+<meta property="og:description" content="Window 흐림 효과 적용 전에, 흐림 효과 적용 가능 대상 종류를 알아봅시다. 두 가지 대상에 대하여 흐림 효과 적용이 가능합니다.">
+<link rel="canonical" href="https://pknujsp.github.io//jekyll-theme-yat/android/2023/07/01/Android-Dialog-%EB%B0%B0%EA%B2%BD-%ED%9D%90%EB%A6%BC-%ED%9A%A8%EA%B3%BC-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0.html">
+<meta property="og:url" content="https://pknujsp.github.io//jekyll-theme-yat/android/2023/07/01/Android-Dialog-%EB%B0%B0%EA%B2%BD-%ED%9D%90%EB%A6%BC-%ED%9A%A8%EA%B3%BC-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0.html">
+<meta property="og:site_name" content="Jsp Notes">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-07-01T00:00:00+09:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Android Dialog Window 흐림 효과 적용하기">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junsung Park"},"dateModified":"2023-07-01T00:00:00+09:00","datePublished":"2023-07-01T00:00:00+09:00","description":"Window 흐림 효과 적용 전에, 흐림 효과 적용 가능 대상 종류를 알아봅시다. 두 가지 대상에 대하여 흐림 효과 적용이 가능합니다.","headline":"Android Dialog Window 흐림 효과 적용하기","mainEntityOfPage":{"@type":"WebPage","@id":"https://pknujsp.github.io//jekyll-theme-yat/android/2023/07/01/Android-Dialog-%EB%B0%B0%EA%B2%BD-%ED%9D%90%EB%A6%BC-%ED%9A%A8%EA%B3%BC-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0.html"},"url":"https://pknujsp.github.io//jekyll-theme-yat/android/2023/07/01/Android-Dialog-%EB%B0%B0%EA%B2%BD-%ED%9D%90%EB%A6%BC-%ED%9A%A8%EA%B3%BC-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="icon" href="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script>
+
+  <!-- tipuesearch -->
+  <link rel="stylesheet" href="/assets/tipuesearch/css/tipuesearch.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_content.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_set.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch.min.js"></script><link type="application/atom+xml" rel="alternate" href="https://pknujsp.github.io//jekyll-theme-yat/feed.xml" title="Jsp Notes">
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LZC1TDTS26"></script>
+<script>
+  function initGoogleAnalytics() {
+    var doNotTrack = (window.doNotTrack === "1" || navigator.doNotTrack === "1" ||
+      navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1");
+    var enableDNT = "true" == "true";
+
+    if (!enableDNT || !doNotTrack) {
+      /*
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'G-LZC1TDTS26', 'auto');
+      ga('send', 'pageview');
+      */
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { window.dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-LZC1TDTS26');
+    }
+  }
+  window.addEventListener("load", initGoogleAnalytics);
+
+</script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/intellij-light.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/kotlin.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #7800ff;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: lowercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <img class="site-white_favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+</a></span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/about.html">About</a><a class="page-link" href="/jekyll-theme-yat/categories.html">Categories</a><a class="page-link" href="/jekyll-theme-yat/">Home</a><a class="page-link" href="/jekyll-theme-yat/posts.html">Posts</a><a class="page-link" href="/jekyll-theme-yat/tags.html">Tags</a><input id="tipue_search_input" type="search" placeholder="Search" aria-label="Search" title="Please enter at least 1 character" required>
+
+          <script>
+            document.getElementById("tipue_search_input").addEventListener("keydown", function (event) {
+              if (event.keyCode === 13) {
+                event.preventDefault();
+                window.location.href = "../search?q=" + this.value;
+              }
+            });
+          </script>
+<!--
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="en">
+        
+        <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+        to English
+        
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="ko">
+        
+        <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+        to Korean
+        
+      </a>
+    </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'ko',
+      autoDisplay: false,
+      layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+    }, 'google_translate_element');
+
+    // Links to cross-origin destinations are unsafe
+    var gll = document.getElementsByClassName('goog-logo-link')[0];
+    if (gll) {
+      gll.setAttribute('rel', 'noopener');
+    }
+
+    function restoreLang() {
+      var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+      if (!iframe) return;
+
+      var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+      var restore_el = innerDoc.getElementsByTagName("button");
+
+      for (var i = 0; i < restore_el.length; i++) {
+        if (restore_el[i].id.indexOf("restore") >= 0) {
+          restore_el[i].click();
+          var close_el = innerDoc.getElementsByClassName("goog-close-link");
+          close_el[0].click();
+          return;
+        }
+      }
+    }
+
+    function triggerHtmlEvent(element, eventName) {
+      var event;
+      if (document.createEvent) {
+        event = document.createEvent('HTMLEvents');
+        event.initEvent(eventName, true, true);
+        element.dispatchEvent(event);
+      } else {
+        event = document.createEventObject();
+        event.eventType = eventName;
+        element.fireEvent('on' + event.eventType, event);
+      }
+    }
+
+    var googleCombo = document.querySelector("select.goog-te-combo");
+    var langSelect = document.querySelector('.ct-language');
+    langSelect.addEventListener('click', function (event) {
+      if (!event.target) {
+        return;
+      }
+
+      var selected = document.querySelector('.ct-language .ct-language-selected');
+      if (selected) {
+        selected.classList.remove('ct-language-selected');
+      }
+
+      var target = event.target;
+      while (target && target !== langSelect) {
+        if (target.matches('.lang-select')) {
+          break;
+        }
+        target = target.parentElement;
+      }
+
+      if (target && target.matches('.lang-select')) {
+        var lang = target.getAttribute('data-lang');
+        if (googleCombo.value == lang) {
+          restoreLang();
+        } else if (lang == 'ko') {
+          var googleTranslateElement = document.getElementById('google_translate_element');
+          if (googleTranslateElement) {
+            googleTranslateElement.parentNode.removeChild(googleTranslateElement);
+            $('#google_translate_element').empty();
+          }
+        } else {
+          target.parentElement.classList.add('ct-language-selected');
+          googleCombo.value = lang;
+          triggerHtmlEvent(googleCombo, 'change');
+        }
+      }
+
+      event.preventDefault();
+    });
+  }
+</script>
+
+<script type="text/javascript"
+  src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script></span>-->
+          </div>
+
+          
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('manual' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = !(hours >= 2 && hours <=5);
+
+      if (nightShift) {
+        if (hours > 5) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(5);
+      } else {
+        toggleAt.setHours(2);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<div id="click-to-bottom" class="click-to-bottom">
+  <i class="fa fa-arrow-down"></i>
+</div>
+<script>
+  (function () {
+    const clickToBottom = document.getElementById('click-to-bottom');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToBottom.classList.add('show')
+      }else {
+        clickToBottom.classList.remove('show')
+      }
+    });
+    clickToBottom.addEventListener('click', () => {
+      window.smoothScrollTo(document.body.scrollHeight);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">Android Dialog Window 흐림 효과 적용하기</h1>
+  <h2 class="post-subtitle">How to blur the screen behind the given window in android</h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2023-07-01T00:00:00+09:00" itemprop="datePublished">2023-07-01, Sat
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 4 minutes</span>
+  </p>
+<div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Android">#Android</a></div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h2 id="window-흐림-효과-적용-전에-흐림-효과-적용-가능-대상-종류를-알아봅시다">Window 흐림 효과 적용 전에, 흐림 효과 적용 가능 대상 종류를 알아봅시다.</h2>
+<hr>
+<blockquote>
+  <p>두 가지 대상에 대하여 흐림 효과 적용이 가능합니다.</p>
+</blockquote>
+
+<ol>
+  <li>Background blur
+    <ul>
+      <li>배경을 흐리게 합니다.</li>
+    </ul>
+  </li>
+  <li>Behind blur(Window blur)
+    <ul>
+      <li>Window를 흐리게 합니다.</li>
+      <li>Window(PhoneWindow)
+        <ul>
+          <li>화면에 출력되고 있는 View가 보여지는 영역입니다.</li>
+          <li>Window는 DecorView를 가지고 있고, DecorView에 실제로 View가 그려지게 됩니다.</li>
+          <li>Activity는 Window를 관리, Window는 DecorView를 관리, DecorView는 그려질 View(Statusbar, content,Navigationbar)를 관리합니다.</li>
+          <li><img src="https://miro.medium.com/v2/resize:fit:292/1*pPA5fNL6-zcx-_X__nGuxQ.png" alt=""></li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ol>
+
+<p><strong>이 글에서는 Window 흐림 효과에 대해서 집중적으로 다룹니다. 한계점이 있기 때문입니다.</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Background blur</th>
+      <th style="text-align: center">Behind blur</th>
+      <th style="text-align: center">모두 적용</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center"><img src="https://source.android.com/static/docs/core/display/images/background-blur-only.png" width="auto" height="auto"></td>
+      <td style="text-align: center"><img src="https://source.android.com/static/docs/core/display/images/blur-behind-only.png" width="auto" height="auto"></td>
+      <td style="text-align: center"><img src="https://source.android.com/static/docs/core/display/images/blur-behind-and-background-blur.png" width="auto" height="auto"></td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="흐림-효과-적용-방법">흐림 효과 적용 방법</h2>
+<hr>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;style</span> <span class="na">name=</span><span class="s">"BlurDialog"</span> <span class="na">parent=</span><span class="s">"Theme.AppCompat.Dialog"</span><span class="nt">&gt;</span>
+
+    // behind blur
+    <span class="nt">&lt;item</span> <span class="na">name=</span><span class="s">"windowBlurBehindEnabled"</span><span class="nt">&gt;</span>true<span class="nt">&lt;/item&gt;</span>
+    // dp, px 등 단위를 사용하고, 흐림 강도를 설정합니다. 값이 클수록 흐림이 강해집니다.
+    // 강도 조절은 Android 12 이상에서만 사용할 수 있습니다.
+    <span class="nt">&lt;item</span> <span class="na">name=</span><span class="s">"windowBlurBehindRadius"</span><span class="nt">&gt;</span>10dp<span class="nt">&lt;/item&gt;</span>
+
+    // background blur
+    // dp, px 등 단위를 사용하고, 흐림 강도를 설정합니다. 값이 클수록 흐림이 강해집니다.
+    <span class="nt">&lt;item</span> <span class="na">name=</span><span class="s">"windowBackgroundBlurRadius"</span><span class="nt">&gt;</span>10dp<span class="nt">&lt;/item&gt;</span>
+    // 흐림 효과를 화면에서 보려면 true로 설정해야 합니다.
+    <span class="nt">&lt;item</span> <span class="na">name=</span><span class="s">"windowIsTranslucent"</span><span class="nt">&gt;</span>true<span class="nt">&lt;/item&gt;</span>
+
+  <span class="nt">&lt;/style&gt;</span>
+</code></pre></div></div>
+
+<p><strong>OR</strong></p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">window</span><span class="p">.</span><span class="nf">apply</span><span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="nc">Build</span><span class="p">.</span><span class="nc">VERSION</span><span class="p">.</span><span class="nc">SDK_INT</span> <span class="p">&gt;=</span> <span class="nc">Build</span><span class="p">.</span><span class="nc">VERSION_CODES</span><span class="p">.</span><span class="nc">S</span><span class="p">)</span> <span class="p">{</span>
+            <span class="c1">// behind blur</span>
+            <span class="c1">// &lt;item name="windowBlurBehindEnabled"&gt;true&lt;/item&gt;</span>
+            <span class="c1">// API30에서 Undeprecated 되었는데, 공식 문서에는 Deprecated in API15로 표기되어 있습니다.</span>
+            <span class="nf">addFlags</span><span class="p">(</span><span class="nc">WindowManager</span><span class="p">.</span><span class="nc">LayoutParams</span><span class="p">.</span><span class="nc">FLAG_BLUR_BEHIND</span><span class="p">)</span>
+
+            <span class="c1">// 아래와 같이 10만 입력하면 10px로 인식합니다.</span>
+            <span class="c1">//item name="windowBlurBehindRadius"&gt;10dp&lt;/item&gt;</span>
+            <span class="n">attributes</span><span class="p">.</span><span class="n">blurBehindRadius</span> <span class="p">=</span> <span class="mi">10</span>
+
+            <span class="c1">// background blur</span>
+            <span class="c1">// &lt;item name="windowBackgroundBlurRadius"&gt;10dp&lt;/item&gt;</span>
+            <span class="n">window</span><span class="p">.</span><span class="nf">setBackgroundBlurRadius</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+            <span class="c1">// &lt;item name="windowIsTranslucent"&gt;true&lt;/item&gt; XML파일에 적용해야 합니다.</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="window-blur-한계점">Window Blur 한계점</h2>
+<hr>
+<blockquote>
+  <p>Window Blur의 강도 조절은 Android 12 이상에서만 사용할 수 있습니다.</p>
+</blockquote>
+
+<ul>
+  <li>Android 11이하에서는 강도 조절 적용이 현재 API(Compat API도 없음)로는 불가능합니다.</li>
+  <li>기기에서 이 기능 사용이 내부적으로 비활성화 되어있으면, Window blur 적용 자체가 불가능합니다.</li>
+</ul>
+
+<p><strong>이러한 한계점을 극복하기 위한 방법을 연구중입니다</strong></p>
+
+<p>먼저 Window Blur가 적용되는 로직을 알아봅시다.</p>
+
+<h2 id="dialog에-window-blur가-적용-되는-로직">Dialog에 Window blur가 적용 되는 로직</h2>
+
+<h3 id="1-dialog-객체의-create호출">1. Dialog 객체의 create()호출</h3>
+<hr>
+
+<ol>
+  <li>Dialog생성시 전달받은 context를 기반으로 PhoneWindow 인스턴스를 생성합니다.</li>
+  <li>인스턴스를 만들면서, DecorView가 생성됩니다.</li>
+</ol>
+
+<h3 id="2-dialog의-show호출">2. Dialog의 show()호출</h3>
+<hr>
+
+<ol>
+  <li>액티비티의 Window를 관리하는 WindowManager의 addView()를 호출합니다.</li>
+  <li>애플리케이션의 Window를 관리하는 WindowManagerGlobal의 addView() 호출하여, Window를 본격적으로 추가하고 그림을 그립니다.</li>
+</ol>
+
+<h3 id="3-dimmer-class-로-블러-효과-적용">3. Dimmer class 로 블러 효과 적용</h3>
+<hr>
+
+<ol>
+  <li>액티비티 스레드에서 Window를 그려라는 명령을 받게 되면, WindowContainer객체에서 WindowLayoutParams의 값을 바탕으로 Window를 그립니다.</li>
+  <li>Dimmer 클래스를 사용해서 Blurring 작업을 시작합니다.</li>
+  <li>안드로이드 native에서 OpenGL을 사용해서 Blurring 작업을 수행합니다.</li>
+  <li>완료되면 WindowContainer의 Surface에 그립니다.</li>
+</ol>
+
+<p>안드로이드 12미만에서는 말했듯이 Window Blur를 적용할 수 없습니다. 그렇다면 Window Blur를 적용할 수 있는 방법은 없을까요?</p>
+
+<p>ViewRootImpl의 Surface를 받아서, Surface에 Blur를 적용하면 될 것 같습니다.</p>
+
+<p>그러나 ViewRootImpl과 Surface를 직접받아서 로직을 제작하는 것은 불가능 한 것 같습니다.</p>
+
+<h3 id="구현-방법">구현 방법</h3>
+<hr>
+
+<ol>
+  <li>Blur처리를 할 View의 ViewTreeObserver에 <code class="language-plaintext highlighter-rouge">OnPreDrawListener</code>를 등록합니다.
+    <ul>
+      <li>해당 View가 그려지기 전에 위 Listener가 호출됩니다.</li>
+      <li>View가 다시 그려질 때 마다 호출됩니다.</li>
+    </ul>
+  </li>
+  <li>Blur처리된 Bitmap을 그려줄 View를 Dialog가 그려지는 Window에 추가합니다.
+    <ul>
+      <li>GLSurfaceView를 사용합니다.</li>
+    </ul>
+  </li>
+  <li>
+<code class="language-plaintext highlighter-rouge">OnPreDrawListener</code>가 호출될 때 마다, 해당 View를 Bitmap으로 변환합니다.
+    <ul>
+      <li>
+<code class="language-plaintext highlighter-rouge">View.drawToBitmap()</code>을 사용합니다.</li>
+    </ul>
+  </li>
+  <li>Bitmap을 Blur처리 합니다.
+    <ul>
+      <li>RenderScript, Intrinsic Blur를 사용합니다.</li>
+    </ul>
+  </li>
+  <li>Blur처리된 Bitmap을 GLSurfaceView에서 그려주도록 합니다.
+    <ul>
+      <li>GLSurfaceView의 Renderer를 구현합니다.</li>
+      <li>
+<code class="language-plaintext highlighter-rouge">onDrawFrame()</code>에서 Blur처리된 Bitmap을 그려줍니다.</li>
+    </ul>
+  </li>
+  <li>2~5번 과정이 계속 반복됩니다.</li>
+</ol>
+
+<p>RenderScript가 Android 12부터 Deprecated되었고, 대체하기 위해 Google에서 Toolkit을 제공합니다.</p>
+
+<p>해당 Toolkit을 적용해보았으나, RenderScript보다 Blur를 처리하는데에 약 1.5배의 시간이 더 소요 되는 것을 확인하였습니다.</p>
+
+<p>다른 StackBlur라는 알고리즘을 적용하는 등, 여러 방법을 시도해보았지만, RenderScript를 대체할만한 Blur처리 방법을 찾지 못하였습니다.</p>
+
+<p>Continue…</p>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/database/2023/06/20/%EA%B4%80%EA%B3%84%ED%98%95-%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4-%EC%84%A4%EA%B3%84%ED%95%98%EA%B8%B0.html" title="관계형 데이터베이스 설계">관계형 데이터베이스 설계</a><a class="next" href="/jekyll-theme-yat/android/2023/07/09/RecyclerViewPool%EC%97%90-%EB%8C%80%ED%95%B4.html" title="RecyclerView의 동작 로직에 대해 자세히 알아보기">RecyclerView의 동작 로직에 대해...</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li>
+<span><a class="post-link" href="/jekyll-theme-yat/private/2023/12/30/2023%EB%85%84%EC%9D%84-%EB%8F%8C%EC%95%84%EB%B3%B4%EB%A9%B0.html" title="RecyclerView의 동작 로직에 대해 자세히 알아보기">2023년을 돌아보며</a></span><span>
+            <time class="dt-published datetime" datetime="2023-12-30T00:00:00+09:00" itemprop="datePublished">2023-12-30, Sat
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/kotlin/coroutines/2023/11/12/%EC%BD%94%EB%A3%A8%ED%8B%B4%EC%97%90%EC%84%9C%EC%9D%98-%EC%98%88%EC%99%B8-%EC%B2%98%EB%A6%AC.html" title="RecyclerView의 동작 로직에 대해 자세히 알아보기">코루틴에서의 예외 처리 정리</a></span><span>
+            <time class="dt-published datetime" datetime="2023-11-12T00:00:00+09:00" itemprop="datePublished">2023-11-12, Sun
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/android/2023/04/04/Activity-%EC%95%8C%EC%95%84%EB%B3%B4%EA%B8%B0.html" title="RecyclerView의 동작 로직에 대해 자세히 알아보기">Activity 알아보기</a></span><span>
+            <time class="dt-published datetime" datetime="2023-04-04T00:00:00+09:00" itemprop="datePublished">2023-04-04, Tue
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/android/2022/12/19/Android-%EB%AA%A8%EB%93%88%ED%99%94-with-Now-in-Android.html" title="RecyclerView의 동작 로직에 대해 자세히 알아보기">Android 모듈화 with 'Now in Android'</a></span><span>
+            <time class="dt-published datetime" datetime="2022-12-19T00:00:00+09:00" itemprop="datePublished">2022-12-19, Mon
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/android/2023/07/22/Android-%EC%8B%9C%EC%8A%A4%ED%85%9C%EB%B0%94-%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83-%EB%B3%80%EA%B2%BD%ED%95%98%EA%B8%B0.html" title="RecyclerView의 동작 로직에 대해 자세히 알아보기">Android 시스템 바 레이아웃 변경하기</a></span><span>
+            <time class="dt-published datetime" datetime="2023-07-22T00:00:00+09:00" itemprop="datePublished">2023-07-22, Sat
+            </time></span>
+        </li>
+</ul>
+    </div>
+<div class="post-comments">
+<div id="utterances-placeholder"></div>
+<script>
+
+const utterancesThemeFromDataTheme = () => {
+    const dataTheme = document.documentElement.getAttribute('data-theme');
+    return `github-${dataTheme}`;
+  };
+
+  const setUtterancesTheme = () => {
+    const iframe = document.querySelector('.utterances-frame');
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: utterancesThemeFromDataTheme()
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+    }
+  }
+
+  // dynamic change
+  const observer = new MutationObserver((mutationsList, observer) => {
+    for (let mutation of mutationsList) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        setUtterancesTheme();
+      }
+    }
+  });
+  observer.observe(document.documentElement, { attributes: true, childList: false, subtree: false });
+
+  let utterancesScript = document.createElement('script');
+  utterancesScript.async = true;
+  utterancesScript.src = 'https://utteranc.es/client.js';
+  utterancesScript.crossOrigin = 'anonymous';
+  utterancesScript.setAttribute('issue-term', 'pathname');
+  utterancesScript.setAttribute('label', 'comments');
+  utterancesScript.setAttribute('repo', 'pknujsp/Blogcomments');
+  utterancesScript.setAttribute('theme', utterancesThemeFromDataTheme());
+
+  const placeholder = document.getElementById('utterances-placeholder');
+  placeholder.parentNode.replaceChild(utterancesScript, placeholder);
+</script>
+</div></section>
+</div>
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">Contents</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">· ' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>2024 @ Junsung Park</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

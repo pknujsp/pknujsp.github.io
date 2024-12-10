@@ -1,0 +1,1546 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Compiler Scanner | Jsp Notes</title>
+<meta name="generator" content="Jekyll v4.3.4">
+<meta property="og:title" content="Compiler Scanner">
+<meta name="author" content="Junsung Park">
+<meta property="og:locale" content="ko">
+<meta name="description" content="Scanner">
+<meta property="og:description" content="Scanner">
+<link rel="canonical" href="https://pknujsp.github.io//jekyll-theme-yat/compiler/2023/04/22/Compiler-Scanner.html">
+<meta property="og:url" content="https://pknujsp.github.io//jekyll-theme-yat/compiler/2023/04/22/Compiler-Scanner.html">
+<meta property="og:site_name" content="Jsp Notes">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-04-22T00:00:00+09:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Compiler Scanner">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junsung Park"},"dateModified":"2023-04-22T00:00:00+09:00","datePublished":"2023-04-22T00:00:00+09:00","description":"Scanner","headline":"Compiler Scanner","mainEntityOfPage":{"@type":"WebPage","@id":"https://pknujsp.github.io//jekyll-theme-yat/compiler/2023/04/22/Compiler-Scanner.html"},"url":"https://pknujsp.github.io//jekyll-theme-yat/compiler/2023/04/22/Compiler-Scanner.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="icon" href="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script>
+
+  <!-- tipuesearch -->
+  <link rel="stylesheet" href="/assets/tipuesearch/css/tipuesearch.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_content.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_set.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch.min.js"></script><link type="application/atom+xml" rel="alternate" href="https://pknujsp.github.io//jekyll-theme-yat/feed.xml" title="Jsp Notes">
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LZC1TDTS26"></script>
+<script>
+  function initGoogleAnalytics() {
+    var doNotTrack = (window.doNotTrack === "1" || navigator.doNotTrack === "1" ||
+      navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1");
+    var enableDNT = "true" == "true";
+
+    if (!enableDNT || !doNotTrack) {
+      /*
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'G-LZC1TDTS26', 'auto');
+      ga('send', 'pageview');
+      */
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { window.dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-LZC1TDTS26');
+    }
+  }
+  window.addEventListener("load", initGoogleAnalytics);
+
+</script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/intellij-light.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/kotlin.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #7800ff;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: lowercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <img class="site-white_favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+</a></span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/about.html">About</a><a class="page-link" href="/jekyll-theme-yat/categories.html">Categories</a><a class="page-link" href="/jekyll-theme-yat/">Home</a><a class="page-link" href="/jekyll-theme-yat/posts.html">Posts</a><a class="page-link" href="/jekyll-theme-yat/tags.html">Tags</a><input id="tipue_search_input" type="search" placeholder="Search" aria-label="Search" title="Please enter at least 1 character" required>
+
+          <script>
+            document.getElementById("tipue_search_input").addEventListener("keydown", function (event) {
+              if (event.keyCode === 13) {
+                event.preventDefault();
+                window.location.href = "../search?q=" + this.value;
+              }
+            });
+          </script>
+<!--
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="en">
+        
+        <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+        to English
+        
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="ko">
+        
+        <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+        to Korean
+        
+      </a>
+    </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'ko',
+      autoDisplay: false,
+      layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+    }, 'google_translate_element');
+
+    // Links to cross-origin destinations are unsafe
+    var gll = document.getElementsByClassName('goog-logo-link')[0];
+    if (gll) {
+      gll.setAttribute('rel', 'noopener');
+    }
+
+    function restoreLang() {
+      var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+      if (!iframe) return;
+
+      var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+      var restore_el = innerDoc.getElementsByTagName("button");
+
+      for (var i = 0; i < restore_el.length; i++) {
+        if (restore_el[i].id.indexOf("restore") >= 0) {
+          restore_el[i].click();
+          var close_el = innerDoc.getElementsByClassName("goog-close-link");
+          close_el[0].click();
+          return;
+        }
+      }
+    }
+
+    function triggerHtmlEvent(element, eventName) {
+      var event;
+      if (document.createEvent) {
+        event = document.createEvent('HTMLEvents');
+        event.initEvent(eventName, true, true);
+        element.dispatchEvent(event);
+      } else {
+        event = document.createEventObject();
+        event.eventType = eventName;
+        element.fireEvent('on' + event.eventType, event);
+      }
+    }
+
+    var googleCombo = document.querySelector("select.goog-te-combo");
+    var langSelect = document.querySelector('.ct-language');
+    langSelect.addEventListener('click', function (event) {
+      if (!event.target) {
+        return;
+      }
+
+      var selected = document.querySelector('.ct-language .ct-language-selected');
+      if (selected) {
+        selected.classList.remove('ct-language-selected');
+      }
+
+      var target = event.target;
+      while (target && target !== langSelect) {
+        if (target.matches('.lang-select')) {
+          break;
+        }
+        target = target.parentElement;
+      }
+
+      if (target && target.matches('.lang-select')) {
+        var lang = target.getAttribute('data-lang');
+        if (googleCombo.value == lang) {
+          restoreLang();
+        } else if (lang == 'ko') {
+          var googleTranslateElement = document.getElementById('google_translate_element');
+          if (googleTranslateElement) {
+            googleTranslateElement.parentNode.removeChild(googleTranslateElement);
+            $('#google_translate_element').empty();
+          }
+        } else {
+          target.parentElement.classList.add('ct-language-selected');
+          googleCombo.value = lang;
+          triggerHtmlEvent(googleCombo, 'change');
+        }
+      }
+
+      event.preventDefault();
+    });
+  }
+</script>
+
+<script type="text/javascript"
+  src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script></span>-->
+          </div>
+
+          
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('manual' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = !(hours >= 2 && hours <=5);
+
+      if (nightShift) {
+        if (hours > 5) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(5);
+      } else {
+        toggleAt.setHours(2);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<div id="click-to-bottom" class="click-to-bottom">
+  <i class="fa fa-arrow-down"></i>
+</div>
+<script>
+  (function () {
+    const clickToBottom = document.getElementById('click-to-bottom');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToBottom.classList.add('show')
+      }else {
+        clickToBottom.classList.remove('show')
+      }
+    });
+    clickToBottom.addEventListener('click', () => {
+      window.smoothScrollTo(document.body.scrollHeight);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">Compiler Scanner</h1>
+  <h2 class="post-subtitle">Scanner</h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2023-04-22T00:00:00+09:00" itemprop="datePublished">2023-04-22, Sat
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 7 minutes</span>
+  </p>
+<div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Compiler">#Compiler</a></div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h1 id="scanner">Scanner</h1>
+
+<h2 id="word-인식-방법">Word 인식 방법</h2>
+<hr>
+<blockquote>
+  <p>상태 머신을 사용하고, 정규 표현식으로 구문을 분석한다.</p>
+</blockquote>
+
+<ul>
+  <li>정규 표현식
+    <ul>
+      <li>Formal language(형식적인 언어)이다.
+        <ul>
+          <li>규칙에 의해 명시된 Symbol의 집합이다.</li>
+          <li>애매한 부분이 있으면 안된다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>복잡한 Scanner개발 과정을 간소화 하기 위해, Scanner Generator를 사용하여 개발할 수도 있다.</p>
+
+<h3 id="예제">예제</h3>
+<hr>
+<h3 id="while">while</h3>
+<p><img src="https://user-images.githubusercontent.com/48265129/233789669-1b5a6c18-58de-4a4c-98fc-94d15aea511d.png" alt="image"></p>
+
+<h3 id="fee--fie">fee | fie</h3>
+<p><img src="https://user-images.githubusercontent.com/48265129/233789675-d99bd608-3f8a-450b-ad5d-93eea46a61fd.png" alt="image"></p>
+
+<h3 id="while--fee--fie">while | fee | fie</h3>
+<p><img src="https://user-images.githubusercontent.com/48265129/233789682-6233ca6f-aad3-4aae-a634-046d8f298306.png" alt="image"></p>
+
+<h3 id="transition-table">Transition table</h3>
+<hr>
+<blockquote>
+  <p>레지스터 : r0, r1, …, r31</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/233789820-1ab00e0b-809a-4343-aa13-9b6645983bf8.png" alt="image"></p>
+
+<h2 id="recognizer인식기">Recognizer(인식기)</h2>
+<hr>
+<blockquote>
+  <p>언어 인식기는 문자열 x를 입력으로 하였을때, x가 언어의 문장인지 여부에 따라 yes 또는 no를 출력으로 하는 프로그램이다.</p>
+</blockquote>
+
+<p>우리는 전환 다이어그램(DFA)을 구성하여 RE(정규 표현식)를 인식기로 컴파일 할 수 있다.</p>
+
+<p>Scanner는 정규 표현식과 유사한 것을 통해서 자동으로 생성될 수 있다.</p>
+
+<ul>
+  <li>DFA를 구성한다.
+    <ul>
+      <li>RE → NFA → DFA 변환 과정이 중요하다.</li>
+    </ul>
+  </li>
+  <li>상태 최소화 기법을 사용한다.</li>
+  <li>Scanner에 대한 코드를 내보낸다.</li>
+</ul>
+
+<h3 id="예제-1">예제</h3>
+<hr>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/233790794-5c5bb65d-feab-4547-8c2b-d7d419b520a6.png" alt="image"></p>
+
+<p>현재 상태에 따라 다음이 정해진다.</p>
+
+<ul>
+  <li>Identifier
+    <ul>
+      <li>letter
+* (a|b|…|z|A|B|…|Z|)</li>
+      <li>digit
+* (0|1|2|…|9)</li>
+      <li>id
+* letter(letter|digit)*</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="nfa비결정론적-유한-오토마타-dfa결정론적-유한-오토마타">NFA(비결정론적 유한 오토마타), DFA(결정론적 유한 오토마타)</h2>
+<hr>
+<blockquote>
+  <p>DFA는 NFA의 특별한 경우이다.</p>
+</blockquote>
+
+<ul>
+  <li>DFA 특징
+    <ul>
+      <li>어떠한 상태에도 ε-전환은 없다.
+        <ul>
+          <li>NFA는 ε-전환을 가진다.</li>
+          <li>DFA와 NFA의 대표적인 차이점이다.</li>
+        </ul>
+      </li>
+      <li>각 상태 s와 입력 기호 a에 대해서 a로 표시된 edge는 최대 하나이다.</li>
+      <li>시작 상태인 S0에서 x로 표시된 edge를 따라 표시된  허용된 상태까지에 대해서 전환 그래프내에 고유한 경로가 존재하면 x를 허용한다.</li>
+    </ul>
+  </li>
+  <li>DFA와 NFA의 공통점
+    <ul>
+      <li>DFA는 NFA로 시뮬레이션 가능하다.</li>
+      <li>NFA는 DFA로 변환이 가능하다.</li>
+    </ul>
+  </li>
+  <li>비결정론적이란
+    <ul>
+      <li>하나의 상태에서 값이 들어왔을때, 어떤 상태로 갈지 모르는 것을 의미한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="nfa-예제">NFA 예제</h3>
+<hr>
+
+<p>__(a|b)*abb__
+<img src="https://user-images.githubusercontent.com/48265129/233790959-2c34bc0d-8c7c-4ee3-9699-b13f87f2fec4.png" alt="image"></p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">state</th>
+      <th style="text-align: center">a</th>
+      <th style="text-align: center">b</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">S0</td>
+      <td style="text-align: center">{S0, S1}</td>
+      <td style="text-align: center">{S0}</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">S1</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">{S2}</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">S2</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">{S3}</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>S0는 a!에서 여러 전환을 한다.</p>
+
+<h2 id="re--dfa">RE → DFA</h2>
+<hr>
+<ol>
+  <li>RE → NFA w/ε-moves
+    <ul>
+      <li>각각의 항을 NFA로 빌드한다.</li>
+      <li>그것들을 ε-moves로 묶는다.</li>
+    </ul>
+  </li>
+  <li>NFA w/ε-moves 를 DFA로 만든다.
+    <ul>
+      <li>NFA를 시뮬레이션 하기 위해 DFA를 만든다.</li>
+      <li>하위 집합을 만드는 것.</li>
+    </ul>
+  </li>
+  <li>DFA → Minimized DFA
+    <ul>
+      <li>호환 가능한 상태를 병합한다.</li>
+    </ul>
+  </li>
+  <li>DFA → RE
+    <ul>
+      <li>모든 쌍과 모든 경로들의 문제</li>
+      <li>S0 부터 마지막 상태까지의 경로들을 합친다.</li>
+    </ul>
+  </li>
+</ol>
+
+<p>이 과정을 반복한다.<br>
+<strong>RE → NFA w/ε-moves → DFA → Minimized DFA → RE</strong> ..</p>
+
+<h3 id="1-re-to-nfa">1. RE to NFA</h3>
+<hr>
+<blockquote>
+  <p><strong>Thompson’s construction(정규 표현식을 NFA로 변환하는 알고리듬)</strong>을 보통 사용한다.<br>
+NFA 패턴을 사용한다.<br>
+각 연산에 대해서, NFA하위 그래프를 생성하여 전체 NFA를 구성한다.</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/233826506-1f49341e-38a0-4003-ab95-2c503f763370.png" alt="image">
+<img src="https://user-images.githubusercontent.com/48265129/233826511-37b247c0-7bc1-4a11-b9e3-4502e9ed7639.png" alt="image">
+<img src="https://user-images.githubusercontent.com/48265129/233826519-98176b09-2a56-456c-b92d-f0878f0b5a23.png" alt="image">
+<img src="https://user-images.githubusercontent.com/48265129/233827104-45379a02-80f0-45c2-8ef6-536ef49e55f2.png" alt="image">
+<img src="https://user-images.githubusercontent.com/48265129/233827112-87bb5677-6f59-40cd-88f5-a297fac21abf.png" alt="image">
+N(A+)를 만드는 방법은 N(A*)에서 S0에서 마지막 상태로 가는 ε을 제거하면 된다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/233832439-8fadc01d-e2d9-4573-afa4-fff11376ad6b.png" alt="image"></p>
+
+<h3 id="2-nfa--dfasubset-construction">2. NFA → DFA(Subset construction)</h3>
+<hr>
+<blockquote>
+  <p>NFA를 시뮬레이션 해야한다.</p>
+</blockquote>
+
+<ul>
+  <li>두 가지 핵심 함수가 있다.
+    <ul>
+      <li>move(s<sub>i</sub>, a)
+        <ul>
+          <li>상태 s<sub>i</sub>에서 입력 기호(심볼) a에 대해 가능한 모든 다음 상태들의 집합을 반환한다.</li>
+          <li>NFA에서 전환 규칙에 따라 각 상태와 입력 기호 쌍에 대해 일어날 수 있는 상태 전환을 결정한다.</li>
+        </ul>
+      </li>
+      <li>ε-closure(s<sub>i</sub>)
+        <ul>
+          <li>상태 s<sub>i</sub>에서 ε-전환만을 사용하여 도달 가능한 모든 상태들의 집합을 반환한다.</li>
+          <li>move(s<sub>i</sub>, ε)처럼 추가 입력이 없을 경우에 바로 다음 상태로 전환이 가능할 때 사용한다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>알고리즘
+    <ol>
+      <li>시작 상태 설정
+        <ul>
+          <li>NFA의 시작 상태 s<sub>0</sub>에서 ε-전환에 의해 도달 가능한 모든 상태들의 집합을 DFA의 시작 상태로 설정한다.</li>
+          <li>ε-closure 함수를 사용해서 상태를 찾는 것이다.</li>
+        </ul>
+      </li>
+      <li>새로운 상태 집합 생성
+        <ul>
+          <li>DFA의 상태에서 입력 기호에 대해 move 함수를 통해 가능한 상태 집합을 찾는다.</li>
+          <li>찾은 상태 집합에 대해서 ε-closure 함수를 통해, 가능한 상태 집합을 찾는다.</li>
+          <li>S<sub>0</sub> = ε-closure({s<sub>0</sub>})</li>
+        </ul>
+      </li>
+      <li>최종적으로 찾은 상태 집합을 DFA에 추가한다.
+        <ul>
+          <li>DFA에 대한 전환 테이블에 집합을 추가한다.</li>
+        </ul>
+      </li>
+      <li>추가적인 상태가 나오지 않을 때 까지 이 과정을 반복한다.</li>
+    </ol>
+  </li>
+</ul>
+
+<h4 id="예제-2">예제</h4>
+<hr>
+<p><img src="https://user-images.githubusercontent.com/48265129/233835795-1f28cab8-f186-43a0-b1f6-5fce4514079c.png" alt="image"></p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">states</th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center">ε-closure(move(s, *))</th>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">DFA</td>
+      <td style="text-align: center">NFA</td>
+      <td style="text-align: center">a</td>
+      <td style="text-align: center">b</td>
+      <td style="text-align: center">c</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">s<sub>0</sub>
+</td>
+      <td style="text-align: center">q<sub>0</sub>
+</td>
+      <td style="text-align: center">q<sub>1</sub>, q<sub>2</sub>, q<sub>3</sub>, q<sub>4</sub>, q<sub>6</sub>, q<sub>9</sub>
+</td>
+      <td style="text-align: center">none</td>
+      <td style="text-align: center">none</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">s<sub>1</sub>
+</td>
+      <td style="text-align: center">q<sub>1</sub>, q<sub>2</sub>, q<sub>3</sub>, q<sub>4</sub>, q<sub>6</sub>, q<sub>9</sub>
+</td>
+      <td style="text-align: center">none</td>
+      <td style="text-align: center">q<sub>5</sub>, q<sub>8</sub>, q<sub>9</sub>, q<sub>3</sub>, q<sub>4</sub>, q<sub>6</sub>
+</td>
+      <td style="text-align: center">q<sub>7</sub>, q<sub>8</sub>, q<sub>9</sub>, q<sub>3</sub>, q<sub>4</sub>, q<sub>6</sub>
+</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">s<sub>2</sub>
+</td>
+      <td style="text-align: center">q<sub>5</sub>, q<sub>8</sub>, q<sub>9</sub>, q<sub>3</sub>, q<sub>4</sub>, q<sub>6</sub>
+</td>
+      <td style="text-align: center">none</td>
+      <td style="text-align: center">s<sub>2</sub>
+</td>
+      <td style="text-align: center">s<sub>3</sub>
+</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">s<sub>3</sub>
+</td>
+      <td style="text-align: center">q<sub>7</sub>, q<sub>8</sub>, q<sub>9</sub>, q<sub>3</sub>, q<sub>4</sub>, q<sub>6</sub>
+</td>
+      <td style="text-align: center">none</td>
+      <td style="text-align: center">s<sub>2</sub>
+</td>
+      <td style="text-align: center">s<sub>3</sub>
+</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>s<sub>1</sub>, s<sub>2</sub>, s<sub>3</sub>는 종료 상태이다.</p>
+
+<p><strong>NFA를 DFA로 바꾼 결과</strong></p>
+<blockquote>
+  <p>ε-전환이 없기 때문에, NFA보다 작다.<br>
+모든 전환은 결정론적이다.<br>
+Use same code skeleton as before
+<img src="https://user-images.githubusercontent.com/48265129/233835970-c1fcb6f3-42cf-44a0-a80b-1771270ded2d.png" alt="image"></p>
+</blockquote>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center" colspan="2">
+</th>
+      <th style="text-align: center">a</th>
+      <th style="text-align: center">b</th>
+      <th style="text-align: center">c</th>
+      
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">s<sub>0</sub>
+</td>
+      <td style="text-align: center">s<sub>1</sub>
+</td>
+      <td style="text-align: center">none</td>
+      <td>none</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">s<sub>1</sub>
+</td>
+      <td style="text-align: center">none</td>
+      <td style="text-align: center">s<sub>2</sub>
+</td>
+      <td>s<sub>3</sub>
+</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">s<sub>2</sub>
+</td>
+      <td style="text-align: center">none</td>
+      <td style="text-align: center">s<sub>2</sub>
+</td>
+      <td>s<sub>3</sub>
+</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">s<sub>3</sub>
+</td>
+      <td style="text-align: center">none</td>
+      <td style="text-align: center">s<sub>2</sub>
+</td>
+      <td>s<sub>3</sub>
+</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="3-dfa--minimized-dfa">3. DFA → Minimized DFA</h2>
+<hr>
+<blockquote>
+  <p>DFA에서 동일한 상태 집합을 찾아서 각 집합을 단일 상태로 나타낸다.</p>
+</blockquote>
+
+<ul>
+  <li>알고리즘
+    <ol>
+      <li>서로 동일하지 않은 모든 상태를 찾는다.</li>
+    </ol>
+    <ul>
+      <li>상태 X와 Y는 다음과 같은 경우에 서로 다른 상태이다.
+        <ul>
+          <li>X가 종료 상태, Y는 종료 상태가 아닐 때</li>
+          <li>서로 같은 입력 기호를 가지더라도 그 이전 상태가 다를 때
+            <ol>
+              <li>서로 동등하지 않은 쌍은 제거한다.</li>
+            </ol>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>축소 결과</strong>
+| | 동일한 상태 | a | b | c | 
+| :—: | :—: | :—: | :—: | :—: |
+ s<sub>0</sub> | {s<sub>0</sub>} |  s<sub>1</sub> |  s<sub>1</sub> | none | none |
+ s<sub>1</sub> | {s<sub>1</sub>,  s<sub>2</sub>,  s<sub>3</sub>} | none | s<sub>2</sub> | s<sub>3</sub> |</p>
+
+<p>s<sub>1</sub>과  s<sub>2</sub>,  s<sub>2</sub>과  s<sub>3</sub>는 동일하다.</p>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/233837364-e2310227-a866-4eab-9652-a88bc50603f0.png" alt="image"></p>
+
+<h2 id="정규-표현식의-장점">정규 표현식의 장점</h2>
+<hr>
+<blockquote>
+  <p>패턴을 지정하는 단순하고 강력한 표기법이다.<br>
+많은 종류의 구문을 정규 표현식으로 지정할 수 있다.</p>
+</blockquote>
+
+<h2 id="regular-language의-한계점">Regular language의 한계점</h2>
+<hr>
+
+<ul>
+  <li>정규 표현식은 균형있고 중첩된 구성을 기술하는데 사용할 수 없다.
+    <ul>
+      <li>균형잡힌 괄호 문자열의 집합은 정규 표현식으로 기술할 수 없다.</li>
+      <li>이러한 집합은 Context-free 문법으로 처리할 수 있다.</li>
+    </ul>
+  </li>
+  <li>L = {p<sup>k</sup> q<sup>k</sup>} (k는 임의의 수이다.)
+    <ul>
+      <li>정규 표현식으로 이 내용을 처리할 수 없다.</li>
+      <li>Parser로 처리한다.</li>
+    </ul>
+  </li>
+  <li>정규 표현식은 오직 정해진 반복 횟수와 지정되지 않은 반복 횟수만 나타내는데 사용될 수 있다.
+* (ε|1)(01)*(ε|0)
+* (01|10)+</li>
+</ul>
+
+<h2 id="lex-and-yacc">Lex and Yacc</h2>
+<hr>
+<blockquote>
+  <p>Scanner와 Parser의 소스 코드를 만드는 데 사용된다.<br>
+또 다른 Flex(Lex와 같은 역할), Bison(Yacc과 같은 역할)도 같은 역할을 한다.</p>
+</blockquote>
+
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/compiler/2023/04/22/Compiler-Overview.html" title="Compiler Overview">Compiler Overview</a><a class="next" href="/jekyll-theme-yat/compiler/2023/04/23/Compiler-Context-free-analysis.html" title="Compiler Context-free analysis">Compiler Context-free analysis</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li>
+<span><a class="post-link" href="/jekyll-theme-yat/private/2023/12/30/2023%EB%85%84%EC%9D%84-%EB%8F%8C%EC%95%84%EB%B3%B4%EB%A9%B0.html" title="Compiler Context-free analysis">2023년을 돌아보며</a></span><span>
+            <time class="dt-published datetime" datetime="2023-12-30T00:00:00+09:00" itemprop="datePublished">2023-12-30, Sat
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/android/2023/04/06/StateFlow-vs-SharedFlow.html" title="Compiler Context-free analysis">StateFlow vs SharedFlow</a></span><span>
+            <time class="dt-published datetime" datetime="2023-04-06T00:00:00+09:00" itemprop="datePublished">2023-04-06, Thu
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/kotlin/2023/12/10/%EC%BD%94%ED%8B%80%EB%A6%B0-%EC%BD%94%EB%A3%A8%ED%8B%B4%EC%9D%84-%ED%99%9C%EC%9A%A9%ED%95%B4-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%BA%90%EC%8B%9C-%EA%B4%80%EB%A6%AC-%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0.html" title="Compiler Context-free analysis">코틀린 코루틴을 활용해 데이터 메모리 캐시 기능 구현하기</a></span><span>
+            <time class="dt-published datetime" datetime="2023-12-10T00:00:00+09:00" itemprop="datePublished">2023-12-10, Sun
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/kotlin/coroutines/2023/11/12/%EC%BD%94%EB%A3%A8%ED%8B%B4%EC%97%90%EC%84%9C%EC%9D%98-%EC%98%88%EC%99%B8-%EC%B2%98%EB%A6%AC.html" title="Compiler Context-free analysis">코루틴에서의 예외 처리 정리</a></span><span>
+            <time class="dt-published datetime" datetime="2023-11-12T00:00:00+09:00" itemprop="datePublished">2023-11-12, Sun
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/android/2023/08/24/Android-%EA%B7%B8%EB%9E%98%ED%94%84-%EA%B7%B8%EB%A6%AC%EB%8A%94-View%EB%A7%8C%EB%93%A4%EA%B8%B0.html" title="Compiler Context-free analysis">그래프 그리는 View만들기</a></span><span>
+            <time class="dt-published datetime" datetime="2023-08-24T00:00:00+09:00" itemprop="datePublished">2023-08-24, Thu
+            </time></span>
+        </li>
+</ul>
+    </div>
+<div class="post-comments">
+<div id="utterances-placeholder"></div>
+<script>
+
+const utterancesThemeFromDataTheme = () => {
+    const dataTheme = document.documentElement.getAttribute('data-theme');
+    return `github-${dataTheme}`;
+  };
+
+  const setUtterancesTheme = () => {
+    const iframe = document.querySelector('.utterances-frame');
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: utterancesThemeFromDataTheme()
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+    }
+  }
+
+  // dynamic change
+  const observer = new MutationObserver((mutationsList, observer) => {
+    for (let mutation of mutationsList) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        setUtterancesTheme();
+      }
+    }
+  });
+  observer.observe(document.documentElement, { attributes: true, childList: false, subtree: false });
+
+  let utterancesScript = document.createElement('script');
+  utterancesScript.async = true;
+  utterancesScript.src = 'https://utteranc.es/client.js';
+  utterancesScript.crossOrigin = 'anonymous';
+  utterancesScript.setAttribute('issue-term', 'pathname');
+  utterancesScript.setAttribute('label', 'comments');
+  utterancesScript.setAttribute('repo', 'pknujsp/Blogcomments');
+  utterancesScript.setAttribute('theme', utterancesThemeFromDataTheme());
+
+  const placeholder = document.getElementById('utterances-placeholder');
+  placeholder.parentNode.replaceChild(utterancesScript, placeholder);
+</script>
+</div></section>
+</div>
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">Contents</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">· ' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>2024 @ Junsung Park</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,1398 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Kotlin 1.9, 2.0 미리보기 | Jsp Notes</title>
+<meta name="generator" content="Jekyll v4.3.4">
+<meta property="og:title" content="Kotlin 1.9, 2.0 미리보기">
+<meta name="author" content="Junsung Park">
+<meta property="og:locale" content="ko">
+<meta name="description" content="Kotlin 1.9 변경점">
+<meta property="og:description" content="Kotlin 1.9 변경점">
+<link rel="canonical" href="https://pknujsp.github.io//jekyll-theme-yat/kotlin/2023/09/02/Kotlin-1.9,-2.0-%EB%AF%B8%EB%A6%AC%EB%B3%B4%EA%B8%B0.html">
+<meta property="og:url" content="https://pknujsp.github.io//jekyll-theme-yat/kotlin/2023/09/02/Kotlin-1.9,-2.0-%EB%AF%B8%EB%A6%AC%EB%B3%B4%EA%B8%B0.html">
+<meta property="og:site_name" content="Jsp Notes">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-09-02T00:00:00+09:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Kotlin 1.9, 2.0 미리보기">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junsung Park"},"dateModified":"2023-09-02T00:00:00+09:00","datePublished":"2023-09-02T00:00:00+09:00","description":"Kotlin 1.9 변경점","headline":"Kotlin 1.9, 2.0 미리보기","mainEntityOfPage":{"@type":"WebPage","@id":"https://pknujsp.github.io//jekyll-theme-yat/kotlin/2023/09/02/Kotlin-1.9,-2.0-%EB%AF%B8%EB%A6%AC%EB%B3%B4%EA%B8%B0.html"},"url":"https://pknujsp.github.io//jekyll-theme-yat/kotlin/2023/09/02/Kotlin-1.9,-2.0-%EB%AF%B8%EB%A6%AC%EB%B3%B4%EA%B8%B0.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="icon" href="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script>
+
+  <!-- tipuesearch -->
+  <link rel="stylesheet" href="/assets/tipuesearch/css/tipuesearch.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_content.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_set.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch.min.js"></script><link type="application/atom+xml" rel="alternate" href="https://pknujsp.github.io//jekyll-theme-yat/feed.xml" title="Jsp Notes">
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LZC1TDTS26"></script>
+<script>
+  function initGoogleAnalytics() {
+    var doNotTrack = (window.doNotTrack === "1" || navigator.doNotTrack === "1" ||
+      navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1");
+    var enableDNT = "true" == "true";
+
+    if (!enableDNT || !doNotTrack) {
+      /*
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'G-LZC1TDTS26', 'auto');
+      ga('send', 'pageview');
+      */
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { window.dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-LZC1TDTS26');
+    }
+  }
+  window.addEventListener("load", initGoogleAnalytics);
+
+</script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/intellij-light.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/kotlin.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #7800ff;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: lowercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <img class="site-white_favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+</a></span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/about.html">About</a><a class="page-link" href="/jekyll-theme-yat/categories.html">Categories</a><a class="page-link" href="/jekyll-theme-yat/">Home</a><a class="page-link" href="/jekyll-theme-yat/posts.html">Posts</a><a class="page-link" href="/jekyll-theme-yat/tags.html">Tags</a><input id="tipue_search_input" type="search" placeholder="Search" aria-label="Search" title="Please enter at least 1 character" required>
+
+          <script>
+            document.getElementById("tipue_search_input").addEventListener("keydown", function (event) {
+              if (event.keyCode === 13) {
+                event.preventDefault();
+                window.location.href = "../search?q=" + this.value;
+              }
+            });
+          </script>
+<!--
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="en">
+        
+        <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+        to English
+        
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="ko">
+        
+        <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+        to Korean
+        
+      </a>
+    </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'ko',
+      autoDisplay: false,
+      layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+    }, 'google_translate_element');
+
+    // Links to cross-origin destinations are unsafe
+    var gll = document.getElementsByClassName('goog-logo-link')[0];
+    if (gll) {
+      gll.setAttribute('rel', 'noopener');
+    }
+
+    function restoreLang() {
+      var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+      if (!iframe) return;
+
+      var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+      var restore_el = innerDoc.getElementsByTagName("button");
+
+      for (var i = 0; i < restore_el.length; i++) {
+        if (restore_el[i].id.indexOf("restore") >= 0) {
+          restore_el[i].click();
+          var close_el = innerDoc.getElementsByClassName("goog-close-link");
+          close_el[0].click();
+          return;
+        }
+      }
+    }
+
+    function triggerHtmlEvent(element, eventName) {
+      var event;
+      if (document.createEvent) {
+        event = document.createEvent('HTMLEvents');
+        event.initEvent(eventName, true, true);
+        element.dispatchEvent(event);
+      } else {
+        event = document.createEventObject();
+        event.eventType = eventName;
+        element.fireEvent('on' + event.eventType, event);
+      }
+    }
+
+    var googleCombo = document.querySelector("select.goog-te-combo");
+    var langSelect = document.querySelector('.ct-language');
+    langSelect.addEventListener('click', function (event) {
+      if (!event.target) {
+        return;
+      }
+
+      var selected = document.querySelector('.ct-language .ct-language-selected');
+      if (selected) {
+        selected.classList.remove('ct-language-selected');
+      }
+
+      var target = event.target;
+      while (target && target !== langSelect) {
+        if (target.matches('.lang-select')) {
+          break;
+        }
+        target = target.parentElement;
+      }
+
+      if (target && target.matches('.lang-select')) {
+        var lang = target.getAttribute('data-lang');
+        if (googleCombo.value == lang) {
+          restoreLang();
+        } else if (lang == 'ko') {
+          var googleTranslateElement = document.getElementById('google_translate_element');
+          if (googleTranslateElement) {
+            googleTranslateElement.parentNode.removeChild(googleTranslateElement);
+            $('#google_translate_element').empty();
+          }
+        } else {
+          target.parentElement.classList.add('ct-language-selected');
+          googleCombo.value = lang;
+          triggerHtmlEvent(googleCombo, 'change');
+        }
+      }
+
+      event.preventDefault();
+    });
+  }
+</script>
+
+<script type="text/javascript"
+  src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script></span>-->
+          </div>
+
+          
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('manual' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = !(hours >= 2 && hours <=5);
+
+      if (nightShift) {
+        if (hours > 5) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(5);
+      } else {
+        toggleAt.setHours(2);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<div id="click-to-bottom" class="click-to-bottom">
+  <i class="fa fa-arrow-down"></i>
+</div>
+<script>
+  (function () {
+    const clickToBottom = document.getElementById('click-to-bottom');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToBottom.classList.add('show')
+      }else {
+        clickToBottom.classList.remove('show')
+      }
+    });
+    clickToBottom.addEventListener('click', () => {
+      window.smoothScrollTo(document.body.scrollHeight);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">Kotlin 1.9, 2.0 미리보기</h1>
+  <h2 class="post-subtitle">1.9버전 변경점 알아보고, 2.0버전 미리보기</h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2023-09-02T00:00:00+09:00" itemprop="datePublished">2023-09-02, Sat
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 10 minutes</span>
+  </p>
+<div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Kotlin">#Kotlin</a></div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h2 id="kotlin-19-변경점">Kotlin 1.9 변경점</h2>
+
+<h3 id="until-연산자에-대한-특수-구문-도입">
+<strong>until</strong> 연산자에 대한 특수 구문 도입</h3>
+
+<p>1.8 이하에서는 아래와 같이 <code class="language-plaintext highlighter-rouge">until</code>연산자를 사용하여, 0부터 9까지의 범위를 표현할 수 있습니다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="k">in</span> <span class="mi">0</span> <span class="n">until</span> <span class="mi">10</span><span class="p">)</span> <span class="p">{</span> <span class="o">..</span><span class="p">.</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>1.9 부터는 <code class="language-plaintext highlighter-rouge">..&lt;</code> 연산자로 동일한 기능을 수행할 수 있습니다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">for</span> <span class="p">(</span><span class="n">i</span> <span class="k">in</span> <span class="mi">0</span> <span class="o">..</span><span class="p">&lt;</span> <span class="mi">10</span><span class="p">)</span> <span class="p">{</span> <span class="o">..</span><span class="p">.</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<p>Jetbrains 설명에 따르면, Kotlin의 범위 구문이 구체적이지 않다는 의견을 받아왔고, 이를 해결하기 위해 <code class="language-plaintext highlighter-rouge">..&lt;</code> 연산자를 도입하였다고 합니다. UX연구 결과에 따르면, <code class="language-plaintext highlighter-rouge">..&lt;</code>가 <code class="language-plaintext highlighter-rouge">until</code>에 비해 20~30% 정도 개발자의 실수를 줄이는 효과가 있다고 합니다.</p>
+
+<h3 id="data-object-도입">
+<strong>data object</strong> 도입</h3>
+
+<p><strong>class</strong>에 대하여 <code class="language-plaintext highlighter-rouge">toString()</code>. <code class="language-plaintext highlighter-rouge">equals()</code>, <code class="language-plaintext highlighter-rouge">hashCode()</code>를 자동으로 처리하여 주는 <strong>data class</strong>와 달리, <strong>object</strong>는 이러한 기능을 제공하지 않습니다. 하지만, 1.9 부터는 <strong>data object</strong>를 도입하여 <code class="language-plaintext highlighter-rouge">data class</code>와 처럼 3가지의 함수를 자동 처리하여 줍니다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">sealed</span> <span class="kd">interface</span> <span class="nc">ReadResult</span>
+    <span class="kd">data class</span> <span class="nc">Number</span><span class="p">(</span><span class="kd">val</span> <span class="py">number</span><span class="p">:</span> <span class="nc">Int</span><span class="p">)</span> <span class="p">:</span> <span class="nc">ReadResult</span>
+    <span class="kd">data class</span> <span class="nc">Text</span><span class="p">(</span><span class="kd">val</span> <span class="py">text</span><span class="p">:</span> <span class="nc">String</span><span class="p">)</span> <span class="p">:</span> <span class="nc">ReadResult</span>
+    <span class="n">data</span> <span class="kd">object</span> <span class="nc">EndOfFile</span> <span class="p">:</span> <span class="nc">ReadResult</span>
+
+    <span class="k">fun</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nf">println</span><span class="p">(</span><span class="nc">Number</span><span class="p">(</span><span class="mi">7</span><span class="p">))</span> <span class="c1">// Number(number=7)</span>
+        <span class="nf">println</span><span class="p">(</span><span class="nc">EndOfFile</span><span class="p">)</span> <span class="c1">// EndOfFile</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="enumvalues를-대체하기-위해-enumentries-도입">
+<code class="language-plaintext highlighter-rouge">Enum.values()</code>를 대체하기 위해 <code class="language-plaintext highlighter-rouge">Enum.entries</code> 도입</h3>
+
+<ul>
+  <li>기존 <code class="language-plaintext highlighter-rouge">Enum.values()</code>의 문제점
+    <ul>
+      <li>
+<code class="language-plaintext highlighter-rouge">values()</code>를 사용하면 모든 enum 항목을 Array로 만들어 반환합니다.</li>
+      <li>이때 항상 새로운 Array의 instance를 할당하기 때문에 메모리 성능 문제가 일으킵니다.</li>
+      <li>Array를 반환하기 때문에, 임의적으로 외부에서 Array의 값을 변경할 수 있는 문제도 있습니다.</li>
+      <li>참고
+        <ul>
+          <li>(https://mail.openjdk.org/pipermail/compiler-dev/2018-July/012242.html)</li>
+          <li>(https://dzone.com/articles/memory-hogging-enumvalues-method)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="위의-문제점을-개선한-entries가-도입되었습니다">위의 문제점을 개선한 <code class="language-plaintext highlighter-rouge">entries</code>가 도입되었습니다.</h4>
+
+<ul>
+  <li>
+<code class="language-plaintext highlighter-rouge">Array</code>가 아닌 <code class="language-plaintext highlighter-rouge">List&lt;E&gt;</code>를 상속한 타입인 <code class="language-plaintext highlighter-rouge">EnumEntries</code>를 반환합니다.</li>
+  <li>함수가 아닌 속성으로, 미리 할당되어 있기 때문에 메모리 문제가 개선됩니다.</li>
+</ul>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">enum</span> <span class="kd">class</span> <span class="nc">Color</span><span class="p">(</span><span class="kd">val</span> <span class="py">colorName</span><span class="p">:</span> <span class="nc">String</span><span class="p">,</span> <span class="kd">val</span> <span class="py">rgb</span><span class="p">:</span> <span class="nc">String</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nc">RED</span><span class="p">(</span><span class="s">"Red"</span><span class="p">,</span> <span class="s">"#FF0000"</span><span class="p">),</span>
+        <span class="nc">ORANGE</span><span class="p">(</span><span class="s">"Orange"</span><span class="p">,</span> <span class="s">"#FF7F00"</span><span class="p">),</span>
+        <span class="nc">YELLOW</span><span class="p">(</span><span class="s">"Yellow"</span><span class="p">,</span> <span class="s">"#FFFF00"</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">fun</span> <span class="nf">findByRgb</span><span class="p">(</span><span class="n">rgb</span><span class="p">:</span> <span class="nc">String</span><span class="p">):</span> <span class="nc">Color</span><span class="p">?</span> <span class="p">=</span> <span class="nc">Color</span><span class="p">.</span><span class="n">entries</span><span class="p">.</span><span class="nf">find</span> <span class="p">{</span> <span class="n">it</span><span class="p">.</span><span class="n">rgb</span> <span class="p">==</span> <span class="n">rgb</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="value-class에서-보조-생성자-선언-가능">
+<strong>value class</strong>에서 보조 생성자 선언 가능</h3>
+
+<p>1.8 까지는 <strong>value class</strong>에서 보조 생성자를 선언할 수 없었으나, 1.9 부터는 가능해졌습니다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nd">@JvmInline</span>
+    <span class="n">value</span> <span class="kd">class</span> <span class="nc">Person</span><span class="p">(</span><span class="k">private</span> <span class="kd">val</span> <span class="py">fullName</span><span class="p">:</span> <span class="nc">String</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// 1.4.30 부터 도입</span>
+        <span class="nf">init</span> <span class="p">{</span>
+            <span class="nf">check</span><span class="p">(</span><span class="n">fullName</span><span class="p">.</span><span class="nf">isNotBlank</span><span class="p">())</span> <span class="p">{</span>
+                <span class="s">"Full name shouldn't be empty"</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="c1">// 1.9 부터 도입</span>
+        <span class="k">constructor</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nc">String</span><span class="p">,</span> <span class="n">lastName</span><span class="p">:</span> <span class="nc">String</span><span class="p">)</span> <span class="p">:</span> <span class="k">this</span><span class="p">(</span><span class="s">"$name $lastName"</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nf">check</span><span class="p">(</span><span class="n">lastName</span><span class="p">.</span><span class="nf">isNotBlank</span><span class="p">())</span> <span class="p">{</span>
+                <span class="s">"Last name shouldn't be empty"</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">fun</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="py">name1</span> <span class="p">=</span> <span class="nc">Person</span><span class="p">(</span><span class="s">"Kotlin"</span><span class="p">,</span> <span class="s">"Mascot"</span><span class="p">)</span>
+        <span class="kd">val</span> <span class="py">name2</span> <span class="p">=</span> <span class="nc">Person</span><span class="p">(</span><span class="s">"Kodee"</span><span class="p">)</span>
+
+        <span class="n">name1</span><span class="p">.</span><span class="nf">greet</span><span class="p">()</span> <span class="c1">// Hello, Kotlin Mascot</span>
+        <span class="nf">println</span><span class="p">(</span><span class="n">name2</span><span class="p">.</span><span class="n">length</span><span class="p">)</span> <span class="c1">// 5</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="버전-2-미리보기">버전 2 미리보기</h2>
+
+<blockquote>
+  <p>버전이 1.9 이후 바로 2.0으로 넘어갑니다.</p>
+</blockquote>
+
+<h3 id="k2-컴파일러-안정화">K2 컴파일러 안정화</h3>
+
+<p>2022년 6월에 1.7 버전에서 알파 버전으로 공개되었던 새로운 Kotlin 컴파일러(K2)가 2.0 버전에서 안정화됩니다.</p>
+
+<p><img width="60%" src="https://github.com/pknujsp/WeatherWizard/assets/48265129/87c3161c-3103-46ae-ae7d-da6e0d80051e"></p>
+
+<p><img width="60%" src="https://github.com/pknujsp/WeatherWizard/assets/48265129/550c264c-e66a-413b-92e5-062a26cac413"></p>
+
+<p><img width="60%" src="https://github.com/pknujsp/WeatherWizard/assets/48265129/b49ad5c7-5807-457a-b588-b9c8bcfe7424"></p>
+
+<h5 id="15-klocs--1초당-1500줄의-코드를-처리함을-의미">1.5 KLOC/s : 1초당 1,500줄의 코드를 처리함을 의미</h5>
+
+<h4 id="특징">특징</h4>
+<ul>
+  <li>약 2배 이상의 빠른 컴파일 속도</li>
+  <li>신 기능
+    <ul>
+      <li>Static extensions</li>
+      <li>Colletion literals</li>
+      <li>Name-based destructuring</li>
+      <li>Context receivers</li>
+      <li>Explicit fields</li>
+    </ul>
+  </li>
+</ul>
+
+<p>새로운 기능은 아직 정확히 어떠한 버전에서 도입될지 정해지지 않은 상태입니다.</p>
+
+<h3 id="static-extensions">Static extensions</h3>
+
+<p>(https://github.com/Kotlin/KEEP/blob/statics/proposals/statics.md#kotlin-statics-and-static-extensions)</p>
+
+<p>static 키워드가 도입됩니다.</p>
+
+<p>static members/extensions/objects 개념이 새롭게 등장하게 됩니다.</p>
+
+<h4 id="static-interface-overrides-등장">static interface, overrides 등장</h4>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">static</span> <span class="kd">interface</span> <span class="nc">Parseable</span><span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;</span> <span class="p">{</span>
+        <span class="k">fun</span> <span class="nf">parse</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="nc">String</span><span class="p">):</span> <span class="nc">T</span> <span class="c1">// static interface with `parse` function</span>
+    <span class="p">}</span>
+
+    <span class="kd">class</span> <span class="nc">Color</span><span class="p">(</span><span class="kd">val</span> <span class="py">rgb</span><span class="p">:</span> <span class="nc">Int</span><span class="p">)</span> <span class="p">:</span> <span class="nc">Parseable</span><span class="p">&lt;</span><span class="nc">Color</span><span class="p">&gt;</span> <span class="p">{</span>
+        <span class="nf">static</span> <span class="p">{</span>
+            <span class="k">override</span> <span class="k">fun</span> <span class="nf">parse</span><span class="p">(</span><span class="n">s</span><span class="p">:</span> <span class="nc">String</span><span class="p">):</span> <span class="nc">Color</span> <span class="p">{</span> <span class="cm">/* impl */</span> <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">fun</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="py">parser</span><span class="p">:</span> <span class="nc">Parseable</span><span class="p">&lt;</span><span class="nc">Color</span><span class="p">&gt;</span> <span class="p">=</span> <span class="nc">Color</span><span class="p">.</span><span class="n">static</span>
+        <span class="kd">val</span> <span class="py">color</span> <span class="p">=</span> <span class="n">parser</span><span class="p">.</span><span class="nf">parse</span><span class="p">(</span><span class="s">"red"</span><span class="p">)</span>
+        <span class="nf">println</span><span class="p">(</span><span class="n">color</span> <span class="k">is</span> <span class="nc">Parseable</span><span class="p">&lt;</span><span class="nc">Color</span><span class="p">&gt;)</span> <span class="c1">// false</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="static-objects">static objects</h4>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">static</span> <span class="kd">object</span> <span class="nc">Namespace</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="py">property</span> <span class="p">=</span> <span class="mi">42</span> <span class="c1">// static property</span>
+        <span class="k">fun</span> <span class="nf">doSomething</span><span class="p">()</span> <span class="p">{</span> <span class="c1">// static function</span>
+            <span class="n">property</span> <span class="c1">// OK: Can refer to static property in the same scope</span>
+            <span class="k">this</span> <span class="c1">// ERROR: Static objects have no instance</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">fun</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nc">Namespace</span><span class="p">.</span><span class="nf">doSomething</span><span class="p">()</span> <span class="c1">// OK</span>
+        <span class="kd">val</span> <span class="py">x</span> <span class="p">=</span> <span class="nc">Namespace</span> <span class="c1">// ERROR: Cannot reference static object as value</span>
+        <span class="kd">val</span> <span class="py">y</span><span class="p">:</span> <span class="nc">Namespace</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span> <span class="c1">// ERROR: Cannot reference static object as type</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="static-extensions-1">static extensions</h4>
+
+<p>예를 들어, <strong>CsvFile</strong> 이라는 클래스에 대하여 <code class="language-plaintext highlighter-rouge">open(fileName: String)</code> 정적 확장 함수를 만들고자 한다면, <strong>CsvFile</strong>클래스에 Companion object가 선언된 경우에만 <code class="language-plaintext highlighter-rouge">fun CsvFile.Companion.open(fileName: String)</code> 으로 확장 함수를 선언할 수 있습니다.</p>
+
+<p>2.X 버전 부터는 static도 확장이 가능해져, <code class="language-plaintext highlighter-rouge">fun CsvFile.static.open(fileName: String)</code>로 Companion object가 없더라도 확장 함수 선언이 가능해집니다.</p>
+
+<h4 id="최종-사용-구문은-section-vs-modifier-두-가지-중에서-현재-논의-중입니다">최종 사용 구문은 section vs modifier 두 가지 중에서 현재 논의 중입니다.</h4>
+
+<p>각각 장단점을 가지고 있는데, 현재 Section이 더 많은 찬성을 받고 있습니다.</p>
+
+<ul>
+  <li>Section
+    <ul>
+      <li>장점 : Companion object에서 마이그레이션 하기에 용이합니다.</li>
+      <li>단점 : 다른 언어들에서 주로 사용되는 구문과 달라 Kotlin 첫 사용자에게 학습장벽이 될 수 있습니다.</li>
+    </ul>
+  </li>
+  <li>Modifier
+    <ul>
+      <li>장점 : 다른 언어들에서 주로 사용되는 구문과 유사하여 Kotlin 첫 사용자에게 학습장벽이 낮습니다.</li>
+      <li>단점 : 모든 코드 줄을 바꿔야 하기 때문에 Companion object에서 마이그레이션 하기에 어려움이 있습니다.</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kd">class</span> <span class="nc">C</span> <span class="p">{</span>
+        <span class="c1">// Static section syntax</span>
+        <span class="nf">static</span> <span class="p">{</span>
+            <span class="kd">val</span> <span class="py">property</span> <span class="p">=</span> <span class="nf">println</span><span class="p">(</span><span class="s">"initialized"</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="c1">// Static modifier syntax</span>
+        <span class="n">static</span> <span class="kd">val</span> <span class="py">property</span> <span class="p">=</span> <span class="nf">println</span><span class="p">(</span><span class="s">"initialized"</span><span class="p">)</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="collection-literals">Collection literals</h3>
+
+<p><code class="language-plaintext highlighter-rouge">[1, 2, 3]</code>과 같은 방식으로 Collection을 선언할 수 있게 됩니다. 다른 주요 언어 에서는 이미 가능한 방식이죠. 찾아보니 5년 전에 제안된 개선안 인데 좀 늦게 적용되는 경향이 있습니다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kd">val</span> <span class="py">arr</span><span class="p">:</span> <span class="nc">Array</span><span class="p">&lt;</span><span class="nc">String</span><span class="p">&gt;</span> <span class="p">=</span> <span class="p">[</span><span class="s">"a"</span><span class="p">,</span> <span class="s">"b"</span><span class="p">,</span> <span class="s">"c"</span><span class="p">]</span>
+    <span class="kd">val</span> <span class="py">set</span><span class="p">:</span> <span class="nc">Set</span><span class="p">&lt;</span><span class="nc">Boolean</span><span class="p">&gt;</span> <span class="p">=</span> <span class="p">[</span><span class="k">true</span><span class="p">,</span> <span class="k">false</span><span class="p">,</span> <span class="k">true</span><span class="p">]</span> 
+    <span class="kd">val</span> <span class="py">list</span><span class="p">:</span> <span class="nc">List</span><span class="p">&lt;</span><span class="nc">Int</span><span class="p">&gt;</span> <span class="p">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+    <span class="kd">val</span> <span class="py">map</span><span class="p">:</span> <span class="nc">Map</span><span class="p">&lt;</span><span class="nc">String</span><span class="p">,</span> <span class="nc">Int</span><span class="p">&gt;</span> <span class="p">=</span> <span class="p">[</span><span class="s">"one"</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span> <span class="s">"two"</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span> <span class="s">"three"</span><span class="p">:</span> <span class="mi">3</span><span class="p">]</span>
+</code></pre></div></div>
+
+<h3 id="name-based-destructuring">Name-based destructuring</h3>
+
+<p>아래의 경우 처럼, firstName과 lastName의 배치 순서가 바뀌어도 현재는 그대로 컴파일 되는데 이는 로직에 문제를 일으키게 됩니다.</p>
+
+<p>이 문제를 해결한다고 하는데, 아직 추가 내용은 없습니다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kd">data class</span> <span class="nc">Person</span><span class="p">(</span>
+        <span class="kd">val</span> <span class="py">firstName</span><span class="p">:</span> <span class="nc">String</span><span class="p">,</span>
+        <span class="kd">val</span> <span class="py">lastName</span><span class="p">:</span> <span class="nc">String</span>
+    <span class="p">)</span>
+
+    <span class="k">fun</span> <span class="nf">main</span><span class="p">()</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="py">person</span> <span class="p">=</span> <span class="nc">Person</span><span class="p">(</span><span class="s">"Kotlin"</span><span class="p">,</span> <span class="s">"Mascot"</span><span class="p">)</span>
+
+        <span class="kd">val</span> <span class="p">(</span><span class="py">firstName</span><span class="p">,</span> <span class="py">lastName</span><span class="p">)</span> <span class="p">=</span> <span class="n">person</span>
+        <span class="kd">val</span> <span class="p">(</span><span class="py">lastName</span><span class="p">,</span> <span class="py">firstName</span><span class="p">)</span> <span class="p">=</span> <span class="n">person</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="context-receivers">Context receivers</h3>
+
+<p><strong>Context Receivers</strong>라는 기능이 추가됩니다.</p>
+
+<p>특정 context을 통해서만 사용 가능한 함수나 속성을 선언할 수 있게 해줍니다. 이를 통해 코드의 모듈성과 구조화가 향상시킬 수 있을 것 같습니다.</p>
+
+<h4 id="사용-방법">사용 방법</h4>
+
+<p><code class="language-plaintext highlighter-rouge">context(...)</code>를 붙여주면 됩니다.</p>
+
+<p>Context receivers를 사용할 때의 차이점을 같은 동작을 하는 코드를 통해 비교하면 아래와 같습니다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">fun</span> <span class="nf">doSomething</span><span class="p">(</span><span class="n">scope</span><span class="p">:</span> <span class="nc">CoroutineScope</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">scope</span><span class="p">.</span><span class="nf">launch</span> <span class="p">{</span>
+            <span class="c1">// CoroutineScope 내에서 작동하는 코드</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kd">val</span> <span class="py">scope</span> <span class="p">=</span> <span class="nc">CoroutineScope</span><span class="p">(</span><span class="nc">Dispatchers</span><span class="p">.</span><span class="nc">Default</span><span class="p">)</span>
+    <span class="nf">doSomething</span><span class="p">(</span><span class="n">scope</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nf">context</span><span class="p">(</span><span class="nc">CoroutineScope</span><span class="p">)</span>
+    <span class="k">fun</span> <span class="nf">doSomething</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nf">launch</span> <span class="p">{</span>
+            <span class="c1">// CoroutineScope 내에서 작동하는 코드</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kd">val</span> <span class="py">scope</span> <span class="p">=</span> <span class="nc">CoroutineScope</span><span class="p">(</span><span class="nc">Dispatchers</span><span class="p">.</span><span class="nc">Default</span><span class="p">)</span>
+    <span class="n">scope</span><span class="p">.</span><span class="nf">doSomething</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h4 id="특징-1">특징</h4>
+
+<ul>
+  <li>코드 간결성: context를 사용하면, context를 명시적으로 전달할 필요가 없어 코드가 더 간결해집니다.</li>
+  <li>다중 context 지원: 하나의 함수가 여러 context에서 동작할 수 있으므로, 더 다양한 사용 사례를 지원할 수 있습니다.</li>
+</ul>
+
+<h3 id="explicit-fields">Explicit fields</h3>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">private</span> <span class="kd">val</span> <span class="py">_applicationState</span> <span class="p">=</span> <span class="nc">MutableStateFlow</span><span class="p">(</span><span class="nc">State</span><span class="p">())</span>
+    <span class="kd">val</span> <span class="py">applicationState</span><span class="p">:</span> <span class="nc">StateFlow</span><span class="p">&lt;</span><span class="nc">State</span><span class="p">&gt;</span>
+        <span class="k">get</span><span class="p">()</span> <span class="p">=</span> <span class="n">_applicationState</span>
+</code></pre></div></div>
+
+<p>현재 변수를 클래스 내부에서 사용하기 위해서 private으로 선언한 후, 외부에서 읽기 전용으로 쓰도록 하기 위해 추가로 public 변수를 선언하는 것이 일반적입니다.</p>
+
+<p>어쩔 수 없는 선언 방식이지만 코드 길이가 2배가 되는 문제가 있습니다.</p>
+
+<p>차후에는 아래와 같이 간편하게 사용할 수 있게 됩니다. 코드가 간결해지고, 가독성이 향상될 것으로 기대됩니다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="kd">val</span> <span class="py">applicationState</span><span class="p">:</span> <span class="nc">StateFlow</span><span class="p">&lt;</span><span class="nc">State</span><span class="p">&gt;</span>
+        <span class="n">field</span> <span class="p">=</span> <span class="nc">MutableStateFlow</span><span class="p">(</span><span class="nc">State</span><span class="p">())</span>
+</code></pre></div></div>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/android/2023/08/24/Android-%EA%B7%B8%EB%9E%98%ED%94%84-%EA%B7%B8%EB%A6%AC%EB%8A%94-View%EB%A7%8C%EB%93%A4%EA%B8%B0.html" title="그래프 그리는 View만들기">그래프 그리는 View만들기</a><a class="next" href="/jekyll-theme-yat/android/2023/09/10/Android-Compose%EC%99%80-View%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EB%B9%84%EA%B5%90.html" title="Android Compose와 View컴포넌트 비교">Android Compose와 View컴포넌트 비교...</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li>
+<span><a class="post-link" href="/jekyll-theme-yat/data/communication/2023/06/14/%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%86%B5%EC%8B%A0-%EC%A0%95%EB%A6%AC.html" title="Android Compose와 View컴포넌트 비교">데이터 통신 정리</a></span><span>
+            <time class="dt-published datetime" datetime="2023-06-14T00:00:00+09:00" itemprop="datePublished">2023-06-14, Wed
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/compiler/2023/04/23/Compiler-Context-free-analysis.html" title="Android Compose와 View컴포넌트 비교">Compiler Context-free analysis</a></span><span>
+            <time class="dt-published datetime" datetime="2023-04-23T00:00:00+09:00" itemprop="datePublished">2023-04-23, Sun
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/dalvik/art/android/2023/10/15/Android-Dalvik%EA%B3%BC-Art%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C.html" title="Android Compose와 View컴포넌트 비교">Android Dalvik과 ART에 대해서</a></span><span>
+            <time class="dt-published datetime" datetime="2023-10-15T00:00:00+09:00" itemprop="datePublished">2023-10-15, Sun
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/kotlin/2023/12/10/%EC%BD%94%ED%8B%80%EB%A6%B0-%EC%BD%94%EB%A3%A8%ED%8B%B4%EC%9D%84-%ED%99%9C%EC%9A%A9%ED%95%B4-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%BA%90%EC%8B%9C-%EA%B4%80%EB%A6%AC-%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0.html" title="Android Compose와 View컴포넌트 비교">코틀린 코루틴을 활용해 데이터 메모리 캐시 기능 구현하기</a></span><span>
+            <time class="dt-published datetime" datetime="2023-12-10T00:00:00+09:00" itemprop="datePublished">2023-12-10, Sun
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/compiler/2023/04/25/Compiler-IR.html" title="Android Compose와 View컴포넌트 비교">Compiler IR</a></span><span>
+            <time class="dt-published datetime" datetime="2023-04-25T00:00:00+09:00" itemprop="datePublished">2023-04-25, Tue
+            </time></span>
+        </li>
+</ul>
+    </div>
+<div class="post-comments">
+<div id="utterances-placeholder"></div>
+<script>
+
+const utterancesThemeFromDataTheme = () => {
+    const dataTheme = document.documentElement.getAttribute('data-theme');
+    return `github-${dataTheme}`;
+  };
+
+  const setUtterancesTheme = () => {
+    const iframe = document.querySelector('.utterances-frame');
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: utterancesThemeFromDataTheme()
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+    }
+  }
+
+  // dynamic change
+  const observer = new MutationObserver((mutationsList, observer) => {
+    for (let mutation of mutationsList) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        setUtterancesTheme();
+      }
+    }
+  });
+  observer.observe(document.documentElement, { attributes: true, childList: false, subtree: false });
+
+  let utterancesScript = document.createElement('script');
+  utterancesScript.async = true;
+  utterancesScript.src = 'https://utteranc.es/client.js';
+  utterancesScript.crossOrigin = 'anonymous';
+  utterancesScript.setAttribute('issue-term', 'pathname');
+  utterancesScript.setAttribute('label', 'comments');
+  utterancesScript.setAttribute('repo', 'pknujsp/Blogcomments');
+  utterancesScript.setAttribute('theme', utterancesThemeFromDataTheme());
+
+  const placeholder = document.getElementById('utterances-placeholder');
+  placeholder.parentNode.replaceChild(utterancesScript, placeholder);
+</script>
+</div></section>
+</div>
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">Contents</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">· ' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>2024 @ Junsung Park</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

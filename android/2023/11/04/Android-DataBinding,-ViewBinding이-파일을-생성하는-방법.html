@@ -1,0 +1,1378 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Android DataBinding, ViewBinding이 파일을 생성하는 방법 | Jsp Notes</title>
+<meta name="generator" content="Jekyll v4.3.4">
+<meta property="og:title" content="Android DataBinding, ViewBinding이 파일을 생성하는 방법">
+<meta name="author" content="Junsung Park">
+<meta property="og:locale" content="ko">
+<meta name="description" content="Android DataBinding에 대한 이해가 있다는 전제하에 작성하였습니다.">
+<meta property="og:description" content="Android DataBinding에 대한 이해가 있다는 전제하에 작성하였습니다.">
+<link rel="canonical" href="https://pknujsp.github.io//jekyll-theme-yat/android/2023/11/04/Android-DataBinding,-ViewBinding%EC%9D%B4-%ED%8C%8C%EC%9D%BC%EC%9D%84-%EC%83%9D%EC%84%B1%ED%95%98%EB%8A%94-%EB%B0%A9%EB%B2%95.html">
+<meta property="og:url" content="https://pknujsp.github.io//jekyll-theme-yat/android/2023/11/04/Android-DataBinding,-ViewBinding%EC%9D%B4-%ED%8C%8C%EC%9D%BC%EC%9D%84-%EC%83%9D%EC%84%B1%ED%95%98%EB%8A%94-%EB%B0%A9%EB%B2%95.html">
+<meta property="og:site_name" content="Jsp Notes">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-11-04T00:00:00+09:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Android DataBinding, ViewBinding이 파일을 생성하는 방법">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junsung Park"},"dateModified":"2023-11-04T00:00:00+09:00","datePublished":"2023-11-04T00:00:00+09:00","description":"Android DataBinding에 대한 이해가 있다는 전제하에 작성하였습니다.","headline":"Android DataBinding, ViewBinding이 파일을 생성하는 방법","mainEntityOfPage":{"@type":"WebPage","@id":"https://pknujsp.github.io//jekyll-theme-yat/android/2023/11/04/Android-DataBinding,-ViewBinding%EC%9D%B4-%ED%8C%8C%EC%9D%BC%EC%9D%84-%EC%83%9D%EC%84%B1%ED%95%98%EB%8A%94-%EB%B0%A9%EB%B2%95.html"},"url":"https://pknujsp.github.io//jekyll-theme-yat/android/2023/11/04/Android-DataBinding,-ViewBinding%EC%9D%B4-%ED%8C%8C%EC%9D%BC%EC%9D%84-%EC%83%9D%EC%84%B1%ED%95%98%EB%8A%94-%EB%B0%A9%EB%B2%95.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="icon" href="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script>
+
+  <!-- tipuesearch -->
+  <link rel="stylesheet" href="/assets/tipuesearch/css/tipuesearch.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_content.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_set.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch.min.js"></script><link type="application/atom+xml" rel="alternate" href="https://pknujsp.github.io//jekyll-theme-yat/feed.xml" title="Jsp Notes">
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LZC1TDTS26"></script>
+<script>
+  function initGoogleAnalytics() {
+    var doNotTrack = (window.doNotTrack === "1" || navigator.doNotTrack === "1" ||
+      navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1");
+    var enableDNT = "true" == "true";
+
+    if (!enableDNT || !doNotTrack) {
+      /*
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'G-LZC1TDTS26', 'auto');
+      ga('send', 'pageview');
+      */
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { window.dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-LZC1TDTS26');
+    }
+  }
+  window.addEventListener("load", initGoogleAnalytics);
+
+</script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/intellij-light.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/kotlin.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #7800ff;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: lowercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <img class="site-white_favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+</a></span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/about.html">About</a><a class="page-link" href="/jekyll-theme-yat/categories.html">Categories</a><a class="page-link" href="/jekyll-theme-yat/">Home</a><a class="page-link" href="/jekyll-theme-yat/posts.html">Posts</a><a class="page-link" href="/jekyll-theme-yat/tags.html">Tags</a><input id="tipue_search_input" type="search" placeholder="Search" aria-label="Search" title="Please enter at least 1 character" required>
+
+          <script>
+            document.getElementById("tipue_search_input").addEventListener("keydown", function (event) {
+              if (event.keyCode === 13) {
+                event.preventDefault();
+                window.location.href = "../search?q=" + this.value;
+              }
+            });
+          </script>
+<!--
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="en">
+        
+        <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+        to English
+        
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="ko">
+        
+        <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+        to Korean
+        
+      </a>
+    </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'ko',
+      autoDisplay: false,
+      layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+    }, 'google_translate_element');
+
+    // Links to cross-origin destinations are unsafe
+    var gll = document.getElementsByClassName('goog-logo-link')[0];
+    if (gll) {
+      gll.setAttribute('rel', 'noopener');
+    }
+
+    function restoreLang() {
+      var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+      if (!iframe) return;
+
+      var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+      var restore_el = innerDoc.getElementsByTagName("button");
+
+      for (var i = 0; i < restore_el.length; i++) {
+        if (restore_el[i].id.indexOf("restore") >= 0) {
+          restore_el[i].click();
+          var close_el = innerDoc.getElementsByClassName("goog-close-link");
+          close_el[0].click();
+          return;
+        }
+      }
+    }
+
+    function triggerHtmlEvent(element, eventName) {
+      var event;
+      if (document.createEvent) {
+        event = document.createEvent('HTMLEvents');
+        event.initEvent(eventName, true, true);
+        element.dispatchEvent(event);
+      } else {
+        event = document.createEventObject();
+        event.eventType = eventName;
+        element.fireEvent('on' + event.eventType, event);
+      }
+    }
+
+    var googleCombo = document.querySelector("select.goog-te-combo");
+    var langSelect = document.querySelector('.ct-language');
+    langSelect.addEventListener('click', function (event) {
+      if (!event.target) {
+        return;
+      }
+
+      var selected = document.querySelector('.ct-language .ct-language-selected');
+      if (selected) {
+        selected.classList.remove('ct-language-selected');
+      }
+
+      var target = event.target;
+      while (target && target !== langSelect) {
+        if (target.matches('.lang-select')) {
+          break;
+        }
+        target = target.parentElement;
+      }
+
+      if (target && target.matches('.lang-select')) {
+        var lang = target.getAttribute('data-lang');
+        if (googleCombo.value == lang) {
+          restoreLang();
+        } else if (lang == 'ko') {
+          var googleTranslateElement = document.getElementById('google_translate_element');
+          if (googleTranslateElement) {
+            googleTranslateElement.parentNode.removeChild(googleTranslateElement);
+            $('#google_translate_element').empty();
+          }
+        } else {
+          target.parentElement.classList.add('ct-language-selected');
+          googleCombo.value = lang;
+          triggerHtmlEvent(googleCombo, 'change');
+        }
+      }
+
+      event.preventDefault();
+    });
+  }
+</script>
+
+<script type="text/javascript"
+  src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script></span>-->
+          </div>
+
+          
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('manual' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = !(hours >= 2 && hours <=5);
+
+      if (nightShift) {
+        if (hours > 5) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(5);
+      } else {
+        toggleAt.setHours(2);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<div id="click-to-bottom" class="click-to-bottom">
+  <i class="fa fa-arrow-down"></i>
+</div>
+<script>
+  (function () {
+    const clickToBottom = document.getElementById('click-to-bottom');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToBottom.classList.add('show')
+      }else {
+        clickToBottom.classList.remove('show')
+      }
+    });
+    clickToBottom.addEventListener('click', () => {
+      window.smoothScrollTo(document.body.scrollHeight);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">Android DataBinding, ViewBinding이 파일을 생성하는 방법</h1>
+  <h2 class="post-subtitle">DataBinding, ViewBinding</h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2023-11-04T00:00:00+09:00" itemprop="datePublished">2023-11-04, Sat
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 6 minutes</span>
+  </p>
+<div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Android">#Android</a></div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <p><a href="https://developer.android.com/topic/libraries/data-binding">Android DataBinding</a>에 대한 이해가 있다는 전제하에 작성하였습니다.</p>
+
+<h2 id="주요-클래스">주요 클래스</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th>클래스명</th>
+      <th>설명</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>AndroidDataBinding</td>
+      <td>데이터바인딩의 핵심 클래스, 데이터 바인딩 작업을 총괄한다</td>
+    </tr>
+    <tr>
+      <td>LayoutFileParser</td>
+      <td>XML을 파싱하여 ResourceBundle 목록을 만든다</td>
+    </tr>
+    <tr>
+      <td>LayoutXmlProcessor</td>
+      <td>레이아웃 XML파일을 읽고 처리한다. 내부적으로 사용할 XML파일도 만든다</td>
+    </tr>
+    <tr>
+      <td>BaseDataBinder</td>
+      <td>바인딩 클래스 파일을 생성/삭제한다</td>
+    </tr>
+    <tr>
+      <td>ResourceBundle</td>
+      <td>레이아웃 파일 구문 분석 결과를 보관한다. 레이아웃 XML파일 내의 코드를 분석한다</td>
+    </tr>
+    <tr>
+      <td>DataBindingGenBaseClassesTask</td>
+      <td>데이터바인딩 클래스 생성을 위한 작업을 처리한다.(데이터바인딩 라이브러리가 아닌 Android Gradle Plugin에 포함되어있다)</td>
+    </tr>
+    <tr>
+      <td>LayoutInfoInput</td>
+      <td>XML 파일에 대한 바인딩 정보를 담고 있다</td>
+    </tr>
+    <tr>
+      <td>LayoutFileBundle</td>
+      <td>XML 파일에서 데이터 바인딩 관련 정보를 파싱한 결과를 가진다</td>
+    </tr>
+  </tbody>
+</table>
+
+<h2 id="databinding-파일의-생성-과정">DataBinding 파일의 생성 과정</h2>
+
+<h3 id="1-프로젝트-빌드-시-바인딩-처리할-파일-등에-대한-정보를-androiddatabinding에-전달한다">1. 프로젝트 빌드 시, 바인딩 처리할 파일 등에 대한 정보를 AndroidDataBinding에 전달한다.</h3>
+
+<ul>
+  <li>전달 인자
+    <ul>
+      <li>appId : 애플리케이션 패키지 명</li>
+      <li>resInput : 리소스(layout, drawable 등)를 담고 있는 폴더</li>
+      <li>resOutput : 처리한 리소스를 담을 폴더</li>
+      <li>layoutInfoOutput : 레이아웃 파일에 대한 데이터 바인딩 정보를 가지고 있는 XML파일을 저장할 폴더</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="2-androiddatabinding의-processresources-호출">2. AndroidDataBinding의 <code class="language-plaintext highlighter-rouge">processResources()</code> 호출</h3>
+
+<p>LayoutXmlProcessor를 초기화한다.</p>
+
+<h3 id="3-layoutxmlprocessor의-processresources-호출">3. LayoutXmlProcessor의 <code class="language-plaintext highlighter-rouge">processResources()</code> 호출</h3>
+
+<h3 id="4-layoutxmlprocessor의-processallinputfiles-호출">4. LayoutXmlProcessor의 <code class="language-plaintext highlighter-rouge">processAllInputFiles()</code> 호출</h3>
+
+<ul>
+  <li>입력으로 받은 폴더의 모든 파일을 하나씩 확인한다.</li>
+  <li>layout 폴더 내에 있는 파일에 대해서 <code class="language-plaintext highlighter-rouge">processLayoutFile()</code>을 호출한다.</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">processLayoutFile()</code>에서는 <code class="language-plaintext highlighter-rouge">processSingleFile()</code>을 호출한다.</li>
+</ul>
+
+<h3 id="5-processsinglefile">5. processSingleFile()</h3>
+
+<p>LayoutFileParser의 <code class="language-plaintext highlighter-rouge">parseXml()</code>을 호출하여 XML을 파싱한다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">parseOriginalXml()</code>를 호출하여 실제로 파싱을 한다.</p>
+
+<ul>
+  <li>RootView 분석</li>
+  <li>data태그 내의 import, variable, class 정보를 분석하고, LayoutFileBundle에 저장한다.</li>
+  <li>배치된 View에 대한 정보(id, tag, class)와 바인딩 정보(@{}과 같은 표현식)를 분석하여 LayoutFileBundle에 저장한다.</li>
+</ul>
+
+<p>분석한 데이터 바인딩 정보는 추가적으로 XML파일을 만들어 저장해둔다.</p>
+
+<p>원본 파일이 <code class="language-plaintext highlighter-rouge">activity_main.xml</code> 이라면 <code class="language-plaintext highlighter-rouge">activity_main-layout.xml</code>이름으로 생성한다.</p>
+
+<h4 id="원본-레이아웃-파일">원본 레이아웃 파일</h4>
+
+<p><a href="https://viblo.asia/p/understanding-data-bindings-generated-code-and-how-does-android-data-binding-compiler-work-Ljy5Vd1yZra">코드 출처 : https://viblo.asia/p/understanding-data-bindings-generated-code-and-how-does-android-data-binding-compiler-work-Ljy5Vd1yZra</a></p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>R.layout.activity_main
+
+<span class="cp">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span>
+<span class="nt">&lt;layout</span> <span class="na">xmlns:android=</span><span class="s">"http://schemas.android.com/apk/res/android"</span>
+    <span class="na">xmlns:app=</span><span class="s">"http://schemas.android.com/apk/res-auto"</span><span class="nt">&gt;</span>
+
+    <span class="nt">&lt;data&gt;</span>
+
+        <span class="nt">&lt;variable</span>
+            <span class="na">name=</span><span class="s">"viewModel"</span>
+            <span class="na">type=</span><span class="s">"com.example.main.MainViewModel"</span> <span class="nt">/&gt;</span>
+
+    <span class="nt">&lt;/data&gt;</span>
+
+    <span class="nt">&lt;TextView</span> <span class="na">android:layout_width=</span><span class="s">"match_parent"</span>
+        <span class="na">android:layout_height=</span><span class="s">"match_parent"</span>
+        <span class="na">android:text=</span><span class="s">"@{viewModel.text}"</span> <span class="nt">/&gt;</span>
+
+<span class="nt">&lt;/layout&gt;</span>
+
+</code></pre></div></div>
+
+<h4 id="바인딩-정보만을-담고있는-추가로-생성된-파일">바인딩 정보만을 담고있는 추가로 생성된 파일</h4>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>activity_main-layout.xml
+
+<span class="cp">&lt;?xml version="1.0" encoding="utf-8" standalone="yes"?&gt;</span>
+<span class="nt">&lt;Layout</span> <span class="na">layout=</span><span class="s">"activity_main"</span> <span class="na">absoluteFilePath=</span><span class="s">"/home/framgia/Projects/harpa-crista/harpacrista/android/app/src/main/res/layout/activity_main.xml"</span>
+    <span class="na">directory=</span><span class="s">"layout"</span>
+    <span class="na">isMerge=</span><span class="s">"false"</span> <span class="na">modulePackage=</span><span class="s">"com.harpacrista"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;Variables</span> <span class="na">declared=</span><span class="s">"true"</span> <span class="na">name=</span><span class="s">"viewModel"</span> <span class="na">type=</span><span class="s">"com.example.main.MainViewModel"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;location</span> <span class="na">endLine=</span><span class="s">"8"</span> <span class="na">endOffset=</span><span class="s">"51"</span> <span class="na">startLine=</span><span class="s">"6"</span> <span class="na">startOffset=</span><span class="s">"8"</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;/Variables&gt;</span>
+    <span class="nt">&lt;Imports</span> <span class="na">name=</span><span class="s">"View"</span> <span class="na">type=</span><span class="s">"android.view.View"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;location</span> <span class="na">endLine=</span><span class="s">"10"</span> <span class="na">endOffset=</span><span class="s">"42"</span> <span class="na">startLine=</span><span class="s">"10"</span> <span class="na">startOffset=</span><span class="s">"8"</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;/Imports&gt;</span>
+    <span class="nt">&lt;Targets&gt;</span>
+        <span class="nt">&lt;Target</span> <span class="na">tag=</span><span class="s">"layout/activity_main_0"</span> <span class="na">view=</span><span class="s">"TextView"</span><span class="nt">&gt;</span>
+            <span class="nt">&lt;Expressions&gt;</span>
+                <span class="nt">&lt;Expression</span> <span class="na">attribute=</span><span class="s">"android:text"</span> <span class="na">text=</span><span class="s">" viewModel.text "</span><span class="nt">&gt;</span>
+                    <span class="nt">&lt;Location</span> <span class="na">endLine=</span><span class="s">"16"</span> <span class="na">endOffset=</span><span class="s">"41"</span> <span class="na">startLine=</span><span class="s">"16"</span> <span class="na">startOffset=</span><span class="s">"8"</span> <span class="nt">/&gt;</span>
+                    <span class="nt">&lt;TwoWay&gt;</span>false<span class="nt">&lt;/TwoWay&gt;</span>
+                    <span class="nt">&lt;ValueLocation</span> <span class="na">endLine=</span><span class="s">"16"</span> <span class="na">endOffset=</span><span class="s">"39"</span> <span class="na">startLine=</span><span class="s">"16"</span> <span class="na">startOffset=</span><span class="s">"24"</span> <span class="nt">/&gt;</span>
+                <span class="nt">&lt;/Expression&gt;</span>
+            <span class="nt">&lt;/Expressions&gt;</span>
+            <span class="nt">&lt;location</span> <span class="na">endLine=</span><span class="s">"16"</span> <span class="na">endOffset=</span><span class="s">"44"</span> <span class="na">startLine=</span><span class="s">"14"</span> <span class="na">startOffset=</span><span class="s">"4"</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;/Target&gt;</span>
+    <span class="nt">&lt;/Targets&gt;</span>
+<span class="nt">&lt;/Layout&gt;</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">android:text="@{ viewModel.text }"</code>은 아래와 같이 변환된다.</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;Expression</span> <span class="na">attribute=</span><span class="s">"android:text"</span> <span class="na">text=</span><span class="s">" viewModel.text "</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;Location</span> <span class="na">endLine=</span><span class="s">"23"</span> <span class="na">endOffset=</span><span class="s">"45"</span> <span class="na">startLine=</span><span class="s">"23"</span> <span class="na">startOffset=</span><span class="s">"12"</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;TwoWay&gt;</span>false<span class="nt">&lt;/TwoWay&gt;</span>
+    <span class="nt">&lt;ValueLocation</span> <span class="na">endLine=</span><span class="s">"23"</span> <span class="na">endOffset=</span><span class="s">"43"</span> <span class="na">startLine=</span><span class="s">"23"</span> <span class="na">startOffset=</span><span class="s">"28"</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/Expression&gt;</span>
+</code></pre></div></div>
+
+<ul>
+  <li>
+<code class="language-plaintext highlighter-rouge">&lt;Expression attribute="android:text" text="viewModel.text"&gt;</code> : <code class="language-plaintext highlighter-rouge">android:text="@{ viewModel.text }"</code>
+</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">&lt;location endLine="16" endOffset="44" startLine="14" startOffset="4" /&gt;</code> : <code class="language-plaintext highlighter-rouge">android:text="@{viewModel.text}"</code>가 위치한 라인과 오프셋</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">&lt;TwoWay&gt;false&lt;/TwoWay&gt;</code> : 양방향 바인딩의 여부</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">&lt;ValueLocation endLine="16" endOffset="39" startLine="16" startOffset="24" /&gt;</code> : <code class="language-plaintext highlighter-rouge">viewModel.text</code>가 위치한 라인과 오프셋</li>
+</ul>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span>
+<span class="nt">&lt;TextView</span> <span class="na">xmlns:android=</span><span class="s">"http://schemas.android.com/apk/res/android"</span> <span class="na">android:layout_width=</span><span class="s">"match_parent"</span>
+    <span class="na">android:layout_height=</span><span class="s">"match_parent"</span>
+    <span class="na">android:tag=</span><span class="s">"layout/activity_main_0"</span> <span class="nt">/&gt;</span>
+</code></pre></div></div>
+
+<h3 id="6-writelayoutinfofiles">6. writeLayoutInfoFiles()</h3>
+
+<p><code class="language-plaintext highlighter-rouge">writeXmlFile()</code>을 호출하여 바인딩 정보를 담은 XML파일을 생성</p>
+
+<p>이때 불필요한 파일(제거된 레이아웃에 대한 바인딩 파일)이 있다면 제거한다.</p>
+
+<h3 id="7-java-kotlin-파일-생성">7. java, kotlin 파일 생성</h3>
+
+<p>BaseDataBinder <code class="language-plaintext highlighter-rouge">generateAll()</code>을 호출하여 생성</p>
+
+<p><code class="language-plaintext highlighter-rouge">ActivityMainBinding.java</code>파일을 생성한다.</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;LinearLayout</span>
+    <span class="na">android:layout_width=</span><span class="s">"match_parent"</span>
+    <span class="na">android:layout_height=</span><span class="s">"match_parent"</span>
+    <span class="na">android:orientation=</span><span class="s">"vertical"</span>
+    <span class="nt">&gt;</span>
+
+    <span class="nt">&lt;TextView</span>
+        <span class="na">android:layout_width=</span><span class="s">"match_parent"</span>
+        <span class="na">android:layout_height=</span><span class="s">"match_parent"</span>
+        <span class="na">android:text=</span><span class="s">"@{viewModel.text}"</span>
+        <span class="nt">/&gt;</span>
+
+    <span class="nt">&lt;Button</span>
+        <span class="na">android:layout_width=</span><span class="s">"wrap_content"</span>
+        <span class="na">android:layout_height=</span><span class="s">"wrap_content"</span>
+        <span class="na">android:visibility=</span><span class="s">"@{viewModel.isVisible ? View.VISIBLE : View.INVISIBLE}"</span>
+        <span class="nt">/&gt;</span>
+<span class="nt">&lt;/LinearLayout&gt;</span>
+
+</code></pre></div></div>
+
+<div class="language-java highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">public</span> <span class="kd">class</span> <span class="nc">ActivityMainBinding</span> <span class="kd">extends</span> <span class="n">android</span><span class="o">.</span><span class="na">databinding</span><span class="o">.</span><span class="na">ViewDataBinding</span>  <span class="o">{</span>
+
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">android</span><span class="o">.</span><span class="na">databinding</span><span class="o">.</span><span class="na">ViewDataBinding</span><span class="o">.</span><span class="na">IncludedLayouts</span> <span class="n">sIncludes</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">static</span> <span class="kd">final</span> <span class="n">android</span><span class="o">.</span><span class="na">util</span><span class="o">.</span><span class="na">SparseIntArray</span> <span class="n">sViewsWithIds</span><span class="o">;</span>
+
+    <span class="kd">static</span> <span class="o">{</span>
+        <span class="n">sIncludes</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+        <span class="n">sViewsWithIds</span> <span class="o">=</span> <span class="kc">null</span><span class="o">;</span>
+    <span class="o">}</span>
+    
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">android</span><span class="o">.</span><span class="na">widget</span><span class="o">.</span><span class="na">LinearLayout</span> <span class="n">mboundView0</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">android</span><span class="o">.</span><span class="na">widget</span><span class="o">.</span><span class="na">TextView</span> <span class="n">mboundView1</span><span class="o">;</span>
+    <span class="kd">private</span> <span class="kd">final</span> <span class="n">android</span><span class="o">.</span><span class="na">widget</span><span class="o">.</span><span class="na">Button</span> <span class="n">mboundView2</span><span class="o">;</span>
+    <span class="o">...</span>
+<span class="o">}</span>
+</code></pre></div></div>
+
+<p>View 변수명은 XML에 id가 지정되어있으면 <code class="language-plaintext highlighter-rouge">id</code>를 사용하고, 지정되어있지 않다면 <code class="language-plaintext highlighter-rouge">mBoundView + index</code>로 만들어진다.</p>
+
+<h2 id="view의-binding-클래스-파일이-자동으로-생성되는-과정">View의 Binding 클래스 파일이 자동으로 생성되는 과정</h2>
+
+<ol>
+  <li>Gradle Sync</li>
+  <li>buildFeatures의 viewBinding, dataBinding 둘 중 최소 하나가 활성화되어있는지 확인</li>
+  <li>활성화되어 있다면 아래의 메서드를 호출하고, Gradle Task에 DataBindingGenBaseClassesTask를 추가한다.</li>
+  <li>XML파일이 추가/수정/삭제 될때마다 DataBindingGenBaseClassesTask가 동작한다.</li>
+  <li>BaseDataBinder를 사용하여 바인딩 파일을 처리한다.</li>
+</ol>
+
+<ul>
+  <li>TaskManager : Android Gradle Plugin의 클래스, Gradle 작업을 관리한다.</li>
+  <li>DataBindingGenBaseClassesTask : 데이터바인딩 처리를 위한 작업</li>
+</ul>
+
+<p>두 클래스는 Jetpack DataBinding 라이브러리에 종속되어있지 않다.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>in TaskManager.kt
+
+protected fun createDataBindingTasksIfNecessary(creationConfig: ComponentCreationConfig) {
+        val dataBindingEnabled = creationConfig.buildFeatures.dataBinding
+        val viewBindingEnabled = creationConfig.buildFeatures.viewBinding
+        if (!dataBindingEnabled &amp;&amp; !viewBindingEnabled) {
+            return
+        }
+        taskFactory.register(
+                DataBindingMergeDependencyArtifactsTask.CreationAction(creationConfig))
+        DataBindingBuilder.setDebugLogEnabled(logger.isDebugEnabled)
+        taskFactory.register(DataBindingGenBaseClassesTask.CreationAction(creationConfig))
+        ...
+
+in DataBindingGenBaseClassesTask.kt
+
+@TaskAction
+    fun writeBaseClasses(inputChanges: InputChanges) {
+        // TODO extend NewIncrementalTask when moved to new API so that we can remove the manual call to recordTaskAction
+
+        recordTaskAction(analyticsService.get()) {
+            // TODO figure out why worker execution makes the task flake.
+            // Some files cannot be accessed even though they show up when directory listing is
+            // invoked.
+            // b/69652332
+            val args = buildInputArgs(inputChanges)
+            CodeGenerator(
+                args,
+                sourceOutFolder.get().asFile,
+                Logger.getLogger(DataBindingGenBaseClassesTask::class.java),
+                encodeErrors,
+                getRPackageProvider()).run()
+        }
+    }
+}
+</code></pre></div></div>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/dalvik/art/android/2023/10/15/Android-Dalvik%EA%B3%BC-Art%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C.html" title="Android Dalvik과 ART에 대해서">Android Dalvik과 ART에 대해서...</a><a class="next" href="/jekyll-theme-yat/kotlin/coroutines/2023/11/12/%EC%BD%94%EB%A3%A8%ED%8B%B4%EC%97%90%EC%84%9C%EC%9D%98-%EC%98%88%EC%99%B8-%EC%B2%98%EB%A6%AC.html" title="코루틴에서의 예외 처리 정리">코루틴에서의 예외 처리 정리...</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li>
+<span><a class="post-link" href="/jekyll-theme-yat/kotlin/2023/07/14/Kotlin-%EB%8F%99%EC%8B%9C%EC%84%B1-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0%EB%B0%A9%EB%B2%95.html" title="코루틴에서의 예외 처리 정리">Kotlin 동시성 문제 해결방법</a></span><span>
+            <time class="dt-published datetime" datetime="2023-07-14T00:00:00+09:00" itemprop="datePublished">2023-07-14, Fri
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/android/2023/11/14/UI-Layer%EB%9E%80(Android-%EA%B3%B5%EC%8B%9D-%EB%AC%B8%EC%84%9C-%EC%A0%95%EB%8F%85)-copy.html" title="코루틴에서의 예외 처리 정리">About the UI layer</a></span><span>
+            <time class="dt-published datetime" datetime="2023-11-14T00:00:00+09:00" itemprop="datePublished">2023-11-14, Tue
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/jvm/2023/10/08/JVM(Java-Virtual-Machine)%EC%9D%B4%EB%9E%80.html" title="코루틴에서의 예외 처리 정리">JVM (Java Virtual Machine)이란?</a></span><span>
+            <time class="dt-published datetime" datetime="2023-10-08T00:00:00+09:00" itemprop="datePublished">2023-10-08, Sun
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/android/2023/08/24/Android-%EA%B7%B8%EB%9E%98%ED%94%84-%EA%B7%B8%EB%A6%AC%EB%8A%94-View%EB%A7%8C%EB%93%A4%EA%B8%B0.html" title="코루틴에서의 예외 처리 정리">그래프 그리는 View만들기</a></span><span>
+            <time class="dt-published datetime" datetime="2023-08-24T00:00:00+09:00" itemprop="datePublished">2023-08-24, Thu
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/android/2024/03/07/%EC%8A%A4%ED%81%AC%EB%A1%A4-%EA%B0%80%EB%8A%A5%ED%95%9C-%EC%BB%A4%EC%8A%A4%ED%85%80-TopAppBar%EB%A7%8C%EB%93%A4%EA%B8%B0.html" title="코루틴에서의 예외 처리 정리">스크롤 가능한 커스텀 TopAppBar만들기</a></span><span>
+            <time class="dt-published datetime" datetime="2024-03-07T00:00:00+09:00" itemprop="datePublished">2024-03-07, Thu
+            </time></span>
+        </li>
+</ul>
+    </div>
+<div class="post-comments">
+<div id="utterances-placeholder"></div>
+<script>
+
+const utterancesThemeFromDataTheme = () => {
+    const dataTheme = document.documentElement.getAttribute('data-theme');
+    return `github-${dataTheme}`;
+  };
+
+  const setUtterancesTheme = () => {
+    const iframe = document.querySelector('.utterances-frame');
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: utterancesThemeFromDataTheme()
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+    }
+  }
+
+  // dynamic change
+  const observer = new MutationObserver((mutationsList, observer) => {
+    for (let mutation of mutationsList) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        setUtterancesTheme();
+      }
+    }
+  });
+  observer.observe(document.documentElement, { attributes: true, childList: false, subtree: false });
+
+  let utterancesScript = document.createElement('script');
+  utterancesScript.async = true;
+  utterancesScript.src = 'https://utteranc.es/client.js';
+  utterancesScript.crossOrigin = 'anonymous';
+  utterancesScript.setAttribute('issue-term', 'pathname');
+  utterancesScript.setAttribute('label', 'comments');
+  utterancesScript.setAttribute('repo', 'pknujsp/Blogcomments');
+  utterancesScript.setAttribute('theme', utterancesThemeFromDataTheme());
+
+  const placeholder = document.getElementById('utterances-placeholder');
+  placeholder.parentNode.replaceChild(utterancesScript, placeholder);
+</script>
+</div></section>
+</div>
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">Contents</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">· ' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>2024 @ Junsung Park</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

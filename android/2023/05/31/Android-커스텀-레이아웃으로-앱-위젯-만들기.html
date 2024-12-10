@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Android 커스텀 레이아웃으로 앱 위젯 만들기 | Jsp Notes</title>
+<meta name="generator" content="Jekyll v4.3.4">
+<meta property="og:title" content="Android 커스텀 레이아웃으로 앱 위젯 만들기">
+<meta name="author" content="Junsung Park">
+<meta property="og:locale" content="ko">
+<meta name="description" content="App Widgets 이란?">
+<meta property="og:description" content="App Widgets 이란?">
+<link rel="canonical" href="https://pknujsp.github.io//jekyll-theme-yat/android/2023/05/31/Android-%EC%BB%A4%EC%8A%A4%ED%85%80-%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83%EC%9C%BC%EB%A1%9C-%EC%95%B1-%EC%9C%84%EC%A0%AF-%EB%A7%8C%EB%93%A4%EA%B8%B0.html">
+<meta property="og:url" content="https://pknujsp.github.io//jekyll-theme-yat/android/2023/05/31/Android-%EC%BB%A4%EC%8A%A4%ED%85%80-%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83%EC%9C%BC%EB%A1%9C-%EC%95%B1-%EC%9C%84%EC%A0%AF-%EB%A7%8C%EB%93%A4%EA%B8%B0.html">
+<meta property="og:site_name" content="Jsp Notes">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-05-31T00:00:00+09:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Android 커스텀 레이아웃으로 앱 위젯 만들기">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junsung Park"},"dateModified":"2023-05-31T00:00:00+09:00","datePublished":"2023-05-31T00:00:00+09:00","description":"App Widgets 이란?","headline":"Android 커스텀 레이아웃으로 앱 위젯 만들기","mainEntityOfPage":{"@type":"WebPage","@id":"https://pknujsp.github.io//jekyll-theme-yat/android/2023/05/31/Android-%EC%BB%A4%EC%8A%A4%ED%85%80-%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83%EC%9C%BC%EB%A1%9C-%EC%95%B1-%EC%9C%84%EC%A0%AF-%EB%A7%8C%EB%93%A4%EA%B8%B0.html"},"url":"https://pknujsp.github.io//jekyll-theme-yat/android/2023/05/31/Android-%EC%BB%A4%EC%8A%A4%ED%85%80-%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83%EC%9C%BC%EB%A1%9C-%EC%95%B1-%EC%9C%84%EC%A0%AF-%EB%A7%8C%EB%93%A4%EA%B8%B0.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="icon" href="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script>
+
+  <!-- tipuesearch -->
+  <link rel="stylesheet" href="/assets/tipuesearch/css/tipuesearch.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_content.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_set.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch.min.js"></script><link type="application/atom+xml" rel="alternate" href="https://pknujsp.github.io//jekyll-theme-yat/feed.xml" title="Jsp Notes">
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LZC1TDTS26"></script>
+<script>
+  function initGoogleAnalytics() {
+    var doNotTrack = (window.doNotTrack === "1" || navigator.doNotTrack === "1" ||
+      navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1");
+    var enableDNT = "true" == "true";
+
+    if (!enableDNT || !doNotTrack) {
+      /*
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'G-LZC1TDTS26', 'auto');
+      ga('send', 'pageview');
+      */
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { window.dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-LZC1TDTS26');
+    }
+  }
+  window.addEventListener("load", initGoogleAnalytics);
+
+</script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/intellij-light.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/kotlin.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #7800ff;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: lowercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <img class="site-white_favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+</a></span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/about.html">About</a><a class="page-link" href="/jekyll-theme-yat/categories.html">Categories</a><a class="page-link" href="/jekyll-theme-yat/">Home</a><a class="page-link" href="/jekyll-theme-yat/posts.html">Posts</a><a class="page-link" href="/jekyll-theme-yat/tags.html">Tags</a><input id="tipue_search_input" type="search" placeholder="Search" aria-label="Search" title="Please enter at least 1 character" required>
+
+          <script>
+            document.getElementById("tipue_search_input").addEventListener("keydown", function (event) {
+              if (event.keyCode === 13) {
+                event.preventDefault();
+                window.location.href = "../search?q=" + this.value;
+              }
+            });
+          </script>
+<!--
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="en">
+        
+        <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+        to English
+        
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="ko">
+        
+        <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+        to Korean
+        
+      </a>
+    </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'ko',
+      autoDisplay: false,
+      layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+    }, 'google_translate_element');
+
+    // Links to cross-origin destinations are unsafe
+    var gll = document.getElementsByClassName('goog-logo-link')[0];
+    if (gll) {
+      gll.setAttribute('rel', 'noopener');
+    }
+
+    function restoreLang() {
+      var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+      if (!iframe) return;
+
+      var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+      var restore_el = innerDoc.getElementsByTagName("button");
+
+      for (var i = 0; i < restore_el.length; i++) {
+        if (restore_el[i].id.indexOf("restore") >= 0) {
+          restore_el[i].click();
+          var close_el = innerDoc.getElementsByClassName("goog-close-link");
+          close_el[0].click();
+          return;
+        }
+      }
+    }
+
+    function triggerHtmlEvent(element, eventName) {
+      var event;
+      if (document.createEvent) {
+        event = document.createEvent('HTMLEvents');
+        event.initEvent(eventName, true, true);
+        element.dispatchEvent(event);
+      } else {
+        event = document.createEventObject();
+        event.eventType = eventName;
+        element.fireEvent('on' + event.eventType, event);
+      }
+    }
+
+    var googleCombo = document.querySelector("select.goog-te-combo");
+    var langSelect = document.querySelector('.ct-language');
+    langSelect.addEventListener('click', function (event) {
+      if (!event.target) {
+        return;
+      }
+
+      var selected = document.querySelector('.ct-language .ct-language-selected');
+      if (selected) {
+        selected.classList.remove('ct-language-selected');
+      }
+
+      var target = event.target;
+      while (target && target !== langSelect) {
+        if (target.matches('.lang-select')) {
+          break;
+        }
+        target = target.parentElement;
+      }
+
+      if (target && target.matches('.lang-select')) {
+        var lang = target.getAttribute('data-lang');
+        if (googleCombo.value == lang) {
+          restoreLang();
+        } else if (lang == 'ko') {
+          var googleTranslateElement = document.getElementById('google_translate_element');
+          if (googleTranslateElement) {
+            googleTranslateElement.parentNode.removeChild(googleTranslateElement);
+            $('#google_translate_element').empty();
+          }
+        } else {
+          target.parentElement.classList.add('ct-language-selected');
+          googleCombo.value = lang;
+          triggerHtmlEvent(googleCombo, 'change');
+        }
+      }
+
+      event.preventDefault();
+    });
+  }
+</script>
+
+<script type="text/javascript"
+  src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script></span>-->
+          </div>
+
+          
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('manual' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = !(hours >= 2 && hours <=5);
+
+      if (nightShift) {
+        if (hours > 5) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(5);
+      } else {
+        toggleAt.setHours(2);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<div id="click-to-bottom" class="click-to-bottom">
+  <i class="fa fa-arrow-down"></i>
+</div>
+<script>
+  (function () {
+    const clickToBottom = document.getElementById('click-to-bottom');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToBottom.classList.add('show')
+      }else {
+        clickToBottom.classList.remove('show')
+      }
+    });
+    clickToBottom.addEventListener('click', () => {
+      window.smoothScrollTo(document.body.scrollHeight);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">Android 커스텀 레이아웃으로 앱 위젯 만들기</h1>
+  <h2 class="post-subtitle">Android App widget</h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2023-05-31T00:00:00+09:00" itemprop="datePublished">2023-05-31, Wed
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 3 minutes</span>
+  </p>
+<div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Android">#Android</a></div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h1 id="app-widgets-이란">App Widgets 이란?</h1>
+
+<p>아래 사진과 같이 런처 앱에서 설치된 앱의 기능을 사용할 수 있도록 해줍니다.</p>
+
+<p><img src="https://github.com/pknu-wap/2023_1_WAP_APP_TEAM_MEDI/assets/48265129/0a47c271-c98e-4bbd-8be5-d58cf942b7ca" width="60%" height="auto"></p>
+
+<h2 id="widget을-만드는-방법">Widget을 만드는 방법</h2>
+<hr>
+
+<p>아래의 안드로이드 공식 문서를 통해 기본적인 제작 방법을 학습할 수 있습니다.<br>
+<a href="https://developer.android.com/develop/ui/views/appwidgets/overview">Create app widget - Android developers</a></p>
+
+<h3 id="app-widget-processing-flow">App widget processing flow</h3>
+<hr>
+<blockquote>
+  <p>앱 위젯을 처리하는 흐름</p>
+</blockquote>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/242145571-f2071308-ddde-41a7-827b-5b9559401c33.png" width="60%" height="auto"></p>
+
+<ul>
+  <li>핵심
+    <ul>
+      <li>BroadcastReceiver로 위젯 업데이트 처리</li>
+      <li>RemoteViews로 위젯 UI를 처리</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="위젯-제작-과정">위젯 제작 과정</h3>
+<hr>
+<blockquote>
+  <p>아래는 <strong>예시</strong> 입니다. <a href="https://gist.github.com/pknujsp/25c2c11d6dae6138cd0bbd1b7d3f768d">전체 예제 코드</a></p>
+</blockquote>
+
+<ol>
+  <li>
+<code class="language-plaintext highlighter-rouge">res</code> 디렉토리 내에 위젯 관련 파일을 담을 적절한 디렉토리를 만듭니다.</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">res/layout</code> 디렉토리 내에 위젯 레이아웃 파일<code class="language-plaintext highlighter-rouge">view_widget</code>을 만들고 레이아웃을 제작합니다.</li>
+  <li>만든 디렉토리 내에 <code class="language-plaintext highlighter-rouge">nine-widget-info.xml</code>라는 이름의 리소스 파일을 만들고 아래와 같이 작성합니다.</li>
+</ol>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cp">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span>
+<span class="nt">&lt;appwidget-provider</span> <span class="na">xmlns:android=</span><span class="s">"http://schemas.android.com/apk/res/android"</span>
+    <span class="na">android:configure=</span><span class="s">"com.lifedawn.bestweather.widget.ConfigureWidgetActivity"</span> <span class="err">//</span> <span class="err">위젯을</span> <span class="err">런처에</span> <span class="err">생성하고자</span> <span class="err">할때</span> <span class="err">사용하는</span> <span class="err">위젯</span> <span class="err">설정</span> <span class="err">화면,</span> <span class="err">생성이</span> <span class="err">필수는</span> <span class="err">아님</span>
+    <span class="na">android:initialLayout=</span><span class="s">"@layout/view_widget"</span> <span class="err">//</span> <span class="err">위젯</span> <span class="err">레이아웃</span>
+    <span class="na">android:minWidth=</span><span class="s">"@dimen/ninthWidgetWidth"</span>
+    <span class="na">android:minHeight=</span><span class="s">"@dimen/ninthWidgetHeight"</span>
+    <span class="na">android:minResizeWidth=</span><span class="s">"@dimen/ninthWidgetWidth"</span>
+    <span class="na">android:minResizeHeight=</span><span class="s">"@dimen/ninthWidgetHeight"</span>
+    <span class="na">android:previewImage=</span><span class="s">"@drawable/widget_preview_9"</span> <span class="err">//</span> <span class="err">런처</span> <span class="err">앱에서</span> <span class="err">위젯</span> <span class="err">추가</span> <span class="err">시</span> <span class="err">나오는</span> <span class="err">이미지</span>
+    <span class="na">android:resizeMode=</span><span class="s">"vertical|horizontal"</span> <span class="err">//</span> <span class="err">위젯</span> <span class="err">크기</span> <span class="err">조정</span> <span class="err">가능한</span> <span class="err">모드,</span> <span class="err">수평/수직</span> <span class="err">모두</span> <span class="err">조정</span> <span class="err">할</span> <span class="err">수</span> <span class="err">있도록</span> <span class="err">하겠다는</span> <span class="err">의미</span>
+    <span class="na">android:updatePeriodMillis=</span><span class="s">"0"</span> <span class="err">//</span> <span class="err">위젯</span> <span class="err">업데이트</span> <span class="err">주기,</span> <span class="err">0이면</span> <span class="err">자동</span> <span class="err">업데이트</span> <span class="err">하지</span> <span class="err">않고</span> <span class="err">수동</span> <span class="err">업데이트로만</span> <span class="err">가능</span>
+    <span class="na">android:widgetCategory=</span><span class="s">"home_screen"</span> <span class="err">//</span> <span class="err">홈</span> <span class="err">화면에</span> <span class="err">위젯을</span> <span class="err">보여준다는</span> <span class="err">의미,</span> <span class="err">안드로이드</span> <span class="err">5</span> <span class="err">부터는</span> <span class="err">이것만</span> <span class="err">가능</span>
+<span class="nt">/&gt;</span>
+</code></pre></div></div>
+
+<ol>
+  <li>위젯 업데이트와 같은 처리는 <code class="language-plaintext highlighter-rouge">BroadcastReceiver</code>를 통해서 진행하기 때문에 관련 로직을 처리할 <code class="language-plaintext highlighter-rouge">NinthWidgetProvider</code> 클래스를 만들고 내용을 작성합니다.</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">AndroidManifest.xml</code>내 <code class="language-plaintext highlighter-rouge">application</code>태그 내에 앱 위젯 내용을 추가합니다.</li>
+</ol>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nt">&lt;receiver</span>
+    <span class="na">android:name=</span><span class="s">".widget.widgetprovider.NinthWidgetProvider"</span>
+    <span class="na">android:exported=</span><span class="s">"true"</span>
+    <span class="na">android:label=</span><span class="s">"@string/ninthWidgetLabel"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;intent-filter&gt;</span>
+        <span class="nt">&lt;action</span> <span class="na">android:name=</span><span class="s">"android.appwidget.action.APPWIDGET_UPDATE"</span> <span class="nt">/&gt;</span> // 필수
+        <span class="nt">&lt;action</span> <span class="na">android:name=</span><span class="s">"android.intent.action.BOOT_COMPLETED"</span> <span class="nt">/&gt;</span>
+        <span class="nt">&lt;action</span> <span class="na">android:name=</span><span class="s">"android.intent.action.MY_PACKAGE_REPLACED"</span> <span class="nt">/&gt;</span>
+    <span class="nt">&lt;/intent-filter&gt;</span>
+
+    <span class="nt">&lt;meta-data</span>
+        <span class="na">android:name=</span><span class="s">"android.appwidget.provider"</span> <span class="err">//</span> <span class="err">필수</span>
+        <span class="na">android:resource=</span><span class="s">"@xml/ninth_widget_info"</span> <span class="nt">/&gt;</span>
+<span class="nt">&lt;/receiver&gt;</span>
+</code></pre></div></div>
+
+<ol>
+  <li>완료</li>
+</ol>
+
+<p>위젯을 런처 앱에 추가하는 경우에 사용자가 위젯에 대해 부가적인 설정이 가능하도록 하고자 하는 경우에는 위의 <code class="language-plaintext highlighter-rouge">ConfigureWidgetActivity</code>를 생성하면 됩니다.
+런처 앱에서 위젯 추가 버튼을 클릭시 이 <code class="language-plaintext highlighter-rouge">액티비티</code>가 나오고 관련 설정이 가능해집니다.</p>
+
+<h2 id="위젯-레이아웃-제작의-한계점">위젯 레이아웃 제작의 한계점</h2>
+<blockquote>
+  <p>앱 위젯은 해당 앱이 다른 프로세스인 런처 앱 상에서 <code class="language-plaintext highlighter-rouge">RemoteViews</code>라는 View로 원격으로 레이아웃을 보여주는 방식이기 때문에, 개발자가 원하는 대로 레이아웃을 제작하는 것이 어렵다는 한계점이 있습니다.</p>
+</blockquote>
+
+<ul>
+  <li>앱 위젯에 사용 가능한 레이아웃 및 위젯
+    <ul>
+      <li>AdapterViewFlipper</li>
+      <li>FrameLayout</li>
+      <li>GridLayout</li>
+      <li>GridView</li>
+      <li>LinearLayout</li>
+      <li>ListView</li>
+      <li>RelativeLayout</li>
+      <li>StackView</li>
+      <li>ViewFlipper</li>
+      <li>AnalogClock</li>
+      <li>Button</li>
+      <li>Chronometer</li>
+      <li>ImageButton</li>
+      <li>ImageView</li>
+      <li>ProgressBar</li>
+      <li>TextClock</li>
+      <li>TextView</li>
+      <li>안드로이드 12 부터 가능
+        <ul>
+          <li>CheckBox</li>
+          <li>RadioButton</li>
+          <li>RadioGroup</li>
+          <li>Switch</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="한계점을-벗어나-원하는-레이아웃을-제작하는-방법">한계점을 벗어나, 원하는 레이아웃을 제작하는 방법</h2>
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">RemoteViews</code>에서 사용가능한 위젯과 레이아웃으로는 아래의 위젯 제작이 매우 어렵습니다.</p>
+</blockquote>
+
+<p><img src="https://github.com/pknujsp/BestWeather/assets/48265129/aaf68a23-3c07-4abb-8522-c58d68feaddd"></p>
+
+<h3 id="bitmap으로-만들어-imageview에-지정하여-해결">Bitmap으로 만들어 ImageView에 지정하여 해결</h3>
+
+<ul>
+  <li>작업 과정
+    <ol>
+      <li>동적으로 레이아웃 제작
+        <ul>
+          <li>
+<code class="language-plaintext highlighter-rouge">RelativeLayout</code>생성
+            <ul>
+              <li>최상위 view</li>
+            </ul>
+          </li>
+          <li>
+<code class="language-plaintext highlighter-rouge">LinearLayout</code>생성
+            <ul>
+              <li>
+<code class="language-plaintext highlighter-rouge">RelativeLayout</code>의 자식 View</li>
+              <li>시간, 날씨 아이콘(맑음, 비 등)의 정보 표시</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+      <li>
+<code class="language-plaintext highlighter-rouge">nine-widget-info.xml</code>에서 설정했던 위젯의 width, height정보를 pixel 값으로 변환</li>
+      <li>최상위 view의 width, height를 변환한 pixel 값으로 설정</li>
+      <li><code class="language-plaintext highlighter-rouge">Bitmap viewBmp = rootLayout.getDrawingCache()</code></li>
+      <li><code class="language-plaintext highlighter-rouge">remoteViews.setImageViewBitmap(R.id.bitmapValuesView, viewBmp);</code></li>
+      <li>완료</li>
+    </ol>
+  </li>
+</ul>
+
+<h3 id="결과">결과</h3>
+
+<p>아래의 사진은 ImageView를 사용하여 만든 위젯과, RemoteViews에서 사용가능한 뷰와 레이아웃으로 만든 위젯의 레이아웃 계층도를 보여줍니다.</p>
+
+<p>Bitmap으로 처리한 위젯이 제대로 동작하고 있는 것을 확인할 수 있습니다.</p>
+
+<p><img src="https://github.com/pknujsp/BestWeather/assets/48265129/1a47f4d0-b7c4-4c1d-811f-95868280c097"></p>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/navigation/2023/05/23/%EB%84%A4%EB%B9%84%EA%B2%8C%EC%9D%B4%EC%85%98-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EB%94%A5%EB%A7%81%ED%81%AC-%EC%82%AC%EC%9A%A9%EC%84%B1-%EA%B0%9C%EC%84%A0%ED%95%98%EA%B8%B0.html" title="Navigation Component DeepLink로 이동시 Arguments 전달 편의성 개선하기">Navigation Component DeepLink로 이동시...</a><a class="next" href="/jekyll-theme-yat/data/communication/2023/06/13/Connecting-Devices-and-Virtual-LANs.html" title="17. Connecting Devices and Virtual LANs">17. Connecting Devices and...</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li>
+<span><a class="post-link" href="/jekyll-theme-yat/android/2023/04/06/StateFlow-vs-SharedFlow.html" title="17. Connecting Devices and Virtual LANs">StateFlow vs SharedFlow</a></span><span>
+            <time class="dt-published datetime" datetime="2023-04-06T00:00:00+09:00" itemprop="datePublished">2023-04-06, Thu
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/dalvik/art/android/2023/10/15/Android-Dalvik%EA%B3%BC-Art%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C.html" title="17. Connecting Devices and Virtual LANs">Android Dalvik과 ART에 대해서</a></span><span>
+            <time class="dt-published datetime" datetime="2023-10-15T00:00:00+09:00" itemprop="datePublished">2023-10-15, Sun
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/android/2023/08/24/Android-%EA%B7%B8%EB%9E%98%ED%94%84-%EA%B7%B8%EB%A6%AC%EB%8A%94-View%EB%A7%8C%EB%93%A4%EA%B8%B0.html" title="17. Connecting Devices and Virtual LANs">그래프 그리는 View만들기</a></span><span>
+            <time class="dt-published datetime" datetime="2023-08-24T00:00:00+09:00" itemprop="datePublished">2023-08-24, Thu
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/private/2023/12/30/2023%EB%85%84%EC%9D%84-%EB%8F%8C%EC%95%84%EB%B3%B4%EB%A9%B0.html" title="17. Connecting Devices and Virtual LANs">2023년을 돌아보며</a></span><span>
+            <time class="dt-published datetime" datetime="2023-12-30T00:00:00+09:00" itemprop="datePublished">2023-12-30, Sat
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/compiler/2023/04/22/Compiler-Overview.html" title="17. Connecting Devices and Virtual LANs">Compiler Overview</a></span><span>
+            <time class="dt-published datetime" datetime="2023-04-22T00:00:00+09:00" itemprop="datePublished">2023-04-22, Sat
+            </time></span>
+        </li>
+</ul>
+    </div>
+<div class="post-comments">
+<div id="utterances-placeholder"></div>
+<script>
+
+const utterancesThemeFromDataTheme = () => {
+    const dataTheme = document.documentElement.getAttribute('data-theme');
+    return `github-${dataTheme}`;
+  };
+
+  const setUtterancesTheme = () => {
+    const iframe = document.querySelector('.utterances-frame');
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: utterancesThemeFromDataTheme()
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+    }
+  }
+
+  // dynamic change
+  const observer = new MutationObserver((mutationsList, observer) => {
+    for (let mutation of mutationsList) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        setUtterancesTheme();
+      }
+    }
+  });
+  observer.observe(document.documentElement, { attributes: true, childList: false, subtree: false });
+
+  let utterancesScript = document.createElement('script');
+  utterancesScript.async = true;
+  utterancesScript.src = 'https://utteranc.es/client.js';
+  utterancesScript.crossOrigin = 'anonymous';
+  utterancesScript.setAttribute('issue-term', 'pathname');
+  utterancesScript.setAttribute('label', 'comments');
+  utterancesScript.setAttribute('repo', 'pknujsp/Blogcomments');
+  utterancesScript.setAttribute('theme', utterancesThemeFromDataTheme());
+
+  const placeholder = document.getElementById('utterances-placeholder');
+  placeholder.parentNode.replaceChild(utterancesScript, placeholder);
+</script>
+</div></section>
+</div>
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">Contents</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">· ' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>2024 @ Junsung Park</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

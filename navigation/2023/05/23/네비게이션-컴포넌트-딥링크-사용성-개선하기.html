@@ -1,0 +1,1342 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Navigation Component DeepLink로 이동시 Arguments 전달 편의성 개선하기 | Jsp Notes</title>
+<meta name="generator" content="Jekyll v4.3.4">
+<meta property="og:title" content="Navigation Component DeepLink로 이동시 Arguments 전달 편의성 개선하기">
+<meta name="author" content="Junsung Park">
+<meta property="og:locale" content="ko">
+<meta name="description" content="구현 목적">
+<meta property="og:description" content="구현 목적">
+<link rel="canonical" href="https://pknujsp.github.io//jekyll-theme-yat/navigation/2023/05/23/%EB%84%A4%EB%B9%84%EA%B2%8C%EC%9D%B4%EC%85%98-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EB%94%A5%EB%A7%81%ED%81%AC-%EC%82%AC%EC%9A%A9%EC%84%B1-%EA%B0%9C%EC%84%A0%ED%95%98%EA%B8%B0.html">
+<meta property="og:url" content="https://pknujsp.github.io//jekyll-theme-yat/navigation/2023/05/23/%EB%84%A4%EB%B9%84%EA%B2%8C%EC%9D%B4%EC%85%98-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EB%94%A5%EB%A7%81%ED%81%AC-%EC%82%AC%EC%9A%A9%EC%84%B1-%EA%B0%9C%EC%84%A0%ED%95%98%EA%B8%B0.html">
+<meta property="og:site_name" content="Jsp Notes">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-05-23T00:00:00+09:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Navigation Component DeepLink로 이동시 Arguments 전달 편의성 개선하기">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junsung Park"},"dateModified":"2023-05-23T00:00:00+09:00","datePublished":"2023-05-23T00:00:00+09:00","description":"구현 목적","headline":"Navigation Component DeepLink로 이동시 Arguments 전달 편의성 개선하기","mainEntityOfPage":{"@type":"WebPage","@id":"https://pknujsp.github.io//jekyll-theme-yat/navigation/2023/05/23/%EB%84%A4%EB%B9%84%EA%B2%8C%EC%9D%B4%EC%85%98-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EB%94%A5%EB%A7%81%ED%81%AC-%EC%82%AC%EC%9A%A9%EC%84%B1-%EA%B0%9C%EC%84%A0%ED%95%98%EA%B8%B0.html"},"url":"https://pknujsp.github.io//jekyll-theme-yat/navigation/2023/05/23/%EB%84%A4%EB%B9%84%EA%B2%8C%EC%9D%B4%EC%85%98-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EB%94%A5%EB%A7%81%ED%81%AC-%EC%82%AC%EC%9A%A9%EC%84%B1-%EA%B0%9C%EC%84%A0%ED%95%98%EA%B8%B0.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="icon" href="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script>
+
+  <!-- tipuesearch -->
+  <link rel="stylesheet" href="/assets/tipuesearch/css/tipuesearch.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_content.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_set.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch.min.js"></script><link type="application/atom+xml" rel="alternate" href="https://pknujsp.github.io//jekyll-theme-yat/feed.xml" title="Jsp Notes">
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LZC1TDTS26"></script>
+<script>
+  function initGoogleAnalytics() {
+    var doNotTrack = (window.doNotTrack === "1" || navigator.doNotTrack === "1" ||
+      navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1");
+    var enableDNT = "true" == "true";
+
+    if (!enableDNT || !doNotTrack) {
+      /*
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'G-LZC1TDTS26', 'auto');
+      ga('send', 'pageview');
+      */
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { window.dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-LZC1TDTS26');
+    }
+  }
+  window.addEventListener("load", initGoogleAnalytics);
+
+</script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/intellij-light.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/kotlin.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #7800ff;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: lowercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <img class="site-white_favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+</a></span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/about.html">About</a><a class="page-link" href="/jekyll-theme-yat/categories.html">Categories</a><a class="page-link" href="/jekyll-theme-yat/">Home</a><a class="page-link" href="/jekyll-theme-yat/posts.html">Posts</a><a class="page-link" href="/jekyll-theme-yat/tags.html">Tags</a><input id="tipue_search_input" type="search" placeholder="Search" aria-label="Search" title="Please enter at least 1 character" required>
+
+          <script>
+            document.getElementById("tipue_search_input").addEventListener("keydown", function (event) {
+              if (event.keyCode === 13) {
+                event.preventDefault();
+                window.location.href = "../search?q=" + this.value;
+              }
+            });
+          </script>
+<!--
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="en">
+        
+        <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+        to English
+        
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="ko">
+        
+        <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+        to Korean
+        
+      </a>
+    </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'ko',
+      autoDisplay: false,
+      layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+    }, 'google_translate_element');
+
+    // Links to cross-origin destinations are unsafe
+    var gll = document.getElementsByClassName('goog-logo-link')[0];
+    if (gll) {
+      gll.setAttribute('rel', 'noopener');
+    }
+
+    function restoreLang() {
+      var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+      if (!iframe) return;
+
+      var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+      var restore_el = innerDoc.getElementsByTagName("button");
+
+      for (var i = 0; i < restore_el.length; i++) {
+        if (restore_el[i].id.indexOf("restore") >= 0) {
+          restore_el[i].click();
+          var close_el = innerDoc.getElementsByClassName("goog-close-link");
+          close_el[0].click();
+          return;
+        }
+      }
+    }
+
+    function triggerHtmlEvent(element, eventName) {
+      var event;
+      if (document.createEvent) {
+        event = document.createEvent('HTMLEvents');
+        event.initEvent(eventName, true, true);
+        element.dispatchEvent(event);
+      } else {
+        event = document.createEventObject();
+        event.eventType = eventName;
+        element.fireEvent('on' + event.eventType, event);
+      }
+    }
+
+    var googleCombo = document.querySelector("select.goog-te-combo");
+    var langSelect = document.querySelector('.ct-language');
+    langSelect.addEventListener('click', function (event) {
+      if (!event.target) {
+        return;
+      }
+
+      var selected = document.querySelector('.ct-language .ct-language-selected');
+      if (selected) {
+        selected.classList.remove('ct-language-selected');
+      }
+
+      var target = event.target;
+      while (target && target !== langSelect) {
+        if (target.matches('.lang-select')) {
+          break;
+        }
+        target = target.parentElement;
+      }
+
+      if (target && target.matches('.lang-select')) {
+        var lang = target.getAttribute('data-lang');
+        if (googleCombo.value == lang) {
+          restoreLang();
+        } else if (lang == 'ko') {
+          var googleTranslateElement = document.getElementById('google_translate_element');
+          if (googleTranslateElement) {
+            googleTranslateElement.parentNode.removeChild(googleTranslateElement);
+            $('#google_translate_element').empty();
+          }
+        } else {
+          target.parentElement.classList.add('ct-language-selected');
+          googleCombo.value = lang;
+          triggerHtmlEvent(googleCombo, 'change');
+        }
+      }
+
+      event.preventDefault();
+    });
+  }
+</script>
+
+<script type="text/javascript"
+  src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script></span>-->
+          </div>
+
+          
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('manual' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = !(hours >= 2 && hours <=5);
+
+      if (nightShift) {
+        if (hours > 5) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(5);
+      } else {
+        toggleAt.setHours(2);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<div id="click-to-bottom" class="click-to-bottom">
+  <i class="fa fa-arrow-down"></i>
+</div>
+<script>
+  (function () {
+    const clickToBottom = document.getElementById('click-to-bottom');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToBottom.classList.add('show')
+      }else {
+        clickToBottom.classList.remove('show')
+      }
+    });
+    clickToBottom.addEventListener('click', () => {
+      window.smoothScrollTo(document.body.scrollHeight);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">Navigation Component DeepLink로 이동시 Arguments 전달 편의성 개선하기</h1>
+  <h2 class="post-subtitle">Action으로 이동하는 것처럼 DeepLink로 Arguments 전달하기</h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2023-05-23T00:00:00+09:00" itemprop="datePublished">2023-05-23, Tue
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 7 minutes</span>
+  </p>
+<div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Android">#Android</a></div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h2 id="구현-목적">구현 목적</h2>
+
+<p><strong>DeepLink 사용 시</strong>에도 <strong>Action</strong>으로 이동할 때 <strong>Arguments</strong>를 전달하는 것처럼 구현 하고자 합니다.</p>
+
+<p>먼저 <strong>DeepLink</strong>와 <strong>Action</strong>으로 <strong>Arguments</strong>를 전달하는 방법을 알아봅시다.</p>
+
+<h2 id="각각의-arguments-전달-방법">각각의 Arguments 전달 방법</h2>
+
+<h3 id="action으로-arguments-전달">Action으로 Arguments 전달</h3>
+
+<p>XML 네비게이션 파일에 Argument를 선언하거나, 동적으로 Arguments를 선언하는 방법이 있습니다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// nav.xml 에서, 전달할 Arguments를 아래와 같이 정의해야 합니다.</span>
+
+<span class="p">&lt;</span><span class="n">argument</span>
+    <span class="n">android</span><span class="p">:</span><span class="n">name</span><span class="p">=</span><span class="s">"name"</span>
+    <span class="n">android</span><span class="p">:</span><span class="n">defaultValue</span><span class="p">=</span><span class="s">"이름"</span><span class="p">/&gt;</span>
+
+<span class="p">&lt;</span><span class="n">argument</span>
+    <span class="n">android</span><span class="p">:</span><span class="n">name</span><span class="p">=</span><span class="s">"age"</span>
+    <span class="n">android</span><span class="p">:</span><span class="n">defaultValue</span><span class="p">=</span><span class="s">"나이"</span><span class="p">/&gt;</span>
+
+<span class="c1">// 출발 Fragment에서</span>
+
+<span class="kd">val</span> <span class="py">name</span> <span class="p">=</span> <span class="s">"이름"</span>
+<span class="kd">val</span> <span class="py">age</span> <span class="p">=</span> <span class="s">"5"</span>
+
+<span class="kd">val</span> <span class="py">action</span> <span class="p">=</span> <span class="nc">StartFragmentDirections</span><span class="p">.</span><span class="nf">userInfoAction</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">age</span><span class="p">)</span>
+<span class="n">v</span><span class="p">.</span><span class="nf">findNavController</span><span class="p">().</span><span class="nf">navigate</span><span class="p">(</span><span class="n">action</span><span class="p">)</span>
+
+<span class="c1">// 도착 Fragment에서</span>
+<span class="kd">val</span> <span class="py">args</span><span class="p">:</span> <span class="n">userInfoFragmentArgs</span> <span class="k">by</span> <span class="nf">navArgs</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h3 id="deeplink로-arguments-전달하는-방법">DeepLink로 Arguments 전달하는 방법</h3>
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// nav.xml 에서, 전달할 Arguments를 아래와 같이 정의해야 합니다.</span>
+
+<span class="p">&lt;</span><span class="n">argument</span>
+    <span class="n">android</span><span class="p">:</span><span class="n">name</span><span class="p">=</span><span class="s">"name"</span>
+    <span class="n">android</span><span class="p">:</span><span class="n">defaultValue</span><span class="p">=</span><span class="s">"이름"</span><span class="p">/&gt;</span>
+
+<span class="p">&lt;</span><span class="n">argument</span>
+    <span class="n">android</span><span class="p">:</span><span class="n">name</span><span class="p">=</span><span class="s">"age"</span>
+    <span class="n">android</span><span class="p">:</span><span class="n">defaultValue</span><span class="p">=</span><span class="s">"나이"</span><span class="p">/&gt;</span>
+
+<span class="p">&lt;</span><span class="n">deepLink</span> <span class="n">app</span><span class="p">:</span><span class="n">uri</span><span class="p">=</span><span class="s">"appname://app/user/userinfo?name={name}&amp;age={age}"</span> <span class="p">/&gt;</span>
+
+<span class="c1">// 출발 Fragment에서</span>
+<span class="kd">val</span> <span class="py">name</span> <span class="p">=</span> <span class="s">"이름"</span>
+<span class="kd">val</span> <span class="py">age</span> <span class="p">=</span> <span class="s">"5"</span>
+
+<span class="s">"appname://app/user/userinfo?name=$name&amp;age=$age"</span><span class="p">.</span><span class="nf">toUri</span><span class="p">()</span>
+
+<span class="c1">// 도착 Fragment에서</span>
+<span class="kd">val</span> <span class="py">args</span><span class="p">:</span> <span class="n">userInfoFragmentArgs</span> <span class="k">by</span> <span class="nf">navArgs</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><strong>DeepLink</strong>로 이동할 때는 <strong>“appname://app/user/userinfo”.toUri()</strong> 를 사용해서 <strong>URI</strong>를 따라서 이동합니다.</p>
+
+<p>이를 통해 <strong>도착 Fragment</strong>에 <strong>Arguments</strong>를 보내려면, <strong>“appname://app/user/userinfo?name=name_data&age=age_data”.toUri()</strong> 과 같이 <strong>URI</strong>에 데이터를 직접 입력해서 전달해야 합니다.(UriBuilder를 통해서 Query를 입력해서 하는 방법도 있습니다)</p>
+
+<ul>
+  <li>
+<strong>구현한 기능으로 DeepLink</strong> <strong>Arguments</strong> 전달 시에는
+    <ul>
+      <li>
+<strong>URI</strong>에 위와 같이 작성할 필요 없음
+        <ul>
+          <li>
+<strong>“appname://app/user/userinfo”</strong> 만 작성하면 됩니다</li>
+        </ul>
+      </li>
+      <li>nav.xml에 <strong>Argument</strong>를 선언할 필요없음
+        <ul>
+          <li>
+<strong>BaseNavArgs</strong>를 상속받는 data class를 만들기만 하면됩니다.</li>
+          <li>
+<strong>data class</strong>를 만들면 동적으로 <strong>nav.xml</strong>에 <strong>Argument</strong>를 추가합니다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="구현-과정">구현 과정</h2>
+
+<h3 id="1-androidxnavigationsafeargs-동작-분석">1. androidx.navigation.safeargs 동작 분석</h3>
+<blockquote>
+  <p><strong>safeargs</strong>의 내부 로직을 살펴보던 중, 도착 프래그먼트에서 <strong>by navArgs</strong>로 <strong>Arguments</strong>를 처리할 때 <code class="language-plaintext highlighter-rouge">fromBundle()</code> <strong>static 메서드</strong>를 호출하여 <strong>Argument</strong> 객체에 담아 반환하는 로직을 발견하였다.</p>
+</blockquote>
+
+<p><code class="language-plaintext highlighter-rouge">fromBundle()</code>을 내부적으로 사용할때 이 메서드는 <strong>NavArgs 인터페이스</strong>를 구현하는 클래스의 <strong>static 메서드</strong> 여야 하는 것을 파악하였고,
+이 두 조건을 만족하는 <strong>추상 클래스</strong>를 생성하였다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">abstract</span> <span class="kd">class</span> <span class="nc">BaseNavArgs</span><span class="p">(</span>
+    <span class="kd">val</span> <span class="py">className</span><span class="p">:</span> <span class="nc">String</span>
+<span class="p">)</span> <span class="p">:</span> <span class="nc">NavArgs</span> <span class="p">{</span>
+
+    <span class="nd">@Suppress</span><span class="p">(</span><span class="s">"CAST_NEVER_SUCCEEDS"</span><span class="p">)</span>
+    <span class="k">fun</span> <span class="nf">toBundle</span><span class="p">():</span> <span class="nc">Bundle</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="py">result</span> <span class="p">=</span> <span class="nc">Bundle</span><span class="p">()</span>
+        <span class="nf">toMap</span><span class="p">().</span><span class="nf">forEach</span> <span class="p">{</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="p">-&gt;</span>
+            <span class="n">result</span><span class="p">.</span><span class="nf">putString</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">result</span>
+    <span class="p">}</span>
+
+    <span class="k">companion</span> <span class="k">object</span> <span class="p">{</span>
+        <span class="nd">@JvmStatic</span>
+        <span class="k">fun</span> <span class="nf">fromBundle</span><span class="p">(</span><span class="n">bundle</span><span class="p">:</span> <span class="nc">Bundle</span><span class="p">):</span> <span class="nc">BaseNavArgs</span> <span class="p">{</span>
+            <span class="c1">// BaseNavArgs를 구현한 class를 className 문자열을 바탕으로 만든다.</span>
+            <span class="kd">val</span> <span class="py">kClass</span><span class="p">:</span> <span class="nc">KClass</span><span class="p">&lt;</span><span class="nc">BaseNavArgs</span><span class="p">&gt;</span> <span class="p">=</span> <span class="nc">Class</span><span class="p">.</span><span class="nf">forName</span><span class="p">(</span><span class="n">bundle</span><span class="p">.</span><span class="nf">getString</span><span class="p">(</span><span class="s">"className"</span><span class="p">)</span><span class="o">!!</span><span class="p">).</span><span class="n">kotlin</span> <span class="k">as</span> <span class="nc">KClass</span><span class="p">&lt;</span><span class="nc">BaseNavArgs</span><span class="p">&gt;</span>
+            <span class="n">bundle</span><span class="p">.</span><span class="n">classLoader</span> <span class="p">=</span> <span class="n">kClass</span><span class="p">.</span><span class="n">java</span><span class="p">.</span><span class="n">classLoader</span>
+            
+            <span class="c1">// 생성한 class의 생성자를 가져온다.</span>
+            <span class="kd">val</span> <span class="py">constructor</span> <span class="p">=</span> <span class="n">kClass</span><span class="p">.</span><span class="n">primaryConstructor</span><span class="o">!!</span>
+
+            <span class="c1">// bundle의 value를 읽는다.</span>
+            <span class="kd">val</span> <span class="py">args</span> <span class="p">=</span> <span class="k">constructor</span><span class="p">.</span><span class="n">parameters</span><span class="p">.</span><span class="nf">map</span> <span class="p">{</span> <span class="n">parameter</span> <span class="p">-&gt;</span>
+                <span class="n">bundle</span><span class="p">.</span><span class="nf">getString</span><span class="p">(</span><span class="n">parameter</span><span class="p">.</span><span class="n">name</span><span class="p">,</span> <span class="s">""</span><span class="p">)</span>
+            <span class="p">}</span>
+
+            <span class="c1">// 읽은 value를 생성자에 담아서 class instance를 만든다.</span>
+            <span class="k">return</span> <span class="k">constructor</span><span class="p">.</span><span class="nf">call</span><span class="p">(*</span><span class="n">args</span><span class="p">.</span><span class="nf">toTypedArray</span><span class="p">())</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">fun</span> <span class="nf">toMap</span><span class="p">():</span> <span class="nc">Map</span><span class="p">&lt;</span><span class="nc">String</span><span class="p">,</span> <span class="nc">String</span><span class="p">&gt;</span> <span class="p">=</span> <span class="k">this</span><span class="o">::</span><span class="k">class</span><span class="p">.</span><span class="n">memberProperties</span><span class="p">.</span><span class="nf">let</span> <span class="p">{</span> <span class="n">properties</span> <span class="p">-&gt;</span>
+        <span class="n">properties</span><span class="p">.</span><span class="nf">associate</span> <span class="p">{</span> <span class="n">property</span> <span class="p">-&gt;</span>
+            <span class="n">property</span><span class="p">.</span><span class="n">name</span> <span class="n">to</span> <span class="n">property</span><span class="p">.</span><span class="n">getter</span><span class="p">.</span><span class="nf">call</span><span class="p">(</span><span class="k">this</span><span class="p">).</span><span class="nf">toString</span><span class="p">()</span>
+        <span class="p">}.</span><span class="nf">toMap</span><span class="p">()</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">toMap()</code> 메서드는 <strong>BaseNavArgs</strong>를 구현하는 객체의 속성 값(Arguments)을 <strong>Map</strong>으로 반환하는 메서드이다.</p>
+
+<h3 id="2-동적으로-argument-생성하고-uri를-생성">2. 동적으로 Argument 생성하고, URI를 생성</h3>
+<blockquote>
+  <p>위 BaseNavArgs를 구현하는 data class를 바탕으로 동적으로 Argument를 생성한다.</p>
+</blockquote>
+
+<ul>
+  <li>navigateByDeepLink(deepLinkUrl: String, parameter: BaseNavArgs)
+    <ul>
+      <li>
+<strong>DeepLink</strong>룰 사용할 때, 해당 URI가 선언된 <strong>NavGraph</strong>에 동적으로 <strong>Arguments</strong>를 추가</li>
+      <li>@param deepLinkUrl DeepLink Url</li>
+      <li>@param parameter DeepLink에 들어갈 파라미터, BaseNavArgs를 구현한 클래스 객체</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fun</span> <span class="nc">NavController</span><span class="p">.</span><span class="nf">navigateByDeepLink</span><span class="p">(</span><span class="n">deepLinkUrl</span><span class="p">:</span> <span class="nc">String</span><span class="p">,</span> <span class="n">parameter</span><span class="p">:</span> <span class="nc">BaseNavArgs</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">val</span> <span class="py">parameterMap</span> <span class="p">=</span> <span class="n">parameter</span><span class="p">.</span><span class="nf">toMap</span><span class="p">()</span>
+    <span class="nf">toDeepUrl</span><span class="p">(</span><span class="n">deepLinkUrl</span><span class="p">,</span> <span class="n">parameterMap</span><span class="p">).</span><span class="nf">also</span> <span class="p">{</span> <span class="n">finalUri</span> <span class="p">-&gt;</span>
+        <span class="n">graph</span><span class="p">.</span><span class="nf">matchDeepLink</span><span class="p">(</span><span class="nc">NavDeepLinkRequest</span><span class="p">(</span><span class="n">finalUri</span><span class="p">,</span> <span class="k">null</span><span class="p">,</span> <span class="k">null</span><span class="p">))</span><span class="o">?.</span><span class="nf">also</span> <span class="p">{</span> <span class="n">deepLinkMatch</span> <span class="p">-&gt;</span>
+            <span class="n">parameterMap</span><span class="p">.</span><span class="nf">takeIf</span> <span class="p">{</span>
+                <span class="n">it</span><span class="p">.</span><span class="nf">isNotEmpty</span><span class="p">()</span>
+            <span class="p">}</span><span class="o">?.</span><span class="nf">forEach</span> <span class="p">{</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="p">-&gt;</span>
+                <span class="n">deepLinkMatch</span><span class="p">.</span><span class="n">destination</span><span class="p">.</span><span class="nf">addArgument</span><span class="p">(</span>
+                    <span class="n">key</span><span class="p">,</span> <span class="nc">NavArgument</span><span class="p">.</span><span class="nc">Builder</span><span class="p">().</span><span class="nf">setType</span><span class="p">(</span><span class="nc">NavType</span><span class="p">.</span><span class="nc">StringType</span><span class="p">).</span><span class="nf">setIsNullable</span><span class="p">(</span><span class="k">false</span><span class="p">).</span><span class="nf">setDefaultValue</span><span class="p">(</span><span class="n">value</span><span class="p">).</span><span class="nf">build</span><span class="p">()</span>
+                <span class="p">)</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">this</span><span class="p">.</span><span class="nf">navigate</span><span class="p">(</span><span class="n">deepLinkUrl</span><span class="p">.</span><span class="nf">toUri</span><span class="p">())</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>아래의 <strong>toDeepUri()</strong>를 사용하여 <strong>URI</strong>를 생성한다.</p>
+
+<blockquote>
+  <p>동적으로 생성된 Arguments를 <strong>appname://app/user/userinfo?name=name_data&age=age_data</strong>과 같이 <strong>GET URI</strong>로 만든다.</p>
+</blockquote>
+
+<p>Map을 메서드의 매개변수로 받아서 Map의 key, value를 <strong>URI</strong>에 추가한다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * Uri Builder
+ *
+ * Uri를 생성하는 함수입니다.
+ *
+ * @param parameter Uri에 들어갈 파라미터
+ * @return Uri
+ */</span>
+<span class="k">private</span> <span class="k">fun</span> <span class="nf">toDeepUrl</span><span class="p">(</span><span class="n">deepLinkUrl</span><span class="p">:</span> <span class="nc">String</span><span class="p">,</span> <span class="n">parameter</span><span class="p">:</span> <span class="nc">Map</span><span class="p">&lt;</span><span class="nc">String</span><span class="p">,</span> <span class="nc">String</span><span class="p">&gt;):</span> <span class="nc">Uri</span> <span class="p">=</span> <span class="nc">StringBuilder</span><span class="p">(</span><span class="n">deepLinkUrl</span><span class="p">).</span><span class="nf">let</span> <span class="p">{</span> <span class="n">uri</span> <span class="p">-&gt;</span>
+    <span class="n">parameter</span><span class="p">.</span><span class="nf">takeIf</span> <span class="p">{</span>
+        <span class="n">it</span><span class="p">.</span><span class="nf">isNotEmpty</span><span class="p">()</span>
+    <span class="p">}</span><span class="o">?.</span><span class="nf">also</span> <span class="p">{</span> <span class="n">map</span> <span class="p">-&gt;</span>
+        <span class="n">uri</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="s">"?"</span><span class="p">)</span>
+        <span class="n">map</span><span class="p">.</span><span class="nf">onEachIndexed</span> <span class="p">{</span> <span class="n">index</span><span class="p">,</span> <span class="n">entry</span> <span class="p">-&gt;</span>
+            <span class="n">uri</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="s">"${entry.key}=${entry.value}"</span><span class="p">)</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">index</span> <span class="p">!=</span> <span class="n">map</span><span class="p">.</span><span class="n">size</span> <span class="p">-</span> <span class="mi">1</span><span class="p">)</span> <span class="n">uri</span><span class="p">.</span><span class="nf">append</span><span class="p">(</span><span class="s">"&amp;"</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="n">uri</span><span class="p">.</span><span class="nf">toString</span><span class="p">().</span><span class="nf">toUri</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="사용-방법">사용 방법</h2>
+
+<h3 id="1-전달할-arguments-data-class-생성">1. 전달할 Arguments data class 생성</h3>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="cm">/**
+ * 유저 정보 프래그먼트로 전달할 인자
+ *
+ * @property name 이름
+ * @property age 나이
+ */</span>
+<span class="kd">data class</span> <span class="nc">UserInfoFragmentArgs</span><span class="p">(</span>
+    <span class="kd">val</span> <span class="py">name</span><span class="p">:</span> <span class="nc">String</span><span class="p">,</span> <span class="kd">val</span> <span class="py">age</span><span class="p">:</span> <span class="nc">String</span>
+<span class="p">)</span> <span class="p">:</span> <span class="nc">BaseNavArgs</span><span class="p">(</span><span class="nc">UserInfoFragmentArgs</span><span class="o">::</span><span class="k">class</span><span class="p">.</span><span class="n">java</span><span class="p">.</span><span class="n">name</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><strong>주의사항</strong></p>
+
+<ul>
+  <li>상속받는 <strong>data class</strong>를 만들었을때 <strong>BaseNavArgs</strong> 의 생성자에 <strong>UserInfoFragmentArgs::class.java.name</strong> 과 같이 data class의 <strong>클래스 명</strong>을 전달해야 합니다.</li>
+  <li>
+<strong>val</strong> 과 <strong>NonNull</strong>로 속성을 만들어야 합니다.
+    <ul>
+      <li>이 부분이 상당한 제약 사항인데 추후 로직을 더 개선해서 업데이트 할 예정입니다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="2-navigatebydeeplink-사용">2. navigateByDeepLink() 사용</h3>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 출발 Fragment에서</span>
+
+<span class="n">activity</span><span class="o">?.</span><span class="nf">findNavController</span><span class="p">(</span><span class="n">com</span><span class="p">.</span><span class="n">android</span><span class="p">.</span><span class="n">appname</span><span class="p">.</span><span class="n">core</span><span class="p">.</span><span class="n">common</span><span class="p">.</span><span class="nc">R</span><span class="p">.</span><span class="n">id</span><span class="p">.</span><span class="n">fragmentContainerView</span><span class="p">)?</span>
+<span class="p">.</span><span class="nf">navigateByDeepLink</span><span class="p">(</span>
+    <span class="s">"appname://app/user/userinfo"</span><span class="p">,</span>
+    <span class="nc">UserInfoFragmentArgs</span><span class="p">(</span>
+        <span class="n">name</span> <span class="p">=</span> <span class="n">userInfoDto</span><span class="p">.</span><span class="n">name</span><span class="p">,</span>
+        <span class="n">age</span> <span class="p">=</span> <span class="n">userInfoDto</span><span class="p">.</span><span class="n">age</span>
+    <span class="p">)</span>
+<span class="p">)</span>
+
+<span class="c1">// 도착 Fragment에서</span>
+<span class="kd">val</span> <span class="py">args</span><span class="p">:</span> <span class="n">userInfoFragmentArgs</span> <span class="k">by</span> <span class="nf">navArgs</span><span class="p">()</span>
+</code></pre></div></div>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/compose/2023/05/09/Android-Compose-%EC%B2%AB-%EB%8F%84%EC%9E%85-%ED%9B%84%EA%B8%B0.html" title="Android Compose 첫 도입 후기">Android Compose 첫 도입...</a><a class="next" href="/jekyll-theme-yat/android/2023/05/31/Android-%EC%BB%A4%EC%8A%A4%ED%85%80-%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83%EC%9C%BC%EB%A1%9C-%EC%95%B1-%EC%9C%84%EC%A0%AF-%EB%A7%8C%EB%93%A4%EA%B8%B0.html" title="Android 커스텀 레이아웃으로 앱 위젯 만들기">Android 커스텀 레이아웃으로 앱...</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li>
+<span><a class="post-link" href="/jekyll-theme-yat/android/2023/04/04/Activity-%EC%95%8C%EC%95%84%EB%B3%B4%EA%B8%B0.html" title="Android 커스텀 레이아웃으로 앱 위젯 만들기">Activity 알아보기</a></span><span>
+            <time class="dt-published datetime" datetime="2023-04-04T00:00:00+09:00" itemprop="datePublished">2023-04-04, Tue
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/compiler/2023/04/23/Compiler-Context-free-analysis.html" title="Android 커스텀 레이아웃으로 앱 위젯 만들기">Compiler Context-free analysis</a></span><span>
+            <time class="dt-published datetime" datetime="2023-04-23T00:00:00+09:00" itemprop="datePublished">2023-04-23, Sun
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/compiler/2023/04/22/Compiler-Scanner.html" title="Android 커스텀 레이아웃으로 앱 위젯 만들기">Compiler Scanner</a></span><span>
+            <time class="dt-published datetime" datetime="2023-04-22T00:00:00+09:00" itemprop="datePublished">2023-04-22, Sat
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/data/communication/2023/06/13/Wired-LANs-Ethernet.html" title="Android 커스텀 레이아웃으로 앱 위젯 만들기">13. Wired LANs Ethernet</a></span><span>
+            <time class="dt-published datetime" datetime="2023-06-13T00:00:00+09:00" itemprop="datePublished">2023-06-13, Tue
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/android/2023/08/24/Android-%EA%B7%B8%EB%9E%98%ED%94%84-%EA%B7%B8%EB%A6%AC%EB%8A%94-View%EB%A7%8C%EB%93%A4%EA%B8%B0.html" title="Android 커스텀 레이아웃으로 앱 위젯 만들기">그래프 그리는 View만들기</a></span><span>
+            <time class="dt-published datetime" datetime="2023-08-24T00:00:00+09:00" itemprop="datePublished">2023-08-24, Thu
+            </time></span>
+        </li>
+</ul>
+    </div>
+<div class="post-comments">
+<div id="utterances-placeholder"></div>
+<script>
+
+const utterancesThemeFromDataTheme = () => {
+    const dataTheme = document.documentElement.getAttribute('data-theme');
+    return `github-${dataTheme}`;
+  };
+
+  const setUtterancesTheme = () => {
+    const iframe = document.querySelector('.utterances-frame');
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: utterancesThemeFromDataTheme()
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+    }
+  }
+
+  // dynamic change
+  const observer = new MutationObserver((mutationsList, observer) => {
+    for (let mutation of mutationsList) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        setUtterancesTheme();
+      }
+    }
+  });
+  observer.observe(document.documentElement, { attributes: true, childList: false, subtree: false });
+
+  let utterancesScript = document.createElement('script');
+  utterancesScript.async = true;
+  utterancesScript.src = 'https://utteranc.es/client.js';
+  utterancesScript.crossOrigin = 'anonymous';
+  utterancesScript.setAttribute('issue-term', 'pathname');
+  utterancesScript.setAttribute('label', 'comments');
+  utterancesScript.setAttribute('repo', 'pknujsp/Blogcomments');
+  utterancesScript.setAttribute('theme', utterancesThemeFromDataTheme());
+
+  const placeholder = document.getElementById('utterances-placeholder');
+  placeholder.parentNode.replaceChild(utterancesScript, placeholder);
+</script>
+</div></section>
+</div>
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">Contents</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">· ' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>2024 @ Junsung Park</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Android 시스템 바 레이아웃 변경하기 | Jsp Notes</title>
+<meta name="generator" content="Jekyll v4.3.4">
+<meta property="og:title" content="Android 시스템 바 레이아웃 변경하기">
+<meta name="author" content="Junsung Park">
+<meta property="og:locale" content="ko">
+<meta name="description" content="Android 시스템바 색상 설정 변경하는 방법">
+<meta property="og:description" content="Android 시스템바 색상 설정 변경하는 방법">
+<link rel="canonical" href="https://pknujsp.github.io//jekyll-theme-yat/android/2023/07/22/Android-%EC%8B%9C%EC%8A%A4%ED%85%9C%EB%B0%94-%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83-%EB%B3%80%EA%B2%BD%ED%95%98%EA%B8%B0.html">
+<meta property="og:url" content="https://pknujsp.github.io//jekyll-theme-yat/android/2023/07/22/Android-%EC%8B%9C%EC%8A%A4%ED%85%9C%EB%B0%94-%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83-%EB%B3%80%EA%B2%BD%ED%95%98%EA%B8%B0.html">
+<meta property="og:site_name" content="Jsp Notes">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-07-22T00:00:00+09:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Android 시스템 바 레이아웃 변경하기">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junsung Park"},"dateModified":"2023-07-22T00:00:00+09:00","datePublished":"2023-07-22T00:00:00+09:00","description":"Android 시스템바 색상 설정 변경하는 방법","headline":"Android 시스템 바 레이아웃 변경하기","mainEntityOfPage":{"@type":"WebPage","@id":"https://pknujsp.github.io//jekyll-theme-yat/android/2023/07/22/Android-%EC%8B%9C%EC%8A%A4%ED%85%9C%EB%B0%94-%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83-%EB%B3%80%EA%B2%BD%ED%95%98%EA%B8%B0.html"},"url":"https://pknujsp.github.io//jekyll-theme-yat/android/2023/07/22/Android-%EC%8B%9C%EC%8A%A4%ED%85%9C%EB%B0%94-%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83-%EB%B3%80%EA%B2%BD%ED%95%98%EA%B8%B0.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="icon" href="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script>
+
+  <!-- tipuesearch -->
+  <link rel="stylesheet" href="/assets/tipuesearch/css/tipuesearch.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_content.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_set.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch.min.js"></script><link type="application/atom+xml" rel="alternate" href="https://pknujsp.github.io//jekyll-theme-yat/feed.xml" title="Jsp Notes">
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LZC1TDTS26"></script>
+<script>
+  function initGoogleAnalytics() {
+    var doNotTrack = (window.doNotTrack === "1" || navigator.doNotTrack === "1" ||
+      navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1");
+    var enableDNT = "true" == "true";
+
+    if (!enableDNT || !doNotTrack) {
+      /*
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'G-LZC1TDTS26', 'auto');
+      ga('send', 'pageview');
+      */
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { window.dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-LZC1TDTS26');
+    }
+  }
+  window.addEventListener("load", initGoogleAnalytics);
+
+</script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/intellij-light.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/kotlin.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #7800ff;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: lowercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <img class="site-white_favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+</a></span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/about.html">About</a><a class="page-link" href="/jekyll-theme-yat/categories.html">Categories</a><a class="page-link" href="/jekyll-theme-yat/">Home</a><a class="page-link" href="/jekyll-theme-yat/posts.html">Posts</a><a class="page-link" href="/jekyll-theme-yat/tags.html">Tags</a><input id="tipue_search_input" type="search" placeholder="Search" aria-label="Search" title="Please enter at least 1 character" required>
+
+          <script>
+            document.getElementById("tipue_search_input").addEventListener("keydown", function (event) {
+              if (event.keyCode === 13) {
+                event.preventDefault();
+                window.location.href = "../search?q=" + this.value;
+              }
+            });
+          </script>
+<!--
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="en">
+        
+        <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+        to English
+        
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="ko">
+        
+        <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+        to Korean
+        
+      </a>
+    </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'ko',
+      autoDisplay: false,
+      layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+    }, 'google_translate_element');
+
+    // Links to cross-origin destinations are unsafe
+    var gll = document.getElementsByClassName('goog-logo-link')[0];
+    if (gll) {
+      gll.setAttribute('rel', 'noopener');
+    }
+
+    function restoreLang() {
+      var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+      if (!iframe) return;
+
+      var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+      var restore_el = innerDoc.getElementsByTagName("button");
+
+      for (var i = 0; i < restore_el.length; i++) {
+        if (restore_el[i].id.indexOf("restore") >= 0) {
+          restore_el[i].click();
+          var close_el = innerDoc.getElementsByClassName("goog-close-link");
+          close_el[0].click();
+          return;
+        }
+      }
+    }
+
+    function triggerHtmlEvent(element, eventName) {
+      var event;
+      if (document.createEvent) {
+        event = document.createEvent('HTMLEvents');
+        event.initEvent(eventName, true, true);
+        element.dispatchEvent(event);
+      } else {
+        event = document.createEventObject();
+        event.eventType = eventName;
+        element.fireEvent('on' + event.eventType, event);
+      }
+    }
+
+    var googleCombo = document.querySelector("select.goog-te-combo");
+    var langSelect = document.querySelector('.ct-language');
+    langSelect.addEventListener('click', function (event) {
+      if (!event.target) {
+        return;
+      }
+
+      var selected = document.querySelector('.ct-language .ct-language-selected');
+      if (selected) {
+        selected.classList.remove('ct-language-selected');
+      }
+
+      var target = event.target;
+      while (target && target !== langSelect) {
+        if (target.matches('.lang-select')) {
+          break;
+        }
+        target = target.parentElement;
+      }
+
+      if (target && target.matches('.lang-select')) {
+        var lang = target.getAttribute('data-lang');
+        if (googleCombo.value == lang) {
+          restoreLang();
+        } else if (lang == 'ko') {
+          var googleTranslateElement = document.getElementById('google_translate_element');
+          if (googleTranslateElement) {
+            googleTranslateElement.parentNode.removeChild(googleTranslateElement);
+            $('#google_translate_element').empty();
+          }
+        } else {
+          target.parentElement.classList.add('ct-language-selected');
+          googleCombo.value = lang;
+          triggerHtmlEvent(googleCombo, 'change');
+        }
+      }
+
+      event.preventDefault();
+    });
+  }
+</script>
+
+<script type="text/javascript"
+  src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script></span>-->
+          </div>
+
+          
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('manual' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = !(hours >= 2 && hours <=5);
+
+      if (nightShift) {
+        if (hours > 5) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(5);
+      } else {
+        toggleAt.setHours(2);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<div id="click-to-bottom" class="click-to-bottom">
+  <i class="fa fa-arrow-down"></i>
+</div>
+<script>
+  (function () {
+    const clickToBottom = document.getElementById('click-to-bottom');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToBottom.classList.add('show')
+      }else {
+        clickToBottom.classList.remove('show')
+      }
+    });
+    clickToBottom.addEventListener('click', () => {
+      window.smoothScrollTo(document.body.scrollHeight);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">Android 시스템 바 레이아웃 변경하기</h1>
+  <h2 class="post-subtitle">배경색, 투명도, 레이아웃 변경</h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2023-07-22T00:00:00+09:00" itemprop="datePublished">2023-07-22, Sat
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 3 minutes</span>
+  </p>
+<div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Android">#Android</a></div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h2 id="android-시스템바-색상-설정-변경하는-방법">Android 시스템바 색상 설정 변경하는 방법</h2>
+
+<h3 id="컨텐츠-레이아웃이-화면-전체를-차지하도록-설정">컨텐츠 레이아웃이 화면 전체를 차지하도록 설정</h3>
+<hr>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nc">WindowCompat</span><span class="p">.</span><span class="nf">setDecorFitsSystemWindows</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="k">true</span> <span class="n">or</span> <span class="k">false</span><span class="p">)</span>
+</code></pre></div></div>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">true</th>
+      <th style="text-align: center">false</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">컨텐츠 레이아웃의 범위가 상태 바와 네비게이션 바 영역을 제외한 영역만 차지합니다.</td>
+      <td style="text-align: center">컨텐츠 레이아웃의 범위가 상태 바와 네비게이션 바 영역까지 확장됩니다.</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"><img src="https://github.com/pknu-wap/2023_1_WAP_APP_TEAM_MEDI/assets/48265129/73403f93-a4e4-496c-8bd2-5bce72621e81" alt="image"></td>
+      <td style="text-align: center"><img src="https://github.com/pknu-wap/2023_1_WAP_APP_TEAM_MEDI/assets/48265129/3810f34d-3a0e-4034-aaa6-f088414a0505" alt="image"></td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>true</strong></p>
+
+<p><img src="https://github.com/pknu-wap/2023_1_WAP_APP_TEAM_MEDI/assets/48265129/e6bc0408-c4f3-4ed5-ac5a-cffbe430cd29"></p>
+
+<p><strong>false</strong></p>
+<blockquote>
+  <p><strong>true</strong>와 달리, 레이아웃 계층에서 <strong>navigationBarBackground</strong>와 <strong>statusBarBackground</strong>가 최상위로 올라오게 됩니다.</p>
+</blockquote>
+
+<p><img src="https://github.com/pknu-wap/2023_1_WAP_APP_TEAM_MEDI/assets/48265129/9445e634-61d8-4ddb-b3d6-d40f4a95027d"></p>
+
+<h3 id="상태-바와-네비게이션-바-색상-변경">상태 바와 네비게이션 바 색상 변경</h3>
+<hr>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">window</span><span class="p">.</span><span class="nf">apply</span> <span class="p">{</span>
+    <span class="nc">WindowCompat</span><span class="p">.</span><span class="nf">setDecorFitsSystemWindows</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="k">false</span><span class="p">)</span>
+    <span class="n">navigationBarColor</span> <span class="p">=</span> <span class="nc">Color</span><span class="p">.</span><span class="nc">TRANSPARENT</span>
+    <span class="n">statusBarColor</span> <span class="p">=</span> <span class="nc">Color</span><span class="p">.</span><span class="nc">TRANSPARENT</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>배경색이 변경되게 됩니다.</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">상태 바 : GREEN, 네비게이션 바 : GREEN</th>
+      <th style="text-align: center">상태 바 : TRANSPARENT, 네비게이션 바 : TRANSPARENT</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center"><img src="https://github.com/pknu-wap/2023_1_WAP_APP_TEAM_MEDI/assets/48265129/169def82-ba2a-4b0f-9ee5-ae39f8254cdf" height="100%" width="auto"></td>
+      <td style="text-align: center"><img src="https://github.com/pknu-wap/2023_1_WAP_APP_TEAM_MEDI/assets/48265129/27caf758-5022-4081-a980-42461128b728" height="100%" width="auto"></td>
+    </tr>
+  </tbody>
+</table>
+
+<ul>
+  <li>상태 바
+    <ul>
+      <li>투명으로 설정하면 DecorView에서 <strong>그려지지</strong> 않습니다.</li>
+    </ul>
+  </li>
+  <li>네비게이션 바
+    <ul>
+      <li>투명으로 설정하더라도 DecorView에서 그려지게 됩니다.</li>
+      <li>투명으로 설정하면 배경색이 검은색으로 설정됩니다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="상태-바와-네비게이션-바를-투명하게-하기">상태 바와 네비게이션 바를 투명하게 하기</h3>
+<hr>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">window</span><span class="p">.</span><span class="nf">addFlags</span><span class="p">(</span><span class="nc">WindowManager</span><span class="p">.</span><span class="nc">LayoutParams</span><span class="p">.</span><span class="nc">FLAG_LAYOUT_NO_LIMITS</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="https://github.com/pknu-wap/2023_1_WAP_APP_TEAM_MEDI/assets/48265129/43ee5066-f99a-4d65-a92a-72e9a7dad4c5" width="60%" height="auto"></p>
+
+<p>아래의 코드와 같은 상태에서 네비게이션 바가 DecorView에서 사라지고 배경색이 투명하게 되는 것과 같습니다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">window</span><span class="p">.</span><span class="nf">apply</span> <span class="p">{</span>
+    <span class="nc">WindowCompat</span><span class="p">.</span><span class="nf">setDecorFitsSystemWindows</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="k">false</span><span class="p">)</span>
+    <span class="n">navigationBarColor</span> <span class="p">=</span> <span class="nc">Color</span><span class="p">.</span><span class="nc">TRANSPARENT</span>
+    <span class="n">statusBarColor</span> <span class="p">=</span> <span class="nc">Color</span><span class="p">.</span><span class="nc">TRANSPARENT</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="뷰의-위치를-시스템-바와-겹치지-않도록-설정하기">뷰의 위치를 시스템 바와 겹치지 않도록 설정하기</h3>
+<hr>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">window</span><span class="p">.</span><span class="nf">addFlags</span><span class="p">(</span><span class="nc">WindowManager</span><span class="p">.</span><span class="nc">LayoutParams</span><span class="p">.</span><span class="nc">FLAG_LAYOUT_NO_LIMITS</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><img src="https://github.com/pknu-wap/2023_1_WAP_APP_TEAM_MEDI/assets/48265129/43ee5066-f99a-4d65-a92a-72e9a7dad4c5" width="60%" height="auto"></p>
+
+<blockquote>
+  <p>위와 같은 상태에서는, 뷰가 시스템 바와 겹치게 됩니다.</p>
+</blockquote>
+
+<blockquote>
+  <p>겹치는 뷰에 대하여 Margin 또는 Padding을 설정하여 시스템 바와 겹치지 않도록 설정해야 합니다.</p>
+</blockquote>
+
+<p>1 시스템 바의 높이를 가져옵니다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 안드로이드 프레임워크에서 기본적으로 설정되어 있는 값을 통해서 가져올 수 있습니다.</span>
+<span class="kd">val</span> <span class="py">resources</span> <span class="p">=</span> <span class="nc">Resources</span><span class="p">.</span><span class="nf">getSystem</span><span class="p">()</span>
+<span class="kd">val</span> <span class="py">statusBarHeight1</span> <span class="p">=</span> <span class="n">resources</span><span class="p">.</span><span class="nf">getDimensionPixelSize</span><span class="p">(</span><span class="n">resources</span><span class="p">.</span><span class="nf">getIdentifier</span><span class="p">(</span><span class="s">"status_bar_height"</span><span class="p">,</span> <span class="s">"dimen"</span><span class="p">,</span> <span class="s">"android"</span><span class="p">))</span>
+<span class="kd">val</span> <span class="py">navigationBarHeight1</span> <span class="p">=</span> <span class="n">resources</span><span class="p">.</span><span class="nf">getDimensionPixelSize</span><span class="p">(</span><span class="n">resources</span><span class="p">.</span><span class="nf">getIdentifier</span><span class="p">(</span><span class="s">"navigation_bar_height"</span><span class="p">,</span> <span class="s">"dimen"</span><span class="p">,</span> <span class="s">"android"</span><span class="p">))</span>
+<span class="p">}</span>
+
+</code></pre></div></div>
+<p>2 뷰에 대하여 Margin 또는 Padding값을 갱신합니다.</p>
+<ul>
+  <li>이미 지정된 값이 있을 수 있으므로, 기존 값에 시스템 바의 높이를 더해줍니다.</li>
+  <li>top, bottom에 대해서 적용할지 여부는 상황에 따라 선택합니다.</li>
+</ul>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// Margin</span>
+<span class="kd">val</span> <span class="py">resources</span> <span class="p">=</span> <span class="nc">Resources</span><span class="p">.</span><span class="nf">getSystem</span><span class="p">()</span>
+<span class="kd">val</span> <span class="py">statusBarHeight</span> <span class="p">=</span> <span class="n">resources</span><span class="p">.</span><span class="nf">getDimensionPixelSize</span><span class="p">(</span><span class="n">resources</span><span class="p">.</span><span class="nf">getIdentifier</span><span class="p">(</span><span class="s">"status_bar_height"</span><span class="p">,</span> <span class="s">"dimen"</span><span class="p">,</span> <span class="s">"android"</span><span class="p">))</span>
+<span class="kd">val</span> <span class="py">navigationBarHeight</span> <span class="p">=</span> <span class="n">resources</span><span class="p">.</span><span class="nf">getDimensionPixelSize</span><span class="p">(</span><span class="n">resources</span><span class="p">.</span><span class="nf">getIdentifier</span><span class="p">(</span><span class="s">"navigation_bar_height"</span><span class="p">,</span> <span class="s">"dimen"</span><span class="p">,</span> <span class="s">"android"</span><span class="p">))</span>
+<span class="n">root</span><span class="p">.</span><span class="nf">updatePadding</span><span class="p">(</span><span class="n">top</span> <span class="p">=</span> <span class="n">root</span><span class="p">.</span><span class="n">paddingTop</span> <span class="p">+</span> <span class="n">statusBarHeight</span><span class="p">,</span> <span class="n">bottom</span> <span class="p">=</span> <span class="n">root</span><span class="p">.</span><span class="n">paddingBottom</span> <span class="p">+</span> <span class="n">navigationBarHeight</span><span class="p">)</span>         
+</code></pre></div></div>
+
+<p>3 결과</p>
+
+<p><img src="https://github.com/pknu-wap/2023_1_WAP_APP_TEAM_MEDI/assets/48265129/dfbc6cb4-c948-41bd-a179-40938830770f" width="60%" height="auto"></p>
+
+<h2 id="다음-주제">다음 주제</h2>
+
+<blockquote>
+  <p><strong>OneActivity</strong> 구조에서 <strong>Fragment</strong>가 변경될 때 마다 시스템 바 설정을 자동으로 변경시키는 방법에 대해 알아보겠습니다.</p>
+</blockquote>
+
+<p><img src="https://github.com/pknu-wap/2023_1_WAP_APP_TEAM_MEDI/assets/48265129/382f30d5-a3ce-4229-b25c-6d75011c663d" alt="android_systembar_updating"></p>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/kotlin/2023/07/14/Kotlin-%EB%8F%99%EC%8B%9C%EC%84%B1-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0%EB%B0%A9%EB%B2%95.html" title="Kotlin 동시성 문제 해결방법">Kotlin 동시성 문제 해결방법...</a><a class="next" href="/jekyll-theme-yat/android/2023/07/30/Android-%EC%83%81%ED%83%9C%EB%B0%94%EC%99%80-%EB%84%A4%EB%B9%84%EA%B2%8C%EC%9D%B4%EC%85%98%EB%B0%94-%EC%83%89%EC%83%81-%EC%9E%90%EB%8F%99-%EB%B3%80%EA%B2%BD-%EC%B2%98%EB%A6%AC%ED%95%98%EA%B8%B0.html" title="Android 시스템 바(상태바, 네비게이션바) 색상 자동 변경 처리하기">Android 시스템 바(상태바, 네비게이션바)...</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li>
+<span><a class="post-link" href="/jekyll-theme-yat/data/communication/2023/06/13/Wired-LANs-Ethernet.html" title="Android 시스템 바(상태바, 네비게이션바) 색상 자동 변경 처리하기">13. Wired LANs Ethernet</a></span><span>
+            <time class="dt-published datetime" datetime="2023-06-13T00:00:00+09:00" itemprop="datePublished">2023-06-13, Tue
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/android/2023/07/09/RecyclerViewPool%EC%97%90-%EB%8C%80%ED%95%B4.html" title="Android 시스템 바(상태바, 네비게이션바) 색상 자동 변경 처리하기">RecyclerView의 동작 로직에 대해 자세히 알아보기</a></span><span>
+            <time class="dt-published datetime" datetime="2023-07-09T00:00:00+09:00" itemprop="datePublished">2023-07-09, Sun
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/data/communication/2023/06/13/Wireless-LANs.html" title="Android 시스템 바(상태바, 네비게이션바) 색상 자동 변경 처리하기">15. Wireless LANs</a></span><span>
+            <time class="dt-published datetime" datetime="2023-06-13T00:00:00+09:00" itemprop="datePublished">2023-06-13, Tue
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/private/2023/12/30/2023%EB%85%84%EC%9D%84-%EB%8F%8C%EC%95%84%EB%B3%B4%EB%A9%B0.html" title="Android 시스템 바(상태바, 네비게이션바) 색상 자동 변경 처리하기">2023년을 돌아보며</a></span><span>
+            <time class="dt-published datetime" datetime="2023-12-30T00:00:00+09:00" itemprop="datePublished">2023-12-30, Sat
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/compiler/2023/04/22/Compiler-Overview.html" title="Android 시스템 바(상태바, 네비게이션바) 색상 자동 변경 처리하기">Compiler Overview</a></span><span>
+            <time class="dt-published datetime" datetime="2023-04-22T00:00:00+09:00" itemprop="datePublished">2023-04-22, Sat
+            </time></span>
+        </li>
+</ul>
+    </div>
+<div class="post-comments">
+<div id="utterances-placeholder"></div>
+<script>
+
+const utterancesThemeFromDataTheme = () => {
+    const dataTheme = document.documentElement.getAttribute('data-theme');
+    return `github-${dataTheme}`;
+  };
+
+  const setUtterancesTheme = () => {
+    const iframe = document.querySelector('.utterances-frame');
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: utterancesThemeFromDataTheme()
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+    }
+  }
+
+  // dynamic change
+  const observer = new MutationObserver((mutationsList, observer) => {
+    for (let mutation of mutationsList) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        setUtterancesTheme();
+      }
+    }
+  });
+  observer.observe(document.documentElement, { attributes: true, childList: false, subtree: false });
+
+  let utterancesScript = document.createElement('script');
+  utterancesScript.async = true;
+  utterancesScript.src = 'https://utteranc.es/client.js';
+  utterancesScript.crossOrigin = 'anonymous';
+  utterancesScript.setAttribute('issue-term', 'pathname');
+  utterancesScript.setAttribute('label', 'comments');
+  utterancesScript.setAttribute('repo', 'pknujsp/Blogcomments');
+  utterancesScript.setAttribute('theme', utterancesThemeFromDataTheme());
+
+  const placeholder = document.getElementById('utterances-placeholder');
+  placeholder.parentNode.replaceChild(utterancesScript, placeholder);
+</script>
+</div></section>
+</div>
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">Contents</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">· ' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>2024 @ Junsung Park</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,2049 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Compiler Context-free analysis | Jsp Notes</title>
+<meta name="generator" content="Jekyll v4.3.4">
+<meta property="og:title" content="Compiler Context-free analysis">
+<meta name="author" content="Junsung Park">
+<meta property="og:locale" content="ko">
+<meta name="description" content="Syntax analyzer(Context-free analysis, 구문 분석기) Scanner에 의해 생성된 토큰을 기본적인 문법(Context-free)에 맞는지를 검사하고, Parse tree를 생성한다. 문법에 맞지 않으면 오류를 알린다.">
+<meta property="og:description" content="Syntax analyzer(Context-free analysis, 구문 분석기) Scanner에 의해 생성된 토큰을 기본적인 문법(Context-free)에 맞는지를 검사하고, Parse tree를 생성한다. 문법에 맞지 않으면 오류를 알린다.">
+<link rel="canonical" href="https://pknujsp.github.io//jekyll-theme-yat/compiler/2023/04/23/Compiler-Context-free-analysis.html">
+<meta property="og:url" content="https://pknujsp.github.io//jekyll-theme-yat/compiler/2023/04/23/Compiler-Context-free-analysis.html">
+<meta property="og:site_name" content="Jsp Notes">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-04-23T00:00:00+09:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Compiler Context-free analysis">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junsung Park"},"dateModified":"2023-04-23T00:00:00+09:00","datePublished":"2023-04-23T00:00:00+09:00","description":"Syntax analyzer(Context-free analysis, 구문 분석기) Scanner에 의해 생성된 토큰을 기본적인 문법(Context-free)에 맞는지를 검사하고, Parse tree를 생성한다. 문법에 맞지 않으면 오류를 알린다.","headline":"Compiler Context-free analysis","mainEntityOfPage":{"@type":"WebPage","@id":"https://pknujsp.github.io//jekyll-theme-yat/compiler/2023/04/23/Compiler-Context-free-analysis.html"},"url":"https://pknujsp.github.io//jekyll-theme-yat/compiler/2023/04/23/Compiler-Context-free-analysis.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="icon" href="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script>
+
+  <!-- tipuesearch -->
+  <link rel="stylesheet" href="/assets/tipuesearch/css/tipuesearch.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_content.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_set.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch.min.js"></script><link type="application/atom+xml" rel="alternate" href="https://pknujsp.github.io//jekyll-theme-yat/feed.xml" title="Jsp Notes">
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LZC1TDTS26"></script>
+<script>
+  function initGoogleAnalytics() {
+    var doNotTrack = (window.doNotTrack === "1" || navigator.doNotTrack === "1" ||
+      navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1");
+    var enableDNT = "true" == "true";
+
+    if (!enableDNT || !doNotTrack) {
+      /*
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'G-LZC1TDTS26', 'auto');
+      ga('send', 'pageview');
+      */
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { window.dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-LZC1TDTS26');
+    }
+  }
+  window.addEventListener("load", initGoogleAnalytics);
+
+</script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/intellij-light.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/kotlin.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #7800ff;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: lowercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <img class="site-white_favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+</a></span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/about.html">About</a><a class="page-link" href="/jekyll-theme-yat/categories.html">Categories</a><a class="page-link" href="/jekyll-theme-yat/">Home</a><a class="page-link" href="/jekyll-theme-yat/posts.html">Posts</a><a class="page-link" href="/jekyll-theme-yat/tags.html">Tags</a><input id="tipue_search_input" type="search" placeholder="Search" aria-label="Search" title="Please enter at least 1 character" required>
+
+          <script>
+            document.getElementById("tipue_search_input").addEventListener("keydown", function (event) {
+              if (event.keyCode === 13) {
+                event.preventDefault();
+                window.location.href = "../search?q=" + this.value;
+              }
+            });
+          </script>
+<!--
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="en">
+        
+        <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+        to English
+        
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="ko">
+        
+        <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+        to Korean
+        
+      </a>
+    </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'ko',
+      autoDisplay: false,
+      layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+    }, 'google_translate_element');
+
+    // Links to cross-origin destinations are unsafe
+    var gll = document.getElementsByClassName('goog-logo-link')[0];
+    if (gll) {
+      gll.setAttribute('rel', 'noopener');
+    }
+
+    function restoreLang() {
+      var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+      if (!iframe) return;
+
+      var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+      var restore_el = innerDoc.getElementsByTagName("button");
+
+      for (var i = 0; i < restore_el.length; i++) {
+        if (restore_el[i].id.indexOf("restore") >= 0) {
+          restore_el[i].click();
+          var close_el = innerDoc.getElementsByClassName("goog-close-link");
+          close_el[0].click();
+          return;
+        }
+      }
+    }
+
+    function triggerHtmlEvent(element, eventName) {
+      var event;
+      if (document.createEvent) {
+        event = document.createEvent('HTMLEvents');
+        event.initEvent(eventName, true, true);
+        element.dispatchEvent(event);
+      } else {
+        event = document.createEventObject();
+        event.eventType = eventName;
+        element.fireEvent('on' + event.eventType, event);
+      }
+    }
+
+    var googleCombo = document.querySelector("select.goog-te-combo");
+    var langSelect = document.querySelector('.ct-language');
+    langSelect.addEventListener('click', function (event) {
+      if (!event.target) {
+        return;
+      }
+
+      var selected = document.querySelector('.ct-language .ct-language-selected');
+      if (selected) {
+        selected.classList.remove('ct-language-selected');
+      }
+
+      var target = event.target;
+      while (target && target !== langSelect) {
+        if (target.matches('.lang-select')) {
+          break;
+        }
+        target = target.parentElement;
+      }
+
+      if (target && target.matches('.lang-select')) {
+        var lang = target.getAttribute('data-lang');
+        if (googleCombo.value == lang) {
+          restoreLang();
+        } else if (lang == 'ko') {
+          var googleTranslateElement = document.getElementById('google_translate_element');
+          if (googleTranslateElement) {
+            googleTranslateElement.parentNode.removeChild(googleTranslateElement);
+            $('#google_translate_element').empty();
+          }
+        } else {
+          target.parentElement.classList.add('ct-language-selected');
+          googleCombo.value = lang;
+          triggerHtmlEvent(googleCombo, 'change');
+        }
+      }
+
+      event.preventDefault();
+    });
+  }
+</script>
+
+<script type="text/javascript"
+  src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script></span>-->
+          </div>
+
+          
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('manual' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = !(hours >= 2 && hours <=5);
+
+      if (nightShift) {
+        if (hours > 5) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(5);
+      } else {
+        toggleAt.setHours(2);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<div id="click-to-bottom" class="click-to-bottom">
+  <i class="fa fa-arrow-down"></i>
+</div>
+<script>
+  (function () {
+    const clickToBottom = document.getElementById('click-to-bottom');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToBottom.classList.add('show')
+      }else {
+        clickToBottom.classList.remove('show')
+      }
+    });
+    clickToBottom.addEventListener('click', () => {
+      window.smoothScrollTo(document.body.scrollHeight);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">Compiler Context-free analysis</h1>
+  <h2 class="post-subtitle">Syntax analyzer in Parser</h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2023-04-23T00:00:00+09:00" itemprop="datePublished">2023-04-23, Sun
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 14 minutes</span>
+  </p>
+<div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Compiler">#Compiler</a></div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h1 id="syntax-analyzercontext-free-analysis-구문-분석기">Syntax analyzer(Context-free analysis, 구문 분석기)</h1>
+<blockquote>
+  <p>Scanner에 의해 생성된 토큰을 기본적인 문법(Context-free)에 맞는지를 검사하고, Parse tree를 생성한다.<br>
+문법에 맞지 않으면 오류를 알린다.</p>
+</blockquote>
+
+<h2 id="context-free-grammercgf">Context-free grammer(CGF)</h2>
+<hr>
+<blockquote>
+  <p>모든 생성 규칙이 <strong>V → w</strong> 를 따르는 형식적인 문법이다.<br>
+V : Non-terminal 기호, w : Non-terminal과 Terminal로 구성된 문자열</p>
+</blockquote>
+
+<ul>
+  <li>구성
+    <ul>
+      <li>G = (S, NT, T, P)
+        <ul>
+          <li>S
+            <ul>
+              <li>시작 기호(심볼)</li>
+              <li>L(G) 내의 문자열 집합</li>
+            </ul>
+          </li>
+          <li>NT
+            <ul>
+              <li>Non-terminal 기호의 집합</li>
+              <li>syntatic 변수</li>
+            </ul>
+          </li>
+          <li>T
+            <ul>
+              <li>Terminal 기호의 집합</li>
+              <li>words</li>
+            </ul>
+          </li>
+          <li>P
+            <ul>
+              <li>생성 규칙</li>
+              <li>P : NT →(NT∪T)+</li>
+            </ul>
+          </li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="terminalnon-terminal-symbol">Terminal/Non-terminal Symbol</h3>
+<hr>
+
+<ul>
+  <li>Terminal Symbol
+    <ul>
+      <li>언어의 최소 단위</li>
+      <li>더 이상 분리가 불가능하다.</li>
+      <li>키워드, 연산자, 숫자, 문자열, 변수명 등</li>
+    </ul>
+  </li>
+  <li>Non-terminal Symbol
+    <ul>
+      <li>언어의 구조와 문법을 나타내는데 사용된다.</li>
+      <li>함수 정의, 분기문, 반복문 등 추상적인 개념을 의미한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="context-free-grammar의-중요성">Context-free grammar의 중요성</h3>
+<hr>
+<blockquote>
+  <p>프로그래밍 언어의 구문을 설명하기에 강력하다.<br>
+입력 문자열이 문법으로 만들어 질 수 있는지 여부와 방법을 결정하는 효율적인 파싱 알고리즘을 만들기에 충분히 간단하다.</p>
+</blockquote>
+
+<h3 id="cgf를-이용한-예제-sheepnoise">CGF를 이용한 예제, SheepNoise</h3>
+<hr>
+
+<p>S = {SheepNoise}<br>
+NT = {SheepNoise}<br>
+P = {SheepNoise → SheepNoise <em>baa</em>  , SheepNoise → <em>baa</em>}</p>
+
+<ul>
+  <li>규칙
+    <ol>
+      <li>표현식은 양의 울음 소리 baa를 추가하여 확장가능 하다.</li>
+      <li>표현식은 단일 양의 울음 소리로 구성가능 하다.</li>
+    </ol>
+  </li>
+</ul>
+
+<p>T = {<em>baa</em>}</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">규칙</th>
+      <th style="text-align: left">Sentential form</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">-</td>
+      <td style="text-align: left">SheepNoise</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td style="text-align: left">SheepNoise <em>baa</em>
+</td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">규칙</th>
+      <th style="text-align: left">Sentential form</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">-</td>
+      <td style="text-align: left">SheepNoise</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td style="text-align: left"><em>baa</em></td>
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">규칙</th>
+      <th style="text-align: left">Sentential form</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">-</td>
+      <td style="text-align: left">SheepNoise</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td style="text-align: left">SheepNoise <em>baa</em>
+</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td style="text-align: left">SheepNoise <em>baa</em>  <em>baa</em>
+</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">…</td>
+      <td style="text-align: left">SheepNoise <em>baa</em>  <em>baa</em>  … <em>baa</em>
+</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td style="text-align: left">
+<em>baa</em> <em>baa</em> <em>baa</em> <em>baa</em> …</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Sentential form(문장 형태)</strong>
+Terminal form으로 만 이루어져 있다. Derivation 과정에서 생성되는 문자열이다.</p>
+
+<h3 id="cfg를-나타내기-위한-더-좋은-표기법-bnfbackus-naur-form">CFG를 나타내기 위한 더 좋은 표기법, BNF(Backus-Naur form)</h3>
+<hr>
+<blockquote>
+  <p>기호와 표현식의 조합을 사용해서 나타낸다.</p>
+</blockquote>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>0 &lt;expr&gt; → &lt;expr&gt;&lt;op&gt;&lt;expr&gt;
+1 | number
+2 | id
+3 &lt;op&gt; → +
+4 | -
+5 | *
+6 | /
+</code></pre></div></div>
+
+<h3 id="derivation유도-parsing시-가장-중요한-것">Derivation(유도), Parsing시 가장 중요한 것</h3>
+<hr>
+<blockquote>
+  <p>문법 규칙을 바탕으로 구체적인 구문이나 구조를 만들어 내는 과정을 의미한다.</p>
+</blockquote>
+
+<p>Parser는 유도를 통해 올바른 문법으로 작성된 트리를 만드는데, 이 트리는 Semantic analysis와 Code generation 단계에서 사용된다.</p>
+
+<ul>
+  <li>유도 방법
+    <ul>
+      <li>각 단계에서 규칙에 따라 바꿀 비단말 심볼을 선택한다.</li>
+      <li>선택에 따라 다양한 결과(Parse tree)가 나올 수 있다.</li>
+      <li>Leftmost derivation
+        <ul>
+          <li>맨 좌측의 비단말 심볼을 교체한다.</li>
+        </ul>
+      </li>
+      <li>Rightmost derivation
+        <ul>
+          <li>맨 우측의 비단말 심볼을 교체한다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>LHS(Left hand side)
+    <ul>
+      <li>등호나 관계연산자 왼쪽에 위치한 표현식을 의미한다.</li>
+      <li>x = y + z
+        <ul>
+          <li>x가 LHS이다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>RHS(Right hand side)
+    <ul>
+      <li>등호나 관계연산자 오른쪽에 위치한 표현식을 의미한다.</li>
+      <li>x = y  + z
+        <ul>
+          <li>y + z가 RHS이다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>심볼은 매 단계마다 생성규칙에 따라 교체되고, 해당 과정을 문자열이 완성될 때까지(비단말을 포함하지 않을 때까지) 반복한다.</p>
+
+<p><strong>유도는 재 작성 단계로 구성된다.</strong></p>
+
+<blockquote>
+  <p>S → γ<sub>0</sub>→ γ<sub>1</sub>→ γ<sub>2</sub>→ … → γ<sub>n-1</sub> → γ<sub>n</sub> → sentence</p>
+</blockquote>
+
+<ul>
+  <li>γ<sub>i</sub>는 문장 형태이다.
+    <ul>
+      <li>γ가 단말 심볼만 가진다면, 그 γ는 L(G)의 문장이다.</li>
+      <li>γ가 비단말 심볼을 가진다면, 그 γ는 문장 형태이다.</li>
+    </ul>
+  </li>
+  <li>γ<sub>i‒1</sub> 에서 γ<sub>i</sub>를 얻으려면 A → β 를 사용하여 일부 NT A ∈ γ<sub>i-1</sub> 을 확장합니다.
+    <ul>
+      <li>A ∈ γ<sub>i‒1</sub> 발생을 β로 교체하여 γ<sub>i</sub>를 얻습니다.</li>
+      <li>Leftmost derivation에서 첫 번째 NT A ∈ γ<sub>i‒1</sub>
+</li>
+    </ul>
+  </li>
+  <li>왼쪽 문장 형태는 Leftmost derivation에서 생긴다.</li>
+  <li>오른쪽 문장 형태는 Rightmost derivation에서 생긴다.</li>
+</ul>
+
+<h3 id="x-2y-에-대한-두-가지-유도">x-2*y 에 대한 두 가지 유도</h3>
+<hr>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/233845715-b9776e57-066b-4e36-9287-5e7d9f31f7d6.png" alt=""></p>
+
+<p>두 경우 모두 Expr → * id - num * id 로 유도해낸다.</p>
+
+<p>그러나 문장 형태가 다르다.</p>
+
+<p><strong>Leftmost derivation 결과</strong>
+<img src="https://user-images.githubusercontent.com/48265129/233845855-2c70a937-50df-432a-b100-aac8de56a4f5.png" alt=""></p>
+
+<p><strong>Rightmost derivation 결과</strong>
+<img src="https://user-images.githubusercontent.com/48265129/233845875-d65d8e21-ce41-491f-b8ec-afa1a1e11cfc.png" alt=""></p>
+
+<h2 id="ambiguity-모호성">Ambiguity, 모호성</h2>
+<hr>
+<blockquote>
+  <p>만약 문법이 단일 문장 형태로 부터 여러 개의 유도를 만들어 낸다면, 그 유도 결과들은 애매모호 하다.</p>
+</blockquote>
+
+<p><strong>예제</strong></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;stmt&gt; ::= if &lt;expr&gt; then &lt;stmt&gt;
+                | if &lt;expr&gt; then &lt;stmt&gt; else &lt;stmt&gt;
+                | other stmt
+
+if E1 then if E2 then S1 else S2 의 경우
+if E1 then (if E2 then S1 else S2)
+if E1 then (if E2 then S1) else S2
+</code></pre></div></div>
+
+<p>모호성을 제거하기 위해서는 문법을 고쳐야 한다!</p>
+
+<p><strong>모호성을 제거한 예제</strong></p>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>&lt;stmt&gt; ::= &lt;matched&gt;
+ | &lt;unmatched&gt;
+&lt;matched&gt; ::= if &lt;expr&gt; then &lt;matched&gt; else &lt;matched&gt;
+ | other stmt
+&lt;unmatched&gt; ::= if &lt;expr&gt; then &lt;stmt&gt;
+ | if &lt;expr&gt; then &lt;matched&gt; else &lt;unmatched&gt;
+</code></pre></div></div>
+
+<p>위의 경우는 Context-free에서의 모호성에 대한 내용이다.<br>
+Context-sensitive에서 모호성을 처리하려면 다음과 같은 부분이 필요하다.</p>
+<ul>
+  <li>선언, 자료형에 대한 지식</li>
+  <li>L(G)의 상위 집합을 허용하고 다른 방법으로 확인하는 것</li>
+  <li>언어 설계가 잘못되었는지 확인하는 것</li>
+</ul>
+
+<h2 id="top-down-parser">Top-down parser</h2>
+<hr>
+<ul>
+  <li>문장의 구조를 분석하기 위해 구문 요소를 높은 수준에서 낮은 수준으로 차례대로 분해하는 방법이다.</li>
+  <li>일련의 문자열을 의미있는 토큰으로 분해하고 이들로 이루어진 Parse tree를 만든다.</li>
+  <li>트리의 루트(최상단)에서 시작하면서 단말 노드를 만들어 간다.</li>
+  <li>시작 기호 S로 부터 문법 규칙을 바탕으로 좌단 유도에 의해 주어진 문장 W를 찾아간다.</li>
+  <li>좋지 않은 선택을 한 경우에 Backtracking(역추적)을 할 수도 있다.
+    <ul>
+      <li>일부 문법은 역추적이 안될 수도 있다.</li>
+    </ul>
+  </li>
+  <li>LL parser
+    <ul>
+      <li>일반적인 방법</li>
+      <li>문법의 규칙을 입력과 일치시키기 위해 왼쪽에서부터 파싱을 해서 좌측유도(Leftmost Derivation) 방식으로 동작한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>Backtracking</strong></p>
+<ul>
+  <li>Top-down parsing 기법</li>
+  <li>역추적, 다시 되돌아가는 방법이다.</li>
+  <li>가능한 모든 문법 규칙에 따라 유도를 시도하며, 매칭되는 규칙을 찾지 못할 때 이전 단계로 돌아가 다른 규칙을 시도하는 과정을 반복한다.</li>
+  <li>단점
+    <ul>
+      <li>한 기호만 확인하면서 진행하기 때문에 오버헤드가 크다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>Predictive parsing</strong></p>
+<ul>
+  <li>Top-down parsing 기법</li>
+  <li>다음 입력 기호와 파싱 테이블을 기반으로 사용되는 문법 규칙을 예측한다.</li>
+  <li>이러한 예측을 하기 위해서, 파서는 입력 스트림에서 현재 토큰을 전방(look-ahead)으로 검토한다.</li>
+  <li>이 때 전방을 검토하는 기호는 일반적으로 한 개의 토큰까지만 미리보기가 가능한 LL(1) 파서가 사용된다.</li>
+  <li>왼쪽 재귀(Left recursion)가 없고, 각각의 입력 기호에 대해 단 하나의 파싱 규칙만 충족한다.</li>
+</ul>
+
+<h3 id="top-down-parsing-과정">Top-down parsing 과정</h3>
+<hr>
+
+<ul>
+  <li>Parse tree의 생성된 문자열과 입력 문자열이 일치할 때까지 아래의 과정을 반복한다.
+    <ol>
+      <li>시작 기호에 대해서 생성 규칙을 적용한다.
+        <ul>
+          <li>생성 규칙이 여러 개인 경우, 첫번째 규칙부터 적용한다.</li>
+          <li>생성 규칙을 적용할 때마다 부분 Parse tree가 구성된다.</li>
+        </ul>
+      </li>
+      <li>생성된 문장 형태의 문자열과 입력 기호를 차례로 비교한다.
+        <ul>
+          <li>비교 결과 같지 않으면, Backtracking을 한다.</li>
+        </ul>
+      </li>
+      <li>비교 결과 같으면, 계속 비교한다.</li>
+    </ol>
+  </li>
+</ul>
+
+<p>결과가 서로 일치하지 않고, 파싱 중 적용가능한 생성 규칙이 없으면 오류를 알린다.</p>
+
+<h3 id="예제--x-2y로-파싱">예제 : x-2*y로 파싱</h3>
+<hr>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">규칙</th>
+      <th style="text-align: center">기호</th>
+      <th style="text-align: center"> </th>
+      <th>내용</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">Goal</td>
+      <td style="text-align: center">→</td>
+      <td>Expr</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">Expr</td>
+      <td style="text-align: center">→</td>
+      <td>Expr + Term</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center" colspan="2">
+</td>
+      
+    </tr>
+    <tr>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center" colspan="2">
+</td>
+      
+    </tr>
+    <tr>
+      <td style="text-align: center">4</td>
+      <td style="text-align: center">Term</td>
+      <td style="text-align: center">→</td>
+      <td>Term * Factor</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">5</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center" colspan="2">
+</td>
+      
+    </tr>
+    <tr>
+      <td style="text-align: center">6</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center" colspan="2">
+</td>
+      
+    </tr>
+    <tr>
+      <td style="text-align: center">7</td>
+      <td style="text-align: center">Factor</td>
+      <td style="text-align: center">→</td>
+      <td>(Expr)</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">8</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center" colspan="2">
+</td>
+      
+    </tr>
+    <tr>
+      <td style="text-align: center">9</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center" colspan="2">
+</td>
+      
+    </tr>
+  </tbody>
+</table>
+
+<ol>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>E → E - T</td>
+          <td>T(2*y)</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>T → T * F</td>
+          <td>F(y)</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>
+    <table>
+      <tbody>
+        <tr>
+          <td>F → ( E )</td>
+          <td>id(y)</td>
+        </tr>
+      </tbody>
+    </table>
+  </li>
+  <li>파싱 성공</li>
+</ol>
+
+<h3 id="left-recursion">Left recursion</h3>
+<hr>
+<blockquote>
+  <p>문법 규칙에 따라 유도되는 과정에서, 자기 자신을 가리키는 규칙이 왼쪽에 있는 것을 말한다.</p>
+</blockquote>
+
+<p>Top-down parsing에서 무한 루프를 일으킬 수 있기 때문에 없애야 한다.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">Expr</td>
+      <td style="text-align: center">→</td>
+      <td>Expr + Term</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center" colspan="2">
+</td>
+      
+    </tr>
+    <tr>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center" colspan="2">
+</td>
+      
+    </tr>
+  </tbody>
+</table>
+
+<p>이 문법은 Left recursion문제가 발생한다.<br>
+Left recursion을 없애기 위해 비단말 기호를 추가한다.</p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+      <th> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">Expr</td>
+      <td style="text-align: center">→</td>
+      <td>Term Expr’</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">Expr</td>
+      <td style="text-align: center">→</td>
+      <td>
+<ul>
+  <li>Term Expr’</li>
+</ul>
+</td>
+    </tr>
+    <tr>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center" colspan="2">
+</td>
+      
+    </tr>
+    <tr>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center" colspan="2">
+</td>
+      
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="필요한-look-ahead의-횟수">필요한 look-ahead의 횟수</h3>
+<hr>
+
+<ul>
+  <li>LL(1)
+    <ul>
+      <li>왼쪽에서 오른쪽으로 검사한다.</li>
+      <li>Leftmost derivation</li>
+      <li>1-token look-ahead
+        <ul>
+          <li>미리보는 것(토큰)의 개수가 1개</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>LR(1)
+    <ul>
+      <li>오른쪽에서 왼쪽으로 검사한다.</li>
+      <li>Rightmost derivation</li>
+      <li>1-token look-ahead
+        <ul>
+          <li>미리보는 것(토큰)의 개수가 1개</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="predictive-parsing">Predictive parsing</h3>
+<hr>
+<blockquote>
+  <table>
+    <tbody>
+      <tr>
+        <td>A → α</td>
+        <td>β 를 만들때, 우리는 α 또는 β 로 확장하는 정확한 production을 선택하는 확실한 방법을 원한다.</td>
+      </tr>
+    </tbody>
+  </table>
+</blockquote>
+
+<p>α ∈ G인 일부 RHS에 대해서, α 로 부터 유도된 일부 문자열의 첫번째 토큰 집합을 <strong>FIRST(α)</strong> 로 정의한다.</p>
+
+<p>일부 γ 에 대해 α → * x γ 일때, x ∈ FIRST(α) 이다.</p>
+
+<p>A → α 와 A → β 이 두 production이 문법에서 같이 존재할때, FIRST(α) ∩ FIRST(β) = ∅ 이어야 한다.</p>
+
+<p>이는 파서가 하나의 기호를 미리보면서 올바른 선택을 하도록 한다.</p>
+
+<p>A → α 와 A → β 이고, ε ∈ FIRST(α) 일때, FIRST(β)는 FOLLOW(A)와 분리되어야 한다.</p>
+
+<p><strong>FOLLOW(A)</strong><br>
+한 문장 형태에서 A(A ∈ NT)를 바로 따를 수 있는 단말 기호 집합이다.<br>
+시작 기호 S에 대해서 FOLLOW(S) = {EOF} 이다.</p>
+
+<p><strong>FOLLOW 집합을 만들기 위해서 FIRST 집합을 사용한다.</strong></p>
+
+<p><strong>FIRST+(A → α)</strong> 를 정의한다.<br>
+ε ∈ FIRST(α)이라면, FIRST(α) ∪ FOLLOW(A) 이다.<br>
+그렇지 않으면, FIRST(α)이다.</p>
+
+<p>A → α 와 A → β 를 처리한다면 그 때 문법은 LL(1)이다.<br>
+FIRST+(A → α)  ∩  FIRST+(A → β) = ∅</p>
+
+<h3 id="first-집합-예제">FIRST 집합 예제</h3>
+<hr>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">규칙</th>
+      <th style="text-align: center">기호</th>
+      <th style="text-align: center"> </th>
+      <th>내용</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">0</td>
+      <td style="text-align: center">Goal</td>
+      <td style="text-align: center">→</td>
+      <td>Expr</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">Expr</td>
+      <td style="text-align: center">→</td>
+      <td>Term Expr’</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">Expr’</td>
+      <td style="text-align: center">→</td>
+      <td>
+<ul>
+  <li>Term Expr’</li>
+</ul>
+</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center" colspan="2">
+</td>
+      
+    </tr>
+    <tr>
+      <td style="text-align: center">4</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center">→</td>
+      <td>ε</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">5</td>
+      <td style="text-align: center">Term</td>
+      <td style="text-align: center">→</td>
+      <td>Factor Term’</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">6</td>
+      <td style="text-align: center">Term’</td>
+      <td style="text-align: center">→</td>
+      <td>
+<ul>
+  <li>Factor Term’</li>
+</ul>
+</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">7</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center" colspan="2">
+</td>
+      
+    </tr>
+    <tr>
+      <td style="text-align: center">8</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center" colspan="2">
+</td>
+      
+    </tr>
+    <tr>
+      <td style="text-align: center">9</td>
+      <td style="text-align: center">Factor</td>
+      <td style="text-align: center">→</td>
+      <td>( Expr )</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">10</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center" colspan="2">
+</td>
+      
+    </tr>
+    <tr>
+      <td style="text-align: center">11</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center" colspan="2">
+</td>
+      
+    </tr>
+  </tbody>
+</table>
+
+<table>
+  <thead>
+    <tr>
+      <th>기호 α</th>
+      <th>FIRST(α)</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>number, id, +, -, *, /, ε</td>
+      <td>number, id, +, -, *, /, ε</td>
+    </tr>
+    <tr>
+      <td>Expr</td>
+      <td>(, number, id</td>
+    </tr>
+    <tr>
+      <td>Expr’</td>
+      <td>+, -, ε</td>
+    </tr>
+    <tr>
+      <td>Term</td>
+      <td>(, number, id</td>
+    </tr>
+    <tr>
+      <td>Term’</td>
+      <td>*, /, ε</td>
+    </tr>
+    <tr>
+      <td>Factor</td>
+      <td>(, number, id</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="언어-문법이-ll1이-아니라면">언어 문법이 LL(1)이 아니라면?</h3>
+<hr>
+<blockquote>
+  <p>Left factoring을 하면, 일부 문법을 LL(1) 문법으로 만들 수 있다.</p>
+</blockquote>
+
+<ul>
+  <li>알고리즘
+    <ol>
+      <li>비단말 노드 A에 대해서 반복
+        <ul>
+          <li>공통 Prefix가 있는 대체 RHS’를 가지는 비단말 기호가 없을 때까지 반복합니다.</li>
+        </ul>
+      </li>
+      <li>A에 대한 2개 이상의 대안에 공통되는 가장 긴 Prefix a를 찾는다.</li>
+      <li>만약 α != ε 이라면
+        <ol>
+          <li>모든 유도 결과를 바꾼다.</li>
+          <li>
+            <table>
+              <tbody>
+                <tr>
+                  <td>A → αβ<sub>1</sub>
+</td>
+                  <td>β<sub>2</sub>
+</td>
+                  <td>β<sub>3</sub>
+</td>
+                  <td>…</td>
+                  <td>αβ<sub>n</sub>
+</td>
+                  <td>γ 를 아래와 같이 바꾼다.</td>
+                </tr>
+              </tbody>
+            </table>
+            <ol>
+              <li>
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>A → αA’</td>
+                      <td>γ</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </li>
+              <li>
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>A’ → β<sub>1</sub>
+</td>
+                      <td>β<sub>2</sub>
+</td>
+                      <td>β<sub>3</sub>
+</td>
+                      <td>…</td>
+                      <td>β<sub>n</sub>
+</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </li>
+            </ol>
+          </li>
+        </ol>
+      </li>
+    </ol>
+  </li>
+</ul>
+
+<h3 id="left-factoring-예제">Left factoring 예제</h3>
+<hr>
+
+<p><strong>아래의 규칙에 대해 Left factoring 수행</strong>
+<img src="https://user-images.githubusercontent.com/48265129/233979679-d5dbca20-69be-4e93-8ae5-31cca9c9a836.png" alt=""></p>
+
+<p><strong>Left factoring 결과</strong>
+<img src="https://user-images.githubusercontent.com/48265129/233979733-a91cdffb-ba43-4e44-9798-722b084d6b90.png" alt=""></p>
+
+<h2 id="classic-expression-grammer">Classic expression grammer</h2>
+<hr>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/233982669-5534181a-b6aa-41cc-ac79-6ffe15ccbd18.png" alt=""></p>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/233982703-47b1f032-a14f-4571-992b-e40cecb910a0.png" alt=""></p>
+
+<p><img src="https://user-images.githubusercontent.com/48265129/233982736-fb99617b-fb02-4ef7-aa09-215a9116422f.png" alt=""></p>
+
+<h2 id="bottom-up-parser">Bottom-up parser</h2>
+<hr>
+<ul>
+  <li>트리의 맨 끝(단말 노드)에서 시작하여 루트 노드로 만들어 간다.</li>
+  <li>입력된 문장 W에서 시작하여 Reduce에 의해 시작 기호 S를 찾아간다.
+    <ul>
+      <li>우단 유도의 역순</li>
+    </ul>
+  </li>
+  <li>상태와 문장 형태를 저장하기 위해서 <strong>스택</strong>을 사용한다.</li>
+  <li>LR parser
+    <ul>
+      <li>일반적인 방법</li>
+      <li>왼쪽에서 파싱을 해서 우측유도(Rightmost Derivation) 방식으로 동작한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>Reduce</strong><br>
+어떤 문장 형태에서 특정한 생성 규칙의 RHS(Right hand side)를 찾아 LHS(Left hand side)로 바꾸는 것이다.</p>
+
+<h3 id="abbcde-예제">abbcde 예제</h3>
+<hr>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">규칙</th>
+      <th style="text-align: center">기호</th>
+      <th style="text-align: center"> </th>
+      <th>내용</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">S</td>
+      <td style="text-align: center">→</td>
+      <td>aABe</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">A</td>
+      <td style="text-align: center" colspan="2">
+</td>
+      
+    </tr>
+    <tr>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center"> </td>
+      <td style="text-align: center" colspan="2">
+</td>
+      
+    </tr>
+    <tr>
+      <td style="text-align: center">4</td>
+      <td style="text-align: center">B</td>
+      <td style="text-align: center">→</td>
+      <td>d</td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>stack</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">Production</th>
+      <th style="text-align: center">문장 형태</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">3</td>
+      <td style="text-align: center">abbcde</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">2</td>
+      <td style="text-align: center">aAbcde</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">4</td>
+      <td style="text-align: center">aAde</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">1</td>
+      <td style="text-align: center">aABe</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">-</td>
+      <td style="text-align: center">S</td>
+    </tr>
+  </tbody>
+</table>
+
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/compiler/2023/04/22/Compiler-Scanner.html" title="Compiler Scanner">Compiler Scanner</a><a class="next" href="/jekyll-theme-yat/compiler/2023/04/24/Compiler-Context-sensitive-analysis.html" title="Compiler Context-sensitive analysis">Compiler Context-sensitive analysis</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li>
+<span><a class="post-link" href="/jekyll-theme-yat/garbagecollector/2023/09/17/Garbage-collector%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C.html" title="Compiler Context-sensitive analysis">Garbage collector에 대해서 알아보자</a></span><span>
+            <time class="dt-published datetime" datetime="2023-09-17T00:00:00+09:00" itemprop="datePublished">2023-09-17, Sun
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/sql/2023/04/18/SQL-%ED%95%99%EC%8A%B5-%EC%8B%9C%EC%9E%91.html" title="Compiler Context-sensitive analysis">Oracle SQL 학습 시작</a></span><span>
+            <time class="dt-published datetime" datetime="2023-04-18T00:00:00+09:00" itemprop="datePublished">2023-04-18, Tue
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/android/2024/03/07/%EC%8A%A4%ED%81%AC%EB%A1%A4-%EA%B0%80%EB%8A%A5%ED%95%9C-%EC%BB%A4%EC%8A%A4%ED%85%80-TopAppBar%EB%A7%8C%EB%93%A4%EA%B8%B0.html" title="Compiler Context-sensitive analysis">스크롤 가능한 커스텀 TopAppBar만들기</a></span><span>
+            <time class="dt-published datetime" datetime="2024-03-07T00:00:00+09:00" itemprop="datePublished">2024-03-07, Thu
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/android/2023/09/10/Android-Compose%EC%99%80-View%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EB%B9%84%EA%B5%90.html" title="Compiler Context-sensitive analysis">Android Compose와 View컴포넌트 비교</a></span><span>
+            <time class="dt-published datetime" datetime="2023-09-10T00:00:00+09:00" itemprop="datePublished">2023-09-10, Sun
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/data/communication/2023/04/16/%EB%8D%B0%EC%9D%B4%ED%84%B0%ED%86%B5%EC%8B%A01.html" title="Compiler Context-sensitive analysis">데이터통신</a></span><span>
+            <time class="dt-published datetime" datetime="2023-04-16T00:00:00+09:00" itemprop="datePublished">2023-04-16, Sun
+            </time></span>
+        </li>
+</ul>
+    </div>
+<div class="post-comments">
+<div id="utterances-placeholder"></div>
+<script>
+
+const utterancesThemeFromDataTheme = () => {
+    const dataTheme = document.documentElement.getAttribute('data-theme');
+    return `github-${dataTheme}`;
+  };
+
+  const setUtterancesTheme = () => {
+    const iframe = document.querySelector('.utterances-frame');
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: utterancesThemeFromDataTheme()
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+    }
+  }
+
+  // dynamic change
+  const observer = new MutationObserver((mutationsList, observer) => {
+    for (let mutation of mutationsList) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        setUtterancesTheme();
+      }
+    }
+  });
+  observer.observe(document.documentElement, { attributes: true, childList: false, subtree: false });
+
+  let utterancesScript = document.createElement('script');
+  utterancesScript.async = true;
+  utterancesScript.src = 'https://utteranc.es/client.js';
+  utterancesScript.crossOrigin = 'anonymous';
+  utterancesScript.setAttribute('issue-term', 'pathname');
+  utterancesScript.setAttribute('label', 'comments');
+  utterancesScript.setAttribute('repo', 'pknujsp/Blogcomments');
+  utterancesScript.setAttribute('theme', utterancesThemeFromDataTheme());
+
+  const placeholder = document.getElementById('utterances-placeholder');
+  placeholder.parentNode.replaceChild(utterancesScript, placeholder);
+</script>
+</div></section>
+</div>
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">Contents</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">· ' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>2024 @ Junsung Park</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

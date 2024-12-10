@@ -1,0 +1,1540 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Data Link Control | Jsp Notes</title>
+<meta name="generator" content="Jekyll v4.3.4">
+<meta property="og:title" content="Data Link Control">
+<meta name="author" content="Junsung Park">
+<meta property="og:locale" content="ko">
+<meta name="description" content="DLC Services">
+<meta property="og:description" content="DLC Services">
+<link rel="canonical" href="https://pknujsp.github.io//jekyll-theme-yat/data/communication/2023/06/13/Data-Link-Control.html">
+<meta property="og:url" content="https://pknujsp.github.io//jekyll-theme-yat/data/communication/2023/06/13/Data-Link-Control.html">
+<meta property="og:site_name" content="Jsp Notes">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-06-13T00:00:00+09:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Data Link Control">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junsung Park"},"dateModified":"2023-06-13T00:00:00+09:00","datePublished":"2023-06-13T00:00:00+09:00","description":"DLC Services","headline":"Data Link Control","mainEntityOfPage":{"@type":"WebPage","@id":"https://pknujsp.github.io//jekyll-theme-yat/data/communication/2023/06/13/Data-Link-Control.html"},"url":"https://pknujsp.github.io//jekyll-theme-yat/data/communication/2023/06/13/Data-Link-Control.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="icon" href="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script>
+
+  <!-- tipuesearch -->
+  <link rel="stylesheet" href="/assets/tipuesearch/css/tipuesearch.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_content.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_set.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch.min.js"></script><link type="application/atom+xml" rel="alternate" href="https://pknujsp.github.io//jekyll-theme-yat/feed.xml" title="Jsp Notes">
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LZC1TDTS26"></script>
+<script>
+  function initGoogleAnalytics() {
+    var doNotTrack = (window.doNotTrack === "1" || navigator.doNotTrack === "1" ||
+      navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1");
+    var enableDNT = "true" == "true";
+
+    if (!enableDNT || !doNotTrack) {
+      /*
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'G-LZC1TDTS26', 'auto');
+      ga('send', 'pageview');
+      */
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { window.dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-LZC1TDTS26');
+    }
+  }
+  window.addEventListener("load", initGoogleAnalytics);
+
+</script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/intellij-light.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/kotlin.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #7800ff;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: lowercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <img class="site-white_favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+</a></span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/about.html">About</a><a class="page-link" href="/jekyll-theme-yat/categories.html">Categories</a><a class="page-link" href="/jekyll-theme-yat/">Home</a><a class="page-link" href="/jekyll-theme-yat/posts.html">Posts</a><a class="page-link" href="/jekyll-theme-yat/tags.html">Tags</a><input id="tipue_search_input" type="search" placeholder="Search" aria-label="Search" title="Please enter at least 1 character" required>
+
+          <script>
+            document.getElementById("tipue_search_input").addEventListener("keydown", function (event) {
+              if (event.keyCode === 13) {
+                event.preventDefault();
+                window.location.href = "../search?q=" + this.value;
+              }
+            });
+          </script>
+<!--
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="en">
+        
+        <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+        to English
+        
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="ko">
+        
+        <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+        to Korean
+        
+      </a>
+    </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'ko',
+      autoDisplay: false,
+      layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+    }, 'google_translate_element');
+
+    // Links to cross-origin destinations are unsafe
+    var gll = document.getElementsByClassName('goog-logo-link')[0];
+    if (gll) {
+      gll.setAttribute('rel', 'noopener');
+    }
+
+    function restoreLang() {
+      var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+      if (!iframe) return;
+
+      var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+      var restore_el = innerDoc.getElementsByTagName("button");
+
+      for (var i = 0; i < restore_el.length; i++) {
+        if (restore_el[i].id.indexOf("restore") >= 0) {
+          restore_el[i].click();
+          var close_el = innerDoc.getElementsByClassName("goog-close-link");
+          close_el[0].click();
+          return;
+        }
+      }
+    }
+
+    function triggerHtmlEvent(element, eventName) {
+      var event;
+      if (document.createEvent) {
+        event = document.createEvent('HTMLEvents');
+        event.initEvent(eventName, true, true);
+        element.dispatchEvent(event);
+      } else {
+        event = document.createEventObject();
+        event.eventType = eventName;
+        element.fireEvent('on' + event.eventType, event);
+      }
+    }
+
+    var googleCombo = document.querySelector("select.goog-te-combo");
+    var langSelect = document.querySelector('.ct-language');
+    langSelect.addEventListener('click', function (event) {
+      if (!event.target) {
+        return;
+      }
+
+      var selected = document.querySelector('.ct-language .ct-language-selected');
+      if (selected) {
+        selected.classList.remove('ct-language-selected');
+      }
+
+      var target = event.target;
+      while (target && target !== langSelect) {
+        if (target.matches('.lang-select')) {
+          break;
+        }
+        target = target.parentElement;
+      }
+
+      if (target && target.matches('.lang-select')) {
+        var lang = target.getAttribute('data-lang');
+        if (googleCombo.value == lang) {
+          restoreLang();
+        } else if (lang == 'ko') {
+          var googleTranslateElement = document.getElementById('google_translate_element');
+          if (googleTranslateElement) {
+            googleTranslateElement.parentNode.removeChild(googleTranslateElement);
+            $('#google_translate_element').empty();
+          }
+        } else {
+          target.parentElement.classList.add('ct-language-selected');
+          googleCombo.value = lang;
+          triggerHtmlEvent(googleCombo, 'change');
+        }
+      }
+
+      event.preventDefault();
+    });
+  }
+</script>
+
+<script type="text/javascript"
+  src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script></span>-->
+          </div>
+
+          
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('manual' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = !(hours >= 2 && hours <=5);
+
+      if (nightShift) {
+        if (hours > 5) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(5);
+      } else {
+        toggleAt.setHours(2);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<div id="click-to-bottom" class="click-to-bottom">
+  <i class="fa fa-arrow-down"></i>
+</div>
+<script>
+  (function () {
+    const clickToBottom = document.getElementById('click-to-bottom');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToBottom.classList.add('show')
+      }else {
+        clickToBottom.classList.remove('show')
+      }
+    });
+    clickToBottom.addEventListener('click', () => {
+      window.smoothScrollTo(document.body.scrollHeight);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">11. Data Link Control</h1>
+  <h2 class="post-subtitle">Data communication - 11. Data Link Control</h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2023-06-13T00:00:00+09:00" itemprop="datePublished">2023-06-13, Tue
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 5 minutes</span>
+  </p>
+<div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Data%20communication">#Data communication</a></div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h1 id="dlc-services">DLC Services</h1>
+
+<ol>
+  <li>Framing</li>
+  <li>Flow Control</li>
+  <li>Error Control</li>
+</ol>
+
+<h2 id="framing">Framing</h2>
+<hr>
+
+<h3 id="character-oriented-framing">Character-Oriented Framing</h3>
+<hr>
+<p><img width="520" alt="image" src="https://github.com/pknujsp/android-smartdeeplink/assets/48265129/05274a1a-99a0-4f9a-9891-3647f79f49c3"></p>
+
+<p>데이터를 구별하기 위해 flag를 앞 뒤에 추가한다.</p>
+
+<p>데이터 안에 flag패턴이 포함되어 있으면, 혼동이 생기므로, 데이터 내에 추가적인 패턴을 삽입하여 구분하게 된다. 이를 byte stuffing이라고 한다.</p>
+
+<p>Header에 검증을 위한 데이터를 추가한다.</p>
+
+<p>아스키 코드 전달이 목적</p>
+
+<p>최근에는 잘 사용되지 않는다.</p>
+
+<h3 id="bit-oriented-framing">Bit-Oriented Framing</h3>
+<hr>
+<p><img width="508" alt="image" src="https://github.com/pknujsp/android-smartdeeplink/assets/48265129/2709a90b-2438-40fb-ad67-fe3d7712d632"></p>
+
+<p>비트 단위로 데이터를 구별하기 위해 flag를 사용한다.</p>
+
+<p>Character 방식과 마찬가지로 flag와 같은 패턴이 데이터에 나타날 수 있으므로, Bit stuffing/unstuffing 기법을 사용한다.</p>
+
+<h2 id="flow-control">Flow Control</h2>
+<hr>
+
+<h3 id="buffers">Buffers</h3>
+<hr>
+<p><img width="509" alt="image" src="https://github.com/pknujsp/android-smartdeeplink/assets/48265129/2bc79391-f7ae-4bcf-a24a-6e7e803a86ef"></p>
+
+<p>Flow와 Error Control을 같이 진행하면 더 효율적이다.</p>
+
+<p>프레임을 전송하기 위해 메모리 버퍼에 저장한다. 수신 측에서도 버퍼에 저장한다.</p>
+
+<p>송수신 간의 통신 속도 차이 때문에 흐름 제어가 필요하다.</p>
+
+<p>송신 측은 수신 측의 상태를 고려하여 데이터를 전송한다.</p>
+
+<p>헤더에 ACK를 추가하여 흐름 제어를 한다.</p>
+
+<p>헤더의 내용이 중요하다.</p>
+
+<h2 id="error-control">Error Control</h2>
+<hr>
+
+<p>Error Detection</p>
+
+<p>프레임이 손상된 경우, 그 프레임을 버린다.</p>
+
+<p>손상되지 않은 경우, ACK를 보낸다.</p>
+
+<h3 id="connectionless--connection-oriented-protocol">Connectionless &amp; Connection-Oriented protocol</h3>
+<hr>
+
+<ul>
+  <li>Connectionless
+    <ul>
+      <li>데이터를 전송하기 전에, 연결을 설정하지 않는다.</li>
+      <li>신속한 데이터 처리에 목적</li>
+      <li>데이터 순서 유지 보장이 없다.</li>
+      <li>UDP</li>
+    </ul>
+  </li>
+  <li>Connection-Oriented(연결 지향적)
+    <ul>
+      <li>장거리 통신시 사용</li>
+      <li>데이터 전송의 신뢰성을 보장.</li>
+      <li>TCP</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="data-link-layer-protocols">Data Link Layer Protocols</h3>
+<hr>
+
+<ul>
+  <li>표현 방법
+    <ol>
+      <li>Finite state machine</li>
+      <li>Flow Diagram</li>
+    </ol>
+  </li>
+  <li>종류(For Noisy Channel)
+    <ol>
+      <li>Stop-and-Wait</li>
+      <li>Slide Window</li>
+    </ol>
+    <ol>
+      <li>Go-Back-N</li>
+      <li>Selective Repeat</li>
+    </ol>
+  </li>
+</ul>
+
+<h3 id="stop-and-wait">Stop-and-Wait</h3>
+<hr>
+<p><img width="536" alt="image" src="https://github.com/pknujsp/android-smartdeeplink/assets/48265129/157db311-483d-4e49-9743-56c2806cfe50"></p>
+
+<ul>
+  <li>송신 측
+    <ul>
+      <li>네트워크 계층에서 패킷을 수신</li>
+      <li>프레임 생성</li>
+      <li>복사하고 저장</li>
+      <li>프레임 전송</li>
+      <li>타이머 시작하고 Blocking 모드로 전환</li>
+      <li>ACK를 기다린다.
+        <ul>
+          <li>정상적인 ACK를 받으면 타이머를 멈추고, 저장한 프레임을 제거한 뒤 다음 프레임을 보낸다.</li>
+          <li>오류있는 ACK를 받으면 버린다.</li>
+          <li>타임 아웃될 때 까지 ACK를 받지 못하면 프레임을 재 전송한다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>수신 측
+    <ul>
+      <li>프레임을 받으면 ACK를 보낸다.</li>
+      <li>이미 받은 프레임이 중복되어 오면 그 프레임은 버린다.
+        <ul>
+          <li>이 경우에도 ACK는 보낸다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>단점
+    <ul>
+      <li>처리 속도가 느리다</li>
+      <li>한 프레임씩 전송하기 때문에 효율이 떨어진다.</li>
+      <li>전송의 성공 여부를 타이머에 의존한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>개선 방법 : Pipelining</p>
+
+<h3 id="pipelining">Pipelining</h3>
+<hr>
+
+<p>보낼 프레임이 있으면 계속 보내는 방법.</p>
+
+<p>송신 중에 오류가 발생하면 대처가 어렵다.</p>
+
+<p>개선 방법 : Slide Window</p>
+
+<h3 id="slide-window">Slide Window</h3>
+<hr>
+
+<h3 id="go-back-n">Go-Back-N</h3>
+<hr>
+
+<ul>
+  <li>Window Size &lt;= 2^m - 1</li>
+  <li>Sequence number bits = 2</li>
+</ul>
+
+<p>pipelining을 하고 오류 처리를 개선한다.</p>
+
+<p><img width="571" alt="image" src="https://github.com/pknujsp/android-smartdeeplink/assets/48265129/577e6fd5-ca05-4e41-bc78-eb10ba27812c"></p>
+
+<ul>
+  <li>송신 측
+    <ul>
+      <li>Window Size만큼 데이터를 전송한다.</li>
+      <li>ACK를 받으면 Window를 이동시킨다.</li>
+      <li>ACK를 받지 못하면 Window의 시작부터 다시 전송한다.</li>
+      <li>ACK를 받지 못하면 타이머가 만료되면 Window의 시작부터 다시 전송한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="selective-repeat">Selective Repeat</h3>
+<hr>
+
+<ul>
+  <li>Window Size &lt;= 2^m - 1</li>
+  <li>NAK를 사용한다.
+    <ul>
+      <li>NAK 1 : 1번 프레임을 재전송하라</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img width="708" alt="image" src="https://github.com/pknujsp/android-smartdeeplink/assets/48265129/ac471b10-8707-4e9a-86f7-30645c3a678c"></p>
+
+<h3 id="hdlchigh-level-data-link-control">HDLC(High-Level Data Link Control)</h3>
+<hr>
+
+<ul>
+  <li>Support Connection
+    <ul>
+      <li>데이터를 전송하기 전에 전처리 과정을 거친다.</li>
+    </ul>
+  </li>
+  <li>NRM
+    <ul>
+      <li>일반적인 전송 모드</li>
+      <li>데이터 순서가 유지된다.</li>
+      <li>하나의 주요 스테이션과 여러 개의 보조 스테이션으로 구성된다.</li>
+    </ul>
+  </li>
+  <li>ABM
+    <ul>
+      <li>비동기 전송 모드</li>
+      <li>데이터를 동시에 전송 가능</li>
+      <li>데이터 순서가 보장되지 않음.</li>
+      <li>P2P</li>
+    </ul>
+  </li>
+  <li>HDLC파생 프로토콜
+    <ul>
+      <li>SDLC</li>
+      <li>PPP</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="hdlc-frame">HDLC Frame</h3>
+<hr>
+
+<p><img width="618" alt="image" src="https://github.com/pknujsp/android-smartdeeplink/assets/48265129/b08f6a7e-91f8-4068-b4a3-87b95194cbca"></p>
+
+<ul>
+  <li>flag
+    <ul>
+      <li>01111110</li>
+    </ul>
+  </li>
+  <li>address
+    <ul>
+      <li>byte or multi-byte</li>
+    </ul>
+  </li>
+  <li>control</li>
+  <li>information
+    <ul>
+      <li>서로 간에 프로토콜의 정하기 위해 사용</li>
+      <li>User information</li>
+      <li>Management information</li>
+    </ul>
+  </li>
+  <li>FCS(Frame Check Sequence)
+    <ul>
+      <li>CRC</li>
+    </ul>
+  </li>
+</ul>
+
+<p>bit stuffing 방식을 사용한다.</p>
+
+<ul>
+  <li>Frame 종류
+    <ul>
+      <li>I : 정보 프레임
+        <ul>
+          <li>실제 데이터를 전송</li>
+          <li>데이터 순서를 유지하기 위해 관리</li>
+        </ul>
+      </li>
+      <li>S : 감독 프레임
+        <ul>
+          <li>흐름 제어, 오류 복구</li>
+          <li>I-Frame에 대한 응답으로 사용</li>
+          <li>정보 전송은 하지 않음</li>
+        </ul>
+      </li>
+      <li>U : 비정보 프레임
+        <ul>
+          <li>다양한 제어, 관리 기능</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>각 프레임 별 Control field
+    <ul>
+      <li>I</li>
+      <li>S
+        <ul>
+          <li>ready, reject, etc…</li>
+        </ul>
+      </li>
+      <li>U
+        <ul>
+          <li>세션 관리, 제어 정보</li>
+          <li>Unnumbered frames</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="ppppoint-to-point-protocol">PPP(Point-to-Point Protocol)</h3>
+<hr>
+
+<p>다중 네트워크 계층 프로토콜이다.</p>
+
+<p>Internet, OSI, Xerox, AppleTalk, DECnet, IPX/SPX 등을 지원한다.</p>
+
+<ul>
+  <li>Service
+    <ul>
+      <li>Format of the frame</li>
+      <li>링크를 수립하고 데이터를 교환한다</li>
+      <li>몇몇 네트워크 계층으로 부터의 데이터를 허용</li>
+      <li>인증</li>
+      <li>Multilink PPP</li>
+    </ul>
+  </li>
+  <li>제공 되지 않음
+    <ul>
+      <li>Flow control</li>
+      <li>Error control에 대한 아주 간단한 방법만 제공</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="ppp-frame-format">PPP frame format</h3>
+<hr>
+
+<p><img width="648" alt="image" src="https://github.com/pknujsp/android-smartdeeplink/assets/48265129/4b679c6d-86df-42ac-9e1a-81b656838c43"></p>
+
+<ul>
+  <li>flag</li>
+  <li>protocol</li>
+  <li>payload
+    <ul>
+      <li>데이터가 포함된다</li>
+    </ul>
+  </li>
+  <li>fcs</li>
+</ul>
+
+<p>byte stuffing을 사용한다.</p>
+
+<p>escape byte는 01111101 이다.</p>
+
+<p>address, control field는 실제로 사용되지 않는다.</p>
+
+<p>address의 값이 1이면, 브로드 캐스트 전송을 한다.</p>
+
+<h3 id="multiplexing-in-ppp">Multiplexing in PPP</h3>
+<hr>
+
+<p><img width="602" alt="image" src="https://github.com/pknujsp/android-smartdeeplink/assets/48265129/0e6d3462-cd99-40d9-9c90-60095cd8eb9f"></p>
+
+<p>PPP는 여러 개의 네트워크 계층 프로토콜을 지원한다.</p>
+
+<p>LCP 패킷은 프레임의 payload에 포함된다. 프로토콜 값은 0xC021이다.</p>
+
+<p>IPCP역시 마찬가지이다. IPCP는 NCP에 종속되므로 프로토콜 값이 0x8021이다.</p>
+
+<h3 id="인증-프로토콜">인증 프로토콜</h3>
+<hr>
+
+<ul>
+  <li>PAP(Password Authentication Protocol)
+    <ul>
+      <li>ID, Password를 전송한다.</li>
+      <li>보안에 취약하다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img width="486" alt="image" src="https://github.com/pknujsp/android-smartdeeplink/assets/48265129/9f1f005b-f180-4255-be10-be14e8d9f46f"></p>
+
+<ul>
+  <li>CHAP(Challenge Handshake Authentication Protocol)
+    <ul>
+      <li>Three way handshake</li>
+      <li>Challenge &amp; Response</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img width="540" alt="image" src="https://github.com/pknujsp/android-smartdeeplink/assets/48265129/58663ad1-fe48-484e-9247-e16b21f66f0a"></p>
+
+<h2 id="정리">정리</h2>
+<hr>
+
+<h3 id="datalink-layers-protocols">DataLink Layers Protocols</h3>
+<hr>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>Stop-And-Wait</th>
+      <th>Go-Back-N</th>
+      <th>Selective Repeat</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>통신 속도</td>
+      <td>느림</td>
+      <td>빠름</td>
+      <td>빠름</td>
+    </tr>
+    <tr>
+      <td>재전송 프레임 개수</td>
+      <td>1</td>
+      <td>N</td>
+      <td>1, 손상된 프레임만 재전송</td>
+    </tr>
+    <tr>
+      <td>동작 방식</td>
+      <td>프레임 하나씩 처리, ACK를 받아야 다음 프레임 전송</td>
+      <td>Window Size만큼 프레임을 보내고, 특정 프레임이 손상되어 ACK를 받지 못하면, 그 프레임부터 다시 재전송</td>
+      <td>Window Size만큼 프레임을 보내고, 손상된 프레임에 대해서만 재전송, ACK를 받지 못한 프레임만 재전송 한다</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3 id="hdlc-ppp-프레임-비교">HDLC, PPP 프레임 비교</h3>
+<hr>
+
+<table>
+  <thead>
+    <tr>
+      <th> </th>
+      <th>HDLC</th>
+      <th>PPP</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>프레임 종류</td>
+      <td>I, S, U</td>
+      <td> </td>
+    </tr>
+  </tbody>
+</table>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/data/communication/2023/06/13/Connecting-Devices-and-Virtual-LANs.html" title="17. Connecting Devices and Virtual LANs">17. Connecting Devices and...</a><a class="next" href="/jekyll-theme-yat/data/communication/2023/06/13/Media-Access-Control.html" title="12. Media Access Control">12. Media Access Control...</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li>
+<span><a class="post-link" href="/jekyll-theme-yat/kotlin/2023/06/18/%EC%88%9C%EC%97%B4,%EC%A1%B0%ED%95%A9%EC%9D%84-Kotlin%EC%9C%BC%EB%A1%9C-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0.html" title="12. Media Access Control">순열, 조합 by Kotlin</a></span><span>
+            <time class="dt-published datetime" datetime="2023-06-18T00:00:00+09:00" itemprop="datePublished">2023-06-18, Sun
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/android/2023/11/14/UI-Layer%EB%9E%80(Android-%EA%B3%B5%EC%8B%9D-%EB%AC%B8%EC%84%9C-%EC%A0%95%EB%8F%85)-copy.html" title="12. Media Access Control">About the UI layer</a></span><span>
+            <time class="dt-published datetime" datetime="2023-11-14T00:00:00+09:00" itemprop="datePublished">2023-11-14, Tue
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/compiler/2023/06/16/Code-shape-&amp;-Instruction-selection.html" title="12. Media Access Control">Compiler backend</a></span><span>
+            <time class="dt-published datetime" datetime="2023-06-16T00:00:00+09:00" itemprop="datePublished">2023-06-16, Fri
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/compiler/2023/04/22/Compiler-Scanner.html" title="12. Media Access Control">Compiler Scanner</a></span><span>
+            <time class="dt-published datetime" datetime="2023-04-22T00:00:00+09:00" itemprop="datePublished">2023-04-22, Sat
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/compose/2023/05/09/Android-Compose-%EC%B2%AB-%EB%8F%84%EC%9E%85-%ED%9B%84%EA%B8%B0.html" title="12. Media Access Control">Android Compose 첫 도입 후기</a></span><span>
+            <time class="dt-published datetime" datetime="2023-05-09T00:00:00+09:00" itemprop="datePublished">2023-05-09, Tue
+            </time></span>
+        </li>
+</ul>
+    </div>
+<div class="post-comments">
+<div id="utterances-placeholder"></div>
+<script>
+
+const utterancesThemeFromDataTheme = () => {
+    const dataTheme = document.documentElement.getAttribute('data-theme');
+    return `github-${dataTheme}`;
+  };
+
+  const setUtterancesTheme = () => {
+    const iframe = document.querySelector('.utterances-frame');
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: utterancesThemeFromDataTheme()
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+    }
+  }
+
+  // dynamic change
+  const observer = new MutationObserver((mutationsList, observer) => {
+    for (let mutation of mutationsList) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        setUtterancesTheme();
+      }
+    }
+  });
+  observer.observe(document.documentElement, { attributes: true, childList: false, subtree: false });
+
+  let utterancesScript = document.createElement('script');
+  utterancesScript.async = true;
+  utterancesScript.src = 'https://utteranc.es/client.js';
+  utterancesScript.crossOrigin = 'anonymous';
+  utterancesScript.setAttribute('issue-term', 'pathname');
+  utterancesScript.setAttribute('label', 'comments');
+  utterancesScript.setAttribute('repo', 'pknujsp/Blogcomments');
+  utterancesScript.setAttribute('theme', utterancesThemeFromDataTheme());
+
+  const placeholder = document.getElementById('utterances-placeholder');
+  placeholder.parentNode.replaceChild(utterancesScript, placeholder);
+</script>
+</div></section>
+</div>
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">Contents</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">· ' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>2024 @ Junsung Park</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

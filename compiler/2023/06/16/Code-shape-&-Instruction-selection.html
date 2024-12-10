@@ -1,0 +1,2311 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Compiler backend | Jsp Notes</title>
+<meta name="generator" content="Jekyll v4.3.4">
+<meta property="og:title" content="Compiler backend">
+<meta name="author" content="Junsung Park">
+<meta property="og:locale" content="ko">
+<meta name="description" content="컴파일러 프론트엔드와 백엔드의 명백한 차이">
+<meta property="og:description" content="컴파일러 프론트엔드와 백엔드의 명백한 차이">
+<link rel="canonical" href="https://pknujsp.github.io//jekyll-theme-yat/compiler/2023/06/16/Code-shape-&amp;-Instruction-selection.html">
+<meta property="og:url" content="https://pknujsp.github.io//jekyll-theme-yat/compiler/2023/06/16/Code-shape-&amp;-Instruction-selection.html">
+<meta property="og:site_name" content="Jsp Notes">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-06-16T00:00:00+09:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Compiler backend">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junsung Park"},"dateModified":"2023-06-16T00:00:00+09:00","datePublished":"2023-06-16T00:00:00+09:00","description":"컴파일러 프론트엔드와 백엔드의 명백한 차이","headline":"Compiler backend","mainEntityOfPage":{"@type":"WebPage","@id":"https://pknujsp.github.io//jekyll-theme-yat/compiler/2023/06/16/Code-shape-&-Instruction-selection.html"},"url":"https://pknujsp.github.io//jekyll-theme-yat/compiler/2023/06/16/Code-shape-&-Instruction-selection.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="icon" href="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script>
+
+  <!-- tipuesearch -->
+  <link rel="stylesheet" href="/assets/tipuesearch/css/tipuesearch.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_content.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_set.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch.min.js"></script><link type="application/atom+xml" rel="alternate" href="https://pknujsp.github.io//jekyll-theme-yat/feed.xml" title="Jsp Notes">
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LZC1TDTS26"></script>
+<script>
+  function initGoogleAnalytics() {
+    var doNotTrack = (window.doNotTrack === "1" || navigator.doNotTrack === "1" ||
+      navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1");
+    var enableDNT = "true" == "true";
+
+    if (!enableDNT || !doNotTrack) {
+      /*
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'G-LZC1TDTS26', 'auto');
+      ga('send', 'pageview');
+      */
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { window.dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-LZC1TDTS26');
+    }
+  }
+  window.addEventListener("load", initGoogleAnalytics);
+
+</script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/intellij-light.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/kotlin.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #7800ff;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: lowercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <img class="site-white_favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+</a></span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/about.html">About</a><a class="page-link" href="/jekyll-theme-yat/categories.html">Categories</a><a class="page-link" href="/jekyll-theme-yat/">Home</a><a class="page-link" href="/jekyll-theme-yat/posts.html">Posts</a><a class="page-link" href="/jekyll-theme-yat/tags.html">Tags</a><input id="tipue_search_input" type="search" placeholder="Search" aria-label="Search" title="Please enter at least 1 character" required>
+
+          <script>
+            document.getElementById("tipue_search_input").addEventListener("keydown", function (event) {
+              if (event.keyCode === 13) {
+                event.preventDefault();
+                window.location.href = "../search?q=" + this.value;
+              }
+            });
+          </script>
+<!--
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="en">
+        
+        <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+        to English
+        
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="ko">
+        
+        <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+        to Korean
+        
+      </a>
+    </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'ko',
+      autoDisplay: false,
+      layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+    }, 'google_translate_element');
+
+    // Links to cross-origin destinations are unsafe
+    var gll = document.getElementsByClassName('goog-logo-link')[0];
+    if (gll) {
+      gll.setAttribute('rel', 'noopener');
+    }
+
+    function restoreLang() {
+      var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+      if (!iframe) return;
+
+      var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+      var restore_el = innerDoc.getElementsByTagName("button");
+
+      for (var i = 0; i < restore_el.length; i++) {
+        if (restore_el[i].id.indexOf("restore") >= 0) {
+          restore_el[i].click();
+          var close_el = innerDoc.getElementsByClassName("goog-close-link");
+          close_el[0].click();
+          return;
+        }
+      }
+    }
+
+    function triggerHtmlEvent(element, eventName) {
+      var event;
+      if (document.createEvent) {
+        event = document.createEvent('HTMLEvents');
+        event.initEvent(eventName, true, true);
+        element.dispatchEvent(event);
+      } else {
+        event = document.createEventObject();
+        event.eventType = eventName;
+        element.fireEvent('on' + event.eventType, event);
+      }
+    }
+
+    var googleCombo = document.querySelector("select.goog-te-combo");
+    var langSelect = document.querySelector('.ct-language');
+    langSelect.addEventListener('click', function (event) {
+      if (!event.target) {
+        return;
+      }
+
+      var selected = document.querySelector('.ct-language .ct-language-selected');
+      if (selected) {
+        selected.classList.remove('ct-language-selected');
+      }
+
+      var target = event.target;
+      while (target && target !== langSelect) {
+        if (target.matches('.lang-select')) {
+          break;
+        }
+        target = target.parentElement;
+      }
+
+      if (target && target.matches('.lang-select')) {
+        var lang = target.getAttribute('data-lang');
+        if (googleCombo.value == lang) {
+          restoreLang();
+        } else if (lang == 'ko') {
+          var googleTranslateElement = document.getElementById('google_translate_element');
+          if (googleTranslateElement) {
+            googleTranslateElement.parentNode.removeChild(googleTranslateElement);
+            $('#google_translate_element').empty();
+          }
+        } else {
+          target.parentElement.classList.add('ct-language-selected');
+          googleCombo.value = lang;
+          triggerHtmlEvent(googleCombo, 'change');
+        }
+      }
+
+      event.preventDefault();
+    });
+  }
+</script>
+
+<script type="text/javascript"
+  src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script></span>-->
+          </div>
+
+          
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('manual' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = !(hours >= 2 && hours <=5);
+
+      if (nightShift) {
+        if (hours > 5) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(5);
+      } else {
+        toggleAt.setHours(2);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<div id="click-to-bottom" class="click-to-bottom">
+  <i class="fa fa-arrow-down"></i>
+</div>
+<script>
+  (function () {
+    const clickToBottom = document.getElementById('click-to-bottom');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToBottom.classList.add('show')
+      }else {
+        clickToBottom.classList.remove('show')
+      }
+    });
+    clickToBottom.addEventListener('click', () => {
+      window.smoothScrollTo(document.body.scrollHeight);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">Compiler backend</h1>
+  <h2 class="post-subtitle">code shape &amp; instruction selection</h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2023-06-16T00:00:00+09:00" itemprop="datePublished">2023-06-16, Fri
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 17 minutes</span>
+  </p>
+<div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Compiler">#Compiler</a></div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h2 id="컴파일러-프론트엔드와-백엔드의-명백한-차이">컴파일러 프론트엔드와 백엔드의 명백한 차이</h2>
+<hr>
+
+<ul>
+  <li>프론트엔드
+    <ul>
+      <li>프로그래밍 언어에 의존적</li>
+      <li>목표 기계에 비 의존적</li>
+    </ul>
+  </li>
+  <li>백엔드
+    <ul>
+      <li>언어에 다소 비 의존적</li>
+      <li>IR은 언어에 의존적</li>
+      <li>목표 기계에 의존적</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="백엔드의-구성">백엔드의 구성</h2>
+<hr>
+
+<ul>
+  <li>Instruction selection
+    <ul>
+      <li>IR을 어셈블리 코드로 변환</li>
+      <li>고정된 스토리지 매핑 및 코드 모양을 추정</li>
+      <li>주소 지정 모드를 사용하여 작업을 결합</li>
+    </ul>
+  </li>
+  <li>Instruction scheduling
+    <ul>
+      <li>연산을 정렬하여 지연 시간을 줄임</li>
+      <li>고정된 프로그램을 추정</li>
+      <li>레지스터에 대한 요구를 변경</li>
+    </ul>
+  </li>
+  <li>Register allocation
+    <ul>
+      <li>레지스터에 상주할 값을 결정</li>
+      <li>스토리지 매핑을 변경</li>
+      <li>데이터 및 메모리 작업 배치에 대한 우려</li>
+    </ul>
+  </li>
+</ul>
+
+<p>백엔드의 처리 로직은 NP-Complete 문제로, 최적의 로직이 아닐 수도 있다.</p>
+
+<h2 id="code-shape">Code shape</h2>
+<hr>
+<blockquote>
+  <p>성능에 영향을 미치는 코드의 모든 모호한 속성</p>
+</blockquote>
+
+<p>알고리즘 선택과 결과에 영향을 준다.</p>
+
+<p>같은 결과를 만드는 것에 대해서는 다양한 구현이 가능하고, 최적의 형태는 코드의 문맥에 의존한다.</p>
+
+<h3 id="example">Example</h3>
+<hr>
+<ul>
+  <li>case 문에 대한 처리를 하는 경우
+    <ul>
+      <li>if-then-else
+        <ul>
+          <li>성능은 case의 개수에 의존적</li>
+          <li>O(number of cases)</li>
+        </ul>
+      </li>
+      <li>jump table
+        <ul>
+          <li>상수 시간에 처리</li>
+        </ul>
+      </li>
+      <li>binary search
+        <ul>
+          <li>O(log n)</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p>case 에 따른 분기 처리는 다양한 방법이 있고, 컴파일러는 최적의 방법을 선택해야 한다.</p>
+
+<ul>
+  <li>Code shape에 신경을 써야하는 이유
+    <ul>
+      <li>최적화 및 코드 생성을 돕기 위해</li>
+      <li>컴파일러의 개별 패스가 빠르게 실행되어야 하므로</li>
+      <li>유용한 정보를 IR에 인코딩하기 위해
+        <ul>
+          <li>표현식 또는 제어 구조의 모양</li>
+          <li>메모리가 아닌 레지스터에 보관되는 값</li>
+        </ul>
+      </li>
+      <li>가능한 경우 이러한 정보를 도출하는 데 비용이 많이 들 수 있음</li>
+      <li>IR에 명시적으로 기록하는 것이 더 쉽고 저렴할 때가 많음</li>
+    </ul>
+  </li>
+  <li>Code shape를 IR에 기록하는 방법
+    <ul>
+      <li>Instruction selection 수행 이전에 High-level IR을 Low-level IR로 변환한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="low-level-representation">Low-level Representation</h3>
+<hr>
+<ul>
+  <li>Instrinsic operations
+    <ul>
+      <li>AST</li>
+    </ul>
+  </li>
+  <li>String
+    <ul>
+      <li>끝에 null을 추가하여 구분</li>
+      <li>길이를 명시하여 구분</li>
+    </ul>
+  </li>
+  <li>Structures
+    <ul>
+      <li>속성의 선언 순으로 구분</li>
+      <li>속성의 자료형 순서로 구분</li>
+    </ul>
+  </li>
+</ul>
+
+<p>A : [
+  (1,1),(1,2),(1,3),(1,4),
+  (2,1),(2,2),(2,3),(2,4)
+]</p>
+
+<ul>
+  <li>Arrays
+    <ul>
+      <li>Row major
+        <ul>
+          <li>대부분의 언어에서 채택</li>
+          <li>연속 행의 시퀀스로 배치</li>
+          <li>가장 오른쪽 아래 첨자가 가장 빠르게 변함</li>
+          <li>A : [
+(1,1),(1,2),(1,3),(1,4),(2,1),(2,2),(2,3),(2,4)
+]</li>
+        </ul>
+      </li>
+      <li>Column major
+        <ul>
+          <li>Fortran에서 채택</li>
+          <li>열 시퀀스로 배치</li>
+          <li>가장 왼쪽 위 첨자가 가장 빠르게 변함</li>
+          <li>Cache miss가 많이 발생</li>
+          <li>A : [
+(1,1),(2,1),(1,2),(2,2),(1,3),(2,3),(1,4),(2,4)
+]</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Loops
+    <ul>
+      <li>Loop는 IR에서 명시적으로 표현되지 않는다.</li>
+      <li>it-then-else 구조로 표현됨</li>
+    </ul>
+  </li>
+  <li>Switches
+    <ul>
+      <li>Linear search 등의 방법으로 재 구성됨</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="instruction-selection">Instruction selection</h2>
+<hr>
+
+<ul>
+  <li>기본 접근법
+    <ul>
+      <li>각 IR 튜플/하위 트리를 기계 명령어로 매크로 확장</li>
+      <li>때때로 매핑은 N:1임</li>
+      <li>maximal munch
+        <ul>
+          <li>RISC와 합리적으로 잘 작동</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>다른 접근법
+    <ul>
+      <li>IR이 확장될 때 대상 머신 상태를 모델링 한다.
+        <ul>
+          <li>해석 코드를 생성하는 것</li>
+        </ul>
+      </li>
+      <li>Tuple을 읽는다</li>
+      <li>해석기 상태를 갱신한다</li>
+      <li>대상 코드를 만든다</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="tree-patterns">Tree patterns</h3>
+<hr>
+<blockquote>
+  <p>각 기계의 명령어를 IR tree의 조각으로 표현하는 것</p>
+</blockquote>
+
+<p><code class="language-plaintext highlighter-rouge">Instruction selection</code>은 tree patterns의 최소한의 집합을 가지는 <code class="language-plaintext highlighter-rouge">Tiling IR tree</code>를 의미한다.</p>
+
+<h3 id="tiling">Tiling</h3>
+<hr>
+<blockquote>
+  <p>Target machine이 지원하는 명령어, tree를 생성하므로 해당 기계에 의존적이다.</p>
+</blockquote>
+
+<ul>
+  <li>목표
+    <ul>
+      <li>tiles 오버래핑이 없도록 IR tree를 보호하는 것</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="optimal-tiling">Optimal tiling</h3>
+<hr>
+<ul>
+  <li>Greedy
+    <ul>
+      <li>Tree의 루트에서 시작</li>
+      <li>가장 큰 tile을 찾는다</li>
+      <li>서브 트리를 모두 순회한다</li>
+    </ul>
+  </li>
+  <li>Dynamic programming
+    <ul>
+      <li>모든 트리 노드에 비용을 할당한다</li>
+      <li>각 노드에 가장 적합한 tiling의 명령어 비용 집합을 계산한다</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="code-generation">Code generation</h3>
+<hr>
+
+<ul>
+  <li>컨셉
+    <ul>
+      <li>Topological sort
+        <ul>
+          <li>모든 피연산자가 수행 전에 준비되도록 한다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>tree IRs 에 대해 코드를 생성하는 방법
+    <ul>
+      <li>Sethi-Ullman Numbering
+        <ul>
+          <li>레지스터가 최소한으로 사용되도록 한다.</li>
+        </ul>
+      </li>
+      <li>Code generation for DAGs</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="register-and-temporary-management">Register and temporary management</h3>
+<hr>
+
+<p>임시적으로 현재 수행과 연관된 데이터를 저장한다. (레지스터, 스택 등)</p>
+
+<ul>
+  <li>Register allocation
+    <ul>
+      <li>Hard registers(Physical registers) 일부는 스토리지에 할당되어야 한다.</li>
+      <li>각 임시 레지스터에 대하여 Pseudo-register(Virtual registers)를 추정한다.</li>
+      <li>Register를 사용하는 것 자체가 최적화를 하는 것이다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="sethi-ullman-numbering">Sethi-Ullman Numbering</h3>
+<hr>
+
+<ol>
+  <li>Numbering
+    <ul>
+      <li>레지스터를 최소한으로 사용하기 위한 과정</li>
+      <li>Spiling 없는 서브 트리를 평가하기 위해 필요한 레지스터들을 계산한다.</li>
+      <li>번호로 각 내부 노드에 레이블을 지정한다.</li>
+    </ul>
+  </li>
+  <li>Code generation
+    <ul>
+      <li>트리를 순회하고 코드를 생성한다.</li>
+      <li>라벨에 따라 순서를 평가함</li>
+    </ul>
+  </li>
+</ol>
+
+<ul>
+  <li>특징
+    <ul>
+      <li>간단한 기계 모델에 최적화 되어 있다.</li>
+      <li>레지스터와 명령어를 줄인다.</li>
+    </ul>
+  </li>
+  <li>실제 기계 모델 최적화를 위해서는
+    <ul>
+      <li>동작이 지연되는 아키텍처는 매우 복잡하며 아래의 문제를 고려해야 한다.
+        <ul>
+          <li>Issue LOAD, 결과가 나중에 지연 주기로 나타난다.</li>
+          <li>결과가 참조되지 않는 한 계속 실행된다.</li>
+          <li>너무 이른 참조로 인해 HW정지가 발생하거나 컴파일러가 지연 슬롯을 NOPs로 채울 수 있다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="code-generation-for-dags">Code generation for DAGs</h3>
+<hr>
+<blockquote>
+  <p>Tree보다 더 복잡하다.</p>
+</blockquote>
+
+<ul>
+  <li>사용할 모든 코드가 생성되기 전 까지 공유 값을 가지고 있는다.</li>
+  <li>레지스터 사용을 최소화하기 어렵게 만든다.</li>
+  <li>좌측 피연산자는 보통 제거되고, 공유는 사용하기 전에 왼쪽 피연산자를 강제로 복사한다.</li>
+  <li>최적화 코드 생성기는 복사를 최소화하기 위해 DAG 평가를 정렬해야 한다.</li>
+  <li>
+    <p>피연산자가 마지막으로 사용될 때 왼쪽 피연산자로 사용되도록 DAG 평가를 정렬한다.</p>
+  </li>
+  <li>과정
+    <ol>
+      <li>Schedule</li>
+      <li>Allocate virtual registers</li>
+      <li>Map virtual registers to hard registers</li>
+    </ol>
+  </li>
+</ul>
+
+<h3 id="local-optimization">Local optimization</h3>
+<hr>
+<blockquote>
+  <p>Data-flow 분석없이, 해석을 기본 블럭으로 제한한다.</p>
+</blockquote>
+
+<ul>
+  <li>어떻게 컴파일러가 기본 블록에 대해서 최적화를 하는 가?
+    <ul>
+      <li>불필요한 수행을 참조로 교체한다.</li>
+      <li>일반 목적 코드를 구체화한다.</li>
+      <li>사용되지 않는 코드를 제거한다.</li>
+      <li>다른 기회를 노출시킴.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="peephole-optimization">Peephole optimization</h3>
+<hr>
+<blockquote>
+  <p>A small window (2-3 tuples/instruction)</p>
+</blockquote>
+
+<ul>
+  <li>특징
+    <ul>
+      <li>코드에 대한 peephole을 분석한다.</li>
+      <li>특별한 패턴을 찾아서 최적화를 한다.</li>
+    </ul>
+  </li>
+  <li>Examples
+    <ul>
+      <li>Constant folding</li>
+      <li>Strength reduction</li>
+      <li>Null sequence</li>
+      <li>Combine operations</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="data-flow-analysis">Data-flow analysis</h2>
+<hr>
+<blockquote>
+  <p>정적 코드만 검사하여 프로그램의 동적 동작에 대한 정보를 도출한다.</p>
+</blockquote>
+
+<p>불필요한 계산을 제거하거나, 코드의 실행 로직을 단순화하는 등 최적화 수행에 필요한 정보를 분석한다.</p>
+
+<h3 id="liveness-analysis">Liveness analysis</h3>
+<hr>
+<blockquote>
+  <p>컴파일러는 임시 레지스터에 대해 Liveness analysis 를 수행해야 한다.</p>
+</blockquote>
+
+<p>어떤 변수가 프로그램에서 사용되지 않는다면, 메모리를 회수하여 최적화 한다.</p>
+
+<p>나중에 사용되는 레지스터가 값을 가지고 있으면, Live 상태이다.</p>
+
+<ul>
+  <li>특징
+    <ul>
+      <li>Register allocation
+        <ul>
+          <li>Virtual to Physical</li>
+        </ul>
+      </li>
+      <li>Problem
+        <ul>
+          <li>IR는 무제한으로 임시 레지스터를 가진다.</li>
+          <li>기계는 제한적인 수의 레지스터를 가진다</li>
+        </ul>
+      </li>
+      <li>Approach
+        <ul>
+          <li>분리된 live 범위가 있는 임시는 동일한 레지스터에 매핑될 수 있다.</li>
+          <li>충분한 레지스터가 없으면, 임시로 저장된다.</li>
+        </ul>
+      </li>
+      <li>컴파일러는 이 프로세스를 자동화해야 한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="example-1">Example</h3>
+<hr>
+
+<div class="language-c highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kt">int</span> <span class="nf">func</span><span class="p">(</span><span class="kt">int</span> <span class="n">b</span><span class="p">,</span> <span class="kt">int</span> <span class="n">c</span><span class="p">)</span> <span class="p">{</span>
+  <span class="kt">int</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+
+  <span class="k">do</span> <span class="p">{</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="n">c</span> <span class="o">=</span> <span class="n">c</span> <span class="o">+</span> <span class="n">b</span><span class="p">;</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">b</span> <span class="o">*</span> <span class="mi">2</span><span class="p">;</span>
+  <span class="p">}</span> <span class="k">while</span><span class="p">(</span><span class="n">a</span> <span class="o">&lt;</span> <span class="mi">9</span><span class="p">);</span>
+
+  <span class="k">return</span> <span class="n">c</span><span class="p">;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ol>
+  <li>a = 0</li>
+  <li>L1 : b = a + 1</li>
+  <li>c = c + b</li>
+  <li>a = b * 2</li>
+  <li>if a &lt; 9 goto L1</li>
+  <li>return c</li>
+</ol>
+
+<ul>
+  <li>Live range of a
+    <ul>
+      <li>1 -&gt; 2</li>
+      <li>again
+        <ul>
+          <li>4 -&gt; 5 -&gt; 2</li>
+        </ul>
+      </li>
+      <li>dead
+        <ul>
+          <li>2 -&gt; 3 -&gt; 4</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>Live range of b
+    <ul>
+      <li>2 -&gt; 3 -&gt; 4</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="control-flow-analysis">Control flow analysis</h3>
+<hr>
+
+<p>Liveness analysis 수행 전에, CFG를 만드는 Control flow를 이해해야 한다.</p>
+
+<ul>
+  <li>노드는 독립적인 프로그램 문장이나 기본 블록이다.</li>
+  <li>에지는 잠재적인 Control flow이다.</li>
+</ul>
+
+<h3 id="example-of-cfg">Example of CFG</h3>
+<hr>
+
+<ol>
+  <li>a = 0</li>
+  <li>L1 : b = a + 1</li>
+  <li>c = c + b</li>
+  <li>a = b * 2</li>
+  <li>if a &lt; 9 goto L1</li>
+  <li>return c</li>
+</ol>
+
+<ul>
+  <li>노드 n으로 부터 나오는 에지는 후속 노드인 succ[n]로 이어진다.</li>
+  <li>
+    <p>노드 n에 대한 in 에지는 이전 노드인 pred[n]에서 나온다.</p>
+  </li>
+  <li>Out-edges of node 5
+    <ul>
+      <li>5 -&gt; 2</li>
+      <li>5 -&gt; 6</li>
+    </ul>
+  </li>
+  <li>succ[5]
+    <ul>
+      <li>{2, 6}</li>
+    </ul>
+  </li>
+  <li>pred[5]
+    <ul>
+      <li>{4}</li>
+    </ul>
+  </li>
+  <li>pred[2]
+    <ul>
+      <li>{1, 5}</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="dominance">Dominance</h2>
+<hr>
+
+<p>CFG의 형태와 구조를 추론하는 핵심 도구는 지배자(Dominanace) 개념이다.</p>
+
+<p>노드 b0이 있는 흐름 그래프에서, 노드 bi는 b0에서 bj까지의 모든 경로에 있는 경우 노드 bj를 지배한다.</p>
+
+<h3 id="liveness-analysis-1">Liveness analysis</h3>
+<hr>
+
+<p>Liveness information을 모으는 것은 CFG에 대한 data flow analysis를 수행하는 것과 같다.</p>
+
+<ul>
+  <li>def
+    <ul>
+      <li>def(v)
+        <ul>
+          <li>v를 정의하는 노드</li>
+        </ul>
+      </li>
+      <li>def(n)
+        <ul>
+          <li>n으로 정의되는 변수</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>use
+    <ul>
+      <li>use(v)
+        <ul>
+          <li>v를 사용하는 노드</li>
+        </ul>
+      </li>
+      <li>use(n)
+        <ul>
+          <li>n에서 사용하는 변수</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="performance-consideration">Performance consideration</h3>
+<hr>
+
+<ul>
+  <li>Basic blocks
+    <ul>
+      <li>single predecessor/successor를 가지는 노드를 합쳐서 Basic block으로 만들어 CFG의 크기를 줄인다.</li>
+    </ul>
+  </li>
+  <li>One variables at a time
+    <ul>
+      <li>모든 변수에 대해서 data flow analysis를 수행하는 것보다, 하나의 변수에 대해서 단순화한 분석을 하는 것이 더 낫다.</li>
+    </ul>
+  </li>
+  <li>Representation of sets
+    <ul>
+      <li>For dense sets
+        <ul>
+          <li>정수형 배열에서 1인 비트를 원소로 간주하는 경우에 사용한다.</li>
+          <li>쓰이지 않는 0이 저장되므로 메모리 사용에서 비효율적이다.</li>
+        </ul>
+      </li>
+      <li>For sparse sets
+        <ul>
+          <li>원소가 존재하는 메모리 위치를 저장하므로, 메모리 사용량이 적다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="basic-blocks">Basic blocks</h3>
+<hr>
+<blockquote>
+  <p>입구와 출구 외에는 분기가 없는 코드 시퀀스이다.</p>
+</blockquote>
+
+<ul>
+  <li>Basic blocks를 나누는 과정
+    <ol>
+      <li>코드에서 핵심이 되는 리드 요소를 파악한다.
+        <ul>
+          <li>첫번째 명령어</li>
+          <li>분기의 대상</li>
+          <li>분기를 즉시 따르는 명령어</li>
+        </ul>
+      </li>
+      <li>다음 리드 요소를 제외하고 현재 리드를 따르는 모든 명령어를 포함하는 block을 분리한다.</li>
+    </ol>
+  </li>
+</ul>
+
+<h3 id="example-2">Example</h3>
+<hr>
+
+<p><img src="https://github.com/pknujsp/android-smartdeeplink/assets/48265129/8c95a61e-ef9f-49ea-994d-ceb51e0751ff"></p>
+
+<ol>
+  <li>a = 0</li>
+  <li>L1 : b = a + 1</li>
+  <li>c = c + b</li>
+  <li>a = b * 2</li>
+  <li>if a &lt; 9 goto L1</li>
+  <li>return c</li>
+</ol>
+
+<ul>
+  <li>leader(case)
+    <ul>
+      <li>1, 2, 6</li>
+    </ul>
+  </li>
+  <li>Splitted result(Basic blocks)
+    <ol>
+      <li>a = 0</li>
+      <li>L1 : b = a + 1, c = c + b, a = b * 2, if a &lt; 9 goto L1</li>
+      <li>return c</li>
+    </ol>
+  </li>
+</ul>
+
+<h2 id="register-allocation">Register allocation</h2>
+<hr>
+
+<ul>
+  <li>N개의 레지스터에 대한 정확한 코드를 생성한다.</li>
+  <li>live 레지스터의 재사용을 최대화한다.
+    <ul>
+      <li>load, store 를 최소화한다.</li>
+    </ul>
+  </li>
+  <li>Spill 을 최소화한다,
+    <ul>
+      <li>save a stack space</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="register-allocation-과정">Register allocation 과정</h3>
+<hr>
+
+<p>N register code -&gt; <code class="language-plaintext highlighter-rouge">Register allocation</code> -&gt; K register code</p>
+
+<ol>
+  <li>liveness analysis로 부터 interference graph(간섭 그래프, IG)를 생성한다.</li>
+  <li>IG 에 대한 k-coloring을 분석한다. 또는 코드를 k-color가 될수 있는 문제에 근접하도록 바꾼다.</li>
+  <li>각 k-colored 변수(임시 레지스터)를 k registers로 매핑한다.</li>
+</ol>
+
+<h3 id="graph-coloring-problem">Graph coloring problem</h3>
+<hr>
+<blockquote>
+  <p>그래프는 동일한 에지를 공유하는 두 노드가 동일한 색상을 갖지 않는 색상으로 그래프의 노드에 레이블을 지정하는 경우에만 k-colorable이 가능하다.(한 에지에 연결된 노드는 서로 다른 색상을 가져야 한다)</p>
+</blockquote>
+
+<p>각 색상은 고유한 논리 레지스터에 매핑된다.</p>
+
+<h3 id="ig">IG</h3>
+<hr>
+
+<ul>
+  <li>노드는 변수를 나타낸다.</li>
+  <li>에지는 변수가 동일한 레지스터에 할당될 수 없음을 나타낸다.</li>
+</ul>
+
+<p><strong>IG의 k-coloring은 k 레지스터 할당으로 매핑될 수 있다.</strong></p>
+
+<p>이웃이 k개 미만인 정점 v는 항상 색상이 지정될 수 있다.</p>
+
+<h3 id="레지스터-할당-문제를-해결하는-방법">레지스터 할당 문제를 해결하는 방법</h3>
+<hr>
+
+<ol>
+  <li>Chaitin’s algorithm</li>
+  <li>Chaitin-Briggs algorithm</li>
+</ol>
+
+<h3 id="chaitins-algorithm">Chaitin’s algorithm</h3>
+<hr>
+
+<ol>
+  <li>IG 생성</li>
+  <li>노드 제거
+    <ul>
+      <li>이웃이 k개 미만인 노드를 제거하고, 스택에 추가한다.</li>
+      <li>IG에서 이러한 노드가 완전히 사라질때 까지 작업을 반복한다.</li>
+    </ul>
+  </li>
+  <li>스킬링
+    <ul>
+      <li>k보다 많은 이웃을 가진 노드를 제거한다.</li>
+    </ul>
+  </li>
+  <li>레지스터 할당
+    <ul>
+      <li>스택에서 노드를 꺼내면서 레지스터를 할당(색을 입힘)한다.</li>
+      <li>색은 다른 노드에 할당되지 않은 색이어야 한다.</li>
+    </ul>
+  </li>
+</ol>
+
+<h3 id="improvement-of-color-scheme">Improvement of Color scheme</h3>
+<hr>
+
+<p>모든 정점이 최소 k개의 이웃을 가질 때 멈추는 것 보다, 우선 순위에 따라 스택에 추가하는 것이 더 낫다.</p>
+
+<h3 id="간단한-레지스터-할당-방식">간단한 레지스터 할당 방식</h3>
+<hr>
+
+<ol>
+  <li>Build</li>
+  <li>Simplify</li>
+  <li>Spill</li>
+  <li>Select</li>
+  <li>Finish</li>
+</ol>
+
+<h2 id="instruction-selection-1">Instruction selection</h2>
+<hr>
+
+<ul>
+  <li>고려 사항</li>
+  <li>실행 시간을 줄이기 위해 명령어 순서 재조정</li>
+  <li>정확성을 유지하면서 성능 향상</li>
+  <li>
+    <p>최적화</p>
+  </li>
+  <li>스케줄링 방식
+    <ul>
+      <li>동적</li>
+      <li>정적</li>
+    </ul>
+  </li>
+  <li>Hazard in pipeline
+    <ul>
+      <li>Structural hazard
+        <ul>
+          <li>하드웨어 자원이 충분하지 않은 경우</li>
+        </ul>
+      </li>
+      <li>Data hazard
+        <ul>
+          <li>피연산자는 이전 명령어에 의존함</li>
+        </ul>
+      </li>
+      <li>Control hazard
+        <ul>
+          <li>조건 분기</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="프로세서-수행-과정">프로세서 수행 과정</h3>
+<hr>
+
+<ol>
+  <li>Fetch</li>
+  <li>Decode</li>
+  <li>Fetch</li>
+  <li>Execute</li>
+  <li>Store</li>
+  <li>Next</li>
+</ol>
+
+<h3 id="multi-cycle-design-장단점">Multi-cycle design 장단점</h3>
+<hr>
+
+<ul>
+  <li>장점
+    <ul>
+      <li>사이클 시간을 줄인다</li>
+      <li>프로세스가 파이프라이닝하는 것이 가능함</li>
+    </ul>
+  </li>
+  <li>단점
+    <ul>
+      <li>단계 사이에서 데이터를 저장할 때 추가적인 레지스터가 필요하다</li>
+      <li>HW 설계가 복잡해진다</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="pipelining">Pipelining</h3>
+<hr>
+<blockquote>
+  <p>수행 시 여러 명령어가 동시에 실행되도록 해주는 기술</p>
+</blockquote>
+
+<ul>
+  <li>장점
+    <ul>
+      <li>기능 단위의 사용을 더욱 향상시킨다.</li>
+    </ul>
+  </li>
+  <li>단점
+    <ul>
+      <li>HW 성능 요구가 더 높다.</li>
+      <li>hazard를 발생시킨다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="hazards">Hazards</h3>
+<hr>
+
+<ul>
+  <li>Structural hazard
+    <ul>
+      <li>HW자원의 충돌</li>
+      <li>두 명령어가 동시에 같은 자원을 사용하려고 할 때 발생</li>
+    </ul>
+  </li>
+  <li>Data hazard
+    <ul>
+      <li>데이터 의존성</li>
+      <li>한 명령어가 다른 명령어의 결과에 의존하는 경우</li>
+    </ul>
+  </li>
+  <li>Control hazard
+    <ul>
+      <li>분기 명령어와 같은 제어 명령어로 인해 파이프라인의 흐름이 변경되는 경우에 발생</li>
+      <li>분기 명령어가 실행되어야 다음에 어떤 명령어가 실행될 지 결정되기 때문이다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="instruction-scheduling">Instruction scheduling</h3>
+<hr>
+<blockquote>
+  <p>slow code -&gt; <code class="language-plaintext highlighter-rouge">Scheduler</code> -&gt; fast code</p>
+</blockquote>
+
+<ul>
+  <li>특징
+    <ul>
+      <li>올바른 코드를 만든다.</li>
+      <li>불필요한 사이클을 줄인다.</li>
+      <li>Avoid spill registers
+        <ul>
+          <li>Spill register : 변수의 값을 메모리로 옮기는 작업이 일어나는 레지스터, 레지스터 공간이 부족한 경우에 Spilling이 발생한다.</li>
+        </ul>
+      </li>
+      <li>작동 효율성 향상</li>
+    </ul>
+  </li>
+</ul>
+
+<p>To capture properties of the code, build a precedence graph G.</p>
+
+<p>instruction -&gt; node</p>
+
+<p>dependency -&gt; edge</p>
+
+<h3 id="data-dependencies">Data dependencies</h3>
+<hr>
+
+<ul>
+  <li>의존성은 아래의 두 조건을 만족할 때에 나타난다.
+    <ul>
+      <li>두 메모리 참조가 같은 위치에 접근할 때</li>
+      <li>최소한 하나의 메모리 참조가 쓰기를 수행할 때</li>
+    </ul>
+  </li>
+  <li>종류
+    <ul>
+      <li>RAW : read after write
+        <ul>
+          <li>True dependence</li>
+          <li>지울수 없다</li>
+        </ul>
+      </li>
+      <li>WAR : write after read
+        <ul>
+          <li>Anti dependence</li>
+          <li>변수명 변경으로 제거 가능</li>
+        </ul>
+      </li>
+      <li>WAW : write after write
+        <ul>
+          <li>Output dependence</li>
+          <li>변수명 변경으로 제거 가능</li>
+        </ul>
+      </li>
+      <li>RAR : read after read
+        <ul>
+          <li>Input dependence</li>
+          <li>의존성이 없다</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+  <li>이러한 위험 중 일부를 제거하기 위해 컴파일러를 제한할 수 있지만 이러한 위험은 자주 발생하며 하드웨어에서 문제를 해결하는 것이 좋다.
+    <ul>
+      <li>
+<code class="language-plaintext highlighter-rouge">NOP</code> : 목적지에 의존성이 없는 것을 load delay slot에 채운다.</li>
+    </ul>
+  </li>
+  <li>여전히 미세한 최적화를 위해서는 컴파일러가 지연 동작을 고려해야 한다.
+    <ul>
+      <li>파이프라인 스케줄링 또는 명령어 스케줄링은 컴파일러가 stall을 피하기 위해 명령어를 재 배치하는 방법이다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="instruction-schedulingscope">Instruction scheduling(Scope)</h3>
+<hr>
+
+<ul>
+  <li>Basic blocks
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">List scheduling</code></li>
+      <li>trace로 바꾼다</li>
+    </ul>
+  </li>
+  <li>Branches
+    <ul>
+      <li><code class="language-plaintext highlighter-rouge">Trace scheduling</code></li>
+      <li>control hazard를 줄이기 위해, superblock인 trace scheduling을 이용한다.</li>
+    </ul>
+  </li>
+  <li>Loops
+    <ul>
+      <li>Unrolling</li>
+      <li>Software pipelining</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="list-scheduling">List scheduling</h3>
+<hr>
+<ol>
+  <li>RAW/WAW를 없애기 위해 이름을 바꾼다.</li>
+  <li>우선 Graph를 만든다.</li>
+  <li>명령어에 우선순위를 부여한다.</li>
+  <li>select와 명령어 스케줄링을 반복한다.
+    <ul>
+      <li>Candidates : Roots of graph, 실행 가능한 명령어들</li>
+      <li>Candidates가 남아있을때
+        <ol>
+          <li>최고 우선순위 후보를 선택한다.</li>
+          <li>명령어를 스케줄링 한다.</li>
+          <li>노출된 명령어를 후보에 추가한다.</li>
+        </ol>
+      </li>
+    </ul>
+  </li>
+</ol>
+
+<ul>
+  <li>Two flavors of list scheduling
+    <ul>
+      <li>Forward</li>
+      <li>Backward</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="스케줄링-휴리스틱">스케줄링 휴리스틱</h3>
+<hr>
+
+<ul>
+  <li>고려사항
+    <ul>
+      <li>준비된 명령어들 중 얼마나 선택해야 하는가?</li>
+      <li>NP-hard for straight-line code</li>
+    </ul>
+  </li>
+  <li>후보의 우선 순위를 설정하는 방법
+    <ul>
+      <li>pipeline stall을 발생시키지 않는다.</li>
+      <li>루트까지의 가장 큰 가중치인 경로(critical path)</li>
+      <li>가장 긴 지연시간(more overlap)</li>
+      <li>Most immediate successors(후보를 만듦)</li>
+      <li>Most descendants(후보를 더 만듦)</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="trace-scheduling">Trace scheduling</h2>
+<hr>
+<ul>
+  <li>Parallelism across if branches
+    <ol>
+      <li>trace selection</li>
+      <li>trace compaction</li>
+    </ol>
+  </li>
+</ul>
+
+<p><img src="https://github.com/skydoves/chatgpt-android/assets/48265129/2a95550a-d5c7-4c8c-a5f3-2f1bf39aaafd"></p>
+
+<h2 id="optimization">Optimization</h2>
+<hr>
+
+<h3 id="잠재적으로-컴파일-시-최적화-가능한-영역">잠재적으로 컴파일 시 최적화 가능한 영역</h3>
+<hr>
+
+<ul>
+  <li>Source language(AST)
+    <ul>
+      <li>Constant bounds in loops and arrays</li>
+      <li>Loop unrolling</li>
+      <li>Suppressing runtime check</li>
+      <li>Enable later optimizations</li>
+    </ul>
+  </li>
+  <li>IR : Local and Global
+    <ul>
+      <li>CSE</li>
+      <li>Liveness analysis</li>
+      <li>Code hoisting</li>
+      <li>Enable later optimizations</li>
+    </ul>
+  </li>
+  <li>Code generation(machine code)
+    <ul>
+      <li>Register allocation</li>
+      <li>Instruction scheduling</li>
+      <li>Peephole optimization</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="classical-distinction">Classical Distinction</h3>
+<hr>
+
+<ul>
+  <li>머신 ‘비의존적’ 변환
+    <ul>
+      <li>광범위한 머신에 적용 가능</li>
+      <li>중복 계산 제거</li>
+      <li>쓸모없는 코드 찾아 제거</li>
+      <li>실행 빈도가 낮은 곳으로 더 많은 평가 수행</li>
+      <li>일부 범용 코드 전문화</li>
+      <li>다른 최적화를 위한 기회 노출</li>
+    </ul>
+  </li>
+  <li>머신 ‘의존적’ 변환
+    <ul>
+      <li>머신별 속성 활용</li>
+      <li>IR에서 머신으로의 매핑 개선</li>
+      <li>비용이 많이 드는 작업을 더 저렴한 작업으로 대체</li>
+      <li>명령어 시퀀스를 더 강력한 것으로 대체</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="scope-of-optimization">Scope of Optimization</h3>
+<hr>
+
+<ul>
+  <li>Local</li>
+  <li>Intraprocedural(global)</li>
+  <li>Interprocedural(whole program)</li>
+</ul>
+
+<h3 id="최적화-시-핵심-목표">최적화 시 핵심 목표</h3>
+<hr>
+
+<ul>
+  <li>Safety</li>
+  <li>Profitability</li>
+  <li>Opportunity</li>
+</ul>
+
+<h3 id="safety">Safety</h3>
+<hr>
+<blockquote>
+  <p>최적화 시에 발생한 변화가 프로그램의 실행 결과를 바꾸지 않는다는 것을 보장하는 것이 중요</p>
+</blockquote>
+
+<ul>
+  <li>컴파일 시 분석
+    <ul>
+      <li>Loop unrolling
+        <ul>
+          <li>대부분의 경우에 안전함</li>
+        </ul>
+      </li>
+      <li>DAGs and CSEs
+        <ul>
+          <li>간단한 분석이다</li>
+        </ul>
+      </li>
+      <li>Dataflow analysis
+        <ul>
+          <li>복잡한 추론이 필요할 수 있다</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="profitability">Profitability</h3>
+<hr>
+<blockquote>
+  <p>최적화를 통해 프로그램의 실행 속도가 빨라지는 것을 보장하는 것이 중요</p>
+</blockquote>
+
+<ul>
+  <li>컴파일 시 추정
+    <ul>
+      <li>Always profitable</li>
+      <li>Heuristic rules</li>
+      <li>Compute benefit</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="opportunity">Opportunity</h3>
+<hr>
+<blockquote>
+  <p>최적화를 해야 하는 적절한 지점을 찾는 것이 중요</p>
+</blockquote>
+
+<ul>
+  <li>Issues
+    <ul>
+      <li>변환을 적용하는 프레임워크를 제공</li>
+      <li>체계적으로 모든 지점을 찾기</li>
+      <li>이전 변경 사항을 반영하도록 안전 정보를 업데이트 하기</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="loop-unrolling">Loop unrolling</h3>
+<hr>
+
+<ul>
+  <li>Safety
+    <ul>
+      <li>Always safe</li>
+      <li>Loop interchange/unrolling/fusion??</li>
+    </ul>
+  </li>
+  <li>Profitability
+    <ul>
+      <li>Reduce overhead</li>
+      <li>Machine-dependent</li>
+    </ul>
+  </li>
+  <li>Opportunity
+    <ul>
+      <li>Loops</li>
+      <li>Find memory-bound loop nests</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="hoisting-loop-invariant">Hoisting loop-invariant</h3>
+<hr>
+
+<ul>
+  <li>Loop invariant
+    <ul>
+      <li>Expressions constant with loop body</li>
+    </ul>
+  </li>
+  <li>Relevant variables
+    <ul>
+      <li>Those used to compute an expression</li>
+    </ul>
+  </li>
+  <li>Opportunity
+    <ul>
+      <li>Identity variables defined in body of loop</li>
+      <li>Loop invariants have no relevant variables in LoopDef</li>
+      <li>Assign each loop-invariant to temporary in loop header</li>
+      <li>Use temporary in loop body</li>
+    </ul>
+  </li>
+  <li>Safety
+    <ul>
+      <li>Faults in loop-invariant expression may be triggered earlier</li>
+    </ul>
+  </li>
+  <li>Profitability
+    <ul>
+      <li>Loop may execute 0 times</li>
+      <li>Loop-invariant may not be needed on every path through loop body</li>
+    </ul>
+  </li>
+</ul>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/data/communication/2023/06/14/%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%86%B5%EC%8B%A0-%EC%A0%95%EB%A6%AC.html" title="데이터 통신 정리">데이터 통신 정리</a><a class="next" href="/jekyll-theme-yat/kotlin/2023/06/18/%EC%88%9C%EC%97%B4,%EC%A1%B0%ED%95%A9%EC%9D%84-Kotlin%EC%9C%BC%EB%A1%9C-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0.html" title="순열, 조합 by Kotlin">순열, 조합 by Kotlin...</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li>
+<span><a class="post-link" href="/jekyll-theme-yat/android/2023/04/04/Activity-%EC%95%8C%EC%95%84%EB%B3%B4%EA%B8%B0.html" title="순열, 조합 by Kotlin">Activity 알아보기</a></span><span>
+            <time class="dt-published datetime" datetime="2023-04-04T00:00:00+09:00" itemprop="datePublished">2023-04-04, Tue
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/kotlin/2023/07/14/Kotlin-%EB%8F%99%EC%8B%9C%EC%84%B1-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0%EB%B0%A9%EB%B2%95.html" title="순열, 조합 by Kotlin">Kotlin 동시성 문제 해결방법</a></span><span>
+            <time class="dt-published datetime" datetime="2023-07-14T00:00:00+09:00" itemprop="datePublished">2023-07-14, Fri
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/dalvik/art/android/2023/10/15/Android-Dalvik%EA%B3%BC-Art%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C.html" title="순열, 조합 by Kotlin">Android Dalvik과 ART에 대해서</a></span><span>
+            <time class="dt-published datetime" datetime="2023-10-15T00:00:00+09:00" itemprop="datePublished">2023-10-15, Sun
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/garbagecollector/2023/09/17/Garbage-collector%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C.html" title="순열, 조합 by Kotlin">Garbage collector에 대해서 알아보자</a></span><span>
+            <time class="dt-published datetime" datetime="2023-09-17T00:00:00+09:00" itemprop="datePublished">2023-09-17, Sun
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/data/communication/2023/06/13/Data-Link-Control.html" title="순열, 조합 by Kotlin">11. Data Link Control</a></span><span>
+            <time class="dt-published datetime" datetime="2023-06-13T00:00:00+09:00" itemprop="datePublished">2023-06-13, Tue
+            </time></span>
+        </li>
+</ul>
+    </div>
+<div class="post-comments">
+<div id="utterances-placeholder"></div>
+<script>
+
+const utterancesThemeFromDataTheme = () => {
+    const dataTheme = document.documentElement.getAttribute('data-theme');
+    return `github-${dataTheme}`;
+  };
+
+  const setUtterancesTheme = () => {
+    const iframe = document.querySelector('.utterances-frame');
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: utterancesThemeFromDataTheme()
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+    }
+  }
+
+  // dynamic change
+  const observer = new MutationObserver((mutationsList, observer) => {
+    for (let mutation of mutationsList) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        setUtterancesTheme();
+      }
+    }
+  });
+  observer.observe(document.documentElement, { attributes: true, childList: false, subtree: false });
+
+  let utterancesScript = document.createElement('script');
+  utterancesScript.async = true;
+  utterancesScript.src = 'https://utteranc.es/client.js';
+  utterancesScript.crossOrigin = 'anonymous';
+  utterancesScript.setAttribute('issue-term', 'pathname');
+  utterancesScript.setAttribute('label', 'comments');
+  utterancesScript.setAttribute('repo', 'pknujsp/Blogcomments');
+  utterancesScript.setAttribute('theme', utterancesThemeFromDataTheme());
+
+  const placeholder = document.getElementById('utterances-placeholder');
+  placeholder.parentNode.replaceChild(utterancesScript, placeholder);
+</script>
+</div></section>
+</div>
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">Contents</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">· ' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>2024 @ Junsung Park</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

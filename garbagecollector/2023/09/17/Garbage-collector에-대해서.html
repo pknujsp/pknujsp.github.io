@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Garbage collector에 대해서 알아보자 | Jsp Notes</title>
+<meta name="generator" content="Jekyll v4.3.4">
+<meta property="og:title" content="Garbage collector에 대해서 알아보자">
+<meta name="author" content="Junsung Park">
+<meta property="og:locale" content="ko">
+<meta name="description" content="Garbage collector(GC)란">
+<meta property="og:description" content="Garbage collector(GC)란">
+<link rel="canonical" href="https://pknujsp.github.io//jekyll-theme-yat/garbagecollector/2023/09/17/Garbage-collector%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C.html">
+<meta property="og:url" content="https://pknujsp.github.io//jekyll-theme-yat/garbagecollector/2023/09/17/Garbage-collector%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C.html">
+<meta property="og:site_name" content="Jsp Notes">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-09-17T00:00:00+09:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Garbage collector에 대해서 알아보자">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junsung Park"},"dateModified":"2023-09-17T00:00:00+09:00","datePublished":"2023-09-17T00:00:00+09:00","description":"Garbage collector(GC)란","headline":"Garbage collector에 대해서 알아보자","mainEntityOfPage":{"@type":"WebPage","@id":"https://pknujsp.github.io//jekyll-theme-yat/garbagecollector/2023/09/17/Garbage-collector%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C.html"},"url":"https://pknujsp.github.io//jekyll-theme-yat/garbagecollector/2023/09/17/Garbage-collector%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="icon" href="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script>
+
+  <!-- tipuesearch -->
+  <link rel="stylesheet" href="/assets/tipuesearch/css/tipuesearch.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_content.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_set.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch.min.js"></script><link type="application/atom+xml" rel="alternate" href="https://pknujsp.github.io//jekyll-theme-yat/feed.xml" title="Jsp Notes">
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LZC1TDTS26"></script>
+<script>
+  function initGoogleAnalytics() {
+    var doNotTrack = (window.doNotTrack === "1" || navigator.doNotTrack === "1" ||
+      navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1");
+    var enableDNT = "true" == "true";
+
+    if (!enableDNT || !doNotTrack) {
+      /*
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'G-LZC1TDTS26', 'auto');
+      ga('send', 'pageview');
+      */
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { window.dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-LZC1TDTS26');
+    }
+  }
+  window.addEventListener("load", initGoogleAnalytics);
+
+</script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/intellij-light.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/kotlin.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #7800ff;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: lowercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <img class="site-white_favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+</a></span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/about.html">About</a><a class="page-link" href="/jekyll-theme-yat/categories.html">Categories</a><a class="page-link" href="/jekyll-theme-yat/">Home</a><a class="page-link" href="/jekyll-theme-yat/posts.html">Posts</a><a class="page-link" href="/jekyll-theme-yat/tags.html">Tags</a><input id="tipue_search_input" type="search" placeholder="Search" aria-label="Search" title="Please enter at least 1 character" required>
+
+          <script>
+            document.getElementById("tipue_search_input").addEventListener("keydown", function (event) {
+              if (event.keyCode === 13) {
+                event.preventDefault();
+                window.location.href = "../search?q=" + this.value;
+              }
+            });
+          </script>
+<!--
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="en">
+        
+        <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+        to English
+        
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="ko">
+        
+        <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+        to Korean
+        
+      </a>
+    </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'ko',
+      autoDisplay: false,
+      layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+    }, 'google_translate_element');
+
+    // Links to cross-origin destinations are unsafe
+    var gll = document.getElementsByClassName('goog-logo-link')[0];
+    if (gll) {
+      gll.setAttribute('rel', 'noopener');
+    }
+
+    function restoreLang() {
+      var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+      if (!iframe) return;
+
+      var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+      var restore_el = innerDoc.getElementsByTagName("button");
+
+      for (var i = 0; i < restore_el.length; i++) {
+        if (restore_el[i].id.indexOf("restore") >= 0) {
+          restore_el[i].click();
+          var close_el = innerDoc.getElementsByClassName("goog-close-link");
+          close_el[0].click();
+          return;
+        }
+      }
+    }
+
+    function triggerHtmlEvent(element, eventName) {
+      var event;
+      if (document.createEvent) {
+        event = document.createEvent('HTMLEvents');
+        event.initEvent(eventName, true, true);
+        element.dispatchEvent(event);
+      } else {
+        event = document.createEventObject();
+        event.eventType = eventName;
+        element.fireEvent('on' + event.eventType, event);
+      }
+    }
+
+    var googleCombo = document.querySelector("select.goog-te-combo");
+    var langSelect = document.querySelector('.ct-language');
+    langSelect.addEventListener('click', function (event) {
+      if (!event.target) {
+        return;
+      }
+
+      var selected = document.querySelector('.ct-language .ct-language-selected');
+      if (selected) {
+        selected.classList.remove('ct-language-selected');
+      }
+
+      var target = event.target;
+      while (target && target !== langSelect) {
+        if (target.matches('.lang-select')) {
+          break;
+        }
+        target = target.parentElement;
+      }
+
+      if (target && target.matches('.lang-select')) {
+        var lang = target.getAttribute('data-lang');
+        if (googleCombo.value == lang) {
+          restoreLang();
+        } else if (lang == 'ko') {
+          var googleTranslateElement = document.getElementById('google_translate_element');
+          if (googleTranslateElement) {
+            googleTranslateElement.parentNode.removeChild(googleTranslateElement);
+            $('#google_translate_element').empty();
+          }
+        } else {
+          target.parentElement.classList.add('ct-language-selected');
+          googleCombo.value = lang;
+          triggerHtmlEvent(googleCombo, 'change');
+        }
+      }
+
+      event.preventDefault();
+    });
+  }
+</script>
+
+<script type="text/javascript"
+  src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script></span>-->
+          </div>
+
+          
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('manual' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = !(hours >= 2 && hours <=5);
+
+      if (nightShift) {
+        if (hours > 5) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(5);
+      } else {
+        toggleAt.setHours(2);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<div id="click-to-bottom" class="click-to-bottom">
+  <i class="fa fa-arrow-down"></i>
+</div>
+<script>
+  (function () {
+    const clickToBottom = document.getElementById('click-to-bottom');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToBottom.classList.add('show')
+      }else {
+        clickToBottom.classList.remove('show')
+      }
+    });
+    clickToBottom.addEventListener('click', () => {
+      window.smoothScrollTo(document.body.scrollHeight);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">Garbage collector에 대해서 알아보자</h1>
+  <h2 class="post-subtitle">역할, 동작 방식</h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2023-09-17T00:00:00+09:00" itemprop="datePublished">2023-09-17, Sun
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 6 minutes</span>
+  </p>
+<div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#GarbageCollector">#GarbageCollector</a></div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h2 id="garbage-collectorgc란">Garbage collector(GC)란</h2>
+
+<p>C, C++과 같이 GC가 없는 언어에서는 동적으로 할당한 메모리를 모두 개발자가 직접 관리해야 한다.</p>
+
+<div class="language-c++ highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// int array를 동적 할당</span>
+<span class="kt">int</span> <span class="o">*</span><span class="n">arr</span> <span class="o">=</span> <span class="k">new</span> <span class="kt">int</span><span class="p">[</span><span class="mi">5</span><span class="p">];</span>
+
+<span class="k">for</span><span class="p">(</span><span class="kt">int</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span><span class="p">;</span>
+<span class="p">}</span>
+
+<span class="c1">// 해제</span>
+<span class="k">delete</span><span class="p">[]</span> <span class="n">arr</span><span class="p">;</span>
+</code></pre></div></div>
+
+<p>위와 같은 방식으로 할당시켜주는데, 사용 후 해제를 하지 않는다면 메모리 누수가 발생하게 되며 지속적으로 이러한 상황이 누적될 경우 프로그램에 치명적으로 작용하게 된다. Java/Kotlin(Jvm), C#(.Net)과 같은 고 수준 언어에서는 GC가 메모리 관리를 대신 해주기 때문에 상대적으로 편리하다.</p>
+
+<h3 id="gc의-구조">GC의 구조</h3>
+
+<p>GC는 크게 3가지 영역으로 나뉘어져 있다.</p>
+
+<p>메모리 Heap영역에서 Young generation, Old generation으로 나뉘어진다.</p>
+
+<ul>
+  <li>Young generation
+    <ul>
+      <li>Eden : 새로운 객체가 생성될 때 할당되는 영역</li>
+      <li>Survivor 0, 1 : Eden에서 GC가 발생하면 살아남은 객체가 이곳으로 이동한다.</li>
+      <li>Minor GC가 발생.</li>
+    </ul>
+  </li>
+  <li>Old generation : Young generation에서 살아남은 객체가 특정 조건을 넘어서면 이곳으로 이동한다.(Promotion)
+    <ul>
+      <li>Major GC가 발생.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://github.com/pknujsp/android-smartdeeplink/assets/48265129/3228d5ea-f91a-496b-b67c-96456e513127" alt="gc drawio"></p>
+
+<h4 id="용어">용어</h4>
+
+<ul>
+  <li>Minor GC : Young generation에서 발생하는 GC</li>
+  <li>Major(Full) GC : Old generation에서 발생하는 GC</li>
+  <li>Reacheable : 객체가 <strong>참조되고 있는</strong> 상태, 다른 영역으로 이동하게 된다.</li>
+  <li>Unreacheable : 객체가  <strong>참조되고 있지 않은</strong> 상태, 회수 대상</li>
+  <li>Age bit : 객체가 Young generation에서 살아남은 횟수를 기록한다.(보통 정수로 표현)</li>
+  <li>GC Root : GC가 동작할 때 참조를 따라가며 참조 상태를 확인하는 시작점이 되는 객체들이다. GC Root로부터 참조되고 있는 객체들은 살아남고, 그렇지 않은 객체들은 회수된다.</li>
+</ul>
+
+<h2 id="동작-방식">동작 방식</h2>
+
+<p>Mark and Sweep 이라는 알고리즘으로 동작한다.</p>
+
+<p><img src="https://github.com/pknujsp/android-smartdeeplink/assets/48265129/fa314b28-01e2-4342-9ff6-89690af8c366" alt="gcactions drawio"></p>
+
+<ol>
+  <li>Young(Eden, Survivor), Old에서 어떤 영역의 용량이 가득차게 된다면 GC는 해당 영역의 객체들을 검사한다.</li>
+  <li>
+<strong>GC Root</strong>로부터 참조되고 있는 객체를 따라가며 참조 상태를 확인한다.</li>
+  <li>여전히 참조되고 있는(유효한, Reachable) 객체는 살아남고, 그렇지 않은(Unreacheable) 객체는 회수된다.</li>
+  <li>이동할 때 <strong>Age bit</strong>를 1씩 증가시킨다.</li>
+  <li>이때, Reacheable 객체가 존재하는 영역이 바뀐다.
+    <ul>
+      <li>Eden에 있다면 Survivor 영역으로 이동.(두 영역 중 하나로 이동)</li>
+      <li>Survivor 0/1 에 있다면 Survivor 1/0으로 이동.</li>
+      <li>Age bit가 특정 조건을 넘어서면 Old 영역으로 이동.</li>
+    </ul>
+  </li>
+</ol>
+
+<p>동작 시에 Survivor 두 영역 중 하나는 반드시 비어있는 상태이다.</p>
+
+<p>GC가 동작할 때에는 GC가 동작하는 스레드를 제외한 나머지 모든 스레드가 일시 정지된다. 이를 <strong>Stop the world</strong>라고 한다. 만약 스레드가 정지되지 않는다면 GC가 동작하는 동안에도 객체가 생성되어 GC가 제대로 동작하지 않을 수 있는 등 여러 문제가 발생할 수 있다.</p>
+
+<h4 id="unreachable-상태가-되는-경우">Unreachable 상태가 되는 경우</h4>
+
+<ul>
+  <li>할당된 객체가 연결된 변수가 없을 때
+    <ul>
+      <li>객체가 생성된 메서드가 종료될 때(Stack에서 pop) 객체와 연결된 변수가 사라짐.</li>
+      <li>변수에 null이 할당될 때</li>
+      <li>변수에 새로운 객체가 할당될 때</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="unreachable은-아니나-회수가-되는-경우">Unreachable은 아니나 회수가 되는 경우</h4>
+
+<ul>
+  <li>객체의 참조 유형이 일반적인 유형이 아닌 경우
+    <ul>
+      <li>WeakReference, SoftReference의 참조 유형을 사용하는 경우</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="객체의-참조-유형">객체의 참조 유형</h2>
+
+<h4 id="strong-reference--일반적인-참조-유형">Strong Reference : 일반적인 참조 유형</h4>
+
+<p>흔히 객체를 생성할 때 사용되는 방식이다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">obj</span> <span class="p">=</span> <span class="nc">Object</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h4 id="weak-reference">Weak Reference</h4>
+
+<p>GC가 발생하면 무조건 회수되는 참조 유형이다. WeakReference를 사용하면 GC가 발생하면 무조건 회수되기 때문에 메모리 누수를 방지할 수 있다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">weakRef</span> <span class="p">=</span> <span class="nc">WeakReference</span><span class="p">(</span><span class="nc">Object</span><span class="p">())</span>
+<span class="c1">// null 또는 not null, GC가 동작한 경우에는 null이 obj에 반환된다.</span>
+<span class="kd">val</span> <span class="py">obj</span> <span class="p">=</span> <span class="n">weakRef</span><span class="p">.</span><span class="k">get</span><span class="p">()</span>
+</code></pre></div></div>
+
+<h4 id="soft-reference">Soft Reference</h4>
+
+<p>GC가 발생하면 회수되지만, 메모리가 부족할 때에만 회수되는 참조 유형이다. WeakReference와 다르게 무조건 회수되지 않는다. 메모리가 부족할 때에만 회수되기 때문에 메모리 누수를 방지할 수 있다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">val</span> <span class="py">softRef</span> <span class="p">=</span> <span class="nc">SoftReference</span><span class="p">(</span><span class="nc">Object</span><span class="p">())</span>
+<span class="c1">// null 또는 not null, 메모리가 부족한 상황인 경우라면 null이 obj에 반환될 수 있다.</span>
+<span class="kd">val</span> <span class="py">obj</span> <span class="p">=</span> <span class="n">softRef</span><span class="p">.</span><span class="k">get</span><span class="p">()</span>
+</code></pre></div></div>
+
+<p><img src="https://github.com/pknujsp/android-smartdeeplink/assets/48265129/520a7fb3-3150-4841-89db-d42b8cc655e5" alt="gc-weak-strong"></p>
+
+<p>Weak Reference로 할당된 객체와 연결된 하위 객체는 모두 Weak로 참조되기 떄문에, 상위 Weak Reference가 회수되면  모두 따라서 회수가 된다.</p>
+
+<h2 id="stop-the-world">Stop the world</h2>
+
+<p>GC가 너무 자주 동작하는 것도, 적게 동작하는 것도 적합하지 않다. 적절한 빈도로 동작하는 것이 중요하다.</p>
+
+<p>GC가 동작할 때에는, 다른 모든 스레드가 멈추기 때문에, GC 동작이 잦다면, 그 만큼 프로그램이 멈추는 시간이 늘어나게 되므로 성능에 치명적인 영향을 미친다.</p>
+
+<h2 id="gc의-종류jvm-기준">GC의 종류(Jvm 기준)</h2>
+
+<p>현재 기본 GC는 JDK 8까지는 Parallel GC, JDK 9부터는 G1 GC가 사용된다.</p>
+
+<h3 id="serial-gc">Serial GC</h3>
+
+<p>GC가 동작할 때, GC를 담당하는 스레드가 하나이다. GC가 동작하는 동안에는 다른 모든 스레드가 멈춘다.</p>
+
+<h3 id="parallel-gc">Parallel GC</h3>
+
+<p>멀티 스레드로 Young generation GC를 처리, Old generation GC는 단일 Thread로 처리한다.</p>
+
+<h3 id="parallel-old-gc">Parallel Old GC</h3>
+
+<p>Old generation GC도 멀티 스레드로 처리한다.</p>
+
+<h3 id="g1garbage-first-gc">G1(Garbage First) GC</h3>
+
+<p>Heap을 Region이라는 영역으로 나눈다.</p>
+
+<p>Eden, Survivor, Old를 여러 개의 Region으로 나누고, 아래 2개의 새로운 영역이 추가되었다.</p>
+
+<ul>
+  <li>Humongous : Region크기의 절반을 초과하는 큰 객체를 저장하는 영역</li>
+  <li>Available, Unused : 아직 사용되지 않은 영역</li>
+</ul>
+
+<p>Mark and Sweep에 추가로 Compaction이라는 단계가 추가되었다.</p>
+
+<ul>
+  <li>Compaction : Mark and Sweep 동작으로 인해 객체가 회수된 영역을 비워둔 채로 두지 않고, 다른 영역의 객체를 이동시켜서 메모리 조각모음을 하여 메모리를 효율적으로 사용할 수 있도록 한다.</li>
+</ul>
+
+<p>이외에도 Epsilon, ZGC, Shenandoah GC 등 수 많은 GC알고리즘이 존재한다. 그러나 Stop the world를 완전히 피할 수 있는 GC는 아직 존재하지 않는다.</p>
+
+<h2 id="gc설정-튜닝">GC설정 튜닝</h2>
+
+<p>JVM을 사용하는 프로그램에 대해서 GC설정을 직접 수정할 수 있다. 간단하게 Heap의 크기를 설정하는 방법이 있다.
+Android studio의 경우, <code class="language-plaintext highlighter-rouge">Android/Android Studio/bin</code> 디렉토리 내에 studio64.vmoptions 파일을 수정하면 된다.</p>
+
+<p>다른 IDE도 마찬가지로 이러한 파일을 수정하면 된다.</p>
+
+<p><strong>-Xms7g</strong><br>
+<strong>-Xmx7g</strong></p>
+
+<p>vmoptions파일을 열면 위와 같은 설정이 있다.<br>
+<code class="language-plaintext highlighter-rouge">Xms</code>는 JVM 시작 시 Heap의 크기, <code class="language-plaintext highlighter-rouge">Xmx</code>는 Heap의 최대 크기를 의미한다.
+본인 PC의 메모리 용량에 맞게 적절히 값을 수정하면 되고, 크게 할 수록 GC의 동작 빈도가 줄어들기 때문에 어느 정도 성능 향상을 기대할 수 있다.</p>
+
+<p>보통 Xms와 Xmx의 크기를 같게 설정한다. 왜냐하면 Heap의 크기가 동적으로 변하는 것을 방지하기 위해서이다. 만약 Xms와 Xmx의 크기가 다르다면, Heap의 크기가 동적으로 변하게 되는데, 이는 GC의 동작 빈도가 높아져 성능이 저하될 수 있다.</p>
+
+<ul>
+  <li>아래와 같이 추가적인 설정이 가능하다. 적절한 값을 찾는 과정은 많은 테스트를 통해 찾아야 한다.
+    <ul>
+      <li>-XX:NewRatio : Young, Old generation의 비율</li>
+      <li>-XX:SurvivorRatio : Eden, Survivor의 비율</li>
+      <li>-XX:MaxTenuringThreshold : Age bit의 임계값, 이 값을 넘어서면 Old generation으로 이동, 기본 값은 15(Jvm), <a href="https://support.oracle.com/knowledge/Middleware/1283267_1.html">Do Not Set -XX:MaxTenuringThreshold to a Value Greater Than 15</a>
+</li>
+      <li>-XX:ParallelGCThreads : Parallel GC의 스레드 개수</li>
+    </ul>
+  </li>
+</ul>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/android/2023/09/10/Android-Compose%EC%99%80-View%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EB%B9%84%EA%B5%90.html" title="Android Compose와 View컴포넌트 비교">Android Compose와 View컴포넌트 비교...</a><a class="next" href="/jekyll-theme-yat/jvm/2023/10/08/JVM(Java-Virtual-Machine)%EC%9D%B4%EB%9E%80.html" title="JVM (Java Virtual Machine)이란?">JVM (Java Virtual Machine)이란?...</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li>
+<span><a class="post-link" href="/jekyll-theme-yat/sql/2023/04/18/SELECT%EB%AC%B8-%EC%A0%95%EB%B3%B5%ED%95%98%EA%B8%B0.html" title="JVM (Java Virtual Machine)이란?">SELECT문 정복하기</a></span><span>
+            <time class="dt-published datetime" datetime="2023-04-18T00:00:00+09:00" itemprop="datePublished">2023-04-18, Tue
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/android/2023/09/10/Android-Compose%EC%99%80-View%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EB%B9%84%EA%B5%90.html" title="JVM (Java Virtual Machine)이란?">Android Compose와 View컴포넌트 비교</a></span><span>
+            <time class="dt-published datetime" datetime="2023-09-10T00:00:00+09:00" itemprop="datePublished">2023-09-10, Sun
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/data/communication/2023/06/13/Other-Wireless-Networks.html" title="JVM (Java Virtual Machine)이란?">16. Other Wireless Networks</a></span><span>
+            <time class="dt-published datetime" datetime="2023-06-13T00:00:00+09:00" itemprop="datePublished">2023-06-13, Tue
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/android/2023/08/13/androidx.collection-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-%EC%82%B4%ED%8E%B4%EB%B3%B4%EA%B8%B0(SparseArray,-ArrayMap,-LruCache-/).html" title="JVM (Java Virtual Machine)이란?">ArrayMap, SparseArray, LruCache에 대해서 알아보기</a></span><span>
+            <time class="dt-published datetime" datetime="2023-08-13T00:00:00+09:00" itemprop="datePublished">2023-08-13, Sun
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/kotlin/2023/08/03/Kotlin-sealed-class-%EC%83%81%ED%83%9C%EB%B3%84-%ED%95%A8%EC%88%98-%EC%9E%90%EB%8F%99-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0.html" title="JVM (Java Virtual Machine)이란?">Kotlin sealed class/interface 사용 시 하위 클래스에 대응되는 함수를 자동으로 만드는 방법</a></span><span>
+            <time class="dt-published datetime" datetime="2023-08-03T00:00:00+09:00" itemprop="datePublished">2023-08-03, Thu
+            </time></span>
+        </li>
+</ul>
+    </div>
+<div class="post-comments">
+<div id="utterances-placeholder"></div>
+<script>
+
+const utterancesThemeFromDataTheme = () => {
+    const dataTheme = document.documentElement.getAttribute('data-theme');
+    return `github-${dataTheme}`;
+  };
+
+  const setUtterancesTheme = () => {
+    const iframe = document.querySelector('.utterances-frame');
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: utterancesThemeFromDataTheme()
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+    }
+  }
+
+  // dynamic change
+  const observer = new MutationObserver((mutationsList, observer) => {
+    for (let mutation of mutationsList) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        setUtterancesTheme();
+      }
+    }
+  });
+  observer.observe(document.documentElement, { attributes: true, childList: false, subtree: false });
+
+  let utterancesScript = document.createElement('script');
+  utterancesScript.async = true;
+  utterancesScript.src = 'https://utteranc.es/client.js';
+  utterancesScript.crossOrigin = 'anonymous';
+  utterancesScript.setAttribute('issue-term', 'pathname');
+  utterancesScript.setAttribute('label', 'comments');
+  utterancesScript.setAttribute('repo', 'pknujsp/Blogcomments');
+  utterancesScript.setAttribute('theme', utterancesThemeFromDataTheme());
+
+  const placeholder = document.getElementById('utterances-placeholder');
+  placeholder.parentNode.replaceChild(utterancesScript, placeholder);
+</script>
+</div></section>
+</div>
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">Contents</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">· ' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>2024 @ Junsung Park</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

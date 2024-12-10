@@ -1,0 +1,1653 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>스크롤 가능한 커스텀 TopAppBar만들기 | Jsp Notes</title>
+<meta name="generator" content="Jekyll v4.3.4">
+<meta property="og:title" content="스크롤 가능한 커스텀 TopAppBar만들기">
+<meta name="author" content="Junsung Park">
+<meta property="og:locale" content="ko">
+<meta name="description" content="내용이 심하게 부실해서 수정하고 있습니다.">
+<meta property="og:description" content="내용이 심하게 부실해서 수정하고 있습니다.">
+<link rel="canonical" href="https://pknujsp.github.io//jekyll-theme-yat/android/2024/03/07/%EC%8A%A4%ED%81%AC%EB%A1%A4-%EA%B0%80%EB%8A%A5%ED%95%9C-%EC%BB%A4%EC%8A%A4%ED%85%80-TopAppBar%EB%A7%8C%EB%93%A4%EA%B8%B0.html">
+<meta property="og:url" content="https://pknujsp.github.io//jekyll-theme-yat/android/2024/03/07/%EC%8A%A4%ED%81%AC%EB%A1%A4-%EA%B0%80%EB%8A%A5%ED%95%9C-%EC%BB%A4%EC%8A%A4%ED%85%80-TopAppBar%EB%A7%8C%EB%93%A4%EA%B8%B0.html">
+<meta property="og:site_name" content="Jsp Notes">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2024-03-07T00:00:00+09:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="스크롤 가능한 커스텀 TopAppBar만들기">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junsung Park"},"dateModified":"2024-03-07T00:00:00+09:00","datePublished":"2024-03-07T00:00:00+09:00","description":"내용이 심하게 부실해서 수정하고 있습니다.","headline":"스크롤 가능한 커스텀 TopAppBar만들기","mainEntityOfPage":{"@type":"WebPage","@id":"https://pknujsp.github.io//jekyll-theme-yat/android/2024/03/07/%EC%8A%A4%ED%81%AC%EB%A1%A4-%EA%B0%80%EB%8A%A5%ED%95%9C-%EC%BB%A4%EC%8A%A4%ED%85%80-TopAppBar%EB%A7%8C%EB%93%A4%EA%B8%B0.html"},"url":"https://pknujsp.github.io//jekyll-theme-yat/android/2024/03/07/%EC%8A%A4%ED%81%AC%EB%A1%A4-%EA%B0%80%EB%8A%A5%ED%95%9C-%EC%BB%A4%EC%8A%A4%ED%85%80-TopAppBar%EB%A7%8C%EB%93%A4%EA%B8%B0.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="icon" href="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script>
+
+  <!-- tipuesearch -->
+  <link rel="stylesheet" href="/assets/tipuesearch/css/tipuesearch.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_content.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_set.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch.min.js"></script><link type="application/atom+xml" rel="alternate" href="https://pknujsp.github.io//jekyll-theme-yat/feed.xml" title="Jsp Notes">
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LZC1TDTS26"></script>
+<script>
+  function initGoogleAnalytics() {
+    var doNotTrack = (window.doNotTrack === "1" || navigator.doNotTrack === "1" ||
+      navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1");
+    var enableDNT = "true" == "true";
+
+    if (!enableDNT || !doNotTrack) {
+      /*
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'G-LZC1TDTS26', 'auto');
+      ga('send', 'pageview');
+      */
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { window.dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-LZC1TDTS26');
+    }
+  }
+  window.addEventListener("load", initGoogleAnalytics);
+
+</script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/intellij-light.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/kotlin.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #7800ff;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: lowercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <img class="site-white_favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+</a></span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/about.html">About</a><a class="page-link" href="/jekyll-theme-yat/categories.html">Categories</a><a class="page-link" href="/jekyll-theme-yat/">Home</a><a class="page-link" href="/jekyll-theme-yat/posts.html">Posts</a><a class="page-link" href="/jekyll-theme-yat/tags.html">Tags</a><input id="tipue_search_input" type="search" placeholder="Search" aria-label="Search" title="Please enter at least 1 character" required>
+
+          <script>
+            document.getElementById("tipue_search_input").addEventListener("keydown", function (event) {
+              if (event.keyCode === 13) {
+                event.preventDefault();
+                window.location.href = "../search?q=" + this.value;
+              }
+            });
+          </script>
+<!--
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="en">
+        
+        <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+        to English
+        
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="ko">
+        
+        <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+        to Korean
+        
+      </a>
+    </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'ko',
+      autoDisplay: false,
+      layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+    }, 'google_translate_element');
+
+    // Links to cross-origin destinations are unsafe
+    var gll = document.getElementsByClassName('goog-logo-link')[0];
+    if (gll) {
+      gll.setAttribute('rel', 'noopener');
+    }
+
+    function restoreLang() {
+      var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+      if (!iframe) return;
+
+      var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+      var restore_el = innerDoc.getElementsByTagName("button");
+
+      for (var i = 0; i < restore_el.length; i++) {
+        if (restore_el[i].id.indexOf("restore") >= 0) {
+          restore_el[i].click();
+          var close_el = innerDoc.getElementsByClassName("goog-close-link");
+          close_el[0].click();
+          return;
+        }
+      }
+    }
+
+    function triggerHtmlEvent(element, eventName) {
+      var event;
+      if (document.createEvent) {
+        event = document.createEvent('HTMLEvents');
+        event.initEvent(eventName, true, true);
+        element.dispatchEvent(event);
+      } else {
+        event = document.createEventObject();
+        event.eventType = eventName;
+        element.fireEvent('on' + event.eventType, event);
+      }
+    }
+
+    var googleCombo = document.querySelector("select.goog-te-combo");
+    var langSelect = document.querySelector('.ct-language');
+    langSelect.addEventListener('click', function (event) {
+      if (!event.target) {
+        return;
+      }
+
+      var selected = document.querySelector('.ct-language .ct-language-selected');
+      if (selected) {
+        selected.classList.remove('ct-language-selected');
+      }
+
+      var target = event.target;
+      while (target && target !== langSelect) {
+        if (target.matches('.lang-select')) {
+          break;
+        }
+        target = target.parentElement;
+      }
+
+      if (target && target.matches('.lang-select')) {
+        var lang = target.getAttribute('data-lang');
+        if (googleCombo.value == lang) {
+          restoreLang();
+        } else if (lang == 'ko') {
+          var googleTranslateElement = document.getElementById('google_translate_element');
+          if (googleTranslateElement) {
+            googleTranslateElement.parentNode.removeChild(googleTranslateElement);
+            $('#google_translate_element').empty();
+          }
+        } else {
+          target.parentElement.classList.add('ct-language-selected');
+          googleCombo.value = lang;
+          triggerHtmlEvent(googleCombo, 'change');
+        }
+      }
+
+      event.preventDefault();
+    });
+  }
+</script>
+
+<script type="text/javascript"
+  src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script></span>-->
+          </div>
+
+          
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('manual' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = !(hours >= 2 && hours <=5);
+
+      if (nightShift) {
+        if (hours > 5) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(5);
+      } else {
+        toggleAt.setHours(2);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<div id="click-to-bottom" class="click-to-bottom">
+  <i class="fa fa-arrow-down"></i>
+</div>
+<script>
+  (function () {
+    const clickToBottom = document.getElementById('click-to-bottom');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToBottom.classList.add('show')
+      }else {
+        clickToBottom.classList.remove('show')
+      }
+    });
+    clickToBottom.addEventListener('click', () => {
+      window.smoothScrollTo(document.body.scrollHeight);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">스크롤 가능한 커스텀 TopAppBar만들기</h1>
+  <h2 class="post-subtitle">Scrollable custom TopAppBar</h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2024-03-07T00:00:00+09:00" itemprop="datePublished">2024-03-07, Thu
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 25 minutes</span>
+  </p>
+<div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#Android">#Android</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#Compose">#Compose</a>
+</div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h2 id="내용이-심하게-부실해서-수정하고-있습니다">내용이 심하게 부실해서 수정하고 있습니다.</h2>
+
+<h2 id="다음과-같이-스크롤-할-수-있는-topappbar를-만들어-보고자-합니다">다음과 같이 스크롤 할 수 있는 TopAppBar를 만들어 보고자 합니다.</h2>
+
+<p><img src="https://github.com/pknujsp/pknujsp/assets/48265129/19c9e7b8-1c58-4886-9291-dad3e2104703" alt=""></p>
+
+<h2 id="만들게된-계기">만들게된 계기</h2>
+
+<ul>
+  <li>자체적으로 LargeTopAppBar를 제공하지만 가장 큰 Title 컴포저블의 높이가 최대 <code class="language-plaintext highlighter-rouge">152dp</code>로 제한되어 있다.</li>
+  <li>아래 코드는 Compose material3의 TopAppBar를 구현한 클래스의 코드 중 일부이다. 보다시피 최대 높이인 <code class="language-plaintext highlighter-rouge">ContainerHeight</code>가 <code class="language-plaintext highlighter-rouge">152.0.dp</code>로 고정되어 있다. 이로 인해서 더 큰 높이의 Title 컴포저블을 사용하면 아래 일부가 잘리게 되는 문제가 생긴다.</li>
+  <li>또한 기본적으로 이 컴포저블은 material3의 스타일을 따른 것이므로 커스텀이 제한된다.</li>
+  <li>아래처럼 좀 더 높이가 큰 TopAppBar가 필요하고, 제한을 벗어나 커스텀이 가능한게 필요하여 구현하게 되었다.</li>
+</ul>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center">기본제공</th>
+      <th style="text-align: center">구현하고자 하는 것</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center"><img src="https://developer.android.com/static/images/jetpack/compose/components/appbar-large.svg" alt=""></td>
+      <td style="text-align: center"><img src="https://github.com/pknujsp/pknujsp/assets/48265129/fa263fe9-cfa4-4ba5-b463-70c74b4008bf" alt=""></td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// package androidx.compose.material3.tokens.TopAppBarLargeTokens.kt</span>
+<span class="k">internal</span> <span class="kd">object</span> <span class="nc">TopAppBarLargeTokens</span> <span class="p">{</span>
+    <span class="o">..</span><span class="p">.</span>
+    <span class="kd">val</span> <span class="py">ContainerHeight</span> <span class="p">=</span> <span class="mf">152.0</span><span class="p">.</span><span class="n">dp</span>
+    <span class="o">..</span><span class="p">.</span>
+<span class="p">}</span>
+
+<span class="c1">// package androidx.compose.material3.AppBar.kt</span>
+<span class="nd">@OptIn</span><span class="p">(</span><span class="nc">ExperimentalMaterial3Api</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
+<span class="nd">@Composable</span>
+<span class="k">private</span> <span class="k">fun</span> <span class="nf">TwoRowsTopAppBar</span><span class="p">(</span>
+    <span class="o">..</span><span class="p">.</span>
+    <span class="n">maxHeight</span><span class="p">:</span> <span class="nc">Dp</span><span class="p">,</span>
+    <span class="n">pinnedHeight</span><span class="p">:</span> <span class="nc">Dp</span><span class="p">,</span>
+    <span class="o">..</span><span class="p">.</span>
+<span class="p">)</span> <span class="p">{</span>
+    <span class="kd">val</span> <span class="py">pinnedHeightPx</span><span class="p">:</span> <span class="nc">Float</span> <span class="c1">// 작은 Title 컴포저블의 높이</span>
+    <span class="kd">val</span> <span class="py">maxHeightPx</span><span class="p">:</span> <span class="nc">Float</span> <span class="c1">// 허용하는 최대 Title 컴포저블의 높이</span>
+    <span class="kd">val</span> <span class="py">titleBottomPaddingPx</span><span class="p">:</span> <span class="nc">Int</span>
+    <span class="nc">LocalDensity</span><span class="p">.</span><span class="n">current</span><span class="p">.</span><span class="nf">run</span> <span class="p">{</span>
+        <span class="n">pinnedHeightPx</span> <span class="p">=</span> <span class="n">pinnedHeight</span><span class="p">.</span><span class="nf">toPx</span><span class="p">()</span>
+        <span class="n">maxHeightPx</span> <span class="p">=</span> <span class="n">maxHeight</span><span class="p">.</span><span class="nf">toPx</span><span class="p">()</span>
+        <span class="n">titleBottomPaddingPx</span> <span class="p">=</span> <span class="n">titleBottomPadding</span><span class="p">.</span><span class="nf">roundToPx</span><span class="p">()</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="구현">구현</h2>
+
+<h3 id="먼저-기본-topappbar의-구현-코드를-살펴보자">먼저 기본 TopAppBar의 구현 코드를 살펴보자.</h3>
+
+<h4 id="largetopappbar-컴포저블의-구현은-다음과-같다">
+<code class="language-plaintext highlighter-rouge">LargeTopAppBar</code> 컴포저블의 구현은 다음과 같다.</h4>
+
+<ul>
+  <li>Scaffold에서 <code class="language-plaintext highlighter-rouge">topBar</code>를 사용하여 TopAppBar를 배치할 때 이 함수를 사용한다.</li>
+  <li>실제 구현하는 컴포저블 함수를 따로 <code class="language-plaintext highlighter-rouge">TwoRowsTopAppBar</code>로 구현하고 있다.</li>
+</ul>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@ExperimentalMaterial3Api</span>
+<span class="nd">@Composable</span>
+<span class="k">fun</span> <span class="nf">LargeTopAppBar</span><span class="p">(</span>
+    <span class="n">title</span><span class="p">:</span> <span class="nd">@Composable</span> <span class="p">()</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">,</span>
+    <span class="n">modifier</span><span class="p">:</span> <span class="nc">Modifier</span> <span class="p">=</span> <span class="nc">Modifier</span><span class="p">,</span>
+    <span class="n">navigationIcon</span><span class="p">:</span> <span class="nd">@Composable</span> <span class="p">()</span> <span class="p">-&gt;</span> <span class="nc">Unit</span> <span class="p">=</span> <span class="p">{},</span>
+    <span class="n">actions</span><span class="p">:</span> <span class="nd">@Composable</span> <span class="nc">RowScope</span><span class="p">.()</span> <span class="p">-&gt;</span> <span class="nc">Unit</span> <span class="p">=</span> <span class="p">{},</span>
+    <span class="n">windowInsets</span><span class="p">:</span> <span class="nc">WindowInsets</span> <span class="p">=</span> <span class="nc">TopAppBarDefaults</span><span class="p">.</span><span class="n">windowInsets</span><span class="p">,</span>
+    <span class="n">colors</span><span class="p">:</span> <span class="nc">TopAppBarColors</span> <span class="p">=</span> <span class="nc">TopAppBarDefaults</span><span class="p">.</span><span class="nf">largeTopAppBarColors</span><span class="p">(),</span>
+    <span class="n">scrollBehavior</span><span class="p">:</span> <span class="nc">TopAppBarScrollBehavior</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>
+<span class="p">)</span> <span class="p">{</span>
+    <span class="nc">TwoRowsTopAppBar</span><span class="p">(</span>
+        <span class="n">title</span> <span class="p">=</span> <span class="n">title</span><span class="p">,</span>
+        <span class="n">titleTextStyle</span> <span class="p">=</span> <span class="nc">MaterialTheme</span><span class="p">.</span><span class="n">typography</span><span class="p">.</span><span class="nf">fromToken</span><span class="p">(</span><span class="nc">TopAppBarLargeTokens</span><span class="p">.</span><span class="nc">HeadlineFont</span><span class="p">),</span>
+        <span class="n">smallTitleTextStyle</span> <span class="p">=</span> <span class="nc">MaterialTheme</span><span class="p">.</span><span class="n">typography</span><span class="p">.</span><span class="nf">fromToken</span><span class="p">(</span><span class="nc">TopAppBarSmallTokens</span><span class="p">.</span><span class="nc">HeadlineFont</span><span class="p">),</span>
+        <span class="n">titleBottomPadding</span> <span class="p">=</span> <span class="nc">LargeTitleBottomPadding</span><span class="p">,</span>
+        <span class="n">smallTitle</span> <span class="p">=</span> <span class="n">title</span><span class="p">,</span>
+        <span class="n">modifier</span> <span class="p">=</span> <span class="n">modifier</span><span class="p">,</span>
+        <span class="n">navigationIcon</span> <span class="p">=</span> <span class="n">navigationIcon</span><span class="p">,</span>
+        <span class="n">actions</span> <span class="p">=</span> <span class="n">actions</span><span class="p">,</span>
+        <span class="n">colors</span> <span class="p">=</span> <span class="n">colors</span><span class="p">,</span>
+        <span class="n">windowInsets</span> <span class="p">=</span> <span class="n">windowInsets</span><span class="p">,</span>
+        <span class="n">maxHeight</span> <span class="p">=</span> <span class="nc">TopAppBarLargeTokens</span><span class="p">.</span><span class="nc">ContainerHeight</span><span class="p">,</span>
+        <span class="n">pinnedHeight</span> <span class="p">=</span> <span class="nc">TopAppBarSmallTokens</span><span class="p">.</span><span class="nc">ContainerHeight</span><span class="p">,</span>
+        <span class="n">scrollBehavior</span> <span class="p">=</span> <span class="n">scrollBehavior</span>
+    <span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="tworowstopappbar은-다음과-같이-구현되어-있다">
+<code class="language-plaintext highlighter-rouge">TwoRowsTopAppBar</code>은 다음과 같이 구현되어 있다.</h4>
+
+<ul>
+  <li>먼저 높이를 체크하고</li>
+  <li>dp인 값을 px로 변환한다.</li>
+  <li>하단 타이틀의 접히고 펼치는 동작이 자연스럽게 이루어지도록 드래그 시 y축의 드래그 양의 상한을 조정한다.</li>
+  <li>앱 바가 접힌 상태를 <code class="language-plaintext highlighter-rouge">0.0 - 1.0</code> 사이의 값으로 결정한다.</li>
+  <li>컴포저블의 경우 Surface에 Column을 배치하고 순서대로 상단 타이틀과 하단 타이틀을 배치한다.</li>
+</ul>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Composable</span>
+<span class="k">private</span> <span class="k">fun</span> <span class="nf">TwoRowsTopAppBar</span><span class="p">(</span>
+    <span class="n">modifier</span><span class="p">:</span> <span class="nc">Modifier</span> <span class="p">=</span> <span class="nc">Modifier</span><span class="p">,</span>
+    <span class="n">title</span><span class="p">:</span> <span class="nd">@Composable</span> <span class="p">()</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">,</span>
+    <span class="n">titleTextStyle</span><span class="p">:</span> <span class="nc">TextStyle</span><span class="p">,</span>
+    <span class="n">titleBottomPadding</span><span class="p">:</span> <span class="nc">Dp</span><span class="p">,</span>
+    <span class="n">smallTitle</span><span class="p">:</span> <span class="nd">@Composable</span> <span class="p">()</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">,</span>
+    <span class="n">smallTitleTextStyle</span><span class="p">:</span> <span class="nc">TextStyle</span><span class="p">,</span>
+    <span class="n">navigationIcon</span><span class="p">:</span> <span class="nd">@Composable</span> <span class="p">()</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">,</span>
+    <span class="n">actions</span><span class="p">:</span> <span class="nd">@Composable</span> <span class="nc">RowScope</span><span class="p">.()</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">,</span>
+    <span class="n">windowInsets</span><span class="p">:</span> <span class="nc">WindowInsets</span><span class="p">,</span>
+    <span class="n">colors</span><span class="p">:</span> <span class="nc">TopAppBarColors</span><span class="p">,</span>
+    <span class="n">maxHeight</span><span class="p">:</span> <span class="nc">Dp</span><span class="p">,</span>
+    <span class="n">pinnedHeight</span><span class="p">:</span> <span class="nc">Dp</span><span class="p">,</span>
+    <span class="n">scrollBehavior</span><span class="p">:</span> <span class="nc">TopAppBarScrollBehavior</span><span class="p">?</span>
+<span class="p">)</span> <span class="p">{</span> 
+    <span class="c1">// maxHeight가 pinnedHeight 이하일 경우 예외를 던진다.</span>
+    <span class="c1">// 이 부분은 private 내부 함수이므로, 개발자가 직접 API에서 접근이 불가능하다.</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">maxHeight</span> <span class="p">&lt;=</span> <span class="n">pinnedHeight</span><span class="p">)</span> <span class="p">{</span> <span class="o">..</span><span class="p">.</span> <span class="p">}</span>
+
+    <span class="c1">// 높이를 픽셀로 변환</span>
+    <span class="kd">val</span> <span class="py">pinnedHeightPx</span><span class="p">:</span> <span class="nc">Float</span>
+    <span class="kd">val</span> <span class="py">maxHeightPx</span><span class="p">:</span> <span class="nc">Float</span>
+    <span class="kd">val</span> <span class="py">titleBottomPaddingPx</span><span class="p">:</span> <span class="nc">Int</span>
+    <span class="nc">LocalDensity</span><span class="p">.</span><span class="n">current</span><span class="p">.</span><span class="nf">run</span> <span class="p">{</span>
+        <span class="n">pinnedHeightPx</span> <span class="p">=</span> <span class="n">pinnedHeight</span><span class="p">.</span><span class="nf">toPx</span><span class="p">()</span>
+        <span class="n">maxHeightPx</span> <span class="p">=</span> <span class="n">maxHeight</span><span class="p">.</span><span class="nf">toPx</span><span class="p">()</span>
+        <span class="n">titleBottomPaddingPx</span> <span class="p">=</span> <span class="n">titleBottomPadding</span><span class="p">.</span><span class="nf">roundToPx</span><span class="p">()</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 앱 바가 드래그 될 때 접히기 시작해야 하는 y축 드래그 양의 상한을 조정해서 상단, 하단 타이틀 영역이 올바르게 보이도록 한다.</span>
+    <span class="nc">SideEffect</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">scrollBehavior</span><span class="o">?.</span><span class="n">state</span><span class="o">?.</span><span class="n">heightOffsetLimit</span> <span class="p">!=</span> <span class="n">pinnedHeightPx</span> <span class="p">-</span> <span class="n">maxHeightPx</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">scrollBehavior</span><span class="o">?.</span><span class="n">state</span><span class="o">?.</span><span class="n">heightOffsetLimit</span> <span class="p">=</span> <span class="n">pinnedHeightPx</span> <span class="p">-</span> <span class="n">maxHeightPx</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 스크롤 동작이 발생할 때, 상하단 타이틀의 가시성을 조정하기 위한 값으로 사용된다.</span>
+    <span class="c1">// 이 값이 0.5f 라면 반 정도 접힌 상태, 1.0f 라면 완전히 펼쳐진 상태를 의미한다.</span>
+    <span class="kd">val</span> <span class="py">colorTransitionFraction</span> <span class="p">=</span> <span class="n">scrollBehavior</span><span class="o">?.</span><span class="n">state</span><span class="o">?.</span><span class="n">collapsedFraction</span> <span class="o">?:</span> <span class="mf">0f</span>
+    <span class="kd">val</span> <span class="py">appBarContainerColor</span> <span class="p">=</span> <span class="n">colors</span><span class="p">.</span><span class="nf">containerColor</span><span class="p">(</span><span class="n">colorTransitionFraction</span><span class="p">)</span>
+
+    <span class="c1">// 액션 아이콘들을 Row로 묶어서 표시한다.</span>
+    <span class="kd">val</span> <span class="py">actionsRow</span> <span class="p">=</span> <span class="nd">@Composable</span> <span class="p">{</span>
+        <span class="nc">Row</span><span class="p">(</span>
+            <span class="n">horizontalArrangement</span> <span class="p">=</span> <span class="nc">Arrangement</span><span class="p">.</span><span class="nc">End</span><span class="p">,</span>
+            <span class="n">verticalAlignment</span> <span class="p">=</span> <span class="nc">Alignment</span><span class="p">.</span><span class="nc">CenterVertically</span><span class="p">,</span>
+            <span class="n">content</span> <span class="p">=</span> <span class="n">actions</span>
+        <span class="p">)</span>
+    <span class="p">}</span>
+    <span class="kd">val</span> <span class="py">topTitleAlpha</span> <span class="p">=</span> <span class="nc">TopTitleAlphaEasing</span><span class="p">.</span><span class="nf">transform</span><span class="p">(</span><span class="n">colorTransitionFraction</span><span class="p">)</span>
+    <span class="kd">val</span> <span class="py">bottomTitleAlpha</span> <span class="p">=</span> <span class="mf">1f</span> <span class="p">-</span> <span class="n">colorTransitionFraction</span>
+
+    <span class="c1">// 하단 타이틀을 표시할지 여부를 결정하는 기준 값</span>
+    <span class="c1">// 0.5f 이하일 경우 상단 타이틀을 표시하고, 그렇지 않을 경우 하단 타이틀을 표시한다.</span>
+    <span class="kd">val</span> <span class="py">hideTopRowSemantics</span> <span class="p">=</span> <span class="n">colorTransitionFraction</span> <span class="p">&lt;</span> <span class="mf">0.5f</span>
+    <span class="kd">val</span> <span class="py">hideBottomRowSemantics</span> <span class="p">=</span> <span class="p">!</span><span class="n">hideTopRowSemantics</span>
+
+    <span class="c1">// 앱 바에 드래그 동작을 가능하게 한다.</span>
+    <span class="kd">val</span> <span class="py">appBarDragModifier</span> <span class="p">=</span> <span class="k">if</span> <span class="p">(</span><span class="n">scrollBehavior</span> <span class="p">!=</span> <span class="k">null</span> <span class="p">&amp;&amp;</span> <span class="p">!</span><span class="n">scrollBehavior</span><span class="p">.</span><span class="n">isPinned</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nc">Modifier</span><span class="p">.</span><span class="nf">draggable</span><span class="p">(</span>
+            <span class="n">orientation</span> <span class="p">=</span> <span class="nc">Orientation</span><span class="p">.</span><span class="nc">Vertical</span><span class="p">,</span>
+            <span class="n">state</span> <span class="p">=</span> <span class="nf">rememberDraggableState</span> <span class="p">{</span> <span class="n">delta</span> <span class="p">-&gt;</span>
+                <span class="n">scrollBehavior</span><span class="p">.</span><span class="n">state</span><span class="p">.</span><span class="n">heightOffset</span> <span class="p">=</span> <span class="n">scrollBehavior</span><span class="p">.</span><span class="n">state</span><span class="p">.</span><span class="n">heightOffset</span> <span class="p">+</span> <span class="n">delta</span>
+            <span class="p">},</span>
+            <span class="n">onDragStopped</span> <span class="p">=</span> <span class="p">{</span> <span class="n">velocity</span> <span class="p">-&gt;</span>
+                <span class="c1">// 드래그가 멈췄을 때 앱 바의 확장 또는 접힘 동작을 결정한다.</span>
+                <span class="c1">// colorTransitionFraction 값이 0.5f를 기준으로 접힐지 펼쳐질지 결정한다.</span>
+                <span class="c1">// 이 때 애니메이션이 발생하게 된다.</span>
+                <span class="nf">settleAppBar</span><span class="p">(</span>
+                    <span class="n">scrollBehavior</span><span class="p">.</span><span class="n">state</span><span class="p">,</span>
+                    <span class="n">velocity</span><span class="p">,</span>
+                    <span class="n">scrollBehavior</span><span class="p">.</span><span class="n">flingAnimationSpec</span><span class="p">,</span>
+                    <span class="n">scrollBehavior</span><span class="p">.</span><span class="n">snapAnimationSpec</span>
+                <span class="p">)</span>
+            <span class="p">}</span>
+        <span class="p">)</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="nc">Modifier</span>
+    <span class="p">}</span>
+
+    <span class="nc">Surface</span><span class="p">(</span><span class="n">modifier</span> <span class="p">=</span> <span class="n">modifier</span><span class="p">.</span><span class="nf">then</span><span class="p">(</span><span class="n">appBarDragModifier</span><span class="p">),</span> <span class="n">color</span> <span class="p">=</span> <span class="n">appBarContainerColor</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nc">Column</span> <span class="p">{</span>
+            <span class="nc">TopAppBarLayout</span><span class="p">(</span>
+                <span class="n">modifier</span> <span class="p">=</span> <span class="nc">Modifier</span>
+                    <span class="p">.</span><span class="nf">windowInsetsPadding</span><span class="p">(</span><span class="n">windowInsets</span><span class="p">)</span>
+                    <span class="p">.</span><span class="nf">clipToBounds</span><span class="p">(),</span>
+                <span class="n">heightPx</span> <span class="p">=</span> <span class="n">pinnedHeightPx</span><span class="p">,</span>
+                <span class="n">navigationIconContentColor</span> <span class="p">=</span>
+                <span class="n">colors</span><span class="p">.</span><span class="n">navigationIconContentColor</span><span class="p">,</span>
+                <span class="n">titleContentColor</span> <span class="p">=</span> <span class="n">colors</span><span class="p">.</span><span class="n">titleContentColor</span><span class="p">,</span>
+                <span class="n">actionIconContentColor</span> <span class="p">=</span>
+                <span class="n">colors</span><span class="p">.</span><span class="n">actionIconContentColor</span><span class="p">,</span>
+                <span class="n">title</span> <span class="p">=</span> <span class="n">smallTitle</span><span class="p">,</span>
+                <span class="n">titleTextStyle</span> <span class="p">=</span> <span class="n">smallTitleTextStyle</span><span class="p">,</span>
+                <span class="n">titleAlpha</span> <span class="p">=</span> <span class="n">topTitleAlpha</span><span class="p">,</span>
+                <span class="n">titleVerticalArrangement</span> <span class="p">=</span> <span class="nc">Arrangement</span><span class="p">.</span><span class="nc">Center</span><span class="p">,</span>
+                <span class="n">titleHorizontalArrangement</span> <span class="p">=</span> <span class="nc">Arrangement</span><span class="p">.</span><span class="nc">Start</span><span class="p">,</span>
+                <span class="n">titleBottomPadding</span> <span class="p">=</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="n">hideTitleSemantics</span> <span class="p">=</span> <span class="n">hideTopRowSemantics</span><span class="p">,</span>
+                <span class="n">navigationIcon</span> <span class="p">=</span> <span class="n">navigationIcon</span><span class="p">,</span>
+                <span class="n">actions</span> <span class="p">=</span> <span class="n">actionsRow</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="nc">TopAppBarLayout</span><span class="p">(</span>
+                <span class="n">modifier</span> <span class="p">=</span> <span class="nc">Modifier</span>
+                    <span class="p">.</span><span class="nf">windowInsetsPadding</span><span class="p">(</span><span class="n">windowInsets</span><span class="p">.</span><span class="nf">only</span><span class="p">(</span><span class="nc">WindowInsetsSides</span><span class="p">.</span><span class="nc">Horizontal</span><span class="p">))</span>
+                    <span class="p">.</span><span class="nf">clipToBounds</span><span class="p">(),</span>
+                <span class="n">heightPx</span> <span class="p">=</span> <span class="n">maxHeightPx</span> <span class="p">-</span> <span class="n">pinnedHeightPx</span> <span class="p">+</span> <span class="p">(</span><span class="n">scrollBehavior</span><span class="o">?.</span><span class="n">state</span><span class="o">?.</span><span class="n">heightOffset</span>
+                    <span class="o">?:</span> <span class="mf">0f</span><span class="p">),</span>
+                <span class="n">navigationIconContentColor</span> <span class="p">=</span>
+                <span class="n">colors</span><span class="p">.</span><span class="n">navigationIconContentColor</span><span class="p">,</span>
+                <span class="n">titleContentColor</span> <span class="p">=</span> <span class="n">colors</span><span class="p">.</span><span class="n">titleContentColor</span><span class="p">,</span>
+                <span class="n">actionIconContentColor</span> <span class="p">=</span>
+                <span class="n">colors</span><span class="p">.</span><span class="n">actionIconContentColor</span><span class="p">,</span>
+                <span class="n">title</span> <span class="p">=</span> <span class="n">title</span><span class="p">,</span>
+                <span class="n">titleTextStyle</span> <span class="p">=</span> <span class="n">titleTextStyle</span><span class="p">,</span>
+                <span class="n">titleAlpha</span> <span class="p">=</span> <span class="n">bottomTitleAlpha</span><span class="p">,</span>
+                <span class="n">titleVerticalArrangement</span> <span class="p">=</span> <span class="nc">Arrangement</span><span class="p">.</span><span class="nc">Bottom</span><span class="p">,</span>
+                <span class="n">titleHorizontalArrangement</span> <span class="p">=</span> <span class="nc">Arrangement</span><span class="p">.</span><span class="nc">Start</span><span class="p">,</span>
+                <span class="n">titleBottomPadding</span> <span class="p">=</span> <span class="n">titleBottomPaddingPx</span><span class="p">,</span>
+                <span class="n">hideTitleSemantics</span> <span class="p">=</span> <span class="n">hideBottomRowSemantics</span><span class="p">,</span>
+                <span class="n">navigationIcon</span> <span class="p">=</span> <span class="p">{},</span>
+                <span class="n">actions</span> <span class="p">=</span> <span class="p">{}</span>
+            <span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+ <span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="topappbarlayout은-다음과-같이-구현되어-있다">TopAppBarLayout은 다음과 같이 구현되어 있다.</h4>
+
+<ul>
+  <li>
+<code class="language-plaintext highlighter-rouge">Layout</code>을 사용하여 <code class="language-plaintext highlighter-rouge">TopAppBar</code>의 레이아웃을 구성한다.</li>
+  <li>네비게이션 아이콘, 액션, 타이틀을 모두 따로 <code class="language-plaintext highlighter-rouge">Box</code>로 감싼다.</li>
+  <li>각각의 <code class="language-plaintext highlighter-rouge">Box</code>에 <code class="language-plaintext highlighter-rouge">layoutId</code>를 부여하여 각각의 <code class="language-plaintext highlighter-rouge">Box</code>를 구분한다.</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">layout</code> 함수를 사용하여 각각의 컴포넌트의 크기에 따라 <code class="language-plaintext highlighter-rouge">Box</code>의 위치를 결정한다.</li>
+  <li>하단 타이틀이 접히고 펼쳐지는 동작을 자연스럽게 하기 위해 <code class="language-plaintext highlighter-rouge">alpha</code>값을 가지고 투명도를 조절하는 방식을 사용한다.</li>
+</ul>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Composable</span>
+<span class="k">private</span> <span class="k">fun</span> <span class="nf">TopAppBarLayout</span><span class="p">(</span>
+    <span class="n">modifier</span><span class="p">:</span> <span class="nc">Modifier</span><span class="p">,</span>
+    <span class="n">heightPx</span><span class="p">:</span> <span class="nc">Float</span><span class="p">,</span>
+    <span class="n">navigationIconContentColor</span><span class="p">:</span> <span class="nc">Color</span><span class="p">,</span>
+    <span class="n">titleContentColor</span><span class="p">:</span> <span class="nc">Color</span><span class="p">,</span>
+    <span class="n">actionIconContentColor</span><span class="p">:</span> <span class="nc">Color</span><span class="p">,</span>
+    <span class="n">title</span><span class="p">:</span> <span class="nd">@Composable</span> <span class="p">()</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">,</span>
+    <span class="n">titleTextStyle</span><span class="p">:</span> <span class="nc">TextStyle</span><span class="p">,</span>
+    <span class="n">titleAlpha</span><span class="p">:</span> <span class="nc">Float</span><span class="p">,</span>
+    <span class="n">titleVerticalArrangement</span><span class="p">:</span> <span class="nc">Arrangement</span><span class="p">.</span><span class="nc">Vertical</span><span class="p">,</span>
+    <span class="n">titleHorizontalArrangement</span><span class="p">:</span> <span class="nc">Arrangement</span><span class="p">.</span><span class="nc">Horizontal</span><span class="p">,</span>
+    <span class="n">titleBottomPadding</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span>
+    <span class="n">hideTitleSemantics</span><span class="p">:</span> <span class="nc">Boolean</span><span class="p">,</span>
+    <span class="n">navigationIcon</span><span class="p">:</span> <span class="nd">@Composable</span> <span class="p">()</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">,</span>
+    <span class="n">actions</span><span class="p">:</span> <span class="nd">@Composable</span> <span class="p">()</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">,</span>
+<span class="p">)</span> <span class="p">{</span>
+    <span class="nc">Layout</span><span class="p">(</span>
+        <span class="p">{</span>
+            <span class="nc">Box</span><span class="p">(</span>
+                <span class="nc">Modifier</span>
+                    <span class="p">.</span><span class="nf">layoutId</span><span class="p">(</span><span class="s">"navigationIcon"</span><span class="p">)</span>
+                    <span class="p">.</span><span class="nf">padding</span><span class="p">(</span><span class="n">start</span> <span class="p">=</span> <span class="nc">TopAppBarHorizontalPadding</span><span class="p">)</span>
+            <span class="p">)</span> <span class="p">{</span>
+                <span class="nc">CompositionLocalProvider</span><span class="p">(</span>
+                    <span class="nc">LocalContentColor</span> <span class="n">provides</span> <span class="n">navigationIconContentColor</span><span class="p">,</span>
+                    <span class="n">content</span> <span class="p">=</span> <span class="n">navigationIcon</span>
+                <span class="p">)</span>
+            <span class="p">}</span>
+            <span class="nc">Box</span><span class="p">(</span>
+                <span class="nc">Modifier</span>
+                    <span class="p">.</span><span class="nf">layoutId</span><span class="p">(</span><span class="s">"title"</span><span class="p">)</span>
+                    <span class="p">.</span><span class="nf">padding</span><span class="p">(</span><span class="n">horizontal</span> <span class="p">=</span> <span class="nc">TopAppBarHorizontalPadding</span><span class="p">)</span>
+                    <span class="p">.</span><span class="nf">then</span><span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="n">hideTitleSemantics</span><span class="p">)</span> <span class="nc">Modifier</span><span class="p">.</span><span class="nf">clearAndSetSemantics</span> <span class="p">{</span> <span class="p">}</span> <span class="k">else</span> <span class="nc">Modifier</span><span class="p">)</span>
+                    <span class="p">.</span><span class="nf">graphicsLayer</span><span class="p">(</span><span class="n">alpha</span> <span class="p">=</span> <span class="n">titleAlpha</span><span class="p">)</span>
+            <span class="p">)</span> <span class="p">{</span>
+                <span class="nc">ProvideContentColorTextStyle</span><span class="p">(</span>
+                    <span class="n">contentColor</span> <span class="p">=</span> <span class="n">titleContentColor</span><span class="p">,</span>
+                    <span class="n">textStyle</span> <span class="p">=</span> <span class="n">titleTextStyle</span><span class="p">,</span>
+                    <span class="n">content</span> <span class="p">=</span> <span class="n">title</span><span class="p">)</span>
+            <span class="p">}</span>
+            <span class="nc">Box</span><span class="p">(</span>
+                <span class="nc">Modifier</span>
+                    <span class="p">.</span><span class="nf">layoutId</span><span class="p">(</span><span class="s">"actionIcons"</span><span class="p">)</span>
+                    <span class="p">.</span><span class="nf">padding</span><span class="p">(</span><span class="n">end</span> <span class="p">=</span> <span class="nc">TopAppBarHorizontalPadding</span><span class="p">)</span>
+            <span class="p">)</span> <span class="p">{</span>
+                <span class="nc">CompositionLocalProvider</span><span class="p">(</span>
+                    <span class="nc">LocalContentColor</span> <span class="n">provides</span> <span class="n">actionIconContentColor</span><span class="p">,</span>
+                    <span class="n">content</span> <span class="p">=</span> <span class="n">actions</span>
+                <span class="p">)</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="n">modifier</span> <span class="p">=</span> <span class="n">modifier</span>
+    <span class="p">)</span> <span class="p">{</span> <span class="n">measurables</span><span class="p">,</span> <span class="n">constraints</span> <span class="p">-&gt;</span>
+        <span class="kd">val</span> <span class="py">navigationIconPlaceable</span> <span class="p">=</span>
+            <span class="n">measurables</span><span class="p">.</span><span class="nf">fastFirst</span> <span class="p">{</span> <span class="n">it</span><span class="p">.</span><span class="n">layoutId</span> <span class="p">==</span> <span class="s">"navigationIcon"</span> <span class="p">}</span>
+                <span class="p">.</span><span class="nf">measure</span><span class="p">(</span><span class="n">constraints</span><span class="p">.</span><span class="nf">copy</span><span class="p">(</span><span class="n">minWidth</span> <span class="p">=</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="kd">val</span> <span class="py">actionIconsPlaceable</span> <span class="p">=</span>
+            <span class="n">measurables</span><span class="p">.</span><span class="nf">fastFirst</span> <span class="p">{</span> <span class="n">it</span><span class="p">.</span><span class="n">layoutId</span> <span class="p">==</span> <span class="s">"actionIcons"</span> <span class="p">}</span>
+                <span class="p">.</span><span class="nf">measure</span><span class="p">(</span><span class="n">constraints</span><span class="p">.</span><span class="nf">copy</span><span class="p">(</span><span class="n">minWidth</span> <span class="p">=</span> <span class="mi">0</span><span class="p">))</span>
+
+        <span class="kd">val</span> <span class="py">maxTitleWidth</span> <span class="p">=</span> <span class="k">if</span> <span class="p">(</span><span class="n">constraints</span><span class="p">.</span><span class="n">maxWidth</span> <span class="p">==</span> <span class="nc">Constraints</span><span class="p">.</span><span class="nc">Infinity</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">constraints</span><span class="p">.</span><span class="n">maxWidth</span>
+        <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+            <span class="p">(</span><span class="n">constraints</span><span class="p">.</span><span class="n">maxWidth</span> <span class="p">-</span> <span class="n">navigationIconPlaceable</span><span class="p">.</span><span class="n">width</span> <span class="p">-</span> <span class="n">actionIconsPlaceable</span><span class="p">.</span><span class="n">width</span><span class="p">)</span>
+                <span class="p">.</span><span class="nf">coerceAtLeast</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="kd">val</span> <span class="py">titlePlaceable</span> <span class="p">=</span>
+            <span class="n">measurables</span><span class="p">.</span><span class="nf">fastFirst</span> <span class="p">{</span> <span class="n">it</span><span class="p">.</span><span class="n">layoutId</span> <span class="p">==</span> <span class="s">"title"</span> <span class="p">}</span>
+                <span class="p">.</span><span class="nf">measure</span><span class="p">(</span><span class="n">constraints</span><span class="p">.</span><span class="nf">copy</span><span class="p">(</span><span class="n">minWidth</span> <span class="p">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">maxWidth</span> <span class="p">=</span> <span class="n">maxTitleWidth</span><span class="p">))</span>
+
+        <span class="kd">val</span> <span class="py">titleBaseline</span> <span class="p">=</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">titlePlaceable</span><span class="p">[</span><span class="nc">LastBaseline</span><span class="p">]</span> <span class="p">!=</span> <span class="nc">AlignmentLine</span><span class="p">.</span><span class="nc">Unspecified</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">titlePlaceable</span><span class="p">[</span><span class="nc">LastBaseline</span><span class="p">]</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                <span class="mi">0</span>
+            <span class="p">}</span>
+
+        <span class="kd">val</span> <span class="py">layoutHeight</span> <span class="p">=</span> <span class="k">if</span> <span class="p">(</span><span class="n">heightPx</span><span class="p">.</span><span class="nf">isNaN</span><span class="p">())</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">heightPx</span><span class="p">.</span><span class="nf">roundToInt</span><span class="p">()</span>
+
+        <span class="nf">layout</span><span class="p">(</span><span class="n">constraints</span><span class="p">.</span><span class="n">maxWidth</span><span class="p">,</span> <span class="n">layoutHeight</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">navigationIconPlaceable</span><span class="p">.</span><span class="nf">placeRelative</span><span class="p">(</span>
+                <span class="n">x</span> <span class="p">=</span> <span class="mi">0</span><span class="p">,</span>
+                <span class="n">y</span> <span class="p">=</span> <span class="p">(</span><span class="n">layoutHeight</span> <span class="p">-</span> <span class="n">navigationIconPlaceable</span><span class="p">.</span><span class="n">height</span><span class="p">)</span> <span class="p">/</span> <span class="mi">2</span>
+            <span class="p">)</span>
+
+            <span class="n">titlePlaceable</span><span class="p">.</span><span class="nf">placeRelative</span><span class="p">(</span>
+                <span class="n">x</span> <span class="p">=</span> <span class="k">when</span> <span class="p">(</span><span class="n">titleHorizontalArrangement</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nc">Arrangement</span><span class="p">.</span><span class="nc">Center</span> <span class="p">-&gt;</span> <span class="p">{</span>
+                        <span class="kd">var</span> <span class="py">baseX</span> <span class="p">=</span> <span class="p">(</span><span class="n">constraints</span><span class="p">.</span><span class="n">maxWidth</span> <span class="p">-</span> <span class="n">titlePlaceable</span><span class="p">.</span><span class="n">width</span><span class="p">)</span> <span class="p">/</span> <span class="mi">2</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="n">baseX</span> <span class="p">&lt;</span> <span class="n">navigationIconPlaceable</span><span class="p">.</span><span class="n">width</span><span class="p">)</span> <span class="p">{</span>
+                            <span class="n">baseX</span> <span class="p">+=</span> <span class="p">(</span><span class="n">navigationIconPlaceable</span><span class="p">.</span><span class="n">width</span> <span class="p">-</span> <span class="n">baseX</span><span class="p">)</span>
+                        <span class="p">}</span> <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">baseX</span> <span class="p">+</span> <span class="n">titlePlaceable</span><span class="p">.</span><span class="n">width</span> <span class="p">&gt;</span>
+                            <span class="n">constraints</span><span class="p">.</span><span class="n">maxWidth</span> <span class="p">-</span> <span class="n">actionIconsPlaceable</span><span class="p">.</span><span class="n">width</span>
+                        <span class="p">)</span> <span class="p">{</span>
+                            <span class="n">baseX</span> <span class="p">+=</span> <span class="p">((</span><span class="n">constraints</span><span class="p">.</span><span class="n">maxWidth</span> <span class="p">-</span> <span class="n">actionIconsPlaceable</span><span class="p">.</span><span class="n">width</span><span class="p">)</span> <span class="p">-</span>
+                                <span class="p">(</span><span class="n">baseX</span> <span class="p">+</span> <span class="n">titlePlaceable</span><span class="p">.</span><span class="n">width</span><span class="p">))</span>
+                        <span class="p">}</span>
+                        <span class="n">baseX</span>
+                    <span class="p">}</span>
+
+                    <span class="nc">Arrangement</span><span class="p">.</span><span class="nc">End</span> <span class="p">-&gt;</span>
+                        <span class="n">constraints</span><span class="p">.</span><span class="n">maxWidth</span> <span class="p">-</span> <span class="n">titlePlaceable</span><span class="p">.</span><span class="n">width</span> <span class="p">-</span> <span class="n">actionIconsPlaceable</span><span class="p">.</span><span class="n">width</span>
+                    <span class="k">else</span> <span class="p">-&gt;</span> <span class="nf">max</span><span class="p">(</span><span class="nc">TopAppBarTitleInset</span><span class="p">.</span><span class="nf">roundToPx</span><span class="p">(),</span> <span class="n">navigationIconPlaceable</span><span class="p">.</span><span class="n">width</span><span class="p">)</span>
+                <span class="p">},</span>
+                <span class="n">y</span> <span class="p">=</span> <span class="k">when</span> <span class="p">(</span><span class="n">titleVerticalArrangement</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nc">Arrangement</span><span class="p">.</span><span class="nc">Center</span> <span class="p">-&gt;</span> <span class="p">(</span><span class="n">layoutHeight</span> <span class="p">-</span> <span class="n">titlePlaceable</span><span class="p">.</span><span class="n">height</span><span class="p">)</span> <span class="p">/</span> <span class="mi">2</span>
+                    <span class="nc">Arrangement</span><span class="p">.</span><span class="nc">Bottom</span> <span class="p">-&gt;</span>
+                        <span class="k">if</span> <span class="p">(</span><span class="n">titleBottomPadding</span> <span class="p">==</span> <span class="mi">0</span><span class="p">)</span> <span class="n">layoutHeight</span> <span class="p">-</span> <span class="n">titlePlaceable</span><span class="p">.</span><span class="n">height</span>
+                        <span class="k">else</span> <span class="n">layoutHeight</span> <span class="p">-</span> <span class="n">titlePlaceable</span><span class="p">.</span><span class="n">height</span> <span class="p">-</span> <span class="nf">max</span><span class="p">(</span>
+                            <span class="mi">0</span><span class="p">,</span>
+                            <span class="n">titleBottomPadding</span> <span class="p">-</span> <span class="n">titlePlaceable</span><span class="p">.</span><span class="n">height</span> <span class="p">+</span> <span class="n">titleBaseline</span>
+                        <span class="p">)</span>
+                    <span class="k">else</span> <span class="p">-&gt;</span> <span class="mi">0</span>
+                <span class="p">}</span>
+            <span class="p">)</span>
+
+            <span class="n">actionIconsPlaceable</span><span class="p">.</span><span class="nf">placeRelative</span><span class="p">(</span>
+                <span class="n">x</span> <span class="p">=</span> <span class="n">constraints</span><span class="p">.</span><span class="n">maxWidth</span> <span class="p">-</span> <span class="n">actionIconsPlaceable</span><span class="p">.</span><span class="n">width</span><span class="p">,</span>
+                <span class="n">y</span> <span class="p">=</span> <span class="p">(</span><span class="n">layoutHeight</span> <span class="p">-</span> <span class="n">actionIconsPlaceable</span><span class="p">.</span><span class="n">height</span><span class="p">)</span> <span class="p">/</span> <span class="mi">2</span>
+            <span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="기본적인-레이아웃은-topappbar의-형식을-그대로-따르므로-material3에-구현된-코드를-일부-가져왔다">기본적인 레이아웃은 TopAppBar의 형식을 그대로 따르므로, material3에 구현된 코드를 일부 가져왔다.</h3>
+
+<ul>
+  <li>그대로 따오지는 않았으며, 일부 수정하여 사용하였다.</li>
+</ul>
+
+<h4 id="--상단-하단-타이블의-배치-방식을-수정하였다">- 상단, 하단 타이블의 배치 방식을 수정하였다.</h4>
+
+<p>Column에 상단, 하단 타이틀이 배치된 부분을 수정하여 단일 컴포저블 함수로 만들었다.
+왜냐하면, 상단, 하단 타이틀의 배치 방식이 다르지 않고, 상단 타이틀이 접히고 펼쳐지는 동작을 자연스럽게 하기 위해 <code class="language-plaintext highlighter-rouge">alpha</code>값을 가지고 투명도를 조절하는 방식을 사용하기 때문이다. 그래서 단일 함수로 만들어서 코드 길이를 줄이는 방향이 좋다고 판단하였다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="kd">val</span> <span class="py">topAppBarHorizontalPadding</span> <span class="p">=</span> <span class="mi">4</span><span class="p">.</span><span class="n">dp</span>
+<span class="k">private</span> <span class="kd">val</span> <span class="py">topAppBarTitleInset</span> <span class="p">=</span> <span class="mi">16</span><span class="p">.</span><span class="n">dp</span>
+
+<span class="nd">@Composable</span>
+<span class="k">fun</span> <span class="nf">CustomTopAppBar</span><span class="p">(</span>
+    <span class="n">modifier</span><span class="p">:</span> <span class="nc">Modifier</span> <span class="p">=</span> <span class="nc">Modifier</span><span class="p">,</span>
+    <span class="n">windowInsets</span><span class="p">:</span> <span class="nc">WindowInsets</span><span class="p">,</span>
+    <span class="n">colors</span><span class="p">:</span> <span class="nc">CustomTopAppBarColors</span><span class="p">,</span>
+    <span class="n">scrollState</span><span class="p">:</span> <span class="nc">ScrollState</span><span class="p">,</span>
+    <span class="n">bigTitle</span><span class="p">:</span> <span class="nd">@Composable</span> <span class="p">()</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">,</span>
+    <span class="n">smallTitle</span><span class="p">:</span> <span class="nd">@Composable</span> <span class="p">()</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">,</span>
+    <span class="n">navigationIcon</span><span class="p">:</span> <span class="nd">@Composable</span> <span class="p">(()</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">)?</span> <span class="p">=</span> <span class="k">null</span><span class="p">,</span>
+    <span class="n">actions</span><span class="p">:</span> <span class="nd">@Composable</span> <span class="p">(</span><span class="nc">RowScope</span><span class="p">.()</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">)?</span> <span class="p">=</span> <span class="k">null</span><span class="p">,</span>
+<span class="p">)</span> <span class="p">{</span>
+    <span class="kd">val</span> <span class="py">coroutineScope</span> <span class="p">=</span> <span class="nf">rememberCoroutineScope</span><span class="p">()</span>
+    <span class="kd">var</span> <span class="py">bigTitleHeight</span> <span class="k">by</span> <span class="nf">remember</span> <span class="p">{</span> <span class="nf">mutableIntStateOf</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="p">}</span>
+    <span class="kd">val</span> <span class="py">collapsedFraction</span> <span class="k">by</span> <span class="nf">remember</span> <span class="p">{</span>
+        <span class="nf">derivedStateOf</span> <span class="p">{</span> <span class="k">if</span> <span class="p">(</span><span class="n">scrollState</span><span class="p">.</span><span class="n">value</span> <span class="p">&lt;</span> <span class="n">bigTitleHeight</span><span class="p">)</span> <span class="n">scrollState</span><span class="p">.</span><span class="n">value</span> <span class="p">/</span> <span class="n">bigTitleHeight</span><span class="p">.</span><span class="nf">toFloat</span><span class="p">()</span> <span class="k">else</span> <span class="mf">1f</span> <span class="p">}</span>
+    <span class="p">}</span>
+    <span class="kd">val</span> <span class="py">nestedScrollConnection</span> <span class="p">=</span> <span class="nf">remember</span> <span class="p">{</span>
+        <span class="kd">object</span> <span class="err">: </span><span class="nc">NestedScrollConnection</span> <span class="p">{</span>
+            <span class="k">override</span> <span class="k">suspend</span> <span class="k">fun</span> <span class="nf">onPostFling</span><span class="p">(</span><span class="n">consumed</span><span class="p">:</span> <span class="nc">Velocity</span><span class="p">,</span> <span class="n">available</span><span class="p">:</span> <span class="nc">Velocity</span><span class="p">):</span> <span class="nc">Velocity</span> <span class="p">{</span>
+                <span class="n">coroutineScope</span><span class="p">.</span><span class="nf">onScroll</span><span class="p">(</span><span class="n">scrollState</span><span class="p">,</span> <span class="n">bigTitleHeight</span><span class="p">,</span> <span class="n">collapsedFraction</span><span class="p">)</span>
+                <span class="k">return</span> <span class="k">super</span><span class="p">.</span><span class="nf">onPostFling</span><span class="p">(</span><span class="n">consumed</span><span class="p">,</span> <span class="n">available</span><span class="p">)</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">scrollState</span><span class="p">.</span><span class="n">isScrollInProgress</span> <span class="p">&amp;&amp;</span> <span class="n">scrollState</span><span class="p">.</span><span class="n">value</span> <span class="p">!=</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nc">DisposableEffect</span><span class="p">(</span><span class="n">scrollState</span><span class="p">.</span><span class="n">isScrollInProgress</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nf">onDispose</span> <span class="p">{</span>
+                <span class="n">coroutineScope</span><span class="p">.</span><span class="nf">onScroll</span><span class="p">(</span><span class="n">scrollState</span><span class="p">,</span> <span class="n">bigTitleHeight</span><span class="p">,</span> <span class="n">collapsedFraction</span><span class="p">)</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kd">val</span> <span class="py">actionsRow</span><span class="p">:</span> <span class="nd">@Composable</span> <span class="p">(()</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">)?</span> <span class="p">=</span> <span class="n">actions</span><span class="o">?.</span><span class="nf">run</span> <span class="p">{</span>
+        <span class="nd">@Composable</span> <span class="p">{</span> <span class="nc">Row</span><span class="p">(</span><span class="n">verticalAlignment</span> <span class="p">=</span> <span class="nc">Alignment</span><span class="p">.</span><span class="nc">CenterVertically</span><span class="p">,</span> <span class="n">content</span> <span class="p">=</span> <span class="k">this</span><span class="p">)</span> <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="kd">val</span> <span class="py">bigTitleBox</span><span class="p">:</span> <span class="nd">@Composable</span> <span class="p">()</span> <span class="p">-&gt;</span> <span class="nc">Unit</span> <span class="p">=</span> <span class="p">{</span>
+        <span class="nc">Box</span><span class="p">(</span><span class="n">modifier</span> <span class="p">=</span> <span class="nc">Modifier</span><span class="p">.</span><span class="nf">onGloballyPositioned</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">bigTitleHeight</span> <span class="p">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                <span class="n">bigTitleHeight</span> <span class="p">=</span> <span class="n">it</span><span class="p">.</span><span class="n">size</span><span class="p">.</span><span class="n">height</span>
+            <span class="p">}</span>
+        <span class="p">})</span> <span class="p">{</span>
+            <span class="nf">bigTitle</span><span class="p">()</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="nc">Box</span><span class="p">(</span><span class="n">modifier</span> <span class="p">=</span> <span class="n">modifier</span><span class="p">.</span><span class="nf">nestedScroll</span><span class="p">(</span><span class="n">nestedScrollConnection</span><span class="p">))</span> <span class="p">{</span>
+        <span class="nc">TopAppBarLayout</span><span class="p">(</span>
+            <span class="n">modifier</span> <span class="p">=</span> <span class="nc">Modifier</span>
+                <span class="p">.</span><span class="nf">windowInsetsPadding</span><span class="p">(</span><span class="n">windowInsets</span><span class="p">),</span>
+            <span class="n">navigationIconContentColor</span> <span class="p">=</span> <span class="n">colors</span><span class="p">.</span><span class="n">navigationIconContentColor</span><span class="p">,</span>
+            <span class="n">actionIconContentColor</span> <span class="p">=</span> <span class="n">colors</span><span class="p">.</span><span class="n">actionIconContentColor</span><span class="p">,</span>
+            <span class="n">smallTitleAlpha</span> <span class="p">=</span> <span class="n">collapsedFraction</span><span class="p">,</span>
+            <span class="n">smallTitle</span> <span class="p">=</span> <span class="n">smallTitle</span><span class="p">,</span>
+            <span class="n">bigTitle</span> <span class="p">=</span> <span class="n">bigTitleBox</span><span class="p">,</span>
+            <span class="n">navigationIcon</span> <span class="p">=</span> <span class="n">navigationIcon</span><span class="p">,</span>
+            <span class="n">actions</span> <span class="p">=</span> <span class="n">actionsRow</span><span class="p">,</span>
+        <span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="--드래그-동작-부분이-가장-큰-문제였다-이-부분은-직접-구현하였다">- 드래그 동작 부분이 가장 큰 문제였다. 이 부분은 직접 구현하였다.</h4>
+
+<p>기본 API 함수의 경우 드래그를 처리하는 코드가 internal 접근자로 되어 있는 클래스들과 복잡하게 연결되어 있어서 그대로 복사하는 것은 너무 많은 내용을 복사해야 해서 엄청 비효율적이라서 직접 구현하였다.</p>
+
+<p>구현에 많은 시간이 소요되었다.</p>
+
+<ul>
+  <li>이 앱 바를 배치한 상위 컴포저블에서 scrollState를 함수 파라미터로 받아온다.</li>
+  <li>앱 바 영역이 펼치고 접힐 때 하단 타이틀 영역의 높이를 가지고 계산되어야 하므로 <code class="language-plaintext highlighter-rouge">onGloballyPositioned</code>를 사용하여 하단 타이틀 영역의 높이를 따로 저장한다.</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">nestedScrollConnection</code> 객체를 생성하여 앱 바 전체 영역을 가지는 루트 컴포저블에 <code class="language-plaintext highlighter-rouge">nestedScroll</code>을 적용한다.</li>
+  <li>nestedScroll만 그대로 적용하면 날리는 식으로 스크롤을 할 때 제대로 동작이 발생하지 않고 끊기는 현상이 발생한다. 이를 해결하기 위해 <code class="language-plaintext highlighter-rouge">onPostFling</code>을 오버라이드하여 스크롤이 멈추면 앱 바의 확장 또는 접힘 동작을 결정한다. 이 때 애니메이션이 발생하게 된다.</li>
+  <li>API의 <code class="language-plaintext highlighter-rouge">settleAppBar</code> 함수가 쓰이는 목적을 구현하기 위해 <code class="language-plaintext highlighter-rouge">DisposableEffect</code>를 사용하여 앱바가 중간에 펼쳐진 상태에서 스크롤이 멈췄을 때 앱바의 확장 또는 접힘 동작을 결정한다. 이 때도 애니메이션이 발생하게 된다.</li>
+  <li>최종 구현은 기본 API를 사용하였을 때와 차이가 없음을 확인하였다.</li>
+</ul>
+
+<p><code class="language-plaintext highlighter-rouge">CoroutineScope.onScroll</code> 함수에서 <code class="language-plaintext highlighter-rouge">scrollState</code>의 상태를 직접 갱신하여 앱 바를 드래그하여도 Column을 드래그하는 것과 똑같은 동작을 하도록 구현하였다. 실제 사용에서 화면 어느 영역을 드래그 하더라도 완전히 동일한 터치감이 나타난다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">scrollState의 animateScrollTo</code> 메서드를 사용하면 <code class="language-plaintext highlighter-rouge">nestedScrollConnection</code>에서 따로 드래그 상태에 따른 로직을 구현하지 않더라도 자연스러운 드래그 동작을 만들 수 있다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="k">const</span> <span class="kd">val</span> <span class="py">BIG_TITLE</span> <span class="p">=</span> <span class="s">"bigTitle"</span>
+<span class="k">private</span> <span class="k">const</span> <span class="kd">val</span> <span class="py">SMALL_TITLE</span> <span class="p">=</span> <span class="s">"smallTitle"</span>
+<span class="k">private</span> <span class="k">const</span> <span class="kd">val</span> <span class="py">NAVIGATION_ICON</span> <span class="p">=</span> <span class="s">"navigationIcon"</span>
+<span class="k">private</span> <span class="k">const</span> <span class="kd">val</span> <span class="py">ACTION_ROW</span> <span class="p">=</span> <span class="s">"actionRow"</span>
+
+<span class="nd">@Composable</span>
+<span class="k">private</span> <span class="k">fun</span> <span class="nf">TopAppBarLayout</span><span class="p">(</span>
+    <span class="n">modifier</span><span class="p">:</span> <span class="nc">Modifier</span><span class="p">,</span>
+    <span class="n">navigationIconContentColor</span><span class="p">:</span> <span class="nc">Color</span><span class="p">,</span>
+    <span class="n">actionIconContentColor</span><span class="p">:</span> <span class="nc">Color</span><span class="p">,</span>
+    <span class="n">smallTitleAlpha</span><span class="p">:</span> <span class="nc">Float</span><span class="p">,</span>
+    <span class="n">bigTitle</span><span class="p">:</span> <span class="nd">@Composable</span> <span class="p">()</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">,</span>
+    <span class="n">smallTitle</span><span class="p">:</span> <span class="nd">@Composable</span> <span class="p">()</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">,</span>
+    <span class="n">navigationIcon</span><span class="p">:</span> <span class="nd">@Composable</span> <span class="p">(()</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">)?</span> <span class="p">=</span> <span class="k">null</span><span class="p">,</span>
+    <span class="n">actions</span><span class="p">:</span> <span class="nd">@Composable</span> <span class="p">(()</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">)?</span> <span class="p">=</span> <span class="k">null</span><span class="p">,</span>
+<span class="p">)</span> <span class="p">{</span>
+    <span class="nc">Layout</span><span class="p">({</span>
+        <span class="nc">Box</span><span class="p">(</span><span class="nc">Modifier</span>
+            <span class="p">.</span><span class="nf">layoutId</span><span class="p">(</span><span class="nc">NAVIGATION_ICON</span><span class="p">)</span>
+            <span class="p">.</span><span class="nf">padding</span><span class="p">(</span><span class="n">start</span> <span class="p">=</span> <span class="n">topAppBarHorizontalPadding</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">navigationIcon</span><span class="o">?.</span><span class="nf">run</span> <span class="p">{</span>
+                <span class="nc">CompositionLocalProvider</span><span class="p">(</span><span class="nc">LocalContentColor</span> <span class="n">provides</span> <span class="n">navigationIconContentColor</span><span class="p">,</span> <span class="n">content</span> <span class="p">=</span> <span class="k">this</span><span class="p">)</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+        <span class="nc">Box</span><span class="p">(</span><span class="nc">Modifier</span>
+            <span class="p">.</span><span class="nf">layoutId</span><span class="p">(</span><span class="nc">BIG_TITLE</span><span class="p">)</span>
+            <span class="p">.</span><span class="nf">padding</span><span class="p">(</span><span class="n">horizontal</span> <span class="p">=</span> <span class="n">topAppBarHorizontalPadding</span><span class="p">)</span>
+            <span class="p">.</span><span class="nf">graphicsLayer</span><span class="p">(</span><span class="n">alpha</span> <span class="p">=</span> <span class="mf">1f</span> <span class="p">-</span> <span class="n">smallTitleAlpha</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nf">bigTitle</span><span class="p">()</span>
+        <span class="p">}</span>
+        <span class="nc">Box</span><span class="p">(</span><span class="nc">Modifier</span>
+            <span class="p">.</span><span class="nf">layoutId</span><span class="p">(</span><span class="nc">SMALL_TITLE</span><span class="p">)</span>
+            <span class="p">.</span><span class="nf">padding</span><span class="p">(</span><span class="n">horizontal</span> <span class="p">=</span> <span class="n">topAppBarHorizontalPadding</span><span class="p">)</span>
+            <span class="p">.</span><span class="nf">graphicsLayer</span><span class="p">(</span><span class="n">alpha</span> <span class="p">=</span> <span class="n">smallTitleAlpha</span><span class="p">))</span> <span class="p">{</span>
+            <span class="nf">smallTitle</span><span class="p">()</span>
+        <span class="p">}</span>
+        <span class="nc">Box</span><span class="p">(</span><span class="nc">Modifier</span>
+            <span class="p">.</span><span class="nf">layoutId</span><span class="p">(</span><span class="nc">ACTION_ROW</span><span class="p">)</span>
+            <span class="p">.</span><span class="nf">padding</span><span class="p">(</span><span class="n">end</span> <span class="p">=</span> <span class="n">topAppBarHorizontalPadding</span><span class="p">))</span> <span class="p">{</span>
+            <span class="n">actions</span><span class="o">?.</span><span class="nf">run</span> <span class="p">{</span>
+                <span class="nc">CompositionLocalProvider</span><span class="p">(</span><span class="nc">LocalContentColor</span> <span class="n">provides</span> <span class="n">actionIconContentColor</span><span class="p">,</span> <span class="n">content</span> <span class="p">=</span> <span class="k">this</span><span class="p">)</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">},</span> <span class="n">modifier</span> <span class="p">=</span> <span class="n">modifier</span><span class="p">)</span> <span class="p">{</span> <span class="n">measurables</span><span class="p">,</span> <span class="n">constraints</span> <span class="p">-&gt;</span>
+        <span class="kd">val</span> <span class="py">navigationIconPlaceable</span> <span class="p">=</span> <span class="n">measurables</span><span class="p">.</span><span class="nf">first</span> <span class="p">{</span> <span class="n">it</span><span class="p">.</span><span class="n">layoutId</span> <span class="p">==</span> <span class="nc">NAVIGATION_ICON</span> <span class="p">}.</span><span class="nf">measure</span><span class="p">(</span><span class="n">constraints</span><span class="p">.</span><span class="nf">copy</span><span class="p">(</span><span class="n">minWidth</span> <span class="p">=</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="kd">val</span> <span class="py">actionIconsPlaceable</span> <span class="p">=</span> <span class="n">measurables</span><span class="p">.</span><span class="nf">first</span> <span class="p">{</span> <span class="n">it</span><span class="p">.</span><span class="n">layoutId</span> <span class="p">==</span> <span class="nc">ACTION_ROW</span> <span class="p">}.</span><span class="nf">measure</span><span class="p">(</span><span class="n">constraints</span><span class="p">.</span><span class="nf">copy</span><span class="p">(</span><span class="n">minWidth</span> <span class="p">=</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="kd">val</span> <span class="py">bigTitlePlaceable</span> <span class="p">=</span> <span class="n">measurables</span><span class="p">.</span><span class="nf">first</span> <span class="p">{</span> <span class="n">it</span><span class="p">.</span><span class="n">layoutId</span> <span class="p">==</span> <span class="nc">BIG_TITLE</span> <span class="p">}.</span><span class="nf">measure</span><span class="p">(</span><span class="n">constraints</span><span class="p">.</span><span class="nf">copy</span><span class="p">(</span><span class="n">minWidth</span> <span class="p">=</span> <span class="mi">0</span><span class="p">))</span>
+        <span class="kd">val</span> <span class="py">smallTitlePlaceable</span> <span class="p">=</span> <span class="n">measurables</span><span class="p">.</span><span class="nf">first</span> <span class="p">{</span> <span class="n">it</span><span class="p">.</span><span class="n">layoutId</span> <span class="p">==</span> <span class="nc">SMALL_TITLE</span> <span class="p">}.</span><span class="nf">measure</span><span class="p">(</span><span class="n">constraints</span><span class="p">.</span><span class="nf">copy</span><span class="p">(</span><span class="n">minWidth</span> <span class="p">=</span> <span class="mi">0</span><span class="p">))</span>
+
+        <span class="kd">val</span> <span class="py">expandedRatio</span> <span class="p">=</span> <span class="mf">1f</span> <span class="p">-</span> <span class="p">(</span><span class="mf">1f</span> <span class="p">-</span> <span class="n">smallTitleAlpha</span><span class="p">)</span>
+        <span class="kd">val</span> <span class="py">layoutHeight</span> <span class="p">=</span> <span class="n">navigationIconPlaceable</span><span class="p">.</span><span class="n">height</span> <span class="p">+</span> <span class="p">(</span><span class="n">bigTitlePlaceable</span><span class="p">.</span><span class="n">height</span> <span class="p">*</span> <span class="p">(</span><span class="mf">1f</span> <span class="p">-</span> <span class="n">expandedRatio</span><span class="p">)).</span><span class="nf">toInt</span><span class="p">()</span>
+        <span class="kd">val</span> <span class="py">titleInset</span> <span class="p">=</span> <span class="n">topAppBarTitleInset</span><span class="p">.</span><span class="nf">roundToPx</span><span class="p">()</span>
+
+        <span class="nf">layout</span><span class="p">(</span><span class="n">constraints</span><span class="p">.</span><span class="n">maxWidth</span><span class="p">,</span> <span class="n">layoutHeight</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">navigationIconPlaceable</span><span class="p">.</span><span class="nf">place</span><span class="p">(</span><span class="n">x</span> <span class="p">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">y</span> <span class="p">=</span> <span class="mi">0</span><span class="p">)</span>
+            <span class="n">actionIconsPlaceable</span><span class="p">.</span><span class="nf">place</span><span class="p">(</span><span class="n">x</span> <span class="p">=</span> <span class="n">constraints</span><span class="p">.</span><span class="n">maxWidth</span> <span class="p">-</span> <span class="n">actionIconsPlaceable</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">y</span> <span class="p">=</span> <span class="mi">0</span><span class="p">)</span>
+
+            <span class="n">bigTitlePlaceable</span><span class="p">.</span><span class="nf">place</span><span class="p">(</span><span class="n">x</span> <span class="p">=</span> <span class="p">(</span><span class="n">titleInset</span> <span class="p">+</span> <span class="n">navigationIconPlaceable</span><span class="p">.</span><span class="n">width</span> <span class="p">*</span> <span class="n">expandedRatio</span><span class="p">).</span><span class="nf">toInt</span><span class="p">(),</span>
+                <span class="n">y</span> <span class="p">=</span> <span class="n">navigationIconPlaceable</span><span class="p">.</span><span class="n">height</span> <span class="p">-</span> <span class="p">(</span><span class="n">bigTitlePlaceable</span><span class="p">.</span><span class="n">height</span> <span class="p">*</span> <span class="n">expandedRatio</span><span class="p">).</span><span class="nf">toInt</span><span class="p">())</span>
+            <span class="n">smallTitlePlaceable</span><span class="p">.</span><span class="nf">place</span><span class="p">(</span><span class="n">x</span> <span class="p">=</span> <span class="n">navigationIconPlaceable</span><span class="p">.</span><span class="n">width</span> <span class="p">+</span> <span class="n">titleInset</span><span class="p">,</span> <span class="n">y</span> <span class="p">=</span> <span class="p">(</span><span class="n">layoutHeight</span> <span class="p">-</span> <span class="n">smallTitlePlaceable</span><span class="p">.</span><span class="n">height</span><span class="p">)</span> <span class="p">/</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+
+<span class="k">private</span> <span class="kd">val</span> <span class="py">animationSpec</span><span class="p">:</span> <span class="nc">AnimationSpec</span><span class="p">&lt;</span><span class="nc">Float</span><span class="p">&gt;</span> <span class="p">=</span>
+    <span class="nc">SpringSpec</span><span class="p">(</span><span class="n">dampingRatio</span> <span class="p">=</span> <span class="nc">Spring</span><span class="p">.</span><span class="nc">DampingRatioLowBouncy</span><span class="p">,</span> <span class="n">stiffness</span> <span class="p">=</span> <span class="nc">Spring</span><span class="p">.</span><span class="nc">StiffnessMediumLow</span><span class="p">)</span>
+<span class="k">private</span> <span class="k">const</span> <span class="kd">val</span> <span class="py">COLLAPSE_THRESHOLD</span> <span class="p">=</span> <span class="mf">0.5f</span>
+
+<span class="k">private</span> <span class="k">fun</span> <span class="nc">CoroutineScope</span><span class="p">.</span><span class="nf">onScroll</span><span class="p">(</span><span class="n">scrollState</span><span class="p">:</span> <span class="nc">ScrollState</span><span class="p">,</span> <span class="n">shiftY</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span> <span class="n">collapsedFraction</span><span class="p">:</span> <span class="nc">Float</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">scrollState</span><span class="p">.</span><span class="n">value</span> <span class="p">&lt;</span> <span class="n">shiftY</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">launch</span> <span class="p">{</span>
+            <span class="n">scrollState</span><span class="p">.</span><span class="nf">animateScrollTo</span><span class="p">(</span><span class="k">if</span> <span class="p">(</span><span class="n">collapsedFraction</span> <span class="p">&lt;</span> <span class="nc">COLLAPSE_THRESHOLD</span><span class="p">)</span> <span class="mi">0</span> <span class="k">else</span> <span class="n">shiftY</span><span class="p">,</span> <span class="n">animationSpec</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="최종-구현">최종 구현</h2>
+
+<p><img src="https://github.com/pknujsp/pknujsp/assets/48265129/19c9e7b8-1c58-4886-9291-dad3e2104703" alt=""></p>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/android/2024/01/09/%EC%9E%90%EB%8F%99-%ED%8F%B0%ED%8A%B8-%ED%81%AC%EA%B8%B0-%EC%A1%B0%EC%A0%88-Text-Composable%EB%A7%8C%EB%93%A4%EA%B8%B0.html" title="자동으로 폰트 크기 조절되는 Text Composable만들기">자동으로 폰트 크기 조절되는...</a><a class="next" href="/jekyll-theme-yat/swm/2024/12/09/SKY-%EB%A9%98%ED%86%A0%EB%8B%98%EC%9C%BC%EB%A1%9C%EB%B6%80%ED%84%B0-%EC%B4%9D-5,760%EB%B6%84%EC%9D%98-%EB%A9%98%ED%86%A0%EB%A7%81%EC%9D%84-%EB%B0%9B%EA%B3%A0-%EB%82%98%EC%84%9C.html" title="SKY 멘토님으로부터 총 5,760분의 멘토링을 받고 나서">SKY 멘토님으로부터 총 5,760분의...</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li>
+<span><a class="post-link" href="/jekyll-theme-yat/compiler/2023/04/22/Compiler-Scanner.html" title="SKY 멘토님으로부터 총 5,760분의 멘토링을 받고 나서">Compiler Scanner</a></span><span>
+            <time class="dt-published datetime" datetime="2023-04-22T00:00:00+09:00" itemprop="datePublished">2023-04-22, Sat
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/android/2023/11/04/Android-DataBinding,-ViewBinding%EC%9D%B4-%ED%8C%8C%EC%9D%BC%EC%9D%84-%EC%83%9D%EC%84%B1%ED%95%98%EB%8A%94-%EB%B0%A9%EB%B2%95.html" title="SKY 멘토님으로부터 총 5,760분의 멘토링을 받고 나서">Android DataBinding, ViewBinding이 파일을 생성하는 방법</a></span><span>
+            <time class="dt-published datetime" datetime="2023-11-04T00:00:00+09:00" itemprop="datePublished">2023-11-04, Sat
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/data/communication/2023/06/13/Wired-LANs-Ethernet.html" title="SKY 멘토님으로부터 총 5,760분의 멘토링을 받고 나서">13. Wired LANs Ethernet</a></span><span>
+            <time class="dt-published datetime" datetime="2023-06-13T00:00:00+09:00" itemprop="datePublished">2023-06-13, Tue
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/android/2023/08/24/Android-%EA%B7%B8%EB%9E%98%ED%94%84-%EA%B7%B8%EB%A6%AC%EB%8A%94-View%EB%A7%8C%EB%93%A4%EA%B8%B0.html" title="SKY 멘토님으로부터 총 5,760분의 멘토링을 받고 나서">그래프 그리는 View만들기</a></span><span>
+            <time class="dt-published datetime" datetime="2023-08-24T00:00:00+09:00" itemprop="datePublished">2023-08-24, Thu
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/android/2023/07/30/Android-%EC%83%81%ED%83%9C%EB%B0%94%EC%99%80-%EB%84%A4%EB%B9%84%EA%B2%8C%EC%9D%B4%EC%85%98%EB%B0%94-%EC%83%89%EC%83%81-%EC%9E%90%EB%8F%99-%EB%B3%80%EA%B2%BD-%EC%B2%98%EB%A6%AC%ED%95%98%EA%B8%B0.html" title="SKY 멘토님으로부터 총 5,760분의 멘토링을 받고 나서">Android 시스템 바(상태바, 네비게이션바) 색상 자동 변경 처리하기</a></span><span>
+            <time class="dt-published datetime" datetime="2023-07-30T00:00:00+09:00" itemprop="datePublished">2023-07-30, Sun
+            </time></span>
+        </li>
+</ul>
+    </div>
+<div class="post-comments">
+<div id="utterances-placeholder"></div>
+<script>
+
+const utterancesThemeFromDataTheme = () => {
+    const dataTheme = document.documentElement.getAttribute('data-theme');
+    return `github-${dataTheme}`;
+  };
+
+  const setUtterancesTheme = () => {
+    const iframe = document.querySelector('.utterances-frame');
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: utterancesThemeFromDataTheme()
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+    }
+  }
+
+  // dynamic change
+  const observer = new MutationObserver((mutationsList, observer) => {
+    for (let mutation of mutationsList) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        setUtterancesTheme();
+      }
+    }
+  });
+  observer.observe(document.documentElement, { attributes: true, childList: false, subtree: false });
+
+  let utterancesScript = document.createElement('script');
+  utterancesScript.async = true;
+  utterancesScript.src = 'https://utteranc.es/client.js';
+  utterancesScript.crossOrigin = 'anonymous';
+  utterancesScript.setAttribute('issue-term', 'pathname');
+  utterancesScript.setAttribute('label', 'comments');
+  utterancesScript.setAttribute('repo', 'pknujsp/Blogcomments');
+  utterancesScript.setAttribute('theme', utterancesThemeFromDataTheme());
+
+  const placeholder = document.getElementById('utterances-placeholder');
+  placeholder.parentNode.replaceChild(utterancesScript, placeholder);
+</script>
+</div></section>
+</div>
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">Contents</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">· ' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>2024 @ Junsung Park</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

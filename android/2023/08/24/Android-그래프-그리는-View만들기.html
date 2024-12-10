@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>그래프 그리는 View만들기 | Jsp Notes</title>
+<meta name="generator" content="Jekyll v4.3.4">
+<meta property="og:title" content="그래프 그리는 View만들기">
+<meta name="author" content="Junsung Park">
+<meta property="og:locale" content="ko">
+<meta name="description" content="그래프 그리는 View만들기">
+<meta property="og:description" content="그래프 그리는 View만들기">
+<link rel="canonical" href="https://pknujsp.github.io//jekyll-theme-yat/android/2023/08/24/Android-%EA%B7%B8%EB%9E%98%ED%94%84-%EA%B7%B8%EB%A6%AC%EB%8A%94-View%EB%A7%8C%EB%93%A4%EA%B8%B0.html">
+<meta property="og:url" content="https://pknujsp.github.io//jekyll-theme-yat/android/2023/08/24/Android-%EA%B7%B8%EB%9E%98%ED%94%84-%EA%B7%B8%EB%A6%AC%EB%8A%94-View%EB%A7%8C%EB%93%A4%EA%B8%B0.html">
+<meta property="og:site_name" content="Jsp Notes">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-08-24T00:00:00+09:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="그래프 그리는 View만들기">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junsung Park"},"dateModified":"2023-08-24T00:00:00+09:00","datePublished":"2023-08-24T00:00:00+09:00","description":"그래프 그리는 View만들기","headline":"그래프 그리는 View만들기","mainEntityOfPage":{"@type":"WebPage","@id":"https://pknujsp.github.io//jekyll-theme-yat/android/2023/08/24/Android-%EA%B7%B8%EB%9E%98%ED%94%84-%EA%B7%B8%EB%A6%AC%EB%8A%94-View%EB%A7%8C%EB%93%A4%EA%B8%B0.html"},"url":"https://pknujsp.github.io//jekyll-theme-yat/android/2023/08/24/Android-%EA%B7%B8%EB%9E%98%ED%94%84-%EA%B7%B8%EB%A6%AC%EB%8A%94-View%EB%A7%8C%EB%93%A4%EA%B8%B0.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="icon" href="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script>
+
+  <!-- tipuesearch -->
+  <link rel="stylesheet" href="/assets/tipuesearch/css/tipuesearch.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_content.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_set.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch.min.js"></script><link type="application/atom+xml" rel="alternate" href="https://pknujsp.github.io//jekyll-theme-yat/feed.xml" title="Jsp Notes">
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LZC1TDTS26"></script>
+<script>
+  function initGoogleAnalytics() {
+    var doNotTrack = (window.doNotTrack === "1" || navigator.doNotTrack === "1" ||
+      navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1");
+    var enableDNT = "true" == "true";
+
+    if (!enableDNT || !doNotTrack) {
+      /*
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'G-LZC1TDTS26', 'auto');
+      ga('send', 'pageview');
+      */
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { window.dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-LZC1TDTS26');
+    }
+  }
+  window.addEventListener("load", initGoogleAnalytics);
+
+</script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/intellij-light.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/kotlin.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #7800ff;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: lowercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <img class="site-white_favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+</a></span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/about.html">About</a><a class="page-link" href="/jekyll-theme-yat/categories.html">Categories</a><a class="page-link" href="/jekyll-theme-yat/">Home</a><a class="page-link" href="/jekyll-theme-yat/posts.html">Posts</a><a class="page-link" href="/jekyll-theme-yat/tags.html">Tags</a><input id="tipue_search_input" type="search" placeholder="Search" aria-label="Search" title="Please enter at least 1 character" required>
+
+          <script>
+            document.getElementById("tipue_search_input").addEventListener("keydown", function (event) {
+              if (event.keyCode === 13) {
+                event.preventDefault();
+                window.location.href = "../search?q=" + this.value;
+              }
+            });
+          </script>
+<!--
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="en">
+        
+        <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+        to English
+        
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="ko">
+        
+        <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+        to Korean
+        
+      </a>
+    </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'ko',
+      autoDisplay: false,
+      layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+    }, 'google_translate_element');
+
+    // Links to cross-origin destinations are unsafe
+    var gll = document.getElementsByClassName('goog-logo-link')[0];
+    if (gll) {
+      gll.setAttribute('rel', 'noopener');
+    }
+
+    function restoreLang() {
+      var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+      if (!iframe) return;
+
+      var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+      var restore_el = innerDoc.getElementsByTagName("button");
+
+      for (var i = 0; i < restore_el.length; i++) {
+        if (restore_el[i].id.indexOf("restore") >= 0) {
+          restore_el[i].click();
+          var close_el = innerDoc.getElementsByClassName("goog-close-link");
+          close_el[0].click();
+          return;
+        }
+      }
+    }
+
+    function triggerHtmlEvent(element, eventName) {
+      var event;
+      if (document.createEvent) {
+        event = document.createEvent('HTMLEvents');
+        event.initEvent(eventName, true, true);
+        element.dispatchEvent(event);
+      } else {
+        event = document.createEventObject();
+        event.eventType = eventName;
+        element.fireEvent('on' + event.eventType, event);
+      }
+    }
+
+    var googleCombo = document.querySelector("select.goog-te-combo");
+    var langSelect = document.querySelector('.ct-language');
+    langSelect.addEventListener('click', function (event) {
+      if (!event.target) {
+        return;
+      }
+
+      var selected = document.querySelector('.ct-language .ct-language-selected');
+      if (selected) {
+        selected.classList.remove('ct-language-selected');
+      }
+
+      var target = event.target;
+      while (target && target !== langSelect) {
+        if (target.matches('.lang-select')) {
+          break;
+        }
+        target = target.parentElement;
+      }
+
+      if (target && target.matches('.lang-select')) {
+        var lang = target.getAttribute('data-lang');
+        if (googleCombo.value == lang) {
+          restoreLang();
+        } else if (lang == 'ko') {
+          var googleTranslateElement = document.getElementById('google_translate_element');
+          if (googleTranslateElement) {
+            googleTranslateElement.parentNode.removeChild(googleTranslateElement);
+            $('#google_translate_element').empty();
+          }
+        } else {
+          target.parentElement.classList.add('ct-language-selected');
+          googleCombo.value = lang;
+          triggerHtmlEvent(googleCombo, 'change');
+        }
+      }
+
+      event.preventDefault();
+    });
+  }
+</script>
+
+<script type="text/javascript"
+  src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script></span>-->
+          </div>
+
+          
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('manual' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = !(hours >= 2 && hours <=5);
+
+      if (nightShift) {
+        if (hours > 5) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(5);
+      } else {
+        toggleAt.setHours(2);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<div id="click-to-bottom" class="click-to-bottom">
+  <i class="fa fa-arrow-down"></i>
+</div>
+<script>
+  (function () {
+    const clickToBottom = document.getElementById('click-to-bottom');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToBottom.classList.add('show')
+      }else {
+        clickToBottom.classList.remove('show')
+      }
+    });
+    clickToBottom.addEventListener('click', () => {
+      window.smoothScrollTo(document.body.scrollHeight);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">그래프 그리는 View만들기</h1>
+  <h2 class="post-subtitle">Canvas를 이용하여 View에서 그래프를 그리는 방법</h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2023-08-24T00:00:00+09:00" itemprop="datePublished">2023-08-24, Thu
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 13 minutes</span>
+  </p>
+<div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Android">#Android</a></div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h2 id="그래프-그리는-view만들기">그래프 그리는 View만들기</h2>
+<hr>
+
+<blockquote>
+  <p>아래의 사진 처럼 그래프를 그려주는 View를 만드는 방법을 이번 글에서 다루어 보겠습니다.</p>
+</blockquote>
+
+<p><img src="https://github.com/pknujsp/BestWeather/assets/48265129/41af7a3c-b456-4ce1-8e80-f43213a04db1" width="60%"></p>
+
+<ul>
+  <li>사용하는 주요 클래스
+    <ul>
+      <li>View를 상속하여 CustomView를 만듭니다.</li>
+      <li>Canvas
+        <ul>
+          <li>화면에 실제로 보여줄 View를 그리는 클래스입니다.</li>
+          <li>그림을 그리는 종이라고 생각하면 이해하기 쉬울 것 같습니다.</li>
+          <li>참고 : <a href="https://www.charlezz.com/?p=1433">Android의 Canvas에 그려보자 : 선, 도형 그리고 그림까지!?</a>
+</li>
+        </ul>
+      </li>
+      <li>Paint
+        <ul>
+          <li>Canvas에 그릴 객체(선, 도형, 글자 등)의 속성(색상, 스타일 등)을 정의하는 클래스입니다.</li>
+        </ul>
+      </li>
+      <li>Path
+        <ul>
+          <li>그래프를 그릴 때 사용되는 핵심 클래스입니다.</li>
+          <li>그릴 선의 정보를 담고 있습니다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="그래프를-그릴-view-클래스-정의">그래프를 그릴 View 클래스 정의</h2>
+<hr>
+
+<blockquote>
+  <p>View를 상속하여 CustomView를 만듭니다.</p>
+</blockquote>
+
+<p>예제에서는 <strong>GraphView</strong>라는 이름으로 클래스를 정의합니다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">GraphView</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="nc">Context</span><span class="p">,</span> <span class="n">attrs</span><span class="p">:</span> <span class="nc">AttributeSet</span><span class="p">?,</span> <span class="n">defStyleAttr</span><span class="p">:</span> <span class="nc">Int</span><span class="p">)</span> <span class="p">:</span> <span class="nc">View</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">attrs</span><span class="p">,</span> <span class="n">defStyleAttr</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="k">constructor</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="nc">Context</span><span class="p">,</span> <span class="n">attrs</span><span class="p">:</span> <span class="nc">AttributeSet</span><span class="p">?)</span> <span class="p">:</span> <span class="k">this</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="n">attrs</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+    <span class="k">constructor</span><span class="p">(</span><span class="n">context</span><span class="p">:</span> <span class="nc">Context</span><span class="p">)</span> <span class="p">:</span> <span class="k">this</span><span class="p">(</span><span class="n">context</span><span class="p">,</span> <span class="k">null</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="그래프에-그릴-객체의-속성을-정의하기">그래프에 그릴 객체의 속성을 정의하기</h3>
+<hr>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1">// 그릴 선, 도형의 속성 목록</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">_mPaints</span><span class="p">:</span> <span class="nc">MutableList</span><span class="p">&lt;</span><span class="nc">Paints</span><span class="p">&gt;</span> <span class="p">=</span> <span class="nf">mutableListOf</span><span class="p">()</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">mPaints</span><span class="p">:</span> <span class="nc">List</span><span class="p">&lt;</span><span class="nc">Paints</span><span class="p">&gt;</span> <span class="k">get</span><span class="p">()</span> <span class="p">=</span> <span class="n">_mPaints</span>
+
+    <span class="c1">// 그래프 상단/하단의 여백 크기, 12dp</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">mVerticalSpace</span> <span class="p">=</span> <span class="nc">TypedValue</span><span class="p">.</span><span class="nf">applyDimension</span><span class="p">(</span><span class="nc">TypedValue</span><span class="p">.</span><span class="nc">COMPLEX_UNIT_DIP</span><span class="p">,</span> <span class="mf">12f</span><span class="p">,</span> <span class="nc">Resources</span><span class="p">.</span><span class="nf">getSystem</span><span class="p">().</span><span class="n">displayMetrics</span><span class="p">)</span>
+
+    <span class="c1">// 그래프 x축 값의 간격, 48dp</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">mXAxisValueIntervalSpace</span><span class="p">:</span> <span class="nc">Float</span> <span class="p">=</span>
+        <span class="nc">TypedValue</span><span class="p">.</span><span class="nf">applyDimension</span><span class="p">(</span><span class="nc">TypedValue</span><span class="p">.</span><span class="nc">COMPLEX_UNIT_DIP</span><span class="p">,</span> <span class="mf">48f</span><span class="p">,</span> <span class="nc">Resources</span><span class="p">.</span><span class="nf">getSystem</span><span class="p">().</span><span class="n">displayMetrics</span><span class="p">)</span>
+
+    <span class="c1">// 그릴 선, 도형의 Paint객체를 담을 클래스</span>
+    <span class="c1">// 여러 개의 선을 그릴 때 각각의 선의 속성을 다르게 설정 하기 위해 사용합니다.</span>
+    <span class="k">private</span> <span class="kd">data class</span> <span class="nc">Paints</span><span class="p">(</span>
+        <span class="kd">val</span> <span class="py">linePaint</span><span class="p">:</span> <span class="nc">Paint</span><span class="p">,</span>
+        <span class="kd">val</span> <span class="py">pointPaint</span><span class="p">:</span> <span class="nc">Paint</span><span class="p">,</span>
+    <span class="p">)</span>
+</code></pre></div></div>
+
+<h3 id="표시할-데이터-관련-로직-정의하기">표시할 데이터 관련 로직 정의하기</h3>
+<hr>
+
+<blockquote>
+  <p>그래프로 표시할 값을 처리하기 위한 로직을 만들어야 합니다.</p>
+</blockquote>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="c1">// 각각의 선으로 그리기 위한 값 목록</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">_mDataList</span><span class="p">:</span> <span class="nc">MutableList</span><span class="p">&lt;</span><span class="nc">List</span><span class="p">&lt;</span><span class="nc">Float</span><span class="p">&gt;&gt;</span> <span class="p">=</span> <span class="nf">mutableListOf</span><span class="p">()</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">mDataList</span><span class="p">:</span> <span class="nc">List</span><span class="p">&lt;</span><span class="nc">List</span><span class="p">&lt;</span><span class="nc">Float</span><span class="p">&gt;&gt;</span> <span class="p">=</span> <span class="n">_mDataList</span>
+
+    <span class="k">fun</span> <span class="nf">setDataList</span><span class="p">(</span><span class="n">dataList</span><span class="p">:</span> <span class="nc">List</span><span class="p">&lt;</span><span class="nc">List</span><span class="p">&lt;</span><span class="nc">Float</span><span class="p">&gt;&gt;)</span> <span class="p">{</span>
+        <span class="n">_mDataList</span><span class="p">.</span><span class="nf">clear</span><span class="p">()</span>
+        <span class="n">_mDataList</span><span class="p">.</span><span class="nf">addAll</span><span class="p">(</span><span class="n">dataList</span><span class="p">)</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="그래프를-그리는-로직-정의하기">그래프를 그리는 로직 정의하기</h3>
+<hr>
+
+<p>그래프를 그리기 위한 사전 정보를 정의하는 코드입니다.</p>
+
+<p>그래프의 그리기 정보를 담고 있는 <code class="language-plaintext highlighter-rouge">DrawInfo</code> 클래스를 정의합니다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">Fragment</code>, <code class="language-plaintext highlighter-rouge">Activity</code>에서 <code class="language-plaintext highlighter-rouge">GraphView</code>에 그릴 객체의 정보를 설정하기 위해서 <code class="language-plaintext highlighter-rouge">setDrawInfo()</code>를 사용합니다.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>data class DrawInfo(
+    @Dimension(Dimension.DP) val lineThickness: Int = 1,
+    @ColorInt val lineColor: Int = Color.WHITE,
+    @ColorRes val lineColorResId: Int = NONE_ID,
+    @Dimension(Dimension.DP) val pointRadius: Int = 2,
+    @ColorInt val pointColor: Int = Color.WHITE,
+    @ColorRes val pointColorResId: Int = NONE_ID,
+) {
+
+    companion object {
+        const val NONE_ID = -1
+    }
+}
+</code></pre></div></div>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">fun</span> <span class="nf">setDrawInfo</span><span class="p">(</span><span class="n">drawInfoList</span><span class="p">:</span> <span class="nc">List</span><span class="p">&lt;</span><span class="nc">DrawInfo</span><span class="p">&gt;)</span> <span class="p">{</span>
+        <span class="n">_mPaints</span><span class="p">.</span><span class="nf">clear</span><span class="p">()</span>
+
+        <span class="c1">// 그릴 객체의 크기를 dp로 설정하기 위해서 기기 화면의 크기 정보를 가져옵니다.</span>
+        <span class="kd">val</span> <span class="py">displayMetrics</span> <span class="p">=</span> <span class="nc">Resources</span><span class="p">.</span><span class="nf">getSystem</span><span class="p">().</span><span class="n">displayMetrics</span>
+
+        <span class="k">for</span> <span class="p">(</span><span class="n">drawInfo</span> <span class="k">in</span> <span class="n">drawInfoList</span><span class="p">)</span> <span class="p">{</span>
+            <span class="kd">val</span> <span class="py">line</span> <span class="p">=</span> <span class="nc">Paints</span><span class="p">(</span>
+                <span class="c1">// 선의 속성</span>
+                <span class="n">linePaint</span> <span class="p">=</span> <span class="nc">Paint</span><span class="p">().</span><span class="nf">apply</span> <span class="p">{</span>
+                    <span class="n">isAntiAlias</span> <span class="p">=</span> <span class="k">true</span>
+                    <span class="n">style</span> <span class="p">=</span> <span class="nc">Paint</span><span class="p">.</span><span class="nc">Style</span><span class="p">.</span><span class="nc">STROKE</span>
+                    <span class="n">strokeWidth</span> <span class="p">=</span> <span class="nc">TypedValue</span><span class="p">.</span><span class="nf">applyDimension</span><span class="p">(</span><span class="nc">TypedValue</span><span class="p">.</span><span class="nc">COMPLEX_UNIT_DIP</span><span class="p">,</span> <span class="n">drawInfo</span><span class="p">.</span><span class="n">lineThickness</span><span class="p">.</span><span class="nf">toFloat</span><span class="p">(),</span> <span class="n">displayMetrics</span><span class="p">)</span>
+                    <span class="n">color</span> <span class="p">=</span> <span class="k">if</span> <span class="p">(</span><span class="n">drawInfo</span><span class="p">.</span><span class="n">lineColorResId</span> <span class="p">==</span> <span class="nc">NONE_ID</span><span class="p">)</span> <span class="n">drawInfo</span><span class="p">.</span><span class="n">lineColor</span> <span class="k">else</span> <span class="n">context</span><span class="p">.</span><span class="nf">getColor</span><span class="p">(</span><span class="n">drawInfo</span><span class="p">.</span><span class="n">lineColorResId</span><span class="p">)</span>
+                <span class="p">},</span>
+                <span class="c1">// 선 위에 그릴 도형(점)의 속성</span>
+                <span class="n">pointPaint</span> <span class="p">=</span> <span class="nc">Paint</span><span class="p">().</span><span class="nf">apply</span> <span class="p">{</span>
+                    <span class="n">isAntiAlias</span> <span class="p">=</span> <span class="k">true</span>
+                    <span class="n">style</span> <span class="p">=</span> <span class="nc">Paint</span><span class="p">.</span><span class="nc">Style</span><span class="p">.</span><span class="nc">FILL</span>
+                    <span class="n">strokeWidth</span> <span class="p">=</span> <span class="nc">TypedValue</span><span class="p">.</span><span class="nf">applyDimension</span><span class="p">(</span><span class="nc">TypedValue</span><span class="p">.</span><span class="nc">COMPLEX_UNIT_DIP</span><span class="p">,</span> <span class="n">drawInfo</span><span class="p">.</span><span class="n">pointRadius</span><span class="p">.</span><span class="nf">toFloat</span><span class="p">(),</span> <span class="n">displayMetrics</span><span class="p">)</span>
+                    <span class="n">color</span> <span class="p">=</span> <span class="k">if</span> <span class="p">(</span><span class="n">drawInfo</span><span class="p">.</span><span class="n">pointColorResId</span> <span class="p">==</span> <span class="nc">NONE_ID</span><span class="p">)</span> <span class="n">drawInfo</span><span class="p">.</span><span class="n">pointColor</span> <span class="k">else</span> <span class="n">context</span><span class="p">.</span><span class="nf">getColor</span><span class="p">(</span><span class="n">drawInfo</span><span class="p">.</span><span class="n">pointColorResId</span><span class="p">)</span>
+                <span class="p">},</span>
+            <span class="p">)</span>
+            <span class="n">_mPaints</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>GraphView</strong>의 너비를 계산하여 지정하는 코드입니다.</p>
+
+<ul>
+  <li>데이터가 있으면 데이터의 개수만큼 x축의 간격을 계산하여 너비를 지정합니다.
+    <ul>
+      <li>데이터의 개수만큼 너비가 설정됩니다.</li>
+    </ul>
+  </li>
+  <li>데이터가 없다면 View정의 시 지정한 너비를 그대로 사용합니다.</li>
+</ul>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onMeasure</span><span class="p">(</span><span class="n">widthMeasureSpec</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span> <span class="n">heightMeasureSpec</span><span class="p">:</span> <span class="nc">Int</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="py">width</span><span class="p">:</span> <span class="nc">Int</span> <span class="p">=</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">mDataList</span><span class="p">.</span><span class="nf">isEmpty</span><span class="p">())</span> <span class="n">widthMeasureSpec</span> <span class="k">else</span> <span class="n">mDataList</span><span class="p">.</span><span class="nf">first</span><span class="p">().</span><span class="n">size</span> <span class="p">*</span> <span class="n">mXAxisValueIntervalSpace</span><span class="p">.</span><span class="nf">toInt</span><span class="p">()</span>
+        <span class="nf">setMeasuredDimension</span><span class="p">(</span><span class="n">width</span><span class="p">,</span>
+            <span class="n">heightMeasureSpec</span><span class="p">)</span>
+    <span class="p">}</span>
+
+</code></pre></div></div>
+
+<p>그래프를 실제로 그리는 코드입니다.</p>
+
+<p>View의 레이아웃이 계산된 후 <code class="language-plaintext highlighter-rouge">invalidate()</code>가 호출될 때 <code class="language-plaintext highlighter-rouge">onDraw()</code>가 호출됩니다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code>
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">onDraw</span><span class="p">(</span><span class="n">canvas</span><span class="p">:</span> <span class="nc">Canvas</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">super</span><span class="p">.</span><span class="nf">onDraw</span><span class="p">(</span><span class="n">canvas</span><span class="p">)</span>
+        <span class="nf">drawLinePaths</span><span class="p">(</span><span class="n">canvas</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="k">private</span> <span class="k">fun</span> <span class="nf">drawLinePaths</span><span class="p">(</span><span class="n">canvas</span><span class="p">:</span> <span class="nc">Canvas</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// 모든 데이터에서 최소값, 최대값을 구합니다.</span>
+        <span class="kd">val</span> <span class="p">(</span><span class="py">minValue</span><span class="p">,</span> <span class="py">maxValue</span><span class="p">)</span> <span class="p">=</span> <span class="nf">calculateMinMaxValue</span><span class="p">()</span>
+
+        <span class="c1">// 그래프 y축이 그려질 최상단 y좌표값</span>
+        <span class="kd">val</span> <span class="py">graphYAxisTop</span> <span class="p">=</span> <span class="n">mVerticalSpace</span>
+
+        <span class="c1">// 그래프 y축의 길이, View의 높이 - 위아래 여백</span>
+        <span class="kd">val</span> <span class="py">graphYAxisHeight</span> <span class="p">=</span> <span class="n">height</span> <span class="p">-</span> <span class="mi">2</span> <span class="p">*</span> <span class="n">mVerticalSpace</span>
+
+        <span class="c1">// 데이터 값의 범위</span>
+        <span class="c1">// 최소값: -10, 최대값: 200 -&gt; 210</span>
+        <span class="kd">val</span> <span class="py">valueLength</span> <span class="p">=</span> <span class="n">maxValue</span><span class="p">.</span><span class="nf">toFloat</span><span class="p">()</span> <span class="p">-</span> <span class="n">minValue</span><span class="p">.</span><span class="nf">toFloat</span><span class="p">()</span>
+
+        <span class="c1">// 그릴 선의 정보</span>
+        <span class="kd">val</span> <span class="py">linePathList</span> <span class="p">=</span> <span class="n">mutableListOf</span><span class="p">&lt;</span><span class="nc">Path</span><span class="p">&gt;()</span>
+
+        <span class="c1">// 첫 값이 그려질 x좌표</span>
+        <span class="kd">val</span> <span class="py">startPointX</span> <span class="p">=</span> <span class="n">mXAxisValueIntervalSpace</span> <span class="p">/</span> <span class="mf">2f</span>
+
+        <span class="c1">// 각 선이 그려질 점의 좌표 목록</span>
+        <span class="kd">val</span> <span class="py">linePoints</span> <span class="p">=</span> <span class="n">mutableListOf</span><span class="p">&lt;</span><span class="nc">List</span><span class="p">&lt;</span><span class="nc">PointF</span><span class="p">&gt;&gt;()</span>
+
+        <span class="n">mDataList</span><span class="p">.</span><span class="nf">forEach</span> <span class="p">{</span> <span class="n">dataList</span> <span class="p">-&gt;</span>
+            <span class="kd">val</span> <span class="py">path</span> <span class="p">=</span> <span class="nc">Path</span><span class="p">()</span>
+            <span class="n">linePathList</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+
+            <span class="c1">// 첫 값의 좌표이자 이전 값의 좌표</span>
+            <span class="kd">var</span> <span class="py">lastPoint</span> <span class="p">=</span>
+                <span class="nc">PointF</span><span class="p">(</span><span class="n">startPointX</span><span class="p">,</span> <span class="n">graphYAxisTop</span> <span class="p">+</span> <span class="nf">calculateYPosition</span><span class="p">(</span><span class="n">dataList</span><span class="p">.</span><span class="nf">first</span><span class="p">().</span><span class="nf">toFloat</span><span class="p">(),</span> <span class="n">minValue</span><span class="p">.</span><span class="nf">toFloat</span>
+                    <span class="p">(),</span> <span class="n">valueLength</span><span class="p">)</span> <span class="p">*</span>
+                        <span class="n">graphYAxisHeight</span><span class="p">)</span>
+
+            <span class="c1">// 선의 시작 좌표를 첫 값의 좌표로 지정합니다.</span>
+            <span class="n">path</span><span class="p">.</span><span class="nf">moveTo</span><span class="p">(</span><span class="n">lastPoint</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">lastPoint</span><span class="p">.</span><span class="n">y</span><span class="p">)</span>
+
+            <span class="kd">val</span> <span class="py">points</span> <span class="p">=</span> <span class="n">mutableListOf</span><span class="p">&lt;</span><span class="nc">PointF</span><span class="p">&gt;()</span>
+            <span class="n">linePoints</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="n">points</span><span class="p">)</span>
+
+            <span class="n">dataList</span><span class="p">.</span><span class="nf">forEachIndexed</span> <span class="p">{</span> <span class="n">i</span><span class="p">,</span> <span class="n">value</span> <span class="p">-&gt;</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="p">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="kd">val</span> <span class="py">newPoint</span> <span class="p">=</span> <span class="nc">PointF</span><span class="p">(</span><span class="n">lastPoint</span><span class="p">.</span><span class="n">x</span> <span class="p">+</span> <span class="n">xAxisValueInterval</span><span class="p">,</span>
+                        <span class="n">graphYAxisTop</span> <span class="p">+</span> <span class="nf">calculateYPosition</span><span class="p">(</span><span class="n">value</span><span class="p">.</span><span class="nf">toFloat</span><span class="p">(),</span> <span class="n">minValue</span><span class="p">.</span><span class="nf">toFloat</span>
+                            <span class="p">(),</span> <span class="n">valueLength</span><span class="p">)</span> <span class="p">*</span> <span class="n">graphYAxisHeight</span><span class="p">)</span>
+                    <span class="kd">val</span> <span class="py">point1</span> <span class="p">=</span> <span class="nc">PointF</span><span class="p">(</span><span class="n">lastPoint</span><span class="p">.</span><span class="n">x</span> <span class="p">+</span> <span class="n">xAxisValueInterval</span> <span class="p">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">lastPoint</span><span class="p">.</span><span class="n">y</span><span class="p">)</span>
+                    <span class="kd">val</span> <span class="py">point2</span> <span class="p">=</span> <span class="nc">PointF</span><span class="p">(</span><span class="n">point1</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">newPoint</span><span class="p">.</span><span class="n">y</span><span class="p">)</span>
+
+                    <span class="c1">// 곡선을 그리기 위해서 좌표값을 설정합니다.</span>
+                    <span class="n">path</span><span class="p">.</span><span class="nf">cubicTo</span><span class="p">(</span><span class="n">point1</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">point1</span><span class="p">.</span><span class="n">y</span><span class="p">,</span> <span class="n">point2</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">point2</span><span class="p">.</span><span class="n">y</span><span class="p">,</span> <span class="n">newPoint</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">newPoint</span><span class="p">.</span><span class="n">y</span><span class="p">)</span>
+                    <span class="n">lastPoint</span> <span class="p">=</span> <span class="n">newPoint</span>
+                <span class="p">}</span>
+                <span class="n">points</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="n">lastPoint</span><span class="p">)</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="c1">// 선과 점을 그립니다.</span>
+        <span class="n">mPaints</span><span class="p">.</span><span class="nf">zip</span><span class="p">(</span><span class="n">linePathList</span><span class="p">).</span><span class="nf">forEachIndexed</span> <span class="p">{</span> <span class="n">i</span><span class="p">,</span> <span class="n">pair</span> <span class="p">-&gt;</span>
+            <span class="n">canvas</span><span class="p">.</span><span class="nf">drawPath</span><span class="p">(</span><span class="n">pair</span><span class="p">.</span><span class="n">second</span><span class="p">,</span> <span class="n">mPaints</span><span class="p">[</span><span class="n">i</span><span class="p">].</span><span class="n">linePaint</span><span class="p">)</span>
+            <span class="nf">drawPoints</span><span class="p">(</span><span class="n">linePoints</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">canvas</span><span class="p">,</span> <span class="n">pair</span><span class="p">.</span><span class="n">first</span><span class="p">.</span><span class="n">pointPaint</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 선 위의 점을 그립니다.</span>
+    <span class="k">private</span> <span class="k">fun</span> <span class="nf">drawPoints</span><span class="p">(</span><span class="n">points</span><span class="p">:</span> <span class="nc">List</span><span class="p">&lt;</span><span class="nc">PointF</span><span class="p">&gt;,</span> <span class="n">canvas</span><span class="p">:</span> <span class="nc">Canvas</span><span class="p">,</span> <span class="n">paint</span><span class="p">:</span> <span class="nc">Paint</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">points</span><span class="p">.</span><span class="nf">forEach</span> <span class="p">{</span> <span class="n">pointF</span> <span class="p">-&gt;</span>
+            <span class="n">canvas</span><span class="p">.</span><span class="nf">drawCircle</span><span class="p">(</span><span class="n">pointF</span><span class="p">.</span><span class="n">x</span><span class="p">,</span> <span class="n">pointF</span><span class="p">.</span><span class="n">y</span><span class="p">,</span> <span class="n">paint</span><span class="p">.</span><span class="n">strokeWidth</span><span class="p">,</span> <span class="n">paint</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 데이터 값에 따라서 그래프에서 그려질 선의 y좌표 위치를 계산합니다.</span>
+    <span class="c1">// 최소값: 5, 최대값: 10, 값: 7 -&gt; 0.5</span>
+    <span class="c1">// y축에서 중간에 위치하게 됩니다.</span>
+    <span class="k">private</span> <span class="k">fun</span> <span class="nf">calculateYPosition</span><span class="p">(</span><span class="n">value</span><span class="p">:</span> <span class="nc">Float</span><span class="p">,</span> <span class="n">minValue</span><span class="p">:</span> <span class="nc">Float</span><span class="p">,</span> <span class="n">valueLength</span><span class="p">:</span> <span class="nc">Float</span><span class="p">)</span> <span class="p">=</span>
+        <span class="p">(</span><span class="mf">1f</span> <span class="p">-</span> <span class="p">((</span><span class="n">value</span> <span class="p">-</span> <span class="n">minValue</span><span class="p">)</span> <span class="p">/</span> <span class="n">valueLength</span><span class="p">))</span>
+
+    <span class="c1">// 모든 데이터에서 최소값, 최대값을 구합니다.</span>
+    <span class="k">private</span> <span class="k">fun</span> <span class="nf">calculateMinMaxValue</span><span class="p">():</span> <span class="nc">Pair</span><span class="p">&lt;</span><span class="nc">Number</span><span class="p">,</span> <span class="nc">Number</span><span class="p">&gt;</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="py">min</span><span class="p">:</span> <span class="nc">Number</span> <span class="p">=</span> <span class="n">mDataList</span><span class="p">.</span><span class="nf">minBy</span> <span class="p">{</span> <span class="n">numbers</span> <span class="p">-&gt;</span> <span class="n">numbers</span><span class="p">.</span><span class="nf">minOf</span> <span class="p">{</span> <span class="n">it</span> <span class="p">}</span> <span class="p">}.</span><span class="nf">minOf</span> <span class="p">{</span> <span class="n">it</span> <span class="p">}</span>
+        <span class="kd">val</span> <span class="py">max</span><span class="p">:</span> <span class="nc">Number</span> <span class="p">=</span> <span class="n">mDataList</span><span class="p">.</span><span class="nf">maxBy</span> <span class="p">{</span> <span class="n">numbers</span> <span class="p">-&gt;</span> <span class="n">numbers</span><span class="p">.</span><span class="nf">maxOf</span> <span class="p">{</span> <span class="n">it</span> <span class="p">}</span> <span class="p">}.</span><span class="nf">maxOf</span> <span class="p">{</span> <span class="n">it</span> <span class="p">}</span>
+        <span class="k">return</span> <span class="n">min</span> <span class="n">to</span> <span class="n">max</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="cubicto">cubicTo()</h4>
+
+<p><code class="language-plaintext highlighter-rouge">fun cubicTo(x1: Float, y1: Float, x2: Float, y2: Float, x3: Float, y3: Float): Unit</code></p>
+
+<ul>
+  <li>bezier 곡선을 그립니다.
+    <ul>
+      <li>x1 : 첫 번째 제어점의 x좌표</li>
+      <li>y1 : 첫 번째 제어점의 y좌표</li>
+      <li>x2 : 두 번째 제어점의 x좌표</li>
+      <li>y2 : 두 번째 제어점의 y좌표</li>
+      <li>x3 : 끝 점의 x좌표</li>
+      <li>y3 : 끝 점의 y좌표</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://github.com/pknu-wap/2023_1_WAP_APP_TEAM_MEDI/assets/48265129/c970224e-f948-4fd8-ae74-93f27964bcdb" width="60%"></p>
+
+<p>그림에서 <strong>2, 3, 4</strong> 점이 <strong>(x1, y1), (x2, y2), (x3, y3)</strong> 에 해당합니다.</p>
+
+<h4 id="calculateyposition">calculateYPosition()</h4>
+
+<p><code class="language-plaintext highlighter-rouge">1f - (value - minValue) / (maxValue - minValue)</code>의 계산식을 통해서 데이터 값에 따라서 선의 y좌표 위치를 계산합니다.</p>
+
+<p><img src="https://github.com/pknujsp/BestWeather/assets/48265129/e936c43f-4f82-49ea-a34b-aad282c92b74" width="60%"></p>
+
+<h3 id="사용">사용</h3>
+<hr>
+
+<h4 id="scrollview로-감싸서-사용하도록-합니다">ScrollView로 감싸서 사용하도록 합니다.</h4>
+
+<p><code class="language-plaintext highlighter-rouge">GraphView</code>의 높이는 200dp로 고정하였습니다.</p>
+
+<div class="language-xml highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="nt">&lt;HorizontalScrollView</span>
+        <span class="na">android:layout_width=</span><span class="s">"match_parent"</span>
+        <span class="na">android:nestedScrollingEnabled=</span><span class="s">"true"</span>
+        <span class="na">android:layout_height=</span><span class="s">"wrap_content"</span><span class="nt">&gt;</span>
+
+        <span class="nt">&lt;FrameLayout</span>
+            <span class="na">android:layout_width=</span><span class="s">"wrap_content"</span>
+            <span class="na">android:layout_height=</span><span class="s">"wrap_content"</span><span class="nt">&gt;</span>
+
+            <span class="nt">&lt;toss.next.naversovc.ui.common.view.GraphView</span>
+                <span class="na">android:id=</span><span class="s">"@+id/graphView"</span>
+                <span class="na">android:layout_width=</span><span class="s">"wrap_content"</span>
+                <span class="na">android:layout_height=</span><span class="s">"200dp"</span>
+                <span class="na">android:background=</span><span class="s">"#B8B8B8"</span> <span class="nt">/&gt;</span>
+
+        <span class="nt">&lt;/FrameLayout&gt;</span>
+
+    <span class="nt">&lt;/HorizontalScrollView&gt;</span>
+</code></pre></div></div>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code>    <span class="n">binding</span><span class="p">.</span><span class="nf">run</span> <span class="p">{</span>
+        <span class="c1">// 그릴 객체 정보</span>
+        <span class="n">graphView</span><span class="p">.</span><span class="nf">setDrawInfo</span><span class="p">(</span><span class="nf">listOf</span><span class="p">(</span>
+            <span class="nc">DrawInfo</span><span class="p">(</span>
+                <span class="n">lineThickness</span> <span class="p">=</span> <span class="mi">4</span><span class="p">,</span>
+                <span class="n">lineColor</span> <span class="p">=</span> <span class="nc">Color</span><span class="p">.</span><span class="nc">WHITE</span><span class="p">,</span>
+                <span class="n">pointRadius</span> <span class="p">=</span> <span class="mi">8</span><span class="p">,</span>
+                <span class="n">pointColor</span> <span class="p">=</span> <span class="nc">Color</span><span class="p">.</span><span class="nc">WHITE</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="nc">DrawInfo</span><span class="p">(</span>
+                <span class="n">lineThickness</span> <span class="p">=</span> <span class="mi">4</span><span class="p">,</span>
+                <span class="n">lineColor</span> <span class="p">=</span> <span class="nc">Color</span><span class="p">.</span><span class="nc">YELLOW</span><span class="p">,</span>
+                <span class="n">pointRadius</span> <span class="p">=</span> <span class="mi">8</span><span class="p">,</span>
+                <span class="n">pointColor</span> <span class="p">=</span> <span class="nc">Color</span><span class="p">.</span><span class="nc">YELLOW</span><span class="p">,</span>
+            <span class="p">),</span>
+            <span class="nc">DrawInfo</span><span class="p">(</span>
+                <span class="n">lineThickness</span> <span class="p">=</span> <span class="mi">4</span><span class="p">,</span>
+                <span class="n">lineColor</span> <span class="p">=</span> <span class="nc">Color</span><span class="p">.</span><span class="nc">RED</span><span class="p">,</span>
+                <span class="n">pointRadius</span> <span class="p">=</span> <span class="mi">8</span><span class="p">,</span>
+                <span class="n">pointColor</span> <span class="p">=</span> <span class="nc">Color</span><span class="p">.</span><span class="nc">RED</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">))</span>
+
+        <span class="c1">// 데이터 값</span>
+        <span class="n">graphView</span><span class="p">.</span><span class="nf">setDataList</span><span class="p">(</span>
+            <span class="nf">listOf</span><span class="p">(</span>
+                <span class="p">(-</span><span class="mi">50</span><span class="o">..</span><span class="mi">50</span> <span class="n">step</span> <span class="mi">10</span><span class="p">).</span><span class="nf">toList</span><span class="p">(),</span>
+                <span class="p">(</span><span class="mi">50</span> <span class="n">downTo</span> <span class="p">-</span><span class="mi">50</span> <span class="n">step</span> <span class="mi">10</span><span class="p">).</span><span class="nf">toList</span><span class="p">(),</span>
+                <span class="nf">listOf</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="p">)</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+
+<p><img width="60%" alt="image" src="https://github.com/pknujsp/BestWeather/assets/48265129/114f47d8-7316-4eeb-bb3f-d4f0bc14f450"></p>
+
+<h2 id="활용">활용</h2>
+
+<blockquote>
+  <p>시간 별 날씨예보의 기온 그래프와 같은 화면을 그리는 경우 등에 사용할 수 있습니다.</p>
+</blockquote>
+
+<p>그 외에도 수학적인 그래프나, 값들 간에 비교를 위한 경우에도 사용할 수 있습니다.</p>
+
+<p><img src="https://github.com/pknujsp/BestWeather/assets/48265129/24e6f7d1-57ba-408b-b203-0831574f8eac" width="60%"></p>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/android/2023/08/13/androidx.collection-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-%EC%82%B4%ED%8E%B4%EB%B3%B4%EA%B8%B0(SparseArray,-ArrayMap,-LruCache-/).html" title="ArrayMap, SparseArray, LruCache에 대해서 알아보기">ArrayMap, SparseArray, LruCache에 대해서...</a><a class="next" href="/jekyll-theme-yat/kotlin/2023/09/02/Kotlin-1.9,-2.0-%EB%AF%B8%EB%A6%AC%EB%B3%B4%EA%B8%B0.html" title="Kotlin 1.9, 2.0 미리보기">Kotlin 1.9, 2.0 미리보기...</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li>
+<span><a class="post-link" href="/jekyll-theme-yat/android/2023/08/24/Android-%EA%B7%B8%EB%9E%98%ED%94%84-%EA%B7%B8%EB%A6%AC%EB%8A%94-View%EB%A7%8C%EB%93%A4%EA%B8%B0.html" title="Kotlin 1.9, 2.0 미리보기">그래프 그리는 View만들기</a></span><span>
+            <time class="dt-published datetime" datetime="2023-08-24T00:00:00+09:00" itemprop="datePublished">2023-08-24, Thu
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/android/2023/11/04/Android-DataBinding,-ViewBinding%EC%9D%B4-%ED%8C%8C%EC%9D%BC%EC%9D%84-%EC%83%9D%EC%84%B1%ED%95%98%EB%8A%94-%EB%B0%A9%EB%B2%95.html" title="Kotlin 1.9, 2.0 미리보기">Android DataBinding, ViewBinding이 파일을 생성하는 방법</a></span><span>
+            <time class="dt-published datetime" datetime="2023-11-04T00:00:00+09:00" itemprop="datePublished">2023-11-04, Sat
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/data/communication/2023/06/13/Wireless-LANs.html" title="Kotlin 1.9, 2.0 미리보기">15. Wireless LANs</a></span><span>
+            <time class="dt-published datetime" datetime="2023-06-13T00:00:00+09:00" itemprop="datePublished">2023-06-13, Tue
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/android/2023/04/06/StateFlow-vs-SharedFlow.html" title="Kotlin 1.9, 2.0 미리보기">StateFlow vs SharedFlow</a></span><span>
+            <time class="dt-published datetime" datetime="2023-04-06T00:00:00+09:00" itemprop="datePublished">2023-04-06, Thu
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/navigation/2023/05/23/%EB%84%A4%EB%B9%84%EA%B2%8C%EC%9D%B4%EC%85%98-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EB%94%A5%EB%A7%81%ED%81%AC-%EC%82%AC%EC%9A%A9%EC%84%B1-%EA%B0%9C%EC%84%A0%ED%95%98%EA%B8%B0.html" title="Kotlin 1.9, 2.0 미리보기">Navigation Component DeepLink로 이동시 Arguments 전달 편의성 개선하기</a></span><span>
+            <time class="dt-published datetime" datetime="2023-05-23T00:00:00+09:00" itemprop="datePublished">2023-05-23, Tue
+            </time></span>
+        </li>
+</ul>
+    </div>
+<div class="post-comments">
+<div id="utterances-placeholder"></div>
+<script>
+
+const utterancesThemeFromDataTheme = () => {
+    const dataTheme = document.documentElement.getAttribute('data-theme');
+    return `github-${dataTheme}`;
+  };
+
+  const setUtterancesTheme = () => {
+    const iframe = document.querySelector('.utterances-frame');
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: utterancesThemeFromDataTheme()
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+    }
+  }
+
+  // dynamic change
+  const observer = new MutationObserver((mutationsList, observer) => {
+    for (let mutation of mutationsList) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        setUtterancesTheme();
+      }
+    }
+  });
+  observer.observe(document.documentElement, { attributes: true, childList: false, subtree: false });
+
+  let utterancesScript = document.createElement('script');
+  utterancesScript.async = true;
+  utterancesScript.src = 'https://utteranc.es/client.js';
+  utterancesScript.crossOrigin = 'anonymous';
+  utterancesScript.setAttribute('issue-term', 'pathname');
+  utterancesScript.setAttribute('label', 'comments');
+  utterancesScript.setAttribute('repo', 'pknujsp/Blogcomments');
+  utterancesScript.setAttribute('theme', utterancesThemeFromDataTheme());
+
+  const placeholder = document.getElementById('utterances-placeholder');
+  placeholder.parentNode.replaceChild(utterancesScript, placeholder);
+</script>
+</div></section>
+</div>
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">Contents</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">· ' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>2024 @ Junsung Park</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Kotlin sealed class/interface 사용 시 하위 클래스에 대응되는 함수를 자동으로 만드는 방법 | Jsp Notes</title>
+<meta name="generator" content="Jekyll v4.3.4">
+<meta property="og:title" content="Kotlin sealed class/interface 사용 시 하위 클래스에 대응되는 함수를 자동으로 만드는 방법">
+<meta name="author" content="Junsung Park">
+<meta property="og:locale" content="ko">
+<meta name="description" content="sealed interface/class 를 사용하는 경우">
+<meta property="og:description" content="sealed interface/class 를 사용하는 경우">
+<link rel="canonical" href="https://pknujsp.github.io//jekyll-theme-yat/kotlin/2023/08/03/Kotlin-sealed-class-%EC%83%81%ED%83%9C%EB%B3%84-%ED%95%A8%EC%88%98-%EC%9E%90%EB%8F%99-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0.html">
+<meta property="og:url" content="https://pknujsp.github.io//jekyll-theme-yat/kotlin/2023/08/03/Kotlin-sealed-class-%EC%83%81%ED%83%9C%EB%B3%84-%ED%95%A8%EC%88%98-%EC%9E%90%EB%8F%99-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0.html">
+<meta property="og:site_name" content="Jsp Notes">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-08-03T00:00:00+09:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Kotlin sealed class/interface 사용 시 하위 클래스에 대응되는 함수를 자동으로 만드는 방법">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junsung Park"},"dateModified":"2023-08-03T00:00:00+09:00","datePublished":"2023-08-03T00:00:00+09:00","description":"sealed interface/class 를 사용하는 경우","headline":"Kotlin sealed class/interface 사용 시 하위 클래스에 대응되는 함수를 자동으로 만드는 방법","mainEntityOfPage":{"@type":"WebPage","@id":"https://pknujsp.github.io//jekyll-theme-yat/kotlin/2023/08/03/Kotlin-sealed-class-%EC%83%81%ED%83%9C%EB%B3%84-%ED%95%A8%EC%88%98-%EC%9E%90%EB%8F%99-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0.html"},"url":"https://pknujsp.github.io//jekyll-theme-yat/kotlin/2023/08/03/Kotlin-sealed-class-%EC%83%81%ED%83%9C%EB%B3%84-%ED%95%A8%EC%88%98-%EC%9E%90%EB%8F%99-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="icon" href="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script>
+
+  <!-- tipuesearch -->
+  <link rel="stylesheet" href="/assets/tipuesearch/css/tipuesearch.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_content.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_set.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch.min.js"></script><link type="application/atom+xml" rel="alternate" href="https://pknujsp.github.io//jekyll-theme-yat/feed.xml" title="Jsp Notes">
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LZC1TDTS26"></script>
+<script>
+  function initGoogleAnalytics() {
+    var doNotTrack = (window.doNotTrack === "1" || navigator.doNotTrack === "1" ||
+      navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1");
+    var enableDNT = "true" == "true";
+
+    if (!enableDNT || !doNotTrack) {
+      /*
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'G-LZC1TDTS26', 'auto');
+      ga('send', 'pageview');
+      */
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { window.dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-LZC1TDTS26');
+    }
+  }
+  window.addEventListener("load", initGoogleAnalytics);
+
+</script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/intellij-light.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/kotlin.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #7800ff;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: lowercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <img class="site-white_favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+</a></span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/about.html">About</a><a class="page-link" href="/jekyll-theme-yat/categories.html">Categories</a><a class="page-link" href="/jekyll-theme-yat/">Home</a><a class="page-link" href="/jekyll-theme-yat/posts.html">Posts</a><a class="page-link" href="/jekyll-theme-yat/tags.html">Tags</a><input id="tipue_search_input" type="search" placeholder="Search" aria-label="Search" title="Please enter at least 1 character" required>
+
+          <script>
+            document.getElementById("tipue_search_input").addEventListener("keydown", function (event) {
+              if (event.keyCode === 13) {
+                event.preventDefault();
+                window.location.href = "../search?q=" + this.value;
+              }
+            });
+          </script>
+<!--
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="en">
+        
+        <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+        to English
+        
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="ko">
+        
+        <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+        to Korean
+        
+      </a>
+    </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'ko',
+      autoDisplay: false,
+      layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+    }, 'google_translate_element');
+
+    // Links to cross-origin destinations are unsafe
+    var gll = document.getElementsByClassName('goog-logo-link')[0];
+    if (gll) {
+      gll.setAttribute('rel', 'noopener');
+    }
+
+    function restoreLang() {
+      var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+      if (!iframe) return;
+
+      var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+      var restore_el = innerDoc.getElementsByTagName("button");
+
+      for (var i = 0; i < restore_el.length; i++) {
+        if (restore_el[i].id.indexOf("restore") >= 0) {
+          restore_el[i].click();
+          var close_el = innerDoc.getElementsByClassName("goog-close-link");
+          close_el[0].click();
+          return;
+        }
+      }
+    }
+
+    function triggerHtmlEvent(element, eventName) {
+      var event;
+      if (document.createEvent) {
+        event = document.createEvent('HTMLEvents');
+        event.initEvent(eventName, true, true);
+        element.dispatchEvent(event);
+      } else {
+        event = document.createEventObject();
+        event.eventType = eventName;
+        element.fireEvent('on' + event.eventType, event);
+      }
+    }
+
+    var googleCombo = document.querySelector("select.goog-te-combo");
+    var langSelect = document.querySelector('.ct-language');
+    langSelect.addEventListener('click', function (event) {
+      if (!event.target) {
+        return;
+      }
+
+      var selected = document.querySelector('.ct-language .ct-language-selected');
+      if (selected) {
+        selected.classList.remove('ct-language-selected');
+      }
+
+      var target = event.target;
+      while (target && target !== langSelect) {
+        if (target.matches('.lang-select')) {
+          break;
+        }
+        target = target.parentElement;
+      }
+
+      if (target && target.matches('.lang-select')) {
+        var lang = target.getAttribute('data-lang');
+        if (googleCombo.value == lang) {
+          restoreLang();
+        } else if (lang == 'ko') {
+          var googleTranslateElement = document.getElementById('google_translate_element');
+          if (googleTranslateElement) {
+            googleTranslateElement.parentNode.removeChild(googleTranslateElement);
+            $('#google_translate_element').empty();
+          }
+        } else {
+          target.parentElement.classList.add('ct-language-selected');
+          googleCombo.value = lang;
+          triggerHtmlEvent(googleCombo, 'change');
+        }
+      }
+
+      event.preventDefault();
+    });
+  }
+</script>
+
+<script type="text/javascript"
+  src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script></span>-->
+          </div>
+
+          
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('manual' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = !(hours >= 2 && hours <=5);
+
+      if (nightShift) {
+        if (hours > 5) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(5);
+      } else {
+        toggleAt.setHours(2);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<div id="click-to-bottom" class="click-to-bottom">
+  <i class="fa fa-arrow-down"></i>
+</div>
+<script>
+  (function () {
+    const clickToBottom = document.getElementById('click-to-bottom');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToBottom.classList.add('show')
+      }else {
+        clickToBottom.classList.remove('show')
+      }
+    });
+    clickToBottom.addEventListener('click', () => {
+      window.smoothScrollTo(document.body.scrollHeight);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">Kotlin sealed class/interface 사용 시 하위 클래스에 대응되는 함수를 자동으로 만드는 방법</h1>
+  <h2 class="post-subtitle">(KSP)Kotlin Symbol Processing을 사용해서, 바인딩 파일을 자동 생성하는 방법을 알아봅시다.</h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2023-08-03T00:00:00+09:00" itemprop="datePublished">2023-08-03, Thu
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 15 minutes</span>
+  </p>
+<div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Kotlin">#Kotlin</a></div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h2 id="sealed-interfaceclass-를-사용하는-경우">sealed interface/class 를 사용하는 경우</h2>
+<hr>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">sealed class</code>를 사용하여 각 상태에 따른 동작을 수행하도록 할 수 있습니다.</p>
+</blockquote>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">sealed</span> <span class="kd">interface</span> <span class="nc">UiState</span><span class="p">&lt;</span><span class="k">out</span> <span class="nc">T</span><span class="p">&gt;</span> <span class="p">{</span>
+  <span class="kd">data class</span> <span class="nc">Success</span><span class="p">&lt;</span><span class="k">out</span> <span class="nc">T</span><span class="p">&gt;(</span><span class="kd">val</span> <span class="py">data</span><span class="p">:</span> <span class="nc">T</span><span class="p">)</span> <span class="p">:</span> <span class="nc">UiState</span><span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;</span>
+  <span class="kd">data class</span> <span class="nc">Error</span><span class="p">(</span><span class="kd">val</span> <span class="py">exception</span><span class="p">:</span> <span class="nc">Throwable</span><span class="p">)</span> <span class="p">:</span> <span class="nc">UiState</span><span class="p">&lt;</span><span class="nc">Nothing</span><span class="p">&gt;</span>
+  <span class="kd">object</span> <span class="nc">Loading</span> <span class="p">:</span> <span class="nc">UiState</span><span class="p">&lt;</span><span class="nc">Nothing</span><span class="p">&gt;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<blockquote>
+  <p>이러한 경우, <code class="language-plaintext highlighter-rouge">if</code> 또는 <code class="language-plaintext highlighter-rouge">when</code> 문을 사용해서 각 상태에 따른 동작을 수행하게 됩니다.</p>
+</blockquote>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">when</span> <span class="p">(</span><span class="n">uiState</span><span class="p">)</span> <span class="p">{</span>
+  <span class="k">is</span> <span class="nc">UiState</span><span class="p">.</span><span class="nc">Success</span> <span class="p">-&gt;</span> <span class="p">{</span>
+    <span class="c1">// 성공 시</span>
+  <span class="p">}</span>
+  <span class="k">is</span> <span class="nc">UiState</span><span class="p">.</span><span class="nc">Error</span> <span class="p">-&gt;</span> <span class="p">{</span>
+    <span class="c1">// 오류 발생 시</span>
+  <span class="p">}</span>
+  <span class="k">is</span> <span class="nc">UiState</span><span class="p">.</span><span class="nc">Loading</span> <span class="p">-&gt;</span> <span class="p">{</span>
+    <span class="c1">// 로딩 중</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">when</code> 분기를 처리하는 대신에 각 클래스에 따른 함수를 만들어서 동작을 수행하도록 하는 방법도 있습니다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">inline</span> <span class="k">fun</span> <span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;</span> <span class="nf">UiState</span><span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;.</span><span class="nf">onError</span><span class="p">(</span><span class="n">block</span><span class="p">:</span> <span class="p">(</span><span class="nc">Throwable</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">):</span> <span class="nc">UiState</span><span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="k">this</span> <span class="k">is</span> <span class="nc">UiState</span><span class="p">.</span><span class="nc">Error</span><span class="p">)</span>
+    <span class="nf">block</span><span class="p">(</span><span class="n">exception</span><span class="p">)</span>
+  <span class="k">return</span> <span class="k">this</span>
+<span class="p">}</span>
+
+<span class="k">inline</span> <span class="k">fun</span> <span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;</span> <span class="nf">UiState</span><span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;.</span><span class="nf">onLoading</span><span class="p">(</span><span class="n">block</span><span class="p">:</span> <span class="p">()</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">):</span> <span class="nc">UiState</span><span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="k">this</span> <span class="k">is</span> <span class="nc">UiState</span><span class="p">.</span><span class="nc">Loading</span><span class="p">)</span>
+    <span class="nf">block</span><span class="p">()</span>
+  <span class="k">return</span> <span class="k">this</span>
+<span class="p">}</span>
+
+<span class="k">inline</span> <span class="k">fun</span> <span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;</span> <span class="nf">UiState</span><span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;.</span><span class="nf">onSuccess</span><span class="p">(</span><span class="n">block</span><span class="p">:</span> <span class="p">(</span><span class="nc">T</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">):</span> <span class="nc">UiState</span><span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="k">this</span> <span class="k">is</span> <span class="nc">UiState</span><span class="p">.</span><span class="nc">Success</span><span class="p">)</span>
+    <span class="nf">block</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+  <span class="k">return</span> <span class="k">this</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>이렇게 하면, <code class="language-plaintext highlighter-rouge">when</code> 분기를 처리하는 대신에, 상태에 따라 함수가 호출되면서 동작이 수행됩니다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">uiState</span>
+  <span class="p">.</span><span class="nf">onSuccess</span> <span class="p">{</span> <span class="n">data</span> <span class="p">-&gt;</span>
+ 
+  <span class="p">}</span>
+  <span class="p">.</span><span class="nf">onError</span> <span class="p">{</span> <span class="n">exception</span> <span class="p">-&gt;</span>
+ 
+  <span class="p">}</span>
+  <span class="p">.</span><span class="nf">onLoading</span> <span class="p">{</span>
+
+  <span class="p">}</span>
+</code></pre></div></div>
+
+<p>하지만, <code class="language-plaintext highlighter-rouge">UiState</code> 클래스 내용이 변경되면, 각 함수를 변경해야 합니다.</p>
+
+<p>이런 불편함을 없애기 위해 KSP(Kotlin Symbol Processing)을 사용해서, <code class="language-plaintext highlighter-rouge">sealed class</code>에 대응되는 함수를 컴파일 할 때 자동을 생성시켜서 편하게 쓸 수 있습니다.</p>
+
+<p>먼저 KSP에 대해 알아보겠습니다.</p>
+
+<h2 id="kspkotlin-symbol-processing-란">KSP(Kotlin Symbol Processing) 란?</h2>
+<hr>
+<blockquote>
+  <p>Kotlin Compiler의 확장 기능으로, 컴파일 시에 코드를 분석하고 생성하는 기능을 제공합니다. 이를 통해, 코드 생성을 자동화하고, 코드의 반복 작성을 줄일 수 있습니다.</p>
+</blockquote>
+
+<p>KSP가 아닌 KAPT(Kotlin Annotation Processing Tool)도 있습니다. 이것도 같은 역할을 수행하지만 다음과 같은 차이점이 있습니다.</p>
+
+<ul>
+  <li>KAPT
+    <ul>
+      <li>Kotlin코드를 Java Bytecode로 변환한 후, Java Annotation Processing Tool을 사용해서, 코드를 처리합니다.</li>
+    </ul>
+  </li>
+  <li>KSP
+    <ul>
+      <li>Kotlin 코드를 Java로 변환하지 않고 바로 처리하기 때문에, KAPT보다 성능이 더 좋습니다.</li>
+      <li>Kotlin에 최적화 되어 있습니다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="ksp를-사용하기-위한-사전설정">KSP를 사용하기 위한 사전설정</h2>
+
+<p><strong>Project build.gradle</strong></p>
+
+<p>version은 현재 사용중인 Kotlin version에 맞게 설정합니다.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>plugins {
+    id("com.google.devtools.ksp") version "1.8.22-1.0.11" apply false
+    id("org.jetbrains.kotlin.jvm") version "1.8.22" apply false
+}
+</code></pre></div></div>
+
+<h2 id="sealed-interfaceclass에-대한-함수-자동-생성하는-과정">sealed interface/class에 대한 함수 자동 생성하는 과정</h2>
+<hr>
+
+<h3 id="1-annotation-compiler-module-생성">1. Annotation, Compiler Module 생성</h3>
+<hr>
+<blockquote>
+  <p>Annotation, Compiler 두 개의 모듈을 만들어야 합니다.</p>
+</blockquote>
+
+<p><strong>Annotation Module, build.gradle</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>plugins {
+    id("org.jetbrains.kotlin.jvm")
+    id("com.google.devtools.ksp")
+}
+</code></pre></div></div>
+
+<p><strong>Compiler Module, build.gradle</strong></p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>plugins {
+    id("com.google.devtools.ksp")
+}
+
+dependencies {
+    implementation("com.google.devtools.ksp:symbol-processing-api:1.8.22-1.0.11")
+}
+</code></pre></div></div>
+
+<ul>
+  <li>
+<strong>src/main에 파일 생성하기</strong>
+    <ul>
+      <li>resources/META-INF/services
+        <ul>
+          <li>com.google.devtools.ksp.processing.SymbolProcessorProvider 파일 생성</li>
+          <li>컴파일 시에 동작시킬 Processor를 등록하는 과정입니다.</li>
+        </ul>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<p><strong>com.google.devtools.ksp.processing.SymbolProcessorProvider</strong> 파일 내에 다음과 같이 작성합니다.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>io.github.pknujsp.core.compiler.BindFuncProcessorProvider
+</code></pre></div></div>
+
+<h3 id="2-annotation-module에-annotationkt-생성">2. Annotation Module에 Annotation.kt 생성</h3>
+<hr>
+<p>Annotation Module에 Annotation.kt를 생성하고, 아래의 내용을 작성합니다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@Target</span><span class="p">(</span><span class="nc">AnnotationTarget</span><span class="p">.</span><span class="nc">CLASS</span><span class="p">)</span>
+<span class="nd">@Inherited</span>
+<span class="k">annotation</span> <span class="kd">class</span> <span class="nc">KBindFunc</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">@KBindFunc</code>로 사용할 수 있게 되며, <code class="language-plaintext highlighter-rouge">sealed interface/class</code>에 붙여서 사용합니다.</p>
+
+<h3 id="3-compiler-module에-processor-생성">3. Compiler Module에 Processor 생성</h3>
+<hr>
+
+<p>Compiler Module에 두 개의 파일을 만들어야 합니다.</p>
+
+<ol>
+  <li>BindFuncProcessorProvider.kt</li>
+  <li>BindFuncKspProcessor.kt</li>
+</ol>
+
+<p><strong>BindFuncProcessorProvider.kt</strong></p>
+
+<ul>
+  <li>
+<code class="language-plaintext highlighter-rouge">SymbolProcessorProvider</code>는 KSP에서 Annotation 처리를 위한 사용자 정의 <code class="language-plaintext highlighter-rouge">SymbolProcessor</code>를 생성하는 방법을 정의하는 인터페이스입니다.</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">BindFuncProcessorProvider</code>의 <code class="language-plaintext highlighter-rouge">create</code> 메서드는 이 인터페이스의 구현부로서, 이 메서드를 호출할 때마다 새로운 <code class="language-plaintext highlighter-rouge">BindFuncKspProcessor</code> 인스턴스를 생성합니다.</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">environment.codeGenerator</code>, <code class="language-plaintext highlighter-rouge">environment.logger</code>, <code class="language-plaintext highlighter-rouge">environment.options</code>는 각각 코드 생성, 로깅, 옵션 처리를 담당하는 객체입니다.</li>
+</ul>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">BindFuncProcessorProvider</span> <span class="p">:</span> <span class="nc">SymbolProcessorProvider</span> <span class="p">{</span>
+  <span class="k">override</span> <span class="k">fun</span> <span class="nf">create</span><span class="p">(</span><span class="n">environment</span><span class="p">:</span> <span class="nc">SymbolProcessorEnvironment</span><span class="p">):</span> <span class="nc">SymbolProcessor</span> <span class="p">=</span> <span class="nc">BindFuncKspProcessor</span><span class="p">(</span>
+    <span class="n">codeGenerator</span> <span class="p">=</span> <span class="n">environment</span><span class="p">.</span><span class="n">codeGenerator</span><span class="p">,</span>
+    <span class="n">logger</span> <span class="p">=</span> <span class="n">environment</span><span class="p">.</span><span class="n">logger</span><span class="p">,</span>
+    <span class="n">options</span> <span class="p">=</span> <span class="n">environment</span><span class="p">.</span><span class="n">options</span><span class="p">,</span>
+  <span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><strong>BindFuncKspProcessor.kt</strong></p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">BindFuncKspProcessor</span><span class="p">(</span>
+  <span class="k">private</span> <span class="kd">val</span> <span class="py">codeGenerator</span><span class="p">:</span> <span class="nc">CodeGenerator</span><span class="p">,</span>
+  <span class="k">private</span> <span class="kd">val</span> <span class="py">logger</span><span class="p">:</span> <span class="nc">KSPLogger</span><span class="p">,</span>
+  <span class="k">private</span> <span class="kd">val</span> <span class="py">options</span><span class="p">:</span> <span class="nc">Map</span><span class="p">&lt;</span><span class="nc">String</span><span class="p">,</span> <span class="nc">String</span><span class="p">&gt;,</span>
+<span class="p">)</span> <span class="p">:</span> <span class="nc">SymbolProcessor</span> <span class="p">{</span>
+
+  <span class="k">private</span> <span class="k">companion</span> <span class="k">object</span> <span class="p">{</span>
+    <span class="c1">// Annotation의 이름</span>
+    <span class="kd">val</span> <span class="py">ANNOTATION_TYPE</span><span class="p">:</span> <span class="nc">String</span> <span class="p">=</span> <span class="nc">KBindFunc</span><span class="o">::</span><span class="k">class</span><span class="p">.</span><span class="n">java</span><span class="p">.</span><span class="n">canonicalName</span>
+    <span class="c1">// 생성할 바인딩 파일의 앞에 붙일 이름, ex) KBindFuncUiState.kt</span>
+    <span class="kd">val</span> <span class="py">PREFIX_OUTPUT_FILE_NAME</span> <span class="p">=</span> <span class="nc">ANNOTATION_TYPE</span>
+  <span class="p">}</span>
+
+  <span class="c1">// KSP에서 핵심 함수</span>
+  <span class="k">override</span> <span class="k">fun</span> <span class="nf">process</span><span class="p">(</span><span class="n">resolver</span><span class="p">:</span> <span class="nc">Resolver</span><span class="p">):</span> <span class="nc">List</span><span class="p">&lt;</span><span class="nc">KSAnnotated</span><span class="p">&gt;</span> <span class="p">{</span>
+    <span class="c1">// KBindFunc Annotation이 붙은 모든 클래스를 가져옵니다.</span>
+    <span class="kd">val</span> <span class="py">declarations</span> <span class="p">=</span> <span class="n">resolver</span><span class="p">.</span><span class="nf">getSymbolsWithAnnotation</span><span class="p">(</span><span class="nc">ANNOTATION_TYPE</span><span class="p">).</span><span class="n">filterIsInstance</span><span class="p">&lt;</span><span class="nc">KSClassDeclaration</span><span class="p">&gt;().</span><span class="nf">toList</span><span class="p">()</span>
+    <span class="c1">// 각 클래스에 대한 바인딩 파일을 생성합니다.</span>
+    <span class="n">declarations</span><span class="p">.</span><span class="nf">forEach</span> <span class="p">{</span> <span class="nf">createBindingFile</span><span class="p">(</span><span class="n">it</span><span class="p">)</span> <span class="p">}</span>
+    <span class="k">return</span> <span class="n">declarations</span><span class="p">.</span><span class="nf">toList</span><span class="p">()</span>
+  <span class="p">}</span>
+
+  <span class="c1">// 바인딩 파일을 생성하는 함수</span>
+  <span class="k">private</span> <span class="k">fun</span> <span class="nf">createBindingFile</span><span class="p">(</span><span class="n">declaration</span><span class="p">:</span> <span class="nc">KSClassDeclaration</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// Generic인 import T와 같은 불필요한 import를 제거하기 위한 Set</span>
+    <span class="kd">val</span> <span class="py">removeImports</span> <span class="p">=</span> <span class="n">mutableSetOf</span><span class="p">&lt;</span><span class="nc">String</span><span class="p">&gt;()</span>
+    <span class="c1">// 함수 정보를 가지는 List</span>
+    <span class="kd">val</span> <span class="py">funcSpecs</span> <span class="p">=</span> <span class="n">declaration</span><span class="p">.</span><span class="nf">getSealedSubclasses</span><span class="p">().</span><span class="nf">map</span> <span class="p">{</span> <span class="nf">createMethods</span><span class="p">(</span><span class="n">declaration</span><span class="p">,</span> <span class="n">it</span><span class="p">,</span> <span class="n">removeImports</span><span class="p">)</span> <span class="p">}</span>
+
+    <span class="c1">// 바인딩 파일 정보</span>
+    <span class="kd">val</span> <span class="py">newFileSpec</span> <span class="p">=</span> <span class="nc">FileSpec</span><span class="p">.</span><span class="nf">builder</span><span class="p">(</span><span class="n">declaration</span><span class="p">.</span><span class="n">packageName</span><span class="p">.</span><span class="nf">asString</span><span class="p">(),</span> <span class="s">"${PREFIX_OUTPUT_FILE_NAME}${declaration.simpleName.asString()}"</span><span class="p">).</span><span class="nf">apply</span> <span class="p">{</span>
+      <span class="n">funcSpecs</span><span class="p">.</span><span class="nf">forEach</span> <span class="p">{</span>
+        <span class="nf">addFunction</span><span class="p">(</span><span class="n">it</span><span class="p">)</span>
+      <span class="p">}</span>
+    <span class="p">}.</span><span class="nf">build</span><span class="p">()</span>
+
+    <span class="k">try</span> <span class="p">{</span>
+      <span class="c1">// 바인딩 파일 생성</span>
+      <span class="n">codeGenerator</span><span class="p">.</span><span class="nf">createNewFile</span><span class="p">(</span>
+        <span class="n">dependencies</span> <span class="p">=</span> <span class="nc">Dependencies</span><span class="p">(</span><span class="k">false</span><span class="p">,</span> <span class="n">declaration</span><span class="p">.</span><span class="n">containingFile</span><span class="o">!!</span><span class="p">),</span>
+        <span class="n">packageName</span> <span class="p">=</span> <span class="n">declaration</span><span class="p">.</span><span class="n">packageName</span><span class="p">.</span><span class="nf">asString</span><span class="p">(),</span>
+        <span class="n">fileName</span> <span class="p">=</span> <span class="s">"${PREFIX_OUTPUT_FILE_NAME}_${declaration.simpleName.asString()}"</span><span class="p">,</span>
+      <span class="p">).</span><span class="nf">bufferedWriter</span><span class="p">().</span><span class="nf">use</span> <span class="p">{</span>
+        <span class="n">it</span><span class="p">.</span><span class="nf">write</span><span class="p">(</span>
+          <span class="n">newFileSpec</span><span class="p">.</span><span class="nf">toString</span><span class="p">().</span><span class="nf">run</span> <span class="p">{</span>
+            <span class="c1">// import T와 같은 불필요한 import문을 제거합니다.</span>
+            <span class="nf">removeUnnecessaryImports</span><span class="p">(</span><span class="k">this</span><span class="p">,</span> <span class="n">removeImports</span><span class="p">)</span>
+          <span class="p">},</span>
+        <span class="p">)</span>
+      <span class="p">}</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">e</span><span class="p">:</span> <span class="nc">Exception</span><span class="p">)</span> <span class="p">{</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+  <span class="c1">// import T와 같이 불필요한 import문을 제거하는 함수</span>
+  <span class="k">private</span> <span class="k">fun</span> <span class="nf">removeUnnecessaryImports</span><span class="p">(</span><span class="n">content</span><span class="p">:</span> <span class="nc">String</span><span class="p">,</span> <span class="n">imports</span><span class="p">:</span> <span class="nc">MutableSet</span><span class="p">&lt;</span><span class="nc">String</span><span class="p">&gt;):</span> <span class="nc">String</span> <span class="p">{</span>
+    <span class="kd">var</span> <span class="py">content</span> <span class="p">=</span> <span class="n">content</span>
+    <span class="n">imports</span><span class="p">.</span><span class="nf">forEach</span> <span class="p">{</span>
+      <span class="n">content</span> <span class="p">=</span> <span class="n">content</span><span class="p">.</span><span class="nf">replace</span><span class="p">(</span><span class="s">"import $it\n"</span><span class="p">,</span> <span class="s">""</span><span class="p">)</span>
+    <span class="p">}</span>
+    <span class="k">return</span> <span class="n">content</span>
+  <span class="p">}</span>
+
+  <span class="c1">// sealed interface/class에 대하여 바인딩 함수를 생성하는 함수</span>
+  <span class="k">private</span> <span class="k">fun</span> <span class="nf">createMethods</span><span class="p">(</span><span class="n">parent</span><span class="p">:</span> <span class="nc">KSClassDeclaration</span><span class="p">,</span> <span class="n">sub</span><span class="p">:</span> <span class="nc">KSClassDeclaration</span><span class="p">,</span> <span class="n">removes</span><span class="p">:</span> <span class="nc">MutableSet</span><span class="p">&lt;</span><span class="nc">String</span><span class="p">&gt;):</span> <span class="nc">FunSpec</span> <span class="p">{</span>
+    <span class="c1">// Generic인지 여부</span>
+    <span class="kd">val</span> <span class="py">isGeneric</span> <span class="p">=</span> <span class="n">parent</span><span class="p">.</span><span class="n">typeParameters</span><span class="p">.</span><span class="nf">isNotEmpty</span><span class="p">()</span>
+
+    <span class="c1">// Generic인 경우, Generic 타입을 가져옵니다.</span>
+    <span class="kd">val</span> <span class="py">typeParameters</span> <span class="p">=</span> <span class="k">if</span> <span class="p">(</span><span class="n">isGeneric</span><span class="p">)</span> <span class="n">parent</span><span class="p">.</span><span class="n">typeParameters</span>
+    <span class="k">else</span> <span class="nf">emptyList</span><span class="p">()</span>
+
+    <span class="c1">// sealed interface/class에 선언된 모든 속성을 가져옵니다.</span>
+    <span class="kd">val</span> <span class="py">properties</span> <span class="p">=</span> <span class="n">sub</span><span class="p">.</span><span class="nf">getDeclaredProperties</span><span class="p">().</span><span class="nf">toList</span><span class="p">()</span>
+
+    <span class="c1">// 바인딩 함수의 이름을 생성합니다.</span>
+    <span class="c1">// ex) onXXX 형식</span>
+    <span class="k">return</span> <span class="nc">FunSpec</span><span class="p">.</span><span class="nf">builder</span><span class="p">(</span><span class="s">"on${sub.simpleName.asString()}"</span><span class="p">).</span><span class="nf">run</span> <span class="p">{</span>
+      <span class="c1">// public, inline 함수로 설정합니다.</span>
+      <span class="c1">// ex) public inline fun</span>
+      <span class="nf">addModifiers</span><span class="p">(</span><span class="nc">KModifier</span><span class="p">.</span><span class="nc">PUBLIC</span><span class="p">)</span>
+      <span class="nf">addModifiers</span><span class="p">(</span><span class="nc">KModifier</span><span class="p">.</span><span class="nc">INLINE</span><span class="p">)</span>
+
+    
+      <span class="c1">// 함수의 수신 객체 정보를 설정합니다.</span>
+      <span class="c1">// ex) public inline fun &lt;T&gt; UiState&lt;T&gt;.onXXX() &lt;- UiState&lt;T&gt;가 수신 객체</span>
+      <span class="nf">receiver</span><span class="p">(</span>
+        <span class="nc">ClassName</span><span class="p">.</span><span class="nf">bestGuess</span><span class="p">(</span><span class="n">parent</span><span class="p">.</span><span class="n">qualifiedName</span><span class="o">!!</span><span class="p">.</span><span class="nf">asString</span><span class="p">()).</span><span class="nf">run</span> <span class="p">{</span>
+          <span class="k">if</span> <span class="p">(</span><span class="n">isGeneric</span><span class="p">)</span> <span class="nf">parameterizedBy</span><span class="p">(</span><span class="n">typeParameters</span><span class="p">.</span><span class="nf">map</span> <span class="p">{</span> <span class="nc">TypeVariableName</span><span class="p">(</span><span class="n">it</span><span class="p">.</span><span class="n">name</span><span class="p">.</span><span class="nf">asString</span><span class="p">())</span> <span class="p">}.</span><span class="nf">toList</span><span class="p">())</span>
+          <span class="k">else</span> <span class="k">this</span>
+        <span class="p">},</span>
+      <span class="p">)</span>
+
+      <span class="c1">// 타입 변수를 추가합니다.</span>
+      <span class="c1">// Generic이 아닌 경우, 타입 변수를 추가하지 않습니다.</span>
+      <span class="c1">// ex) public inline fun &lt;T&gt; UiState&lt;T&gt;.onXXX() &lt;- T가 타입 변수</span>
+      <span class="nf">addTypeVariables</span><span class="p">(</span>
+        <span class="n">typeParameters</span><span class="p">.</span><span class="nf">map</span> <span class="p">{</span> <span class="n">ksTypeParameter</span> <span class="p">-&gt;</span>
+          <span class="nc">TypeVariableName</span><span class="p">(</span>
+            <span class="n">ksTypeParameter</span><span class="p">.</span><span class="n">name</span><span class="p">.</span><span class="nf">asString</span><span class="p">(),</span>
+            <span class="n">variance</span> <span class="p">=</span> <span class="nc">KModifier</span><span class="p">.</span><span class="nf">values</span><span class="p">().</span><span class="nf">find</span> <span class="p">{</span> <span class="n">it</span><span class="p">.</span><span class="n">name</span> <span class="p">==</span> <span class="n">ksTypeParameter</span><span class="p">.</span><span class="n">variance</span><span class="p">.</span><span class="n">name</span><span class="p">.</span><span class="nf">lowercase</span><span class="p">()</span> <span class="p">},</span>
+          <span class="p">).</span><span class="nf">let</span> <span class="p">{</span> <span class="n">typeVariableName</span> <span class="p">-&gt;</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">ksTypeParameter</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="nf">toList</span><span class="p">().</span><span class="nf">isNotEmpty</span><span class="p">()</span> <span class="p">&amp;&amp;</span> <span class="n">ksTypeParameter</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="nf">any</span> <span class="p">{</span> <span class="n">it</span><span class="p">.</span><span class="n">element</span> <span class="p">!=</span> <span class="k">null</span> <span class="p">})</span> <span class="p">{</span>
+              <span class="n">typeVariableName</span><span class="p">.</span><span class="nf">copy</span><span class="p">(</span>
+                <span class="n">bounds</span> <span class="p">=</span> <span class="n">ksTypeParameter</span><span class="p">.</span><span class="n">bounds</span><span class="p">.</span><span class="nf">toList</span><span class="p">().</span><span class="nf">map</span> <span class="p">{</span>
+                  <span class="nc">TypeVariableName</span><span class="p">(</span><span class="n">it</span><span class="p">.</span><span class="nf">toString</span><span class="p">())</span>
+                <span class="p">},</span>
+              <span class="p">)</span>
+            <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+              <span class="n">typeVariableName</span>
+            <span class="p">}</span>
+          <span class="p">}</span>
+        <span class="p">}.</span><span class="nf">toList</span><span class="p">(),</span>
+      <span class="p">)</span>
+
+      <span class="c1">// 함수의 Parameter를 추가합니다.</span>
+      <span class="c1">// ex) public inline fun &lt;T&gt; UiState&lt;T&gt;.onXXX(block: (T) -&gt; Unit) &lt;- block이 Parameter</span>
+      <span class="nf">addParameter</span><span class="p">(</span>
+        <span class="nc">ParameterSpec</span><span class="p">.</span><span class="nf">builder</span><span class="p">(</span>
+          <span class="s">"block"</span><span class="p">,</span>
+          <span class="nc">LambdaTypeName</span><span class="p">.</span><span class="k">get</span><span class="p">(</span>
+            <span class="n">parameters</span> <span class="p">=</span> <span class="n">properties</span><span class="p">.</span><span class="nf">map</span> <span class="p">{</span>
+              <span class="nc">ParameterSpec</span><span class="p">.</span><span class="nf">unnamed</span><span class="p">(</span>
+                <span class="k">if</span> <span class="p">(</span><span class="n">it</span><span class="p">.</span><span class="n">type</span><span class="p">.</span><span class="nf">resolve</span><span class="p">().</span><span class="n">declaration</span><span class="p">.</span><span class="n">typeParameters</span><span class="p">.</span><span class="nf">isNotEmpty</span><span class="p">())</span> <span class="p">{</span>
+                  <span class="nc">TypeVariableName</span><span class="p">(</span><span class="n">it</span><span class="p">.</span><span class="n">type</span><span class="p">.</span><span class="nf">resolve</span><span class="p">().</span><span class="n">declaration</span><span class="p">.</span><span class="n">typeParameters</span><span class="p">.</span><span class="nf">first</span><span class="p">().</span><span class="n">name</span><span class="p">.</span><span class="nf">asString</span><span class="p">())</span>
+                <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                  <span class="nc">ClassName</span><span class="p">.</span><span class="nf">bestGuess</span><span class="p">(</span>
+                    <span class="n">it</span><span class="p">.</span><span class="n">type</span><span class="p">.</span><span class="nf">resolve</span><span class="p">().</span><span class="n">declaration</span><span class="p">.</span><span class="n">qualifiedName</span><span class="o">!!</span><span class="p">.</span><span class="nf">asString</span><span class="p">().</span><span class="nf">run</span> <span class="p">{</span>
+                      <span class="k">if</span> <span class="p">(</span><span class="nf">contains</span><span class="p">(</span><span class="n">sub</span><span class="p">.</span><span class="n">simpleName</span><span class="p">.</span><span class="nf">getShortName</span><span class="p">()))</span> <span class="p">{</span>
+                        <span class="n">it</span><span class="p">.</span><span class="n">type</span><span class="p">.</span><span class="nf">resolve</span><span class="p">().</span><span class="n">declaration</span><span class="p">.</span><span class="n">simpleName</span><span class="p">.</span><span class="nf">getShortName</span><span class="p">().</span><span class="nf">apply</span> <span class="p">{</span> <span class="n">removes</span><span class="p">.</span><span class="nf">add</span><span class="p">(</span><span class="k">this</span><span class="p">)</span> <span class="p">}</span>
+                      <span class="p">}</span> <span class="k">else</span> <span class="k">this</span>
+                    <span class="p">},</span>
+                  <span class="p">)</span>
+                <span class="p">},</span>
+              <span class="p">)</span>
+
+            <span class="p">}.</span><span class="nf">toList</span><span class="p">(),</span>
+            <span class="n">returnType</span> <span class="p">=</span> <span class="nc">UNIT</span><span class="p">,</span>
+          <span class="p">),</span>
+        <span class="p">).</span><span class="nf">build</span><span class="p">(),</span>
+      <span class="p">)</span>
+
+      <span class="c1">// 함수의 반환 타입을 설정합니다.</span>
+      <span class="c1">// ex) public inline fun &lt;T&gt; UiState&lt;T&gt;.onXXX(block: (T) -&gt; Unit): UiState&lt;T&gt; &lt;- UiState&lt;T&gt;가 반환 타입</span>
+      <span class="nf">returns</span><span class="p">(</span>
+        <span class="nc">ClassName</span><span class="p">.</span><span class="nf">bestGuess</span><span class="p">(</span><span class="n">parent</span><span class="p">.</span><span class="n">qualifiedName</span><span class="o">!!</span><span class="p">.</span><span class="nf">asString</span><span class="p">()).</span><span class="nf">run</span> <span class="p">{</span>
+          <span class="k">if</span> <span class="p">(</span><span class="n">isGeneric</span><span class="p">)</span> <span class="nf">parameterizedBy</span><span class="p">(</span><span class="n">typeParameters</span><span class="p">.</span><span class="nf">map</span> <span class="p">{</span> <span class="nc">TypeVariableName</span><span class="p">(</span><span class="n">it</span><span class="p">.</span><span class="n">name</span><span class="p">.</span><span class="nf">asString</span><span class="p">())</span> <span class="p">}.</span><span class="nf">toList</span><span class="p">())</span>
+          <span class="k">else</span> <span class="k">this</span>
+        <span class="p">},</span>
+      <span class="p">)</span>
+
+      <span class="c1">// 함수의 구현 코드를 추가합니다.</span>
+      <span class="nf">addStatement</span><span class="p">(</span><span class="s">"if (this is ${parent.simpleName.asString()}.${sub.simpleName.asString()})"</span><span class="p">)</span>
+
+      <span class="kd">val</span> <span class="py">block</span> <span class="p">=</span> <span class="k">if</span> <span class="p">(</span><span class="n">properties</span><span class="p">.</span><span class="nf">isNotEmpty</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">properties</span><span class="p">.</span><span class="nf">mapIndexed</span> <span class="p">{</span> <span class="n">i</span><span class="p">,</span> <span class="n">v</span> <span class="p">-&gt;</span>
+          <span class="k">if</span> <span class="p">(</span><span class="n">i</span> <span class="p">&lt;</span> <span class="n">properties</span><span class="p">.</span><span class="n">size</span> <span class="p">-</span> <span class="mi">1</span><span class="p">)</span> <span class="s">"${v.simpleName.asString()},"</span> <span class="k">else</span> <span class="n">v</span><span class="p">.</span><span class="n">simpleName</span><span class="p">.</span><span class="nf">asString</span><span class="p">()</span>
+        <span class="p">}.</span><span class="nf">joinToString</span><span class="p">(</span><span class="s">""</span><span class="p">).</span><span class="nf">run</span> <span class="p">{</span> <span class="s">"block(${this})"</span> <span class="p">}</span>
+      <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="s">"block()"</span>
+      <span class="p">}</span>
+
+      <span class="nf">addStatement</span><span class="p">(</span>
+        <span class="s">"""
+        |  $block
+        """</span><span class="p">.</span><span class="nf">trimMargin</span><span class="p">(),</span>
+      <span class="p">)</span>
+      <span class="nf">addStatement</span><span class="p">(</span><span class="s">"return this"</span><span class="p">)</span>
+      <span class="nf">build</span><span class="p">()</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="4-annotation-사용법">4. Annotation 사용법</h3>
+<hr>
+
+<p><code class="language-plaintext highlighter-rouge">sealed class</code>에 <code class="language-plaintext highlighter-rouge">@KBindFunc</code>를 붙여주고 컴파일하면 즉시 바인딩 함수 사용이 가능합니다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@KBindFunc</span>
+<span class="k">sealed</span> <span class="kd">interface</span> <span class="nc">UiState</span><span class="p">&lt;</span><span class="k">out</span> <span class="nc">T</span><span class="p">&gt;</span> <span class="p">{</span>
+  <span class="kd">data class</span> <span class="nc">Success</span><span class="p">&lt;</span><span class="k">out</span> <span class="nc">T</span><span class="p">&gt;(</span><span class="kd">val</span> <span class="py">data</span><span class="p">:</span> <span class="nc">T</span><span class="p">)</span> <span class="p">:</span> <span class="nc">UiState</span><span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;</span>
+  <span class="kd">data class</span> <span class="nc">Error</span><span class="p">(</span><span class="kd">val</span> <span class="py">exception</span><span class="p">:</span> <span class="nc">Throwable</span><span class="p">)</span> <span class="p">:</span> <span class="nc">UiState</span><span class="p">&lt;</span><span class="nc">Nothing</span><span class="p">&gt;</span>
+  <span class="kd">object</span> <span class="nc">Loading</span> <span class="p">:</span> <span class="nc">UiState</span><span class="p">&lt;</span><span class="nc">Nothing</span><span class="p">&gt;</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>컴파일 결과 아래와 같은 함수를 가진 바인딩 파일이 생성됩니다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">public</span> <span class="k">inline</span> <span class="k">fun</span> <span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;</span> <span class="nf">UiState</span><span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;.</span><span class="nf">onError</span><span class="p">(</span><span class="n">block</span><span class="p">:</span> <span class="p">(</span><span class="nc">Throwable</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">):</span> <span class="nc">UiState</span><span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="k">this</span> <span class="k">is</span> <span class="nc">UiState</span><span class="p">.</span><span class="nc">Error</span><span class="p">)</span>
+    <span class="nf">block</span><span class="p">(</span><span class="n">exception</span><span class="p">)</span>
+  <span class="k">return</span> <span class="k">this</span>
+<span class="p">}</span>
+
+<span class="k">public</span> <span class="k">inline</span> <span class="k">fun</span> <span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;</span> <span class="nf">UiState</span><span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;.</span><span class="nf">onLoading</span><span class="p">(</span><span class="n">block</span><span class="p">:</span> <span class="p">()</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">):</span> <span class="nc">UiState</span><span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="k">this</span> <span class="k">is</span> <span class="nc">UiState</span><span class="p">.</span><span class="nc">Loading</span><span class="p">)</span>
+    <span class="nf">block</span><span class="p">()</span>
+  <span class="k">return</span> <span class="k">this</span>
+<span class="p">}</span>
+
+<span class="k">public</span> <span class="k">inline</span> <span class="k">fun</span> <span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;</span> <span class="nf">UiState</span><span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;.</span><span class="nf">onSuccess</span><span class="p">(</span><span class="n">block</span><span class="p">:</span> <span class="p">(</span><span class="nc">T</span><span class="p">)</span> <span class="p">-&gt;</span> <span class="nc">Unit</span><span class="p">):</span> <span class="nc">UiState</span><span class="p">&lt;</span><span class="nc">T</span><span class="p">&gt;</span> <span class="p">{</span>
+  <span class="k">if</span> <span class="p">(</span><span class="k">this</span> <span class="k">is</span> <span class="nc">UiState</span><span class="p">.</span><span class="nc">Success</span><span class="p">)</span>
+    <span class="nf">block</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+  <span class="k">return</span> <span class="k">this</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>함수를 이어서 사용하면 됩니다.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>uiState.onSuccess {
+
+}.onError {
+
+}.onLoading {
+
+}
+</code></pre></div></div>
+
+<h2 id="라이브러리로-배포">라이브러리로 배포</h2>
+<hr>
+
+<blockquote>
+  <p>사용하기 쉽도록 라이브러리로 배포하였습니다.</p>
+</blockquote>
+
+<p>아래 처럼 build.gradle에 추가하고 <code class="language-plaintext highlighter-rouge">@KBindFunc</code>를 붙인 후 컴파일 한 다음 사용하면 됩니다.</p>
+
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>plugins {
+  id("com.google.devtools.ksp")
+}
+
+dependencies {
+  ksp("io.github.pknujsp:ksealedbinding-compiler:1.0.0")
+  implementation("io.github.pknujsp:ksealedbinding-annotation:1.0.0")
+}
+</code></pre></div></div>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/android/2023/07/30/Android-%EC%83%81%ED%83%9C%EB%B0%94%EC%99%80-%EB%84%A4%EB%B9%84%EA%B2%8C%EC%9D%B4%EC%85%98%EB%B0%94-%EC%83%89%EC%83%81-%EC%9E%90%EB%8F%99-%EB%B3%80%EA%B2%BD-%EC%B2%98%EB%A6%AC%ED%95%98%EA%B8%B0.html" title="Android 시스템 바(상태바, 네비게이션바) 색상 자동 변경 처리하기">Android 시스템 바(상태바, 네비게이션바)...</a><a class="next" href="/jekyll-theme-yat/android/2023/08/13/androidx.collection-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-%EC%82%B4%ED%8E%B4%EB%B3%B4%EA%B8%B0(SparseArray,-ArrayMap,-LruCache-/).html" title="ArrayMap, SparseArray, LruCache에 대해서 알아보기">ArrayMap, SparseArray, LruCache에 대해서...</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li>
+<span><a class="post-link" href="/jekyll-theme-yat/data/communication/2023/06/13/Wireless-LANs.html" title="ArrayMap, SparseArray, LruCache에 대해서 알아보기">15. Wireless LANs</a></span><span>
+            <time class="dt-published datetime" datetime="2023-06-13T00:00:00+09:00" itemprop="datePublished">2023-06-13, Tue
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/android/2023/04/04/Activity-%EC%95%8C%EC%95%84%EB%B3%B4%EA%B8%B0.html" title="ArrayMap, SparseArray, LruCache에 대해서 알아보기">Activity 알아보기</a></span><span>
+            <time class="dt-published datetime" datetime="2023-04-04T00:00:00+09:00" itemprop="datePublished">2023-04-04, Tue
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/dalvik/art/android/2023/10/15/Android-Dalvik%EA%B3%BC-Art%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C.html" title="ArrayMap, SparseArray, LruCache에 대해서 알아보기">Android Dalvik과 ART에 대해서</a></span><span>
+            <time class="dt-published datetime" datetime="2023-10-15T00:00:00+09:00" itemprop="datePublished">2023-10-15, Sun
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/garbagecollector/2023/09/17/Garbage-collector%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C.html" title="ArrayMap, SparseArray, LruCache에 대해서 알아보기">Garbage collector에 대해서 알아보자</a></span><span>
+            <time class="dt-published datetime" datetime="2023-09-17T00:00:00+09:00" itemprop="datePublished">2023-09-17, Sun
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/sql/2023/04/18/JOIN-%EC%A0%95%EB%B3%B5%ED%95%98%EA%B8%B0.html" title="ArrayMap, SparseArray, LruCache에 대해서 알아보기">JOIN 정복하기</a></span><span>
+            <time class="dt-published datetime" datetime="2023-04-18T00:00:00+09:00" itemprop="datePublished">2023-04-18, Tue
+            </time></span>
+        </li>
+</ul>
+    </div>
+<div class="post-comments">
+<div id="utterances-placeholder"></div>
+<script>
+
+const utterancesThemeFromDataTheme = () => {
+    const dataTheme = document.documentElement.getAttribute('data-theme');
+    return `github-${dataTheme}`;
+  };
+
+  const setUtterancesTheme = () => {
+    const iframe = document.querySelector('.utterances-frame');
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: utterancesThemeFromDataTheme()
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+    }
+  }
+
+  // dynamic change
+  const observer = new MutationObserver((mutationsList, observer) => {
+    for (let mutation of mutationsList) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        setUtterancesTheme();
+      }
+    }
+  });
+  observer.observe(document.documentElement, { attributes: true, childList: false, subtree: false });
+
+  let utterancesScript = document.createElement('script');
+  utterancesScript.async = true;
+  utterancesScript.src = 'https://utteranc.es/client.js';
+  utterancesScript.crossOrigin = 'anonymous';
+  utterancesScript.setAttribute('issue-term', 'pathname');
+  utterancesScript.setAttribute('label', 'comments');
+  utterancesScript.setAttribute('repo', 'pknujsp/Blogcomments');
+  utterancesScript.setAttribute('theme', utterancesThemeFromDataTheme());
+
+  const placeholder = document.getElementById('utterances-placeholder');
+  placeholder.parentNode.replaceChild(utterancesScript, placeholder);
+</script>
+</div></section>
+</div>
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">Contents</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">· ' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>2024 @ Junsung Park</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,1599 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>코루틴에서의 예외 처리 정리 | Jsp Notes</title>
+<meta name="generator" content="Jekyll v4.3.4">
+<meta property="og:title" content="코루틴에서의 예외 처리 정리">
+<meta name="author" content="Junsung Park">
+<meta property="og:locale" content="ko">
+<meta name="description" content="코루틴에서 예외가 발생하면, 부모 코루틴으로 예외가 전파되고, 부모와 형제 코루틴이 모두 취소된다.">
+<meta property="og:description" content="코루틴에서 예외가 발생하면, 부모 코루틴으로 예외가 전파되고, 부모와 형제 코루틴이 모두 취소된다.">
+<link rel="canonical" href="https://pknujsp.github.io//jekyll-theme-yat/kotlin/coroutines/2023/11/12/%EC%BD%94%EB%A3%A8%ED%8B%B4%EC%97%90%EC%84%9C%EC%9D%98-%EC%98%88%EC%99%B8-%EC%B2%98%EB%A6%AC.html">
+<meta property="og:url" content="https://pknujsp.github.io//jekyll-theme-yat/kotlin/coroutines/2023/11/12/%EC%BD%94%EB%A3%A8%ED%8B%B4%EC%97%90%EC%84%9C%EC%9D%98-%EC%98%88%EC%99%B8-%EC%B2%98%EB%A6%AC.html">
+<meta property="og:site_name" content="Jsp Notes">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-11-12T00:00:00+09:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="코루틴에서의 예외 처리 정리">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junsung Park"},"dateModified":"2023-11-12T00:00:00+09:00","datePublished":"2023-11-12T00:00:00+09:00","description":"코루틴에서 예외가 발생하면, 부모 코루틴으로 예외가 전파되고, 부모와 형제 코루틴이 모두 취소된다.","headline":"코루틴에서의 예외 처리 정리","mainEntityOfPage":{"@type":"WebPage","@id":"https://pknujsp.github.io//jekyll-theme-yat/kotlin/coroutines/2023/11/12/%EC%BD%94%EB%A3%A8%ED%8B%B4%EC%97%90%EC%84%9C%EC%9D%98-%EC%98%88%EC%99%B8-%EC%B2%98%EB%A6%AC.html"},"url":"https://pknujsp.github.io//jekyll-theme-yat/kotlin/coroutines/2023/11/12/%EC%BD%94%EB%A3%A8%ED%8B%B4%EC%97%90%EC%84%9C%EC%9D%98-%EC%98%88%EC%99%B8-%EC%B2%98%EB%A6%AC.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="icon" href="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script>
+
+  <!-- tipuesearch -->
+  <link rel="stylesheet" href="/assets/tipuesearch/css/tipuesearch.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_content.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_set.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch.min.js"></script><link type="application/atom+xml" rel="alternate" href="https://pknujsp.github.io//jekyll-theme-yat/feed.xml" title="Jsp Notes">
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LZC1TDTS26"></script>
+<script>
+  function initGoogleAnalytics() {
+    var doNotTrack = (window.doNotTrack === "1" || navigator.doNotTrack === "1" ||
+      navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1");
+    var enableDNT = "true" == "true";
+
+    if (!enableDNT || !doNotTrack) {
+      /*
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'G-LZC1TDTS26', 'auto');
+      ga('send', 'pageview');
+      */
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { window.dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-LZC1TDTS26');
+    }
+  }
+  window.addEventListener("load", initGoogleAnalytics);
+
+</script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/intellij-light.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/kotlin.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #7800ff;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: lowercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <img class="site-white_favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+</a></span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/about.html">About</a><a class="page-link" href="/jekyll-theme-yat/categories.html">Categories</a><a class="page-link" href="/jekyll-theme-yat/">Home</a><a class="page-link" href="/jekyll-theme-yat/posts.html">Posts</a><a class="page-link" href="/jekyll-theme-yat/tags.html">Tags</a><input id="tipue_search_input" type="search" placeholder="Search" aria-label="Search" title="Please enter at least 1 character" required>
+
+          <script>
+            document.getElementById("tipue_search_input").addEventListener("keydown", function (event) {
+              if (event.keyCode === 13) {
+                event.preventDefault();
+                window.location.href = "../search?q=" + this.value;
+              }
+            });
+          </script>
+<!--
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="en">
+        
+        <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+        to English
+        
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="ko">
+        
+        <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+        to Korean
+        
+      </a>
+    </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'ko',
+      autoDisplay: false,
+      layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+    }, 'google_translate_element');
+
+    // Links to cross-origin destinations are unsafe
+    var gll = document.getElementsByClassName('goog-logo-link')[0];
+    if (gll) {
+      gll.setAttribute('rel', 'noopener');
+    }
+
+    function restoreLang() {
+      var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+      if (!iframe) return;
+
+      var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+      var restore_el = innerDoc.getElementsByTagName("button");
+
+      for (var i = 0; i < restore_el.length; i++) {
+        if (restore_el[i].id.indexOf("restore") >= 0) {
+          restore_el[i].click();
+          var close_el = innerDoc.getElementsByClassName("goog-close-link");
+          close_el[0].click();
+          return;
+        }
+      }
+    }
+
+    function triggerHtmlEvent(element, eventName) {
+      var event;
+      if (document.createEvent) {
+        event = document.createEvent('HTMLEvents');
+        event.initEvent(eventName, true, true);
+        element.dispatchEvent(event);
+      } else {
+        event = document.createEventObject();
+        event.eventType = eventName;
+        element.fireEvent('on' + event.eventType, event);
+      }
+    }
+
+    var googleCombo = document.querySelector("select.goog-te-combo");
+    var langSelect = document.querySelector('.ct-language');
+    langSelect.addEventListener('click', function (event) {
+      if (!event.target) {
+        return;
+      }
+
+      var selected = document.querySelector('.ct-language .ct-language-selected');
+      if (selected) {
+        selected.classList.remove('ct-language-selected');
+      }
+
+      var target = event.target;
+      while (target && target !== langSelect) {
+        if (target.matches('.lang-select')) {
+          break;
+        }
+        target = target.parentElement;
+      }
+
+      if (target && target.matches('.lang-select')) {
+        var lang = target.getAttribute('data-lang');
+        if (googleCombo.value == lang) {
+          restoreLang();
+        } else if (lang == 'ko') {
+          var googleTranslateElement = document.getElementById('google_translate_element');
+          if (googleTranslateElement) {
+            googleTranslateElement.parentNode.removeChild(googleTranslateElement);
+            $('#google_translate_element').empty();
+          }
+        } else {
+          target.parentElement.classList.add('ct-language-selected');
+          googleCombo.value = lang;
+          triggerHtmlEvent(googleCombo, 'change');
+        }
+      }
+
+      event.preventDefault();
+    });
+  }
+</script>
+
+<script type="text/javascript"
+  src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script></span>-->
+          </div>
+
+          
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('manual' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = !(hours >= 2 && hours <=5);
+
+      if (nightShift) {
+        if (hours > 5) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(5);
+      } else {
+        toggleAt.setHours(2);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<div id="click-to-bottom" class="click-to-bottom">
+  <i class="fa fa-arrow-down"></i>
+</div>
+<script>
+  (function () {
+    const clickToBottom = document.getElementById('click-to-bottom');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToBottom.classList.add('show')
+      }else {
+        clickToBottom.classList.remove('show')
+      }
+    });
+    clickToBottom.addEventListener('click', () => {
+      window.smoothScrollTo(document.body.scrollHeight);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">코루틴에서의 예외 처리 정리</h1>
+  <h2 class="post-subtitle">예외 처리</h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2023-11-12T00:00:00+09:00" itemprop="datePublished">2023-11-12, Sun
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 16 minutes</span>
+  </p>
+<div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#Kotlin">#Kotlin</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#Coroutines">#Coroutines</a>
+</div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h2 id="코루틴에서-예외가-발생하면-부모-코루틴으로-예외가-전파되고-부모와-형제-코루틴이-모두-취소된다">코루틴에서 예외가 발생하면, 부모 코루틴으로 예외가 <strong>전파</strong>되고, 부모와 형제 코루틴이 모두 취소된다.</h2>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">fun</span> <span class="nf">main</span><span class="p">():</span> <span class="nc">Unit</span> <span class="p">=</span> <span class="nf">runBlocking</span> <span class="p">{</span>
+    <span class="c1">// A</span>
+    <span class="nf">launch</span> <span class="p">{</span>
+        <span class="c1">// A-A</span>
+        <span class="nf">launch</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="nc">Error</span><span class="p">(</span><span class="s">"A-A의 예외"</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="c1">// A-B</span>
+        <span class="nf">launch</span> <span class="p">{</span>
+            <span class="nf">println</span><span class="p">(</span><span class="s">"A-B"</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="c1">// A-C</span>
+        <span class="nf">launch</span> <span class="p">{</span>
+            <span class="nf">println</span><span class="p">(</span><span class="s">"A-C"</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="c1">// B</span>
+    <span class="nf">launch</span> <span class="p">{</span>
+        <span class="nf">println</span><span class="p">(</span><span class="s">"B"</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nc">B</span>
+<span class="nc">Exception</span> <span class="k">in</span> <span class="n">thread</span> <span class="s">"main"</span> <span class="n">java</span><span class="p">.</span><span class="n">lang</span><span class="p">.</span><span class="nc">Error</span><span class="p">:</span> <span class="nc">A-A</span><span class="err">의</span> <span class="err">예외</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">A-A</code>에서 발생한 예외가 전파되어, 모든 코루틴<code class="language-plaintext highlighter-rouge">[A-B, A-C, B]</code>이 취소된다. 다음 그림은 위 코드내 코루틴의 계층도를 나타낸다.</p>
+
+<p><img src="https://github-production-user-asset-6210df.s3.amazonaws.com/48265129/284053629-7d87d150-f8e7-4eb8-9eee-c1460c95bf58.png" alt="코루틴 예외"></p>
+
+<p>작업하나가 실패하더라도 다른 작업에 영향을 주지 않아야 하는 경우, 이를 처리하는 방법을 알아보자.</p>
+
+<h2 id="코루틴에서-발생한-오류를-전파시키지-않도록-하는-방법">코루틴에서 발생한 오류를 전파시키지 않도록 하는 방법</h2>
+
+<h3 id="1-supervisorjob">1. SupervisorJob</h3>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">SupervisorJob</code>를 사용하는 코루틴은 다른 코루틴에게 영향을 주지 않는다.</p>
+</blockquote>
+
+<ul>
+  <li>
+<code class="language-plaintext highlighter-rouge">SupervisorJob</code> : 자식 코루틴들은 서로 독립적으로 동작하여, 해당 코루틴에서 발생한 예외가 부모와 형제 코루틴에게 영향을 주지 않는다.</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">Job</code> : 부모와 자식 코루틴은 서로 연결되어 있어, 예외가 전파된다.</li>
+</ul>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">suspend</span> <span class="k">fun</span> <span class="nf">main</span><span class="p">():</span> <span class="nc">Unit</span> <span class="p">=</span> <span class="nf">coroutineScope</span> <span class="p">{</span>
+    <span class="c1">// A</span>
+    <span class="nf">launch</span> <span class="p">{</span>
+        <span class="nf">println</span><span class="p">(</span><span class="s">"A"</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="c1">// B</span>
+    <span class="nf">launch</span> <span class="p">{</span>
+        <span class="nf">println</span><span class="p">(</span><span class="s">"B"</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="c1">// C</span>
+    <span class="kd">val</span> <span class="py">scope</span> <span class="p">=</span> <span class="nc">CoroutineScope</span><span class="p">(</span><span class="nc">SupervisorJob</span><span class="p">())</span>
+    <span class="n">scope</span><span class="p">.</span><span class="nf">launch</span> <span class="p">{</span>
+        <span class="k">try</span> <span class="p">{</span>
+            <span class="nf">println</span><span class="p">(</span><span class="s">"C"</span><span class="p">)</span>
+            <span class="k">throw</span> <span class="nc">Exception</span><span class="p">(</span><span class="s">"C의 예외"</span><span class="p">)</span>
+        <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">e</span><span class="p">:</span> <span class="nc">Exception</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nf">println</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nc">A</span>
+<span class="nc">B</span>
+<span class="nc">C</span>
+<span class="n">java</span><span class="p">.</span><span class="n">lang</span><span class="p">.</span><span class="nc">Exception</span><span class="p">:</span> <span class="nc">C</span><span class="err">의</span> <span class="err">예외</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">C</code>에서 예외가 발생하였으나, 다른 코루틴에게 영향을 주지 않았다.</p>
+
+<p><img src="https://github-production-user-asset-6210df.s3.amazonaws.com/48265129/284053630-3692d95c-9211-4a27-95b9-4227ac2ddfe3.png" alt="코루틴 예외-supervisorjob"></p>
+
+<h4 id="사용-방법">사용 방법</h4>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="c1">// 1. Scope를 만들 때 SupervisorJob을 컨텍스트로 포함시키기</span>
+<span class="kd">val</span> <span class="py">scope</span> <span class="p">=</span> <span class="nc">CoroutineScope</span><span class="p">(</span><span class="nc">SupervisorJob</span><span class="p">())</span>
+<span class="n">scope</span><span class="p">.</span><span class="nf">launch</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+<span class="p">}</span>
+
+<span class="c1">// 2. 기존 Scope에 SupervisorJob을 추가하기</span>
+<span class="nf">launch</span><span class="p">(</span><span class="nc">SupervisorJob</span><span class="p">())</span> <span class="p">{</span>
+    <span class="c1">// ...</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="부적절한-사용--withcontextsupervisorjob">부적절한 사용 : <code class="language-plaintext highlighter-rouge">withContext(SupervisorJob())</code>
+</h4>
+
+<p><code class="language-plaintext highlighter-rouge">withContext(SupervisorJob())</code>으로 사용하면, 의도와 달리 예외가 전파된다. 왜냐하면 <code class="language-plaintext highlighter-rouge">withContext</code>은 새로운 코루틴을 만드는 것이 아니라 기존 코루틴의 context를 임시적으로 변경하는 것이기 때문이다. 다시 말해, <code class="language-plaintext highlighter-rouge">SupervisorJob</code>으로 지정하여도 코루틴의 동작 방식을 바꿀 수 없기 떄문에 <code class="language-plaintext highlighter-rouge">SupervisorJob</code>의 특성이 적용되지 않는다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">suspend</span> <span class="k">fun</span> <span class="nf">analyzeData</span><span class="p">(</span><span class="n">dataList</span><span class="p">:</span> <span class="nc">List</span><span class="p">&lt;</span><span class="nc">Data</span><span class="p">&gt;)</span> <span class="p">=</span> 
+    <span class="nf">withContext</span><span class="p">(</span><span class="nc">SupervisorJob</span><span class="p">())</span> <span class="p">{</span>
+        <span class="n">dataList</span><span class="p">.</span><span class="nf">forEach</span> <span class="p">{</span> <span class="n">data</span> <span class="p">-&gt;</span>
+            <span class="nf">launch</span> <span class="p">{</span>
+                <span class="kd">val</span> <span class="py">result</span> <span class="p">=</span> <span class="nf">analyze</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+                <span class="nf">notifyResult</span><span class="p">(</span><span class="n">result</span><span class="p">)</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">launch</code>내에서 예외가 발생하면 다른 코루틴이 모두 취소된다.</p>
+
+<h3 id="2-supervisorscope">2. supervisorScope</h3>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">supervisorScope</code>내의 코루틴은 서로 독립적으로 동작하여, 예외가 발생해도 다른 코루틴에게 영향을 주지 않는다.</p>
+</blockquote>
+
+<p>Scope내에서 생성되는 코루틴은 <code class="language-plaintext highlighter-rouge">SupervisorJob</code>으로 동작한다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">suspend</span> <span class="k">fun</span> <span class="nf">main</span><span class="p">():</span> <span class="nc">Unit</span> <span class="p">=</span> <span class="nf">coroutineScope</span> <span class="p">{</span>
+    <span class="c1">// A</span>
+    <span class="nf">launch</span> <span class="p">{</span>
+        <span class="nf">println</span><span class="p">(</span><span class="s">"A"</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="c1">// B</span>
+    <span class="nf">launch</span> <span class="p">{</span>
+        <span class="nf">println</span><span class="p">(</span><span class="s">"B"</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="c1">// C</span>
+    <span class="nf">supervisorScope</span> <span class="p">{</span>
+        <span class="nf">launch</span> <span class="p">{</span>
+            <span class="k">try</span> <span class="p">{</span>
+                <span class="nf">println</span><span class="p">(</span><span class="s">"C"</span><span class="p">)</span>
+                <span class="k">throw</span> <span class="nc">Exception</span><span class="p">(</span><span class="s">"C의 예외"</span><span class="p">)</span>
+            <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">e</span><span class="p">:</span> <span class="nc">Exception</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nf">println</span><span class="p">(</span><span class="n">e</span><span class="p">)</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nc">A</span>
+<span class="nc">B</span>
+<span class="nc">C</span>
+<span class="n">java</span><span class="p">.</span><span class="n">lang</span><span class="p">.</span><span class="nc">Exception</span><span class="p">:</span> <span class="nc">C</span><span class="err">의</span> <span class="err">예외</span>
+</code></pre></div></div>
+
+<h3 id="3-exception클래스가-cancellationexception를-상속받도록-하기">3. Exception클래스가 <code class="language-plaintext highlighter-rouge">CancellationException</code>를 상속받도록 하기</h3>
+
+<h4 id="예시--값이-홀수일-때-예외를-발생시키는-코드">예시 : 값이 홀수일 때 예외를 발생시키는 코드</h4>
+
+<p>예외가 발생하면 부모, 자식 코루틴이 종료된다. 짝수일 때는 정상적으로 동작해야 하는데 취소되기 때문에 개선이 필요하다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">data class</span> <span class="nc">OddException</span><span class="p">(</span><span class="kd">val</span> <span class="py">value</span><span class="p">:</span> <span class="nc">Int</span><span class="p">)</span> <span class="p">:</span> <span class="nc">Exception</span><span class="p">()</span>
+
+<span class="k">suspend</span> <span class="k">fun</span> <span class="nf">main</span><span class="p">():</span> <span class="nc">Unit</span> <span class="p">=</span> <span class="nf">coroutineScope</span> <span class="p">{</span>
+    <span class="nf">repeat</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">launch</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">it</span> <span class="p">%</span> <span class="mi">2</span> <span class="p">==</span> <span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">throw</span> <span class="nc">OddException</span><span class="p">(</span><span class="n">it</span><span class="p">)</span>
+            <span class="p">}</span>
+            <span class="nf">println</span><span class="p">(</span><span class="n">it</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="mi">0</span>
+<span class="mi">2</span>
+<span class="mi">4</span>
+<span class="nc">Exception</span> <span class="k">in</span> <span class="n">thread</span> <span class="s">"main"</span> <span class="nc">OddException</span><span class="p">(</span><span class="n">value</span><span class="p">=</span><span class="mi">1</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">OddException</code>를 <code class="language-plaintext highlighter-rouge">CancellationException</code>를 상속받도록 하면, 예외는 부모로 전파되지 않고, 예외가 발생한 코루틴만 취소된다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">data class</span> <span class="nc">OddException</span><span class="p">(</span><span class="kd">val</span> <span class="py">value</span><span class="p">:</span> <span class="nc">Int</span><span class="p">)</span> <span class="p">:</span> <span class="nc">CancellationException</span><span class="p">()</span>
+
+<span class="mi">0</span>
+<span class="mi">2</span>
+<span class="mi">4</span>
+<span class="mi">6</span>
+<span class="mi">8</span>
+<span class="mi">10</span>
+<span class="mi">12</span>
+<span class="mi">14</span>
+<span class="o">..</span><span class="p">.</span>
+<span class="mi">98</span>
+</code></pre></div></div>
+
+<h2 id="코루틴에서-발생한-예외를-감지하는-방법">코루틴에서 발생한 예외를 감지하는 방법</h2>
+
+<h3 id="1-try-catch-일반적인-방법">1. try-catch, 일반적인 방법</h3>
+
+<p>가장 기초적인 방법으로 <code class="language-plaintext highlighter-rouge">try-catch</code>를 사용하여 예외를 감지할 수 있다.</p>
+
+<p>코루틴 빌더 내에서 <code class="language-plaintext highlighter-rouge">try-catch</code>를 사용하면 된다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">launch</span> <span class="p">{</span>
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="k">throw</span> <span class="nc">Exception</span><span class="p">(</span><span class="s">"예외 발생"</span><span class="p">)</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">e</span><span class="p">:</span> <span class="nc">Exception</span><span class="p">)</span> <span class="p">{</span>
+        <span class="c1">// try 내에서 발생한 예외에 대한 대응 로직을 작성</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>그러나 <code class="language-plaintext highlighter-rouge">try</code>문 내에 자식 코루틴이 있는 경우, 자식 코루틴에서 발생한 예외는 <code class="language-plaintext highlighter-rouge">try-catch</code>로 감지할 수 없다.</p>
+
+<h3 id="try-catch로-예외를-감지할-수-없는-경우">try-catch로 예외를 감지할 수 없는 경우</h3>
+
+<h4 id="try문-내에-자식-코루틴이-있을-때">try문 내에 자식 코루틴이 있을 때</h4>
+
+<p>다음 코드와 같이 내부적으로 또 다른 코루틴이 있다면 그 코루틴에서 발생하는 예외는 <code class="language-plaintext highlighter-rouge">catch</code>로 감지할 수 없다. 즉, 계층 구조가 있는 코루틴에서는 <code class="language-plaintext highlighter-rouge">try-catch</code>로 예외를 감지할 수 없다는 것이다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">try</span> <span class="p">{</span>
+    <span class="nf">launch</span> <span class="p">{</span>
+        <span class="c1">// 자식 코루틴 A</span>
+        <span class="k">throw</span> <span class="nc">Exception</span><span class="p">(</span><span class="s">"코루틴 A 예외"</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 새로운 Scope에서 코루틴 B를 실행</span>
+    <span class="kd">val</span> <span class="py">scope</span> <span class="p">=</span> <span class="nc">CoroutineScope</span><span class="p">(</span><span class="nc">Dispatchers</span><span class="p">.</span><span class="nc">Default</span><span class="p">)</span>
+    <span class="n">scope</span><span class="p">.</span><span class="nf">launch</span> <span class="p">{</span>
+        <span class="k">throw</span> <span class="nc">Exception</span><span class="p">(</span><span class="s">"코루틴 B 예외"</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">e</span><span class="p">:</span> <span class="nc">Exception</span><span class="p">)</span> <span class="p">{</span>
+    <span class="c1">// 호출되지 않음</span>
+    <span class="c1">// 자식 코루틴의 예외를 감지할 수 없다.</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p>이러한 경우에는 루트 코루틴에서 <code class="language-plaintext highlighter-rouge">CoroutineExceptionHandler</code>를 사용하면 자식 코루틴의 예외를 감지할 수 있다.</p>
+
+<h3 id="2-coroutineexceptionhandler">2. CoroutineExceptionHandler</h3>
+
+<blockquote>
+  <p>Scope내의 코루틴에서 발생한 예외를 감지할 수 있다, 보통 <code class="language-plaintext highlighter-rouge">launch</code> 빌더와 함께 쓰인다</p>
+</blockquote>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">supervisorScope</span> <span class="p">{</span>
+    <span class="kd">val</span> <span class="py">exceptionHandler</span> <span class="p">=</span> <span class="nc">CoroutineExceptionHandler</span> <span class="p">{</span> <span class="n">_</span><span class="p">,</span> <span class="n">throwable</span> <span class="p">-&gt;</span>
+        <span class="nf">println</span><span class="p">(</span><span class="s">"예외 감지: $throwable"</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="nf">println</span><span class="p">(</span><span class="s">"ROOT"</span><span class="p">)</span>
+
+    <span class="nf">launch</span><span class="p">(</span><span class="n">exceptionHandler</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">println</span><span class="p">(</span><span class="s">"job : ROOT-A"</span><span class="p">)</span>
+
+        <span class="nf">launch</span> <span class="p">{</span>
+            <span class="nf">println</span><span class="p">(</span><span class="s">"job : ROOT-A-B"</span><span class="p">)</span>
+
+            <span class="nf">launch</span> <span class="p">{</span>
+                <span class="nf">println</span><span class="p">(</span><span class="s">"job : ROOT-A-B-C"</span><span class="p">)</span>
+
+                <span class="nf">supervisorScope</span> <span class="p">{</span>
+                    <span class="nf">launch</span> <span class="p">{</span>
+                        <span class="k">throw</span> <span class="nc">Exception</span><span class="p">(</span><span class="s">"ROOT-A-B-C의 예외"</span><span class="p">)</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="nf">launch</span><span class="p">(</span><span class="n">exceptionHandler</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">println</span><span class="p">(</span><span class="s">"job : ROOT-B"</span><span class="p">)</span>
+        <span class="k">throw</span> <span class="nc">Exception</span><span class="p">(</span><span class="s">"ROOT-B의 예외"</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nc">ROOT</span>
+<span class="n">job</span> <span class="p">:</span> <span class="nc">ROOT-A</span>
+<span class="n">job</span> <span class="p">:</span> <span class="nc">ROOT-B</span>
+<span class="err">예외</span> <span class="err">감지</span><span class="p">:</span> <span class="n">java</span><span class="p">.</span><span class="n">lang</span><span class="p">.</span><span class="nc">Exception</span><span class="p">:</span> <span class="nc">ROOT-B</span><span class="err">의</span> <span class="err">예외</span>
+<span class="n">job</span> <span class="p">:</span> <span class="nc">ROOT-A-B</span>
+<span class="n">job</span> <span class="p">:</span> <span class="nc">ROOT-A-B-C</span>
+<span class="err">예외</span> <span class="err">감지</span><span class="p">:</span> <span class="n">java</span><span class="p">.</span><span class="n">lang</span><span class="p">.</span><span class="nc">Exception</span><span class="p">:</span> <span class="nc">ROOT-A-B-C</span><span class="err">의</span> <span class="err">예외</span>
+</code></pre></div></div>
+
+<p><img src="https://github-production-user-asset-6210df.s3.amazonaws.com/48265129/284053611-15bca337-9c45-486b-8bae-d53b6bd6509c.png" alt="CoroutineExceptionHandler"></p>
+
+<h3 id="주의-사항">주의 사항</h3>
+
+<h4 id="예외에-대해-복구한-후-후속-작업을-해야한다면-부적합">예외에 대해 복구한 후 후속 작업을 해야한다면 부적합</h4>
+
+<blockquote>
+  <p>예외가  <code class="language-plaintext highlighter-rouge">CoroutineExceptionHandler</code>에서 감지되었을 때, 해당 코루틴은 이미 실패 상태로 완료된 것이다. 따라서 <code class="language-plaintext highlighter-rouge">CoroutineExceptionHandler</code>에서 예외를 복구하고 다음 작업을 진행하는 것은 불가능하다.</p>
+</blockquote>
+
+<ul>
+  <li>
+<code class="language-plaintext highlighter-rouge">try-catch</code>를 사용하여 따로 처리
+    <ul>
+      <li>예외에 대해서 대응하고 작업을 이어나가려면, 해당 코드를 <code class="language-plaintext highlighter-rouge">try-catch</code> 로 감싸서 예외를 직접 처리해야 한다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="async에서는-try-catch를-사용해야-한다">
+<code class="language-plaintext highlighter-rouge">async</code>에서는 <code class="language-plaintext highlighter-rouge">try-catch</code>를 사용해야 한다.</h4>
+
+<p>다음과 같이 <code class="language-plaintext highlighter-rouge">async</code>에서 발생한 예외는 <code class="language-plaintext highlighter-rouge">CoroutineExceptionHandler</code>에서 감지되지 않는다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">suspend</span> <span class="k">fun</span> <span class="nf">main</span><span class="p">():</span> <span class="nc">Unit</span> <span class="p">=</span> <span class="nf">supervisorScope</span> <span class="p">{</span>
+    <span class="kd">val</span> <span class="py">exceptionHandler</span> <span class="p">=</span> <span class="nc">CoroutineExceptionHandler</span> <span class="p">{</span> <span class="n">_</span><span class="p">,</span> <span class="n">throwable</span> <span class="p">-&gt;</span>
+        <span class="nf">println</span><span class="p">(</span><span class="s">"Handler 예외 감지: $throwable"</span><span class="p">)</span>
+    <span class="p">}</span>
+    
+    <span class="nf">launch</span><span class="p">(</span><span class="n">exceptionHandler</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">throw</span> <span class="nc">AssertionError</span><span class="p">()</span>
+    <span class="p">}</span>
+
+    <span class="kd">val</span> <span class="py">deferred</span> <span class="p">=</span> <span class="nf">async</span><span class="p">(</span><span class="n">exceptionHandler</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">throw</span> <span class="nc">ArithmeticException</span><span class="p">()</span>
+    <span class="p">}</span>
+
+    <span class="k">try</span> <span class="p">{</span>
+        <span class="n">deferred</span><span class="p">.</span><span class="nf">await</span><span class="p">()</span>
+    <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">e</span><span class="p">:</span> <span class="nc">Exception</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">println</span><span class="p">(</span><span class="s">"catch 예외 감지: $e"</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nc">Handler</span> <span class="err">예외</span> <span class="err">감지</span><span class="p">:</span> <span class="n">java</span><span class="p">.</span><span class="n">lang</span><span class="p">.</span><span class="nc">AssertionError</span>
+<span class="k">catch</span> <span class="err">예외</span> <span class="err">감지</span><span class="p">:</span> <span class="n">java</span><span class="p">.</span><span class="n">lang</span><span class="p">.</span><span class="nc">ArithmeticException</span>
+</code></pre></div></div>
+
+<p>핸들러에서 감지되지 않는 이유는 <code class="language-plaintext highlighter-rouge">async</code>의 동작 방식의 특징 때문이다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">async</code>는 결과를 <code class="language-plaintext highlighter-rouge">Deferred</code> 객체에 담아서 반환하는데, <code class="language-plaintext highlighter-rouge">async</code>에서 발생하는 예외는 이 <code class="language-plaintext highlighter-rouge">Deferred</code>객체에 저장되고, <code class="language-plaintext highlighter-rouge">await()</code> 호출 시에 예외에 대해서 처리가 가능하다.
+따라서, <code class="language-plaintext highlighter-rouge">async</code>에서 발생한 예외는 <code class="language-plaintext highlighter-rouge">CoroutineExceptionHandler</code>에 도달하지 않으므로, <code class="language-plaintext highlighter-rouge">await()</code>를 호출하는 쪽에서 <code class="language-plaintext highlighter-rouge">try-catch</code>로 예외를 처리해야 한다.</p>
+
+<h4 id="delay-yield-등의-취소가능한-중단-함수는-취소될-때-cancellationexception을-발생시킨다">
+<code class="language-plaintext highlighter-rouge">delay()</code>, <code class="language-plaintext highlighter-rouge">yield()</code> 등의 취소가능한 중단 함수는 취소될 때 <code class="language-plaintext highlighter-rouge">CancellationException</code>을 발생시킨다.</h4>
+
+<p>다음은 50MS 동안 대기한 후에 코루틴 <code class="language-plaintext highlighter-rouge">B</code>를 취소시키는 코드이다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">suspend</span> <span class="k">fun</span> <span class="nf">main</span><span class="p">():</span> <span class="nc">Unit</span> <span class="p">=</span> <span class="nf">coroutineScope</span> <span class="p">{</span>
+    <span class="kd">val</span> <span class="py">exceptionHandler</span> <span class="p">=</span> <span class="nc">CoroutineExceptionHandler</span> <span class="p">{</span> <span class="n">_</span><span class="p">,</span> <span class="n">throwable</span> <span class="p">-&gt;</span>
+        <span class="nf">println</span><span class="p">(</span><span class="s">"예외 감지: $throwable"</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="c1">// A</span>
+    <span class="nf">launch</span> <span class="p">{</span>
+        <span class="nf">println</span><span class="p">(</span><span class="s">"A 시작, 200ms 대기"</span><span class="p">)</span>
+        <span class="nf">delay</span><span class="p">(</span><span class="mi">200</span><span class="p">)</span>
+        <span class="nf">println</span><span class="p">(</span><span class="s">"200ms 대기 종료, A 완료"</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="c1">// B</span>
+    <span class="kd">val</span> <span class="py">b</span> <span class="p">=</span> <span class="nf">launch</span> <span class="p">{</span>
+        <span class="k">try</span> <span class="p">{</span>
+            <span class="nf">delay</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+        <span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">e</span><span class="p">:</span> <span class="nc">Exception</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nf">println</span><span class="p">(</span><span class="s">"catch에서 예외 처리: $e"</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="nf">println</span><span class="p">(</span><span class="s">"B 완료"</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="nf">delay</span><span class="p">(</span><span class="mi">50</span><span class="p">)</span>
+    <span class="n">b</span><span class="p">.</span><span class="nf">cancel</span><span class="p">()</span>
+<span class="p">}</span>
+
+<span class="nc">A</span> <span class="err">시작</span><span class="p">,</span> <span class="mi">200</span><span class="n">ms</span> <span class="err">대기</span>
+<span class="n">catch</span><span class="err">에서</span> <span class="err">예외</span> <span class="err">처리</span><span class="p">:</span> <span class="n">kotlinx</span><span class="p">.</span><span class="n">coroutines</span><span class="p">.</span><span class="nc">JobCancellationException</span><span class="p">:</span> <span class="nc">StandaloneCoroutine</span> <span class="n">was</span> <span class="n">cancelled</span><span class="p">;</span> <span class="n">job</span><span class="p">=</span><span class="nc">StandaloneCoroutine</span><span class="p">{</span><span class="nc">Cancelling</span><span class="p">}</span><span class="err">@</span><span class="mf">17036f</span><span class="mi">98</span>
+<span class="nc">B</span> <span class="err">완료</span>
+<span class="mi">200</span><span class="n">ms</span> <span class="err">대기</span> <span class="err">종료</span><span class="p">,</span> <span class="nc">A</span> <span class="err">완료</span>
+</code></pre></div></div>
+
+<p>위 코드에는 다음과 같은 문제가 있다.</p>
+
+<ol>
+  <li>
+<code class="language-plaintext highlighter-rouge">B</code>가 취소되었음에도 불구하고 <code class="language-plaintext highlighter-rouge">B 완료</code>가 출력됨</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">SupervisorJob</code>, <code class="language-plaintext highlighter-rouge">supervisorScope</code>에서 처리되지 않음에도 <code class="language-plaintext highlighter-rouge">B</code>의 예외가 전파되지 않고 <code class="language-plaintext highlighter-rouge">A</code>가 정상적으로 동작함</li>
+</ol>
+
+<h5 id="문제의-원인-및-해결-방법">문제의 원인 및 해결 방법</h5>
+
+<p>코루틴이 취소된다면 동작중인 <code class="language-plaintext highlighter-rouge">delay</code>는 <code class="language-plaintext highlighter-rouge">CancellationException</code>을 발생시키는데, <code class="language-plaintext highlighter-rouge">catch</code>에서 이 예외를 잡아서 대응을 하였기 때문에 <code class="language-plaintext highlighter-rouge">A 완료</code>가 출력된 것이며, 이 예외가 <code class="language-plaintext highlighter-rouge">catch</code>에서 잡히면서 부모로 전파되지 않아 <code class="language-plaintext highlighter-rouge">A</code>가 정상적으로 동작한 것이다.</p>
+
+<p>이는 다음과 같이 정확하게 잡아야하는 예외를 감지하도록 하면 <strong>해결</strong>된다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">try</span> <span class="p">{</span>
+    <span class="nf">delay</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span>
+<span class="p">}</span> <span class="k">catch</span> <span class="p">(</span><span class="n">e</span><span class="p">:</span> <span class="nc">IllegalArgumentException</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nf">println</span><span class="p">(</span><span class="s">"catch에서 예외 처리: $e"</span><span class="p">)</span>
+<span class="p">}</span>
+<span class="nf">println</span><span class="p">(</span><span class="s">"B 완료"</span><span class="p">)</span>
+
+<span class="nc">A</span> <span class="err">시작</span><span class="p">,</span> <span class="mi">200</span><span class="n">ms</span> <span class="err">대기</span>
+<span class="mi">200</span><span class="n">ms</span> <span class="err">대기</span> <span class="err">종료</span><span class="p">,</span> <span class="nc">A</span> <span class="err">완료</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">CancellationException</code>를 잡지 않고 정상적으로 코루틴 취소 예외가 부모 코루틴으로 전파되어 <code class="language-plaintext highlighter-rouge">A</code>가 취소되며 <code class="language-plaintext highlighter-rouge">B 완료</code>가 출력되지 않는다.</p>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">CoroutineExceptionHandler</code>에서 <code class="language-plaintext highlighter-rouge">CancellationException</code>는 감지하지 않는다.</p>
+</blockquote>
+
+<blockquote>
+  <p><code class="language-plaintext highlighter-rouge">CancellationException</code>은 코루틴이 취소 될 때 작동하는 메커니즘의 일부이므로, 오류가 아니기 때문에 굳이 이 예외를 감지하여 처리할 필요가 없다.</p>
+</blockquote>
+
+<h3 id="3-runcatching">3. runCatching</h3>
+
+<p><code class="language-plaintext highlighter-rouge">runCatching</code>을 사용하여 좀 더 간결하게 예외를 감지할 수 있다.</p>
+
+<p>예외가 발생하면 <code class="language-plaintext highlighter-rouge">onFailure</code> 함수에서 처리하며, <code class="language-plaintext highlighter-rouge">onSuccess</code> 함수에서는 정상적인 동작을 처리한다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">suspend</span> <span class="k">fun</span> <span class="nf">main</span><span class="p">():</span> <span class="nc">Unit</span> <span class="p">=</span> <span class="nf">supervisorScope</span> <span class="p">{</span>
+    <span class="nf">println</span><span class="p">(</span><span class="s">"ROOT"</span><span class="p">)</span>
+
+    <span class="nf">launch</span> <span class="p">{</span>
+        <span class="nf">println</span><span class="p">(</span><span class="s">"job : ROOT-A"</span><span class="p">)</span>
+
+        <span class="nf">launch</span> <span class="p">{</span>
+            <span class="nf">println</span><span class="p">(</span><span class="s">"job : ROOT-A-B"</span><span class="p">)</span>
+
+            <span class="nf">launch</span> <span class="p">{</span>
+                <span class="nf">println</span><span class="p">(</span><span class="s">"job : ROOT-A-B-C"</span><span class="p">)</span>
+
+                <span class="nf">runCatching</span> <span class="p">{</span>
+                    <span class="k">throw</span> <span class="nc">Exception</span><span class="p">(</span><span class="s">"ROOT-A-B-C의 예외"</span><span class="p">)</span>
+                <span class="p">}.</span><span class="nf">onFailure</span> <span class="p">{</span> <span class="n">throwable</span> <span class="p">-&gt;</span>
+                    <span class="nf">println</span><span class="p">(</span><span class="s">"예외 감지: $throwable"</span><span class="p">)</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+
+            <span class="nf">delay</span><span class="p">(</span><span class="mi">100L</span><span class="p">)</span>
+            <span class="nf">println</span><span class="p">(</span><span class="s">"job : ROOT-A-B"</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="nf">launch</span> <span class="p">{</span>
+        <span class="nf">println</span><span class="p">(</span><span class="s">"job : ROOT-B"</span><span class="p">)</span>
+        <span class="nf">runCatching</span> <span class="p">{</span>
+            <span class="k">throw</span> <span class="nc">Exception</span><span class="p">(</span><span class="s">"ROOT-B의 예외"</span><span class="p">)</span>
+        <span class="p">}.</span><span class="nf">onFailure</span> <span class="p">{</span> <span class="n">throwable</span> <span class="p">-&gt;</span>
+            <span class="nf">println</span><span class="p">(</span><span class="s">"예외 감지: $throwable"</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="nc">ROOT</span>
+<span class="n">job</span> <span class="p">:</span> <span class="nc">ROOT-A</span>
+<span class="n">job</span> <span class="p">:</span> <span class="nc">ROOT-A-B-C</span>
+<span class="n">job</span> <span class="p">:</span> <span class="nc">ROOT-B</span>
+<span class="err">예외</span> <span class="err">감지</span><span class="p">:</span> <span class="n">java</span><span class="p">.</span><span class="n">lang</span><span class="p">.</span><span class="nc">Exception</span><span class="p">:</span> <span class="nc">ROOT-B</span><span class="err">의</span> <span class="err">예외</span>
+<span class="err">예외</span> <span class="err">감지</span><span class="p">:</span> <span class="n">java</span><span class="p">.</span><span class="n">lang</span><span class="p">.</span><span class="nc">Exception</span><span class="p">:</span> <span class="nc">ROOT-A-B-C</span><span class="err">의</span> <span class="err">예외</span>
+<span class="n">job</span> <span class="p">:</span> <span class="nc">ROOT-A-B</span>
+</code></pre></div></div>
+
+<p>이 함수는 <code class="language-plaintext highlighter-rouge">try-catch</code>와 유사한 역할을 하기 때문에, 자식 코루틴에서 발생하는 예외에 대해서는 감지하지 못한다.</p>
+
+<p>다음 코드에서는 <code class="language-plaintext highlighter-rouge">ROOT-A-B-C</code>에서 발생한 예외를 <code class="language-plaintext highlighter-rouge">runCatching</code>으로 감지할 수 없으며, 예외가 전파되어 모든 코루틴이 종료된다.(<code class="language-plaintext highlighter-rouge">CoroutineExceptionHandler</code>를 사용하면 된다)</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">runCatching</span> <span class="p">{</span>
+    <span class="nf">launch</span> <span class="p">{</span>
+        <span class="k">throw</span> <span class="nc">Exception</span><span class="p">(</span><span class="s">"ROOT-A-B-C의 예외"</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}.</span><span class="nf">onFailure</span> <span class="p">{</span> <span class="n">throwable</span> <span class="p">-&gt;</span>
+    <span class="nf">println</span><span class="p">(</span><span class="s">"예외 감지: $throwable"</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="사용-방법-1">사용 방법</h4>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nf">runCatching</span> <span class="p">{</span>
+    <span class="k">throw</span> <span class="nc">Exception</span><span class="p">(</span><span class="s">"ROOT-A-B-C의 예외"</span><span class="p">)</span>
+<span class="p">}.</span><span class="nf">onFailure</span> <span class="p">{</span> <span class="n">throwable</span> <span class="p">-&gt;</span>
+    <span class="nf">println</span><span class="p">(</span><span class="s">"예외 감지: $throwable"</span><span class="p">)</span>
+<span class="p">}.</span><span class="nf">onSuccess</span> <span class="p">{</span>
+    <span class="nf">println</span><span class="p">(</span><span class="s">"정상 동작"</span><span class="p">)</span>
+<span class="p">}</span>
+
+
+<span class="c1">// 함수 형태</span>
+<span class="k">inline</span> <span class="k">fun</span> <span class="p">&lt;</span><span class="nc">T</span><span class="p">,</span> <span class="nc">R</span><span class="p">&gt;</span> <span class="nc">T</span><span class="p">.</span><span class="nf">runCatching</span><span class="p">(</span><span class="n">block</span><span class="p">:</span> <span class="nc">T</span><span class="p">.()</span> <span class="p">-&gt;</span> <span class="nc">R</span><span class="p">):</span> <span class="nc">Result</span><span class="p">&lt;</span><span class="nc">R</span><span class="p">&gt;</span>
+<span class="k">inline</span> <span class="k">fun</span> <span class="p">&lt;</span><span class="nc">R</span><span class="p">&gt;</span> <span class="nf">runCatching</span><span class="p">(</span><span class="n">block</span><span class="p">:</span> <span class="p">()</span> <span class="p">-&gt;</span> <span class="nc">R</span><span class="p">):</span> <span class="nc">Result</span><span class="p">&lt;</span><span class="nc">R</span><span class="p">&gt;</span>
+</code></pre></div></div>
+
+<p>위와 같이 <code class="language-plaintext highlighter-rouge">onFailure</code>와 <code class="language-plaintext highlighter-rouge">onSuccess</code>를 사용하면 되고, 반환 타입은 <code class="language-plaintext highlighter-rouge">Result&lt;R&gt;</code>이다.</p>
+
+<h2 id="정리">정리</h2>
+
+<p>기본적으로 코루틴에서 발생하는 예외는 부모 코루틴으로 전파되며, 이는 연결된 모든 자식 코루틴들에 영향을 미친다. 따라서, 각 코루틴에서 예외를 어떻게 처리할지를 명확히 결정하는 것이 중요하다. <code class="language-plaintext highlighter-rouge">try-catch</code> 는 특정 코루틴 내에서 발생한 예외를 직접 처리하는 가장 기본적인 방법이다. 반면 <code class="language-plaintext highlighter-rouge">SupervisorJob</code>과 <code class="language-plaintext highlighter-rouge">supervisorScope</code>는 코루틴 간 예외의 독립적 처리를 가능하게 하여, 하나의 코루틴 실패가 다른 코루틴에 영향을 미치지 않도록 한다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">CoroutineExceptionHandler</code>는 감지되지 못한 예외를 감지할 수 있는데, 주로 로깅, 에러 메시지 표시, 프로그램의 재시작 등에 사용된다. 하지만, <code class="language-plaintext highlighter-rouge">CoroutineExceptionHandler</code>에서 예외를 복구하거나 코루틴의 실행을 계속하는 것은 불가능하다.</p>
+
+<p>코루틴의 취소 메커니즘은 <code class="language-plaintext highlighter-rouge">CancellationException</code>을 통해 이루어되며, 코루틴의 취소는 프로그램의 정상적인 흐름의 일부로, 별도의 처리를 요구하지 않는다.</p>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/android/2023/11/04/Android-DataBinding,-ViewBinding%EC%9D%B4-%ED%8C%8C%EC%9D%BC%EC%9D%84-%EC%83%9D%EC%84%B1%ED%95%98%EB%8A%94-%EB%B0%A9%EB%B2%95.html" title="Android DataBinding, ViewBinding이 파일을 생성하는 방법">Android DataBinding, ViewBinding이 파일을...</a><a class="next" href="/jekyll-theme-yat/android/2023/11/14/UI-Layer%EB%9E%80(Android-%EA%B3%B5%EC%8B%9D-%EB%AC%B8%EC%84%9C-%EC%A0%95%EB%8F%85)-copy.html" title="About the UI layer">About the UI layer...</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li>
+<span><a class="post-link" href="/jekyll-theme-yat/compiler/2023/06/16/Code-shape-&amp;-Instruction-selection.html" title="About the UI layer">Compiler backend</a></span><span>
+            <time class="dt-published datetime" datetime="2023-06-16T00:00:00+09:00" itemprop="datePublished">2023-06-16, Fri
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/dalvik/art/android/2023/10/15/Android-Dalvik%EA%B3%BC-Art%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C.html" title="About the UI layer">Android Dalvik과 ART에 대해서</a></span><span>
+            <time class="dt-published datetime" datetime="2023-10-15T00:00:00+09:00" itemprop="datePublished">2023-10-15, Sun
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/android/2023/07/30/Android-%EC%83%81%ED%83%9C%EB%B0%94%EC%99%80-%EB%84%A4%EB%B9%84%EA%B2%8C%EC%9D%B4%EC%85%98%EB%B0%94-%EC%83%89%EC%83%81-%EC%9E%90%EB%8F%99-%EB%B3%80%EA%B2%BD-%EC%B2%98%EB%A6%AC%ED%95%98%EA%B8%B0.html" title="About the UI layer">Android 시스템 바(상태바, 네비게이션바) 색상 자동 변경 처리하기</a></span><span>
+            <time class="dt-published datetime" datetime="2023-07-30T00:00:00+09:00" itemprop="datePublished">2023-07-30, Sun
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/compose/2023/05/09/Android-Compose-%EC%B2%AB-%EB%8F%84%EC%9E%85-%ED%9B%84%EA%B8%B0.html" title="About the UI layer">Android Compose 첫 도입 후기</a></span><span>
+            <time class="dt-published datetime" datetime="2023-05-09T00:00:00+09:00" itemprop="datePublished">2023-05-09, Tue
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/navigation/2023/05/23/%EB%84%A4%EB%B9%84%EA%B2%8C%EC%9D%B4%EC%85%98-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EB%94%A5%EB%A7%81%ED%81%AC-%EC%82%AC%EC%9A%A9%EC%84%B1-%EA%B0%9C%EC%84%A0%ED%95%98%EA%B8%B0.html" title="About the UI layer">Navigation Component DeepLink로 이동시 Arguments 전달 편의성 개선하기</a></span><span>
+            <time class="dt-published datetime" datetime="2023-05-23T00:00:00+09:00" itemprop="datePublished">2023-05-23, Tue
+            </time></span>
+        </li>
+</ul>
+    </div>
+<div class="post-comments">
+<div id="utterances-placeholder"></div>
+<script>
+
+const utterancesThemeFromDataTheme = () => {
+    const dataTheme = document.documentElement.getAttribute('data-theme');
+    return `github-${dataTheme}`;
+  };
+
+  const setUtterancesTheme = () => {
+    const iframe = document.querySelector('.utterances-frame');
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: utterancesThemeFromDataTheme()
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+    }
+  }
+
+  // dynamic change
+  const observer = new MutationObserver((mutationsList, observer) => {
+    for (let mutation of mutationsList) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        setUtterancesTheme();
+      }
+    }
+  });
+  observer.observe(document.documentElement, { attributes: true, childList: false, subtree: false });
+
+  let utterancesScript = document.createElement('script');
+  utterancesScript.async = true;
+  utterancesScript.src = 'https://utteranc.es/client.js';
+  utterancesScript.crossOrigin = 'anonymous';
+  utterancesScript.setAttribute('issue-term', 'pathname');
+  utterancesScript.setAttribute('label', 'comments');
+  utterancesScript.setAttribute('repo', 'pknujsp/Blogcomments');
+  utterancesScript.setAttribute('theme', utterancesThemeFromDataTheme());
+
+  const placeholder = document.getElementById('utterances-placeholder');
+  placeholder.parentNode.replaceChild(utterancesScript, placeholder);
+</script>
+</div></section>
+</div>
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">Contents</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">· ' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>2024 @ Junsung Park</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,6147 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Home | Jsp Notes</title>
+<meta name="generator" content="Jekyll v4.3.4">
+<meta property="og:title" content="Home">
+<meta name="author" content="Junsung Park">
+<meta property="og:locale" content="ko">
+<meta name="description" content="tech, study etc…">
+<meta property="og:description" content="tech, study etc…">
+<link rel="canonical" href="https://pknujsp.github.io//jekyll-theme-yat/">
+<meta property="og:url" content="https://pknujsp.github.io//jekyll-theme-yat/">
+<meta property="og:site_name" content="Jsp Notes">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Home">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"WebSite","author":{"@type":"Person","name":"Junsung Park"},"description":"tech, study etc…","headline":"Home","name":"Jsp Notes","url":"https://pknujsp.github.io//jekyll-theme-yat/"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="icon" href="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script>
+
+  <!-- tipuesearch -->
+  <link rel="stylesheet" href="/assets/tipuesearch/css/tipuesearch.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_content.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_set.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch.min.js"></script><link type="application/atom+xml" rel="alternate" href="https://pknujsp.github.io//jekyll-theme-yat/feed.xml" title="Jsp Notes">
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LZC1TDTS26"></script>
+<script>
+  function initGoogleAnalytics() {
+    var doNotTrack = (window.doNotTrack === "1" || navigator.doNotTrack === "1" ||
+      navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1");
+    var enableDNT = "true" == "true";
+
+    if (!enableDNT || !doNotTrack) {
+      /*
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'G-LZC1TDTS26', 'auto');
+      ga('send', 'pageview');
+      */
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { window.dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-LZC1TDTS26');
+    }
+  }
+  window.addEventListener("load", initGoogleAnalytics);
+
+</script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/intellij-light.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/kotlin.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #7800ff;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: lowercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header site-header-transparent" role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <img class="site-white_favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+</a></span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/about.html">About</a><a class="page-link" href="/jekyll-theme-yat/categories.html">Categories</a><a class="page-link" href="/jekyll-theme-yat/">Home</a><a class="page-link" href="/jekyll-theme-yat/posts.html">Posts</a><a class="page-link" href="/jekyll-theme-yat/tags.html">Tags</a><input id="tipue_search_input" type="search" placeholder="Search" aria-label="Search" title="Please enter at least 1 character" required>
+
+          <script>
+            document.getElementById("tipue_search_input").addEventListener("keydown", function (event) {
+              if (event.keyCode === 13) {
+                event.preventDefault();
+                window.location.href = "../search?q=" + this.value;
+              }
+            });
+          </script>
+<!--
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="en">
+        
+        <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+        to English
+        
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="ko">
+        
+        <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+        to Korean
+        
+      </a>
+    </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'ko',
+      autoDisplay: false,
+      layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+    }, 'google_translate_element');
+
+    // Links to cross-origin destinations are unsafe
+    var gll = document.getElementsByClassName('goog-logo-link')[0];
+    if (gll) {
+      gll.setAttribute('rel', 'noopener');
+    }
+
+    function restoreLang() {
+      var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+      if (!iframe) return;
+
+      var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+      var restore_el = innerDoc.getElementsByTagName("button");
+
+      for (var i = 0; i < restore_el.length; i++) {
+        if (restore_el[i].id.indexOf("restore") >= 0) {
+          restore_el[i].click();
+          var close_el = innerDoc.getElementsByClassName("goog-close-link");
+          close_el[0].click();
+          return;
+        }
+      }
+    }
+
+    function triggerHtmlEvent(element, eventName) {
+      var event;
+      if (document.createEvent) {
+        event = document.createEvent('HTMLEvents');
+        event.initEvent(eventName, true, true);
+        element.dispatchEvent(event);
+      } else {
+        event = document.createEventObject();
+        event.eventType = eventName;
+        element.fireEvent('on' + event.eventType, event);
+      }
+    }
+
+    var googleCombo = document.querySelector("select.goog-te-combo");
+    var langSelect = document.querySelector('.ct-language');
+    langSelect.addEventListener('click', function (event) {
+      if (!event.target) {
+        return;
+      }
+
+      var selected = document.querySelector('.ct-language .ct-language-selected');
+      if (selected) {
+        selected.classList.remove('ct-language-selected');
+      }
+
+      var target = event.target;
+      while (target && target !== langSelect) {
+        if (target.matches('.lang-select')) {
+          break;
+        }
+        target = target.parentElement;
+      }
+
+      if (target && target.matches('.lang-select')) {
+        var lang = target.getAttribute('data-lang');
+        if (googleCombo.value == lang) {
+          restoreLang();
+        } else if (lang == 'ko') {
+          var googleTranslateElement = document.getElementById('google_translate_element');
+          if (googleTranslateElement) {
+            googleTranslateElement.parentNode.removeChild(googleTranslateElement);
+            $('#google_translate_element').empty();
+          }
+        } else {
+          target.parentElement.classList.add('ct-language-selected');
+          googleCombo.value = lang;
+          triggerHtmlEvent(googleCombo, 'change');
+        }
+      }
+
+      event.preventDefault();
+    });
+  }
+</script>
+
+<script type="text/javascript"
+  src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script></span>-->
+          </div>
+
+          
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;documentElement.setAttribute("data-header-transparent", "");var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section class="page-banner">
+    <div class="page-banner-img">
+<div style="background-image: url(/jekyll-theme-yat/assets/images/banners/home.webp)"></div>
+        <img class="img-placeholder" src="/jekyll-theme-yat/assets/images/banners/home.webp">
+</div>
+    <div class="wrapper">
+      <div class="page-banner-inner"><div class="page-banner-default">
+            <h1 class="page-banner-heading">
+              Jsp Notes
+            </h1>
+            <h2 class="page-banner-subheading">
+              Tech, Android, Algorithms~
+            </h2>
+          </div></div>
+    </div>
+  </section><script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('manual' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = !(hours >= 2 && hours <=5);
+
+      if (nightShift) {
+        if (hours > 5) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(5);
+      } else {
+        toggleAt.setHours(2);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<div id="click-to-bottom" class="click-to-bottom">
+  <i class="fa fa-arrow-down"></i>
+</div>
+<script>
+  (function () {
+    const clickToBottom = document.getElementById('click-to-bottom');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToBottom.classList.add('show')
+      }else {
+        clickToBottom.classList.remove('show')
+      }
+    });
+    clickToBottom.addEventListener('click', () => {
+      window.smoothScrollTo(document.body.scrollHeight);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="articles">
+  
+
+  
+
+
+  <div class="pagination">
+  <!-- Post list links -->
+  <ul class="post-list">
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/swm/2024/12/09/SKY-%EB%A9%98%ED%86%A0%EB%8B%98%EC%9C%BC%EB%A1%9C%EB%B6%80%ED%84%B0-%EC%B4%9D-5,760%EB%B6%84%EC%9D%98-%EB%A9%98%ED%86%A0%EB%A7%81%EC%9D%84-%EB%B0%9B%EA%B3%A0-%EB%82%98%EC%84%9C.html">
+          SKY 멘토님으로부터 총 5,760분의 멘토링을 받고 나서
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2024-12-09, Mon</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 7 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/swm/2024/12/09/SKY-%EB%A9%98%ED%86%A0%EB%8B%98%EC%9C%BC%EB%A1%9C%EB%B6%80%ED%84%B0-%EC%B4%9D-5,760%EB%B6%84%EC%9D%98-%EB%A9%98%ED%86%A0%EB%A7%81%EC%9D%84-%EB%B0%9B%EA%B3%A0-%EB%82%98%EC%84%9C.html">
+        <p>
+          SW 마에스트로 연수생 생활 마무리
+
+길고도 짧았던 6개월간의 SW 마에스트로 15기 연수생 생활을 마치고, 이제 새로운 시작을 앞두고 있다. 따뜻한 4월, 설렘과 기대로 시작했던 연수 생활은 수많은 도전과 배움으로 채워졌고, 그 안에서 나는 성장했다. 특히, SKY 멘토님은 등대와 같은 존재였다. 길을 잃을 때마다 함께 고민하며 방향을 제시해주셨고, 계속 나아갈 수 있도록 격려와 지지를 아끼지 않으셨다. 이 글을 통해 SKY 멘토님께 깊은 감사의 마음을 전하며, 연수생으로서의 소중한 경험과 멘토링 후기를 남기고자 한다.
+
+연수생 혜택
+
+
+
+연수생으로서의 혜택은 정말 많다. 다른 기관의 프로그램과는 결이 다르다.
+... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#SWM">#SWM</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/android/2024/03/07/%EC%8A%A4%ED%81%AC%EB%A1%A4-%EA%B0%80%EB%8A%A5%ED%95%9C-%EC%BB%A4%EC%8A%A4%ED%85%80-TopAppBar%EB%A7%8C%EB%93%A4%EA%B8%B0.html">
+          스크롤 가능한 커스텀 TopAppBar만들기
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2024-03-07, Thu</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 25 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/android/2024/03/07/%EC%8A%A4%ED%81%AC%EB%A1%A4-%EA%B0%80%EB%8A%A5%ED%95%9C-%EC%BB%A4%EC%8A%A4%ED%85%80-TopAppBar%EB%A7%8C%EB%93%A4%EA%B8%B0.html">
+        <p>
+          내용이 심하게 부실해서 수정하고 있습니다.
+
+다음과 같이 스크롤 할 수 있는 TopAppBar를 만들어 보고자 합니다.
+
+
+
+만들게된 계기
+
+
+  자체적으로 LargeTopAppBar를 제공하지만 가장 큰 Title 컴포저블의 높이가 최대 152dp로 제한되어 있다.
+  아래 코드는 Compose material3의 TopAppBar를 구현한 클래스의 코드 중 일부이다. 보다시피 최대 높이인 ContainerHeight가 152.0.dp로 고정되어 있다. 이로 인해서 더 큰 높이의 Title 컴포저블을 사용하면 아래 일부가 잘리게 되는 문제가 생긴다.
+  또한 기본적으로 이 컴포저블은 material3의 스타일을 ... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#Android">#Android</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#Compose">#Compose</a>
+</div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/android/2024/01/09/%EC%9E%90%EB%8F%99-%ED%8F%B0%ED%8A%B8-%ED%81%AC%EA%B8%B0-%EC%A1%B0%EC%A0%88-Text-Composable%EB%A7%8C%EB%93%A4%EA%B8%B0.html">
+          자동으로 폰트 크기 조절되는 Text Composable만들기
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2024-01-09, Tue</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 6 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/android/2024/01/09/%EC%9E%90%EB%8F%99-%ED%8F%B0%ED%8A%B8-%ED%81%AC%EA%B8%B0-%EC%A1%B0%EC%A0%88-Text-Composable%EB%A7%8C%EB%93%A4%EA%B8%B0.html">
+        <p>
+          자동으로 폰트 크기 조절되는 Text Composable만들기
+
+
+
+필요성
+
+
+  
+    
+       
+       
+    
+  
+  
+    
+      &lt;img src="https://github.com/pknujsp/pknujsp/assets/48265129/154a7984-643f-4e67-9a5c-bc5d40514b60"&gt;
+      &lt;img src="https://github.com/pknujsp/pknujsp/assets/48265129/53127974-2c00-4f2a-b654-037b9fea7e46"&gt;
+    
+  
+
+
+Text를 화면에 보여줄 때, 값의 길이가 길어지면 ... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#Android">#Android</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#Compose">#Compose</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#Text">#Text</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#AutoAdjustingFontSize">#AutoAdjustingFontSize</a>
+</div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/private/2023/12/30/2023%EB%85%84%EC%9D%84-%EB%8F%8C%EC%95%84%EB%B3%B4%EB%A9%B0.html">
+          2023년을 돌아보며
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-12-30, Sat</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 12 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/private/2023/12/30/2023%EB%85%84%EC%9D%84-%EB%8F%8C%EC%95%84%EB%B3%B4%EB%A9%B0.html">
+        <p>
+          
+  2023년의 마지막이 코 앞으로 다가온 현재, 올해 내가 했던(지금까지도 하고 있는) 일들과 그 과정에서 느끼고 생각하며 배운 점을 정리하여 2024년을 어떻게 살아갈지 작성해보고자 한다.
+
+
+2023, 다양하게 많은 일이 있었다
+
+1. 대학교 4학년 시작 전 겨울방학 동안 현장 실습 진행
+
+2022년 12월 ~ 1월
+
+한 달간 계절 학기로 한 기업체에서 현장 실습(인턴)을 진행하였다.
+
+주 업무는 이미지 분류, 객체 탐지를 위한 Ai 학습 이미지에 대한 전 처리 작업 수행이었다. 추가적인 업무로 내가 잘 모르는 분야인 Ai 비전 모델 학습 및 검증도 수행했다.
+
+회사의 사업 모델이 건강 관련 Ai인데, 여기... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Private">#Private</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/kotlin/2023/12/10/%EC%BD%94%ED%8B%80%EB%A6%B0-%EC%BD%94%EB%A3%A8%ED%8B%B4%EC%9D%84-%ED%99%9C%EC%9A%A9%ED%95%B4-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%BA%90%EC%8B%9C-%EA%B4%80%EB%A6%AC-%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0.html">
+          코틀린 코루틴을 활용해 데이터 메모리 캐시 기능 구현하기
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-12-10, Sun</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 25 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/kotlin/2023/12/10/%EC%BD%94%ED%8B%80%EB%A6%B0-%EC%BD%94%EB%A3%A8%ED%8B%B4%EC%9D%84-%ED%99%9C%EC%9A%A9%ED%95%B4-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%BA%90%EC%8B%9C-%EA%B4%80%EB%A6%AC-%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0.html">
+        <p>
+          구현 목적
+
+앱을 제작하면서 온라인에서 가져온 데이터를 메모리에 캐싱해야 할 필요가 있었다. 그 이유는 해당 데이터의 서버 상에서 업데이트 주기가 수 십분 ~ 수 시간 단위로 긴데, 이 데이터를 짧은 간격으로 다시 중복으로 가져오는 것은 비효율적이기 때문이다. 그래서 메모리에 캐싱하는 기능을 만들었고 효율성을 개선할 수 있었다.
+
+비효율적인 기존 방식
+
+
+  총 세 가지의 지역(A, B, C)에 대해서 대기질 데이터를 가져오는 기능을 구현했다고 가정하였다.
+
+
+
+
+
+  흐름
+    
+      A의 대기질 데이터를 로드
+      B 정보 화면으로 전환 -&gt; B의 대기질 데이터를 로드
+      A 정보 화면... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#Kotlin">#Kotlin</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#Cache">#Cache</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#Coroutines">#Coroutines</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#Actor">#Actor</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#LruCache">#LruCache</a>
+</div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/android/2023/11/27/%EB%B9%88%ED%98%88-%EB%8F%84%EB%A9%94%EC%9D%B8-%EB%AA%A8%EB%8D%B8,-%EC%93%B8%EB%AA%A8%EC%97%86%EB%8A%94-%EC%9C%A0%EC%8A%A4%EC%BC%80%EC%9D%B4%EC%8A%A4,-%EB%B9%84%EB%8C%80%ED%95%9C-%EB%B7%B0%EB%AA%A8%EB%8D%B8%EC%97%90-%EB%8C%80%ED%95%98%EC%97%AC-DroidKnights-2023.html">
+          DroidKnights 2023 '빈혈 도메인 모델과 쓸모없는 유스케이스 그리고 비대한 뷰모델에 대해 생각해보기'내용 정리
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-11-27, Mon</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 5 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/android/2023/11/27/%EB%B9%88%ED%98%88-%EB%8F%84%EB%A9%94%EC%9D%B8-%EB%AA%A8%EB%8D%B8,-%EC%93%B8%EB%AA%A8%EC%97%86%EB%8A%94-%EC%9C%A0%EC%8A%A4%EC%BC%80%EC%9D%B4%EC%8A%A4,-%EB%B9%84%EB%8C%80%ED%95%9C-%EB%B7%B0%EB%AA%A8%EB%8D%B8%EC%97%90-%EB%8C%80%ED%95%98%EC%97%AC-DroidKnights-2023.html">
+        <p>
+          
+  이번 글은 아래의 영상으로 부터 얻은 내용을 바탕으로 작성하였습니다.
+
+
+빈혈 도메인, 쓸모없는 유스케이스, 비대한 뷰모델에 대하여를 주제로 DroidKnights 2023에서 강연하신 박종혁님(카카오스타일)의 영상입니다.
+
+
+Video: 빈혈(anemic) 도메인 모델과 쓸모없는 유스케이스 그리고 비대한(Bloated) 뷰모델에 대해 생각해보기
+
+개발에서 발생할 수 있는 문제점들로 빈혈 도메인 모델, 쓸모없는 유스케이스, 비대한 뷰모델 세 가지가 소개되었습니다.
+
+- 빈혈, 무기력한, 빈약한(Anemic) 도메인 모델
+
+
+  도메인 모델(클래스)이 데이터만 가지고 있고, 어떠한 로직이 없는 상태, Anemi... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Android">#Android</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/android/2023/11/14/UI-Layer%EB%9E%80(Android-%EA%B3%B5%EC%8B%9D-%EB%AC%B8%EC%84%9C-%EC%A0%95%EB%8F%85)-copy.html">
+          About the UI layer
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-11-14, Tue</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 21 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/android/2023/11/14/UI-Layer%EB%9E%80(Android-%EA%B3%B5%EC%8B%9D-%EB%AC%B8%EC%84%9C-%EC%A0%95%EB%8F%85)-copy.html">
+        <p>
+          UI layer
+
+UI layer 공식문서를 정리한 내용입니다.
+
+
+  UI : 앱의 데이터를 화면에 표시하고 사용자와 상호 작용하는 부분입니다, Data 계층으로 부터 변경되는 앱의 상태를 시각적으로 표현하는 역할
+
+
+데이터가 변경될 때마다 UI는 그에 맞게 바뀌어야 합니다.(버튼 클릭, 네트워크 응답 등)
+
+보통 Data 계층에서 받은 데이터를 화면에 바로 보여주기에는 적절하지 않습니다. 예를 들어, 일부 데이터만 보여줘야 하거나, 여러 개의 데이터들을 합쳐서 보여줘야 하는 경우가 있습니다. UI 계층은 이러한 데이터를 UI로 표시할 수 있게 가공하여, 화면에 보여주는 역할을 중요한 과정을 담당합니다.
+
+
+
+A... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Android">#Android</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/kotlin/coroutines/2023/11/12/%EC%BD%94%EB%A3%A8%ED%8B%B4%EC%97%90%EC%84%9C%EC%9D%98-%EC%98%88%EC%99%B8-%EC%B2%98%EB%A6%AC.html">
+          코루틴에서의 예외 처리 정리
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-11-12, Sun</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 16 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/kotlin/coroutines/2023/11/12/%EC%BD%94%EB%A3%A8%ED%8B%B4%EC%97%90%EC%84%9C%EC%9D%98-%EC%98%88%EC%99%B8-%EC%B2%98%EB%A6%AC.html">
+        <p>
+          코루틴에서 예외가 발생하면, 부모 코루틴으로 예외가 전파되고, 부모와 형제 코루틴이 모두 취소된다.
+
+fun main(): Unit = runBlocking {
+    // A
+    launch {
+        // A-A
+        launch {
+            throw Error("A-A의 예외")
+        }
+
+        // A-B
+        launch {
+            println("A-B")
+        }
+
+        // A-C
+        launch {
+            println("A-C")
+        }
+    }
+
+    // B
+  ... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#Kotlin">#Kotlin</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#Coroutines">#Coroutines</a>
+</div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/android/2023/11/04/Android-DataBinding,-ViewBinding%EC%9D%B4-%ED%8C%8C%EC%9D%BC%EC%9D%84-%EC%83%9D%EC%84%B1%ED%95%98%EB%8A%94-%EB%B0%A9%EB%B2%95.html">
+          Android DataBinding, ViewBinding이 파일을 생성하는 방법
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-11-04, Sat</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 6 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/android/2023/11/04/Android-DataBinding,-ViewBinding%EC%9D%B4-%ED%8C%8C%EC%9D%BC%EC%9D%84-%EC%83%9D%EC%84%B1%ED%95%98%EB%8A%94-%EB%B0%A9%EB%B2%95.html">
+        <p>
+          Android DataBinding에 대한 이해가 있다는 전제하에 작성하였습니다.
+
+주요 클래스
+
+
+  
+    
+      클래스명
+      설명
+    
+  
+  
+    
+      AndroidDataBinding
+      데이터바인딩의 핵심 클래스, 데이터 바인딩 작업을 총괄한다
+    
+    
+      LayoutFileParser
+      XML을 파싱하여 ResourceBundle 목록을 만든다
+    
+    
+      LayoutXmlProcessor
+      레이아웃 XML파일을 읽고 처리한다. 내부적으로 사용할 XML파일도 만든다
+    
+    
+      BaseDataBind... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Android">#Android</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/dalvik/art/android/2023/10/15/Android-Dalvik%EA%B3%BC-Art%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C.html">
+          Android Dalvik과 ART에 대해서
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-10-15, Sun</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 3 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/dalvik/art/android/2023/10/15/Android-Dalvik%EA%B3%BC-Art%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C.html">
+        <p>
+          Dalvik 이란?
+
+
+  Android에서 Java 애플리케이션을 구동하는 가상머신(Virtual Machine)이다.
+
+
+Java의 라이센스 문제(오라클, 이 문제로 10년간 소송)와 최적화 등의 이유로 인해, 구글은 JVM을 사용하지 않고, 자체적으로 DVM(Dalvik Virtual Machine)을 개발하였다.
+
+특징
+
+
+  JIT(Just-In-Time)
+    
+      Android 2.2(2011)이전에는 JIT 컴파일이 없어, 앱이 실행 될 때마다 컴파일을 하여 메모리 효율이 나빴고 앱 구동 성능이 좋지 않았다.
+      Android 2.2(2011)부터 JIT 컴파일이 도입되었다.
+    ... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#Dalvik">#Dalvik</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#ART">#ART</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#Android">#Android</a>
+</div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/jvm/2023/10/08/JVM(Java-Virtual-Machine)%EC%9D%B4%EB%9E%80.html">
+          JVM (Java Virtual Machine)이란?
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-10-08, Sun</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 2 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/jvm/2023/10/08/JVM(Java-Virtual-Machine)%EC%9D%B4%EB%9E%80.html">
+        <p>
+          가상 머신, JVM이란?
+
+
+  Java코드를 구동하기 위한 프로그램(컴퓨터)이다.
+
+
+C와 같은 Native 언어는 컴파일러를 통해 기계어로 변환되어 실행된다. 하지만 Java는 컴파일러를 통해 바로 기계어로 변환되는 것이 아니라, JVM이라는 가상머신을 통해 실행된다. JVM은 Java Virtual Machine의 약자로, Java를 실행하기 위한 가상의 컴퓨터라고 생각하면 된다. JVM은 OS에 종속적이지 않고, Java가 설치되어 있다면 어디서든지 실행할 수 있다.
+
+
+  Native언어로 개발하면, CPU아키텍처나 운영체제 마다 다른 기계어를 사용하기 때문에, 특정 운영체제나 CPU에 종속적이며, 개발자... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#JVM">#JVM</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/garbagecollector/2023/09/17/Garbage-collector%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C.html">
+          Garbage collector에 대해서 알아보자
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-09-17, Sun</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 6 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/garbagecollector/2023/09/17/Garbage-collector%EC%97%90-%EB%8C%80%ED%95%B4%EC%84%9C.html">
+        <p>
+          Garbage collector(GC)란
+
+C, C++과 같이 GC가 없는 언어에서는 동적으로 할당한 메모리를 모두 개발자가 직접 관리해야 한다.
+
+// int array를 동적 할당
+int *arr = new int[5];
+
+for(int i = 0; i &lt; 5; ++i) {
+    arr[i] = i;
+}
+
+// 해제
+delete[] arr;
+
+
+위와 같은 방식으로 할당시켜주는데, 사용 후 해제를 하지 않는다면 메모리 누수가 발생하게 되며 지속적으로 이러한 상황이 누적될 경우 프로그램에 치명적으로 작용하게 된다. Java/Kotlin(Jvm), C#(.Net)과 같은 고 수준 언어에서는 GC가 메모리 관리... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#GarbageCollector">#GarbageCollector</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/android/2023/09/10/Android-Compose%EC%99%80-View%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EB%B9%84%EA%B5%90.html">
+          Android Compose와 View컴포넌트 비교
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-09-10, Sun</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 3 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/android/2023/09/10/Android-Compose%EC%99%80-View%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EB%B9%84%EA%B5%90.html">
+        <p>
+          Android Compose와 View컴포넌트 비교
+
+XML만으로 개발하다가, Compose를 처음 접하게 되면 처음 보는 수 많은 컴포넌트들을 만나게 된다. 기존 View에 있던 것들과는 다른 이름을 가지고 있어서 어떤 컴포넌트가 어떤 역할을 하는지 학습에 시간이 다소 걸린다. 이번 글에서는 기존 View와 비교하여 Compose의 컴포넌트들을 살펴보고자 한다.
+
+Compose의 컴포넌트 목록
+
+
+  Box
+  Column
+  Row
+  LazyColumn
+  LazyRow
+  Text
+  Image
+  TextField
+  Card
+  Scaffold
+  등등
+
+
+View의 컴포넌트 목록
+
+
+  FrameLay... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Android">#Android</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/kotlin/2023/09/02/Kotlin-1.9,-2.0-%EB%AF%B8%EB%A6%AC%EB%B3%B4%EA%B8%B0.html">
+          Kotlin 1.9, 2.0 미리보기
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-09-02, Sat</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 10 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/kotlin/2023/09/02/Kotlin-1.9,-2.0-%EB%AF%B8%EB%A6%AC%EB%B3%B4%EA%B8%B0.html">
+        <p>
+          Kotlin 1.9 변경점
+
+until 연산자에 대한 특수 구문 도입
+
+1.8 이하에서는 아래와 같이 until연산자를 사용하여, 0부터 9까지의 범위를 표현할 수 있습니다.
+
+    for (i in 0 until 10) { ... }
+
+
+1.9 부터는 ..&lt; 연산자로 동일한 기능을 수행할 수 있습니다.
+
+    for (i in 0 ..&lt; 10) { ... }
+
+
+Jetbrains 설명에 따르면, Kotlin의 범위 구문이 구체적이지 않다는 의견을 받아왔고, 이를 해결하기 위해 ..&lt; 연산자를 도입하였다고 합니다. UX연구 결과에 따르면, ..&lt;가 until에 비해 20~30% 정도 개발자... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Kotlin">#Kotlin</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/android/2023/08/24/Android-%EA%B7%B8%EB%9E%98%ED%94%84-%EA%B7%B8%EB%A6%AC%EB%8A%94-View%EB%A7%8C%EB%93%A4%EA%B8%B0.html">
+          그래프 그리는 View만들기
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-08-24, Thu</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 13 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/android/2023/08/24/Android-%EA%B7%B8%EB%9E%98%ED%94%84-%EA%B7%B8%EB%A6%AC%EB%8A%94-View%EB%A7%8C%EB%93%A4%EA%B8%B0.html">
+        <p>
+          그래프 그리는 View만들기
+
+
+
+  아래의 사진 처럼 그래프를 그려주는 View를 만드는 방법을 이번 글에서 다루어 보겠습니다.
+
+
+
+
+
+  사용하는 주요 클래스
+    
+      View를 상속하여 CustomView를 만듭니다.
+      Canvas
+        
+          화면에 실제로 보여줄 View를 그리는 클래스입니다.
+          그림을 그리는 종이라고 생각하면 이해하기 쉬울 것 같습니다.
+          참고 : Android의 Canvas에 그려보자 : 선, 도형 그리고 그림까지!?
+        
+      
+      Paint
+        
+          Canvas... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Android">#Android</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/android/2023/08/13/androidx.collection-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-%EC%82%B4%ED%8E%B4%EB%B3%B4%EA%B8%B0(SparseArray,-ArrayMap,-LruCache-/).html">
+          ArrayMap, SparseArray, LruCache에 대해서 알아보기
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-08-13, Sun</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 5 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/android/2023/08/13/androidx.collection-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-%EC%82%B4%ED%8E%B4%EB%B3%B4%EA%B8%B0(SparseArray,-ArrayMap,-LruCache-/).html">
+        <p>
+          ArrayMap, SparseArray, LruCache란
+
+
+  기본 자료 구조보다 더 메모리 효율적으로 구현한 자료 구조로, android.util 패키지에 포함되어 있습니다.
+
+
+ArrayMap
+
+
+  HashMap을 개선한 버전입니다. HashMap보다 좀 더 메모리 효율적입니다.
+
+
+HashMap
+
+
+
+ArrayMap
+
+
+
+특징
+
+
+  구조
+    
+      HashMap
+        
+          배열 1개를 사용합니다.
+          키와 값을 저장하는 배열
+          키에 대해 Hash값을 구함 -&gt; Hash값을 배열의 Index로 사용 -&gt; 해당 Index에 값을 가져... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Android">#Android</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/kotlin/2023/08/03/Kotlin-sealed-class-%EC%83%81%ED%83%9C%EB%B3%84-%ED%95%A8%EC%88%98-%EC%9E%90%EB%8F%99-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0.html">
+          Kotlin sealed class/interface 사용 시 하위 클래스에 대응되는 함수를 자동으로 만드는 방법
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-08-03, Thu</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 15 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/kotlin/2023/08/03/Kotlin-sealed-class-%EC%83%81%ED%83%9C%EB%B3%84-%ED%95%A8%EC%88%98-%EC%9E%90%EB%8F%99-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0.html">
+        <p>
+          sealed interface/class 를 사용하는 경우
+
+
+
+  sealed class를 사용하여 각 상태에 따른 동작을 수행하도록 할 수 있습니다.
+
+
+sealed interface UiState&lt;out T&gt; {
+  data class Success&lt;out T&gt;(val data: T) : UiState&lt;T&gt;
+  data class Error(val exception: Throwable) : UiState&lt;Nothing&gt;
+  object Loading : UiState&lt;Nothing&gt;
+}
+
+
+
+  이러한 경우, if 또는 when 문을 사용해서 각 상태에 따... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Kotlin">#Kotlin</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/android/2023/07/30/Android-%EC%83%81%ED%83%9C%EB%B0%94%EC%99%80-%EB%84%A4%EB%B9%84%EA%B2%8C%EC%9D%B4%EC%85%98%EB%B0%94-%EC%83%89%EC%83%81-%EC%9E%90%EB%8F%99-%EB%B3%80%EA%B2%BD-%EC%B2%98%EB%A6%AC%ED%95%98%EA%B8%B0.html">
+          Android 시스템 바(상태바, 네비게이션바) 색상 자동 변경 처리하기
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-07-30, Sun</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 11 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/android/2023/07/30/Android-%EC%83%81%ED%83%9C%EB%B0%94%EC%99%80-%EB%84%A4%EB%B9%84%EA%B2%8C%EC%9D%B4%EC%85%98%EB%B0%94-%EC%83%89%EC%83%81-%EC%9E%90%EB%8F%99-%EB%B3%80%EA%B2%BD-%EC%B2%98%EB%A6%AC%ED%95%98%EA%B8%B0.html">
+        <p>
+          Android 시스템 바(상태바, 네비게이션바) 색상 자동 변경 처리하기
+
+아래의 내용을 통하여 시스템 바의 색상/레이아웃을 변경하는 방법을 확인할 수 있습니다.
+
+Android 시스템 바 레이아웃 변경하기
+
+시스템 바 색상 변경시 생기는 문제점
+
+
+  아래와 같이 배경 색상이 다른 화면이 표시되는 경우, 화면의 배경색과 시스템 바의 색상이 겹쳐서 보이지 않는 문제가 발생합니다.
+
+
+
+  
+    
+       
+       
+    
+  
+  
+    
+      &lt;img src="https://github.com/pknu-wap/2023_1_WAP_APP_TEAM_MEDI/assets/48265129/c3... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Android">#Android</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/android/2023/07/22/Android-%EC%8B%9C%EC%8A%A4%ED%85%9C%EB%B0%94-%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83-%EB%B3%80%EA%B2%BD%ED%95%98%EA%B8%B0.html">
+          Android 시스템 바 레이아웃 변경하기
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-07-22, Sat</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 3 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/android/2023/07/22/Android-%EC%8B%9C%EC%8A%A4%ED%85%9C%EB%B0%94-%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83-%EB%B3%80%EA%B2%BD%ED%95%98%EA%B8%B0.html">
+        <p>
+          Android 시스템바 색상 설정 변경하는 방법
+
+컨텐츠 레이아웃이 화면 전체를 차지하도록 설정
+
+
+WindowCompat.setDecorFitsSystemWindows(window, true or false)
+
+
+
+  
+    
+      true
+      false
+    
+  
+  
+    
+      컨텐츠 레이아웃의 범위가 상태 바와 네비게이션 바 영역을 제외한 영역만 차지합니다.
+      컨텐츠 레이아웃의 범위가 상태 바와 네비게이션 바 영역까지 확장됩니다.
+    
+    
+      ![image](https://github.com/pknu-wap/2023_1_WAP_APP_TEAM_MEDI/as... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Android">#Android</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/kotlin/2023/07/14/Kotlin-%EB%8F%99%EC%8B%9C%EC%84%B1-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0%EB%B0%A9%EB%B2%95.html">
+          Kotlin 동시성 문제 해결방법
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-07-14, Fri</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 10 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/kotlin/2023/07/14/Kotlin-%EB%8F%99%EC%8B%9C%EC%84%B1-%EB%AC%B8%EC%A0%9C-%ED%95%B4%EA%B2%B0%EB%B0%A9%EB%B2%95.html">
+        <p>
+          동시성을 고려하여 동기화가 필요한 경우
+
+
+var count = 0
+const val repeatCount = 1000000
+
+fun main() = runBlocking {
+    launch(Dispatchers.Default) {
+        repeat(repeatCount) {
+            count++
+        }
+        println(count)
+    }
+
+    launch(Dispatchers.Default) {
+        repeat(repeatCount) {
+            count++
+        }
+        println(count)
+    }
+  ... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Kotlin">#Kotlin</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/android/2023/07/09/RecyclerViewPool%EC%97%90-%EB%8C%80%ED%95%B4.html">
+          RecyclerView의 동작 로직에 대해 자세히 알아보기
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-07-09, Sun</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 2 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/android/2023/07/09/RecyclerViewPool%EC%97%90-%EB%8C%80%ED%95%B4.html">
+        <p>
+          
+  RecyclerView의 기본적인 사용법을 알고 있다는 가정하에, RecyclerView의 동작 원리에 대해서 알아보겠습니다.
+
+
+RecyclerView의 핵심 클래스
+
+
+
+
+
+  RecyclerView
+    
+      가장 중요한 클래스
+      ViewGroup을 상속받는다.
+      총 감독 역할을 한다.
+    
+  
+  LayoutManager
+    
+      레이아웃과 관련된 작업을 처리
+    
+  
+  Adapter
+    
+      데이터를 관리하고 ViewHolder를 생성하고 Bind를 처리
+    
+  
+  CachedViews
+    
+      RecyclerView를 스... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Android">#Android</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/android/2023/07/01/Android-Dialog-%EB%B0%B0%EA%B2%BD-%ED%9D%90%EB%A6%BC-%ED%9A%A8%EA%B3%BC-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0.html">
+          Android Dialog Window 흐림 효과 적용하기
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-07-01, Sat</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 4 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/android/2023/07/01/Android-Dialog-%EB%B0%B0%EA%B2%BD-%ED%9D%90%EB%A6%BC-%ED%9A%A8%EA%B3%BC-%EC%A0%81%EC%9A%A9%ED%95%98%EA%B8%B0.html">
+        <p>
+          Window 흐림 효과 적용 전에, 흐림 효과 적용 가능 대상 종류를 알아봅시다.
+
+
+  두 가지 대상에 대하여 흐림 효과 적용이 가능합니다.
+
+
+
+  Background blur
+    
+      배경을 흐리게 합니다.
+    
+  
+  Behind blur(Window blur)
+    
+      Window를 흐리게 합니다.
+      Window(PhoneWindow)
+        
+          화면에 출력되고 있는 View가 보여지는 영역입니다.
+          Window는 DecorView를 가지고 있고, DecorView에 실제로 View가 그려지게 됩니다.
+          Activi... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Android">#Android</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/database/2023/06/20/%EA%B4%80%EA%B3%84%ED%98%95-%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4-%EC%84%A4%EA%B3%84%ED%95%98%EA%B8%B0.html">
+          관계형 데이터베이스 설계
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-06-20, Tue</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 17 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/database/2023/06/20/%EA%B4%80%EA%B3%84%ED%98%95-%EB%8D%B0%EC%9D%B4%ED%84%B0%EB%B2%A0%EC%9D%B4%EC%8A%A4-%EC%84%A4%EA%B3%84%ED%95%98%EA%B8%B0.html">
+        <p>
+          관계형 데이터베이스(RDB, Relational Database)란?
+
+
+  데이터를 테이블 형태로 저장하고 관리하는 데이터베이스이다.
+
+
+
+  SQL != Database
+    
+      SQL과 Database는 다르다.
+      SQL은 Database를 구현하는 언어이다.
+    
+  
+
+
+설계 과정
+
+
+
+  요구사항 분석
+    
+      시스템이 어떤 데이터를 관리하고, 어떤 연산을 수행해야 하는지 정의한다.
+    
+  
+  개념적 설계
+    
+      개체-관계 모델을 이용해서 데이터와 데이터간의 관계를 설계한다.
+      개체-관계(Entity-Relation) 모델 : 데이터와 데이터... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Database">#Database</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/kotlin/2023/06/18/%EC%88%9C%EC%97%B4,%EC%A1%B0%ED%95%A9%EC%9D%84-Kotlin%EC%9C%BC%EB%A1%9C-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0.html">
+          순열, 조합 by Kotlin
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-06-18, Sun</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 5 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/kotlin/2023/06/18/%EC%88%9C%EC%97%B4,%EC%A1%B0%ED%95%A9%EC%9D%84-Kotlin%EC%9C%BC%EB%A1%9C-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0.html">
+        <p>
+          순열, 조합
+
+순열(Permutation)
+
+
+  순서가 중요한 경우
+
+
+nPr = n! / (n-r)! (n : 전체 개수, r : 뽑을 개수)
+
+조합(Combination)
+
+
+  순서가 중요하지 않은 경우
+
+
+nCr = n! / r! * (n-r)!
+
+비교
+
+
+  5명 중에서 3명을 뽑는 경우
+
+
+
+  순열
+    
+      3명을 1,2,3 등 순서대로 뽑는 경우
+      5P3 = 5! / (5-3)! = 60
+    
+  
+  조합
+    
+      3명을 순서 상관없이 뽑는 경우
+      5C3 = 5! / 3! * (5-3)! = 10
+    
+  
+
+
+순열 구현
+
+
+// Collection&amp;... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Kotlin">#Kotlin</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/compiler/2023/06/16/Code-shape-&amp;-Instruction-selection.html">
+          Compiler backend
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-06-16, Fri</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 17 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/compiler/2023/06/16/Code-shape-&amp;-Instruction-selection.html">
+        <p>
+          컴파일러 프론트엔드와 백엔드의 명백한 차이
+
+
+
+  프론트엔드
+    
+      프로그래밍 언어에 의존적
+      목표 기계에 비 의존적
+    
+  
+  백엔드
+    
+      언어에 다소 비 의존적
+      IR은 언어에 의존적
+      목표 기계에 의존적
+    
+  
+
+
+백엔드의 구성
+
+
+
+  Instruction selection
+    
+      IR을 어셈블리 코드로 변환
+      고정된 스토리지 매핑 및 코드 모양을 추정
+      주소 지정 모드를 사용하여 작업을 결합
+    
+  
+  Instruction scheduling
+    
+      연산을 정렬하여 지연 시간을 줄임
+  ... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Compiler">#Compiler</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/data/communication/2023/06/14/%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%86%B5%EC%8B%A0-%EC%A0%95%EB%A6%AC.html">
+          데이터 통신 정리
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-06-14, Wed</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 4 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/data/communication/2023/06/14/%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%86%B5%EC%8B%A0-%EC%A0%95%EB%A6%AC.html">
+        <p>
+          11장 - DataLinkControl
+
+HDLC
+
+
+
+  Frame
+    
+      Flag
+        
+          앞/뒤에 위치
+        
+      
+      Address
+      Control
+      Information
+        
+          서로 간의 프로토콜을 정의하기 위해 사용
+          user information, management information
+        
+      
+      Fcs
+        
+          CRC
+        
+      
+    
+  
+  Frame 종류
+    
+      Information
+   ... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Data%20communication">#Data communication</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/data/communication/2023/06/13/Wireless-LANs.html">
+          15. Wireless LANs
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-06-13, Tue</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 1 minute</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/data/communication/2023/06/13/Wireless-LANs.html">
+        <p>
+          Wireless LANs
+
+
+
+  Wireless Ethernet
+    
+      CSMA/CA
+    
+  
+  Personal area network(PAN)
+    
+      Bluetooth
+    
+  
+
+
+Architecture Comparison
+
+
+
+  Medium
+  Hosts
+  Isolated LANs
+  Connection to Other Networks
+
+
+특징
+
+
+
+  감쇠
+  간섭
+  다중 경로 전파
+    
+      전파 반사로 인해 매우 다양한 경로가 만들어 진다.
+    
+  
+  오류
+
+
+Access Control
+
+
+
+  CSMA/CD는 무선랜으로 동작하지 않는다.
+   ... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Data%20communication">#Data communication</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/data/communication/2023/06/13/Wired-LANs-Ethernet.html">
+          13. Wired LANs Ethernet
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-06-13, Tue</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 1 minute</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/data/communication/2023/06/13/Wired-LANs-Ethernet.html">
+        <p>
+          Ethernet
+
+
+
+  Wired LAN
+    
+      Token Bus
+      Token Ring
+      FDDI
+      ATM LAN
+    
+  
+
+
+
+
+Standard Ethernet
+
+
+Connectionless and Unreliable Service
+
+Frame format
+
+
+
+
+  preamble
+    
+      7 bytes 0101…
+    
+  
+  start frame delimiter(sfd)
+    
+      1 byte 10101011
+    
+  
+  destination address
+    
+      6 bytes
+    
+  
+  source addres... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Data%20communication">#Data communication</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/data/communication/2023/06/13/Other-Wireless-Networks.html">
+          16. Other Wireless Networks
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-06-13, Tue</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 1 minute</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/data/communication/2023/06/13/Other-Wireless-Networks.html">
+        <p>
+          Cellular Telephone Networks
+
+Cellular Telephony는 두 움직이는 객체 간에 통신을 지원하기 위해 설계되었다.
+
+Mobile stations 이라고 한다.
+
+
+
+주파수 재사용 원칙
+
+
+
+  전송
+  수신
+  Handoff
+  로밍
+
+
+Generation
+
+1G
+
+
+
+
+2G
+
+
+
+
+3G
+
+
+
+
+4G
+
+
+
+  이동 수단에 100Mbps, 정지 수단에 1Gbps의 속도를 제공한다.
+  자연스러운 Handoff
+
+
+5G
+
+
+
+  일반적인 인터넷 서비스에 대해 10Gbps의 속도를 제공한다.
+
+
+Satellite Networks
+
+
+
+
+ <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Data%20communication">#Data communication</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/data/communication/2023/06/13/Other-Wired-Networks.html">
+          14. Other Wired Networks
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-06-13, Tue</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 1 minute</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/data/communication/2023/06/13/Other-Wired-Networks.html">
+        <p>
+          Telephone Networks
+
+
+
+  Major components
+    
+      Local loops
+      Trunks
+      Switching offices
+    
+  
+
+
+
+
+Local-access transport areas (LATAs)
+
+
+
+
+ADSL(Asummetrc Digital Subscriber Line)
+
+
+
+
+Cable networks
+
+Hybrid Fiber Coaxial (HFC)
+
+Cable TV for Data Transfer
+
+CM and CMTS
+ <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Data%20communication">#Data communication</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/data/communication/2023/06/13/Media-Access-Control.html">
+          12. Media Access Control
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-06-13, Tue</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 3 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/data/communication/2023/06/13/Media-Access-Control.html">
+        <p>
+          MAC
+
+
+
+  Data link layer
+    
+      Data link control
+      Multiple-access resolution
+    
+  
+
+
+Multiple Access Protocols
+
+
+
+  Multiple Access Protocols
+    
+      Channelization(Partitioning)
+        
+          TDMA
+          FDMA
+          CDMA
+        
+      
+      Random access
+        
+          ALOHA
+          CSMA
+          CSMA/CD
+     ... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Data%20communication">#Data communication</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/data/communication/2023/06/13/Data-Link-Control.html">
+          11. Data Link Control
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-06-13, Tue</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 5 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/data/communication/2023/06/13/Data-Link-Control.html">
+        <p>
+          DLC Services
+
+
+  Framing
+  Flow Control
+  Error Control
+
+
+Framing
+
+
+Character-Oriented Framing
+
+
+
+데이터를 구별하기 위해 flag를 앞 뒤에 추가한다.
+
+데이터 안에 flag패턴이 포함되어 있으면, 혼동이 생기므로, 데이터 내에 추가적인 패턴을 삽입하여 구분하게 된다. 이를 byte stuffing이라고 한다.
+
+Header에 검증을 위한 데이터를 추가한다.
+
+아스키 코드 전달이 목적
+
+최근에는 잘 사용되지 않는다.
+
+Bit-Oriented Framing
+
+
+
+비트 단위로 데이터를 구별하기 위해 flag를 사용한다.
+
+Character 방... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Data%20communication">#Data communication</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/data/communication/2023/06/13/Connecting-Devices-and-Virtual-LANs.html">
+          17. Connecting Devices and Virtual LANs
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-06-13, Tue</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 1 minute</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/data/communication/2023/06/13/Connecting-Devices-and-Virtual-LANs.html">
+        <p>
+          Connecting Devices
+
+5 Categories of Connecting Devices
+
+
+
+
+Repeater
+
+
+LAN의 연장선 역할을 한다.
+
+데이터를 받아 증폭하여 다시 전송한다.
+
+Link Layer Switches(Switch, Bridge)
+
+
+
+  Filtering
+    
+      스위치는 필터링 테이블을 가짐.
+    
+  
+
+
+
+
+Transparent Switches
+
+
+
+  프레임은 스테이션 간에 전송된다.
+  포워딩 테이블은 프레임의 움직임을 파악하여 자동적으로 네트워크 상에서 생성된다.
+  시스템에서 반복은 발생하지 말아야 한다.
+
+
+A learning bridge and the... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Data%20communication">#Data communication</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/android/2023/05/31/Android-%EC%BB%A4%EC%8A%A4%ED%85%80-%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83%EC%9C%BC%EB%A1%9C-%EC%95%B1-%EC%9C%84%EC%A0%AF-%EB%A7%8C%EB%93%A4%EA%B8%B0.html">
+          Android 커스텀 레이아웃으로 앱 위젯 만들기
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-05-31, Wed</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 3 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/android/2023/05/31/Android-%EC%BB%A4%EC%8A%A4%ED%85%80-%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83%EC%9C%BC%EB%A1%9C-%EC%95%B1-%EC%9C%84%EC%A0%AF-%EB%A7%8C%EB%93%A4%EA%B8%B0.html">
+        <p>
+          App Widgets 이란?
+
+아래 사진과 같이 런처 앱에서 설치된 앱의 기능을 사용할 수 있도록 해줍니다.
+
+
+
+Widget을 만드는 방법
+
+
+아래의 안드로이드 공식 문서를 통해 기본적인 제작 방법을 학습할 수 있습니다.
+Create app widget - Android developers
+
+App widget processing flow
+
+
+  앱 위젯을 처리하는 흐름
+
+
+
+
+
+  핵심
+    
+      BroadcastReceiver로 위젯 업데이트 처리
+      RemoteViews로 위젯 UI를 처리
+    
+  
+
+
+위젯 제작 과정
+
+
+  아래는 예시 입니다. 전체 예제 코드
+
+
+
+  res 디렉토리... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Android">#Android</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/navigation/2023/05/23/%EB%84%A4%EB%B9%84%EA%B2%8C%EC%9D%B4%EC%85%98-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EB%94%A5%EB%A7%81%ED%81%AC-%EC%82%AC%EC%9A%A9%EC%84%B1-%EA%B0%9C%EC%84%A0%ED%95%98%EA%B8%B0.html">
+          Navigation Component DeepLink로 이동시 Arguments 전달 편의성 개선하기
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-05-23, Tue</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 7 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/navigation/2023/05/23/%EB%84%A4%EB%B9%84%EA%B2%8C%EC%9D%B4%EC%85%98-%EC%BB%B4%ED%8F%AC%EB%84%8C%ED%8A%B8-%EB%94%A5%EB%A7%81%ED%81%AC-%EC%82%AC%EC%9A%A9%EC%84%B1-%EA%B0%9C%EC%84%A0%ED%95%98%EA%B8%B0.html">
+        <p>
+          구현 목적
+
+DeepLink 사용 시에도 Action으로 이동할 때 Arguments를 전달하는 것처럼 구현 하고자 합니다.
+
+먼저 DeepLink와 Action으로 Arguments를 전달하는 방법을 알아봅시다.
+
+각각의 Arguments 전달 방법
+
+Action으로 Arguments 전달
+
+XML 네비게이션 파일에 Argument를 선언하거나, 동적으로 Arguments를 선언하는 방법이 있습니다.
+
+// nav.xml 에서, 전달할 Arguments를 아래와 같이 정의해야 합니다.
+
+&lt;argument
+    android:name="name"
+    android:defaultValue="이름"/&gt;... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Android">#Android</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/compose/2023/05/09/Android-Compose-%EC%B2%AB-%EB%8F%84%EC%9E%85-%ED%9B%84%EA%B8%B0.html">
+          Android Compose 첫 도입 후기
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-05-09, Tue</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 12 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/compose/2023/05/09/Android-Compose-%EC%B2%AB-%EB%8F%84%EC%9E%85-%ED%9B%84%EA%B8%B0.html">
+        <p>
+          
+
+먼저, 코드를 보면 전체적인 구조가 기존 View와는 상당히 다른 것을 알 수 있습니다.
+
+
+대한민국 식약처가 제약사에 대해 회수/폐기와 행정 처분을 내린 목록을 표시하는 화면입니다.
+
+예제 코드 클래스 구성
+
+  NewsFragment
+    
+      뉴스 화면을 표시할 메인 Fragment
+    
+  
+  NewsScreen
+    
+      위 Fragment에 나타나는 Compose 기반 뉴스 화면
+    
+  
+  RecallSuspensionScreen
+    
+      회수 폐기 목록 화면
+    
+  
+  RecallSuspensionViewModel
+    
+      위 화면에서 쓰이... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Android">#Android</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/compiler/2023/04/25/Compiler-IR.html">
+          Compiler IR
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-04-25, Tue</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 1 minute</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/compiler/2023/04/25/Compiler-IR.html">
+        <p>
+          IR(중간 표현)
+
+IR의 핵심 속성
+
+
+
+  생성 용이성
+  조작 용이성과 비용
+  추상화 수준
+  표현의 자유
+  프로시저 크기
+
+
+###
+ <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Compiler">#Compiler</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/compiler/2023/04/24/Compiler-Context-sensitive-analysis.html">
+          Compiler Context-sensitive analysis
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-04-24, Mon</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 3 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/compiler/2023/04/24/Compiler-Context-sensitive-analysis.html">
+        <p>
+          Semantic analyzer(Context-sensitive analysis, 문법 분석기)
+
+  이전 두 개의 분석기(Lexical, Syntex analyzer) 보다 더 상세한 부분을 분석한다.
+변수 선언, 자료형 등의 깊은 정보를 분석한다.
+
+
+이 분석기에서는 types, scopes가 중요하다!
+
+Type systems
+
+
+
+  
+    공통 타입은 integer, list, character를 포함한다.
+  
+  
+    Type system의 구성
+    
+      기본(Primitive) 타입
+        
+          boolean, char, integer, real, etc..
+  ... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Compiler">#Compiler</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/compiler/2023/04/23/Compiler-Context-free-analysis.html">
+          Compiler Context-free analysis
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-04-23, Sun</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 14 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/compiler/2023/04/23/Compiler-Context-free-analysis.html">
+        <p>
+          Syntax analyzer(Context-free analysis, 구문 분석기)
+
+  Scanner에 의해 생성된 토큰을 기본적인 문법(Context-free)에 맞는지를 검사하고, Parse tree를 생성한다.
+문법에 맞지 않으면 오류를 알린다.
+
+
+Context-free grammer(CGF)
+
+
+  모든 생성 규칙이 V → w 를 따르는 형식적인 문법이다.
+V : Non-terminal 기호, w : Non-terminal과 Terminal로 구성된 문자열
+
+
+
+  구성
+    
+      G = (S, NT, T, P)
+        
+          S
+            
+            ... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Compiler">#Compiler</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/compiler/2023/04/22/Compiler-Scanner.html">
+          Compiler Scanner
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-04-22, Sat</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 7 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/compiler/2023/04/22/Compiler-Scanner.html">
+        <p>
+          Scanner
+
+Word 인식 방법
+
+
+  상태 머신을 사용하고, 정규 표현식으로 구문을 분석한다.
+
+
+
+  정규 표현식
+    
+      Formal language(형식적인 언어)이다.
+        
+          규칙에 의해 명시된 Symbol의 집합이다.
+          애매한 부분이 있으면 안된다.
+        
+      
+    
+  
+
+
+복잡한 Scanner개발 과정을 간소화 하기 위해, Scanner Generator를 사용하여 개발할 수도 있다.
+
+예제
+
+while
+
+
+fee | fie
+
+
+while | fee | fie
+
+
+Transition table
+
+
+  레지스터 : r0, r1... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Compiler">#Compiler</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/compiler/2023/04/22/Compiler-Overview.html">
+          Compiler Overview
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-04-22, Sat</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 12 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/compiler/2023/04/22/Compiler-Overview.html">
+        <p>
+          Compiler(컴파일러) 란?
+
+  입력 : High-level 프로그래밍 언어 → 컴파일러 → 출력 : Low-level 어셈블리 언어
+컴파일러는 어떤 언어로 작성된 프로그램을 컴파일 시간과 런타임 시간에 다른 언어로 번역하는 역할을 한다.
+
+
+
+  컴파일러 동작 시점
+    
+      컴파일 시간(정적, 프로그램 실행 이전)
+      런타임 시간(동적, 프로그램 실행 중)
+      또는 컴파일과 런타임 시간 동시에
+    
+  
+  컴파일러 역할
+    
+      프로그램을 읽고 이해한다.
+      필요한 작업을 정확하게 결정하고, 그 동작을 수행하는 방법을 알아낸다.
+      컴퓨터가 그러한 작업... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Compiler">#Compiler</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/sql/2023/04/18/TABLE-%EB%8B%A4%EB%A3%A8%EA%B8%B0.html">
+          TABLE 다루기
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-04-18, Tue</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 1 minute</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/sql/2023/04/18/TABLE-%EB%8B%A4%EB%A3%A8%EA%B8%B0.html">
+        <p>
+          CREATE
+
+  TABLE을 생성 하기 위해 사용한다.
+
+
+학생, 과목, 수강 TABLE을 만듭니다.
+
+CREATE TABLE 학생 (
+    학번 VARCHAR2(7),
+    이름 VARCHAR2(20),
+    학과번호 VARCHAR2(3),
+    이수학점 INT,
+    평점 FLOAT,
+    PRIMARY KEY (학번)
+);
+
+CREATE TABLE 과목 (
+    과목번호 VARCHAR2(5),
+    과목이름 VARCHAR2(30),
+    최대인원 INT,
+    PRIMARY KEY (과목번호)
+);
+
+CREATE TABLE 수강 (
+    학번 VARCHAR2(7),
+    과목번호 VAR... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#SQL">#SQL</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/sql/2023/04/18/SQL-%ED%95%99%EC%8A%B5-%EC%8B%9C%EC%9E%91.html">
+          Oracle SQL 학습 시작
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-04-18, Tue</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 1 minute</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/sql/2023/04/18/SQL-%ED%95%99%EC%8A%B5-%EC%8B%9C%EC%9E%91.html">
+        <p>
+          Oracle SQL
+
+  Oracle SQL에서는 다양한 종류의 문법이 사용됩니다. 이러한 문법은 데이터베이스에서 데이터를 조작하고 관리하는 데 사용됩니다. 주요 문법 유형은 다음과 같습니다.
+
+
+SQL 문법의 종류
+
+
+  데이터 정의 언어 (DDL): 데이터베이스 스키마를 정의하고 구조를 변경하기 위해 사용됩니다.
+    
+      CREATE, ALTER, DROP, TRUNCATE 등의 구문이 포함됩니다.
+    
+  
+  데이터 조작 언어 (DML): 데이터를 검색, 추가, 수정 및 삭제하기 위해 사용됩니다.
+    
+      SELECT, INSERT, UPDATE, DELETE 등의 구문이 포함됩니다... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#SQL">#SQL</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/sql/2023/04/18/SELECT%EB%AC%B8-%EC%A0%95%EB%B3%B5%ED%95%98%EA%B8%B0.html">
+          SELECT문 정복하기
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-04-18, Tue</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 13 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/sql/2023/04/18/SELECT%EB%AC%B8-%EC%A0%95%EB%B3%B5%ED%95%98%EA%B8%B0.html">
+        <p>
+          SELECT
+
+  DB에서 데이터를 검색하기 위해 사용합니다.
+
+
+SELECT 할때 사용되는 연산자
+
+  산술 연산자
+    
+      +, -, *, /
+    
+  
+  비교 연산자
+    
+      =, &lt;&gt;, !=, &lt;, &gt; 등
+    
+  
+  논리 연산자
+    
+      NOT, AND, OR 등
+    
+  
+  결합 연산자
+    
+      
+        
+          
+            
+              |
+            
+          
+        
+      
+    
+  
+  집합 연산자
+    
+      UNION ALL, U... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#SQL">#SQL</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/sql/2023/04/18/JOIN-%EC%A0%95%EB%B3%B5%ED%95%98%EA%B8%B0.html">
+          JOIN 정복하기
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-04-18, Tue</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 1 minute</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/sql/2023/04/18/JOIN-%EC%A0%95%EB%B3%B5%ED%95%98%EA%B8%B0.html">
+        <p>
+          JOIN
+
+  JOIN은 두 개 이상의 테이블에서 데이터를 연결하여 하나의 결과 집합으로 반환하는 데이터베이스의 연산입니다.
+
+  JOIN을 사용하면 각 테이블의 행들을 일치하는 조건을 기반으로 결합할 수 있습니다.
+
+
+Oracle SQL에서 제공하는 JOIN 종류는 다음과 같습니다:
+
+
+  INNER JOIN
+    
+      두 테이블에서 JOIN 조건을 만족하는 레코드들만을 반환하는 JOIN입니다.
+      Syntax: SELECT … FROM table1 INNER JOIN table2 ON 조인 조건
+    
+  
+  LEFT JOIN (LEFT OUTER JOIN)
+    
+      왼쪽 테이블의... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#SQL">#SQL</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/data/communication/2023/04/16/%EB%8D%B0%EC%9D%B4%ED%84%B0%ED%86%B5%EC%8B%A01.html">
+          데이터통신
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-04-16, Sun</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 27 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/data/communication/2023/04/16/%EB%8D%B0%EC%9D%B4%ED%84%B0%ED%86%B5%EC%8B%A01.html">
+        <p>
+          2장 네트워크 모델
+
+  프로토콜 계층화는 통신 프로세스를 특정 기능을 수행하는 개별 계층으로 분할하는 것을 말합니다. 프로토콜 계층화의 원칙에는 양방향 통신, 각 계층 아래 동일한 객체, 계층 간 논리적 연결 등이 포함됩니다.
+
+
+TCP/IP 계층
+
+
+
+
+  응용
+    
+      앱 프로토콜
+    
+  
+  전송
+    
+      전송 프로토콜
+    
+  
+  네트워크
+    
+      인터넷 프로토콜
+      Packet을 처리
+    
+  
+  데이터 링크
+    
+      LAN,WAN과 연관, HW가 처리
+      Frame를 처리
+    
+  
+  물리
+    
+      LAN,WAN과... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Data%20communication">#Data communication</a></div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/android/2023/04/06/StateFlow-vs-SharedFlow.html">
+          StateFlow vs SharedFlow
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-04-06, Thu</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 2 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/android/2023/04/06/StateFlow-vs-SharedFlow.html">
+        <p>
+          StateFlow, SharedFlow
+
+상속관계, Cold/Hot stream
+
+Flow &lt;- SharedFlow &lt;- StateFlow
+
+Flow
+Cold stream, collect 를 할 때마다 emit 된 모든 값들을 받는다.
+
+ex) 어떤 Flow 를 1부터 10사이의 모든 정수를 emit(방출) 한 경우, Collector 가 해당 Flow 를 collect 하면 모든 값(1~10사이의 정수, 이때 까지 emit된 모든 값)들을 전달받음
+
+SharedFlow, StateFlow
+Hot stream, collect 이 시작된 시점 이후의 emit 된 값을 전달받음
+
+StateFlow
+
+
+  S... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#Android">#Android</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#Flow">#Flow</a>
+</div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/android/2023/04/04/How-to-use-Compose-in-Fragment-in-Android.html">
+          How to use Compose in XML layout in Android
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-04-04, Tue</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 2 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/android/2023/04/04/How-to-use-Compose-in-Fragment-in-Android.html">
+        <p>
+          View기반 화면(XML)에서 Compose를 사용하는 방법
+
+
+  Compose는 상호 운용이 가능하여 뷰 기반(XML) 화면 에서도 사용할 수 있다.
+
+
+1. Compose화면 코드 제작
+
+Compose를 사용하기 위해서는 Composable 함수를 만들어야 합니다.
+
+MyComposable.kt  
+  
+@Composable
+fun MyComposable() {
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                title = {  Text(text = "Compose in Fragment")  }
+            )
+     ... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#Android">#Android</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#Compose">#Compose</a>
+</div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/android/2023/04/04/Activity-%EC%95%8C%EC%95%84%EB%B3%B4%EA%B8%B0.html">
+          Activity 알아보기
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2023-04-04, Tue</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 1 minute</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/android/2023/04/04/Activity-%EC%95%8C%EC%95%84%EB%B3%B4%EA%B8%B0.html">
+        <p>
+          Activity 분석
+
+
+  Android에서 Activity는 여러 종류가 존재한다.
+
+
+Activity의 상속 구조
+
+android.app.Activity(최상위)  &lt;-  androidx.activity.ComponentActivity  &lt;-  FragmentActivity  &lt;-  AppCompatActivity
+
+1. android.app.Activity
+
+
+  Android 에서 가장 상위에 있는 Activity
+
+
+2. androidx.activity.ComponentActivity
+
+
+  상위 Level의 컴포넌트를 구성할수 있는 Activity
+
+
+androidx.AppCompat ... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#Android">#Android</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#Activity">#Activity</a>
+</div>
+    </li>
+<li>
+      
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h2 class="post-title">
+        <a class="post-link" href="/jekyll-theme-yat/android/2022/12/19/Android-%EB%AA%A8%EB%93%88%ED%99%94-with-Now-in-Android.html">
+          Android 모듈화 with 'Now in Android'
+        </a>
+      </h2>
+      <div class="post-meta">
+        <span class="post-date">2022-12-19, Mon</span>
+        <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 6 minutes</span>
+      </div>
+      <a class="post-excerpt" href="/jekyll-theme-yat/android/2022/12/19/Android-%EB%AA%A8%EB%93%88%ED%99%94-with-Now-in-Android.html">
+        <p>
+          Now in Android, Modularization
+Now in Android repository
+
+Google에서 제작 중인 안드로이드 개발용 샘플 App으로,
+최신 앱 아키텍처에 따라 개발되고 있어 학습에 유용하다.
+​
+Now in Android를 통해 알수 있는 것
+
+  Kotlin, Coroutines, Flow, Compose, Material 3
+  Official App Architeture https://developer.android.com/topic/architecture
+  App Modularization https://developer.android.com/topic/modularizat... <span class="read_more">Read More</span>
+        </p>
+      </a>
+      <div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#Android">#Android</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#Modularization">#Modularization</a>
+</div>
+    </li>
+</ul>
+
+  <!-- Pagination links -->
+</div>
+</div>
+
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="common-list">
+  <ul>
+    <li>
+      <a href="/jekyll-theme-yat/index.html">
+        All<span>50</span>
+      </a>
+    </li>
+
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-ART">
+          ART <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-Android">
+          Android <span>18</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-Compiler">
+          Compiler <span>6</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-Compose">
+          Compose <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-Coroutines">
+          Coroutines <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-Dalvik">
+          Dalvik <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-Data">
+          Data <span>9</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-Database">
+          Database <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-GarbageCollector">
+          GarbageCollector <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-JVM">
+          JVM <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-Kotlin">
+          Kotlin <span>6</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-Navigation">
+          Navigation <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-Private">
+          Private <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-SQL">
+          SQL <span>4</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-SWM">
+          SWM <span>1</span>
+        </a>
+      </li>
+    
+      <li>
+        <a href="/jekyll-theme-yat/categories.html#h-communication">
+          communication <span>9</span>
+        </a>
+      </li>
+    
+  </ul>
+</div>
+
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>2024 @ Junsung Park</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

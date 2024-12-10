@@ -1,0 +1,1769 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>코틀린 코루틴을 활용해 데이터 메모리 캐시 기능 구현하기 | Jsp Notes</title>
+<meta name="generator" content="Jekyll v4.3.4">
+<meta property="og:title" content="코틀린 코루틴을 활용해 데이터 메모리 캐시 기능 구현하기">
+<meta name="author" content="Junsung Park">
+<meta property="og:locale" content="ko">
+<meta name="description" content="구현 목적">
+<meta property="og:description" content="구현 목적">
+<link rel="canonical" href="https://pknujsp.github.io//jekyll-theme-yat/kotlin/2023/12/10/%EC%BD%94%ED%8B%80%EB%A6%B0-%EC%BD%94%EB%A3%A8%ED%8B%B4%EC%9D%84-%ED%99%9C%EC%9A%A9%ED%95%B4-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%BA%90%EC%8B%9C-%EA%B4%80%EB%A6%AC-%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0.html">
+<meta property="og:url" content="https://pknujsp.github.io//jekyll-theme-yat/kotlin/2023/12/10/%EC%BD%94%ED%8B%80%EB%A6%B0-%EC%BD%94%EB%A3%A8%ED%8B%B4%EC%9D%84-%ED%99%9C%EC%9A%A9%ED%95%B4-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%BA%90%EC%8B%9C-%EA%B4%80%EB%A6%AC-%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0.html">
+<meta property="og:site_name" content="Jsp Notes">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-12-10T00:00:00+09:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="코틀린 코루틴을 활용해 데이터 메모리 캐시 기능 구현하기">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junsung Park"},"dateModified":"2023-12-10T00:00:00+09:00","datePublished":"2023-12-10T00:00:00+09:00","description":"구현 목적","headline":"코틀린 코루틴을 활용해 데이터 메모리 캐시 기능 구현하기","mainEntityOfPage":{"@type":"WebPage","@id":"https://pknujsp.github.io//jekyll-theme-yat/kotlin/2023/12/10/%EC%BD%94%ED%8B%80%EB%A6%B0-%EC%BD%94%EB%A3%A8%ED%8B%B4%EC%9D%84-%ED%99%9C%EC%9A%A9%ED%95%B4-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%BA%90%EC%8B%9C-%EA%B4%80%EB%A6%AC-%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0.html"},"url":"https://pknujsp.github.io//jekyll-theme-yat/kotlin/2023/12/10/%EC%BD%94%ED%8B%80%EB%A6%B0-%EC%BD%94%EB%A3%A8%ED%8B%B4%EC%9D%84-%ED%99%9C%EC%9A%A9%ED%95%B4-%EB%8D%B0%EC%9D%B4%ED%84%B0-%EC%BA%90%EC%8B%9C-%EA%B4%80%EB%A6%AC-%EA%B8%B0%EB%8A%A5-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="icon" href="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script>
+
+  <!-- tipuesearch -->
+  <link rel="stylesheet" href="/assets/tipuesearch/css/tipuesearch.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_content.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_set.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch.min.js"></script><link type="application/atom+xml" rel="alternate" href="https://pknujsp.github.io//jekyll-theme-yat/feed.xml" title="Jsp Notes">
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LZC1TDTS26"></script>
+<script>
+  function initGoogleAnalytics() {
+    var doNotTrack = (window.doNotTrack === "1" || navigator.doNotTrack === "1" ||
+      navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1");
+    var enableDNT = "true" == "true";
+
+    if (!enableDNT || !doNotTrack) {
+      /*
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'G-LZC1TDTS26', 'auto');
+      ga('send', 'pageview');
+      */
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { window.dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-LZC1TDTS26');
+    }
+  }
+  window.addEventListener("load", initGoogleAnalytics);
+
+</script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/intellij-light.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/kotlin.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #7800ff;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: lowercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <img class="site-white_favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+</a></span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/about.html">About</a><a class="page-link" href="/jekyll-theme-yat/categories.html">Categories</a><a class="page-link" href="/jekyll-theme-yat/">Home</a><a class="page-link" href="/jekyll-theme-yat/posts.html">Posts</a><a class="page-link" href="/jekyll-theme-yat/tags.html">Tags</a><input id="tipue_search_input" type="search" placeholder="Search" aria-label="Search" title="Please enter at least 1 character" required>
+
+          <script>
+            document.getElementById("tipue_search_input").addEventListener("keydown", function (event) {
+              if (event.keyCode === 13) {
+                event.preventDefault();
+                window.location.href = "../search?q=" + this.value;
+              }
+            });
+          </script>
+<!--
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="en">
+        
+        <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+        to English
+        
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="ko">
+        
+        <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+        to Korean
+        
+      </a>
+    </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'ko',
+      autoDisplay: false,
+      layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+    }, 'google_translate_element');
+
+    // Links to cross-origin destinations are unsafe
+    var gll = document.getElementsByClassName('goog-logo-link')[0];
+    if (gll) {
+      gll.setAttribute('rel', 'noopener');
+    }
+
+    function restoreLang() {
+      var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+      if (!iframe) return;
+
+      var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+      var restore_el = innerDoc.getElementsByTagName("button");
+
+      for (var i = 0; i < restore_el.length; i++) {
+        if (restore_el[i].id.indexOf("restore") >= 0) {
+          restore_el[i].click();
+          var close_el = innerDoc.getElementsByClassName("goog-close-link");
+          close_el[0].click();
+          return;
+        }
+      }
+    }
+
+    function triggerHtmlEvent(element, eventName) {
+      var event;
+      if (document.createEvent) {
+        event = document.createEvent('HTMLEvents');
+        event.initEvent(eventName, true, true);
+        element.dispatchEvent(event);
+      } else {
+        event = document.createEventObject();
+        event.eventType = eventName;
+        element.fireEvent('on' + event.eventType, event);
+      }
+    }
+
+    var googleCombo = document.querySelector("select.goog-te-combo");
+    var langSelect = document.querySelector('.ct-language');
+    langSelect.addEventListener('click', function (event) {
+      if (!event.target) {
+        return;
+      }
+
+      var selected = document.querySelector('.ct-language .ct-language-selected');
+      if (selected) {
+        selected.classList.remove('ct-language-selected');
+      }
+
+      var target = event.target;
+      while (target && target !== langSelect) {
+        if (target.matches('.lang-select')) {
+          break;
+        }
+        target = target.parentElement;
+      }
+
+      if (target && target.matches('.lang-select')) {
+        var lang = target.getAttribute('data-lang');
+        if (googleCombo.value == lang) {
+          restoreLang();
+        } else if (lang == 'ko') {
+          var googleTranslateElement = document.getElementById('google_translate_element');
+          if (googleTranslateElement) {
+            googleTranslateElement.parentNode.removeChild(googleTranslateElement);
+            $('#google_translate_element').empty();
+          }
+        } else {
+          target.parentElement.classList.add('ct-language-selected');
+          googleCombo.value = lang;
+          triggerHtmlEvent(googleCombo, 'change');
+        }
+      }
+
+      event.preventDefault();
+    });
+  }
+</script>
+
+<script type="text/javascript"
+  src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script></span>-->
+          </div>
+
+          
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('manual' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = !(hours >= 2 && hours <=5);
+
+      if (nightShift) {
+        if (hours > 5) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(5);
+      } else {
+        toggleAt.setHours(2);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<div id="click-to-bottom" class="click-to-bottom">
+  <i class="fa fa-arrow-down"></i>
+</div>
+<script>
+  (function () {
+    const clickToBottom = document.getElementById('click-to-bottom');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToBottom.classList.add('show')
+      }else {
+        clickToBottom.classList.remove('show')
+      }
+    });
+    clickToBottom.addEventListener('click', () => {
+      window.smoothScrollTo(document.body.scrollHeight);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">코틀린 코루틴을 활용해 데이터 메모리 캐시 기능 구현하기</h1>
+  <h2 class="post-subtitle">Kotlin coroutines, Actor, LruCache, 시간 제한 캐시</h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2023-12-10T00:00:00+09:00" itemprop="datePublished">2023-12-10, Sun
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 25 minutes</span>
+  </p>
+<div class="post-tags">
+<a class="post-tag" href="/jekyll-theme-yat/tags.html#Kotlin">#Kotlin</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#Cache">#Cache</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#Coroutines">#Coroutines</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#Actor">#Actor</a><a class="post-tag" href="/jekyll-theme-yat/tags.html#LruCache">#LruCache</a>
+</div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h2 id="구현-목적">구현 목적</h2>
+
+<p>앱을 제작하면서 온라인에서 가져온 데이터를 메모리에 캐싱해야 할 필요가 있었다. 그 이유는 해당 데이터의 서버 상에서 업데이트 주기가 수 십분 ~ 수 시간 단위로 긴데, 이 데이터를 짧은 간격으로 다시 중복으로 가져오는 것은 비효율적이기 때문이다. 그래서 메모리에 캐싱하는 기능을 만들었고 효율성을 개선할 수 있었다.</p>
+
+<h3 id="비효율적인-기존-방식">비효율적인 기존 방식</h3>
+
+<blockquote>
+  <p>총 세 가지의 지역(A, B, C)에 대해서 대기질 데이터를 가져오는 기능을 구현했다고 가정하였다.</p>
+</blockquote>
+
+<p><img src="https://github.com/pknujsp/pknujsp/assets/48265129/13abad16-bc5c-46f3-867a-bc90aee5daa7" alt="비효율적인 기존 방식"></p>
+
+<ul>
+  <li>흐름
+    <ol>
+      <li>A의 대기질 데이터를 로드</li>
+      <li>B 정보 화면으로 전환 -&gt; B의 대기질 데이터를 로드</li>
+      <li>A 정보 화면으로 재 전환 -&gt; A의 대기질 데이터를 로드</li>
+      <li>C 정보 화면으로 전환 -&gt; C의 대기질 데이터를 로드</li>
+      <li>A 정보 화면으로 재 전환 -&gt; A의 대기질 데이터를 로드</li>
+    </ol>
+  </li>
+</ul>
+
+<p>20초간 A의 데이터를 3번 로드하였고, 이 시간동안 서버 상에서 데이터가 갱신되지 않았다면 중복된 데이터를 2번 불러오게 된다. 만약 업데이트 주기가 길고, 화면 전환이 잦다면 위와 같은 상황은 빈번하게 발생할 것이다.</p>
+
+<p>최근에 날씨 앱을 제작하고 있는데, 여러 부분에서 이런 상황이 발생하였다.</p>
+
+<ul>
+  <li>화면을 전환하였다가 다시 돌아왔을때 데이터를 다시 불러옴(짧은 주기)
+    <ul>
+      <li>날씨 정보 화면 -&gt; 앱 설정 화면 -&gt; 날씨 정보 화면</li>
+    </ul>
+  </li>
+  <li>같은 지역의 데이터를 비슷한 시점에 다른 기능 구현을 위해 불러옴
+    <ul>
+      <li>위젯, 알림, 앱 날씨 화면이 거의 동시에 업데이트 되는 경우</li>
+      <li>계속 최신 데이터만 받아온다면, 최악의 경우 같은 데이터를 수십번 동시다발적으로 불러올 수도 있다.</li>
+    </ul>
+  </li>
+  <li>예보 비교 화면(시간별, 일별)
+    <ul>
+      <li>예를 들어, A지역의 시간별 예보를 불러온지 몇초 밖에 지나지 않은 상태에서 여러 날씨 제공사의 예보를 비교하려고 한다면, 같은 제공사의 데이터를 다시 불러올 수도 있다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>다수의 문제점이 발생하였고, 데이터를 좀더 효율적으로 관리할 필요가 있었다. 그래서 코틀린 코루틴을 활용하여 데이터를 관리하는 기능을 구현하였다.</p>
+
+<p><strong>!이러한 상황이 무조건 비효율적이라고 정답을 내릴 수는 없다. 만약 업데이트 주기가 아주 짧으면서, 최신 데이터만을 UI에 보여주려고 한다면 위와 같은 방식을 사용하는 것이 더 나을 수도 있다.</strong></p>
+
+<h3 id="구현-방식">구현 방식</h3>
+
+<h4 id="코루틴">코루틴</h4>
+
+<p>앱에서 코루틴을 사용하여 비동기 로직을 처리하고 있기 때문에, 코루틴으로 구현하였다.</p>
+
+<h4 id="캐시-관리">캐시 관리</h4>
+
+<ul>
+  <li>캐시 시간 제한</li>
+  <li>Lru Cache</li>
+</ul>
+
+<p><strong>캐시 시간 제한</strong></p>
+
+<p>캐시 기능이 필요한 이유이기 때문에, 가장 우선적으로 구현하였다.</p>
+
+<p>서버에서 데이터를 가져와서 캐시에 저장할 때, 데이터의 유효 시간을 함께 저장한다. 이후 캐시를 불러올 때 현재 시간과 캐시의 유효 시간을 비교하여 캐시가 유효한지 확인한다. 만약 유효하지 않다면, 다시 서버에서 데이터를 가져와서 캐시에 저장한다.</p>
+
+<p><strong>Lru Cache</strong></p>
+
+<p>설계시 미처 고려하지 못한 것으로, 한창 구현하다가 저장된 캐시의 크기가 너무 커지는 문제가 발생할 수 있음을 깨달았다.</p>
+
+<p>이를 해결하기 위해 Lru Cache를 사용하였다. Lru Cache는 가장 오랫동안 사용되지 않은 데이터를 삭제하는 캐시 관리 기법이며, 저장할 캐시의 최대 개수(크기)를 지정할 수 있다.</p>
+
+<ul>
+  <li>예를 들어, 최대 크기를 3으로 지정하였을 때, 4번째로 캐시가 추가될 때 1번째로 추가된 캐시는 삭제된다.</li>
+</ul>
+
+<p>Lru Cache에 대해선 이전에 작성한 포스팅 <a href="https://pknujsp.github.io/android/2023/08/13/androidx.collection-%EB%9D%BC%EC%9D%B4%EB%B8%8C%EB%9F%AC%EB%A6%AC-%EC%82%B4%ED%8E%B4%EB%B3%B4%EA%B8%B0(SparseArray,-ArrayMap,-LruCache-/).html#h-lrucacheleast-recently-used-cache">ArrayMap, SparseArray, LruCache에 대해서 알아보기</a> 을 참고하면 도움이 될 것이다.</p>
+
+<h4 id="데이터-동기화">데이터 동기화</h4>
+
+<p>여러 스레드에서 동시에 캐시에 접근할 수 있기 때문에, 데이터 동기화를 해주어야 한다.</p>
+
+<p>가장 중요한 부분, 섬세한 로직이 요구되었다.</p>
+
+<ul>
+  <li>적용해본 동기화 방식
+    <ul>
+      <li>Mutex, Synchronized</li>
+      <li>ConcurrentHashMap</li>
+      <li>ReentrantReadWriteLock</li>
+      <li>Actor</li>
+    </ul>
+  </li>
+</ul>
+
+<p>여러 방식으로 테스트 해보면서 Actor로 최종 구현하였다. 이 과정에서 코루틴의 동작 방식에 대해 더욱 깊게 이해할 수 있었다.</p>
+
+<p><strong>1. Mutex, Synchronized</strong></p>
+
+<p>제일 먼저 적용한 기법이다.</p>
+
+<p>Mutex는 Mutual Exclusion의 약자로 상호 배제를 의미한다. 임계 구역을 만들고 그 구역을 통해서 스레드가 데이터에 접근한 뒤 구역을 잠궈서, 다른 스레드는 접근할 수 없도록 막는 기법이다.</p>
+
+<p>스레드 A, B가 동시에 어떤 로직을 시작하려고 할 때, A가 먼저 시작하면 B는 A가 끝낼 때 까지 그 로직 수행을 못하고, A가 작업을 끝내야만 B가 수행할 수 있다. Synchrnoized도 이와 유사하다.</p>
+
+<p>예를 들어, <code class="language-plaintext highlighter-rouge">Map</code>을 Mutex 또는 Synchronized로 동기화하면, 그 Map은 동시에 하나의 스레드만 다룰수 있기 때문에, 데이터 동기화가 보장되는 것이다.</p>
+
+<p><strong>Mutex, Synchronized의 차이</strong></p>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center">Mutex</th>
+      <th style="text-align: center">Synchronized</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center">동작 기반</td>
+      <td style="text-align: center">프로그램 구동 플랫폼, 코루틴에 최적화</td>
+      <td style="text-align: center">JVM</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">소유권</td>
+      <td style="text-align: center">접근하는 스레드가 잠그고,해제하는 소유권을 가짐</td>
+      <td style="text-align: center">소유 개념이 없음</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">잠금해제 대기 방식</td>
+      <td style="text-align: center">코루틴 동작을 일시중지</td>
+      <td style="text-align: center">스레드 동작을 일시중지</td>
+    </tr>
+    <tr>
+      <td style="text-align: center">재진입</td>
+      <td style="text-align: center">불가능, 스레드 A가 Mutex를 잠그고 다시 Mutex를 접근하면 그대로 무한 대기에 빠질 수 있음</td>
+      <td style="text-align: center">가능, 한 스레드가 Synchronized에 접근한 상태에서 다시 Synchronized하더라도 문제없이 그대로 접근가능</td>
+    </tr>
+  </tbody>
+</table>
+
+<p>잠금해제를 대기하는 방식에서 확실한 차이가 있다.</p>
+
+<ul>
+  <li>Mutex : 대기하는 동안 다른 작업 가능, 코루틴에 최적화되어 있어 대기하는 동안 다른 코루틴으로 작업을 넘길 수 있다.</li>
+  <li>Synchronized : 대기하는 동안 다른 작업 불가능</li>
+</ul>
+
+<p>하나의 칸만 있는 화장실이 있는 상황으로 비교해보자면 다음과 같다.</p>
+
+<ul>
+  <li>Mutex : 다른 사람이 나올때 까지 기다리는 동안, 휴대폰을 보는 등 다른 작업을 할 수 있다.</li>
+  <li>Synchronized : 기다리는 동안 아무것도 못한다. 휴대폰도 없고 뭐도 못한다. 그냥 기다린다.</li>
+</ul>
+
+<p><strong>2. ConcurrentHashMap</strong></p>
+
+<p>우리가 직접 따로 임계 구역을 만들어 동기화 할 필요없이 자체적으로 동기화를 지원하는 Map이다.</p>
+
+<p>Map을 예로 들어, Mutex, Synchronized로 임계 구역을 통해 동기화를 하게 되면 Map전체에 대해서 다른 스레드는 접근할 수 없게 된다. 하지만 ConcurrentHashMap은 Map의 일부분만 잠그고, 나머지 부분은 다른 스레드가 접근할 수 있게 해준다.</p>
+
+<p>Map의 key로 1, 2가 있을 때</p>
+
+<ul>
+  <li>Mutex, Synchronized 를 쓴다면, 1에 대한 작업을 하고 있는 동안 2에 대한 작업을 할 수 없다.</li>
+  <li>ConcurrentHashMap을 쓴다면, 1에 대한 작업을 하고 있는 동안 2에 대한 작업을 할 수 있다.</li>
+</ul>
+
+<p><strong>3. ReentrantReadWriteLock</strong></p>
+
+<p>ReentrantReadWriteLock은 Mutex와 Synchronized와 다르게, 읽기와 쓰기 각각에 대해 잠금을 걸 수 있다. 즉, 읽기 잠금과 쓰기 잠금을 따로 걸 수 있다.</p>
+
+<ul>
+  <li>쓰기 잠금을 걸었다면 다른 스레드는 읽기와 쓰기 모두 불가능하다.</li>
+  <li>읽기 잠금을 걸었더라도 다른 키로 접근한다면 읽을 수 있다.</li>
+</ul>
+
+<p><strong>4. Actor</strong></p>
+
+<p>Actor Model 패턴으로 동기화를 구현하는 방법이다. <a href="https://syntaxsugar.tistory.com/entry/Actor%EC%95%A1%ED%84%B0">Concurrency with Actor Model(행위자 모델)</a> 페이지에 상세히 정리되어 있어 추가로 참조하면 도움이 될 것이다.</p>
+
+<p><img src="https://github.com/pknujsp/pknujsp/assets/48265129/38bcc74a-a78c-4762-9324-5665e9cfcfd5" alt="제목 없는 다이어그램-페이지-3"></p>
+
+<p>특정 기능을 전문적으로 수행하는 기능을 하는 것이 Actor이다. 외부에서 Actor에게 메시지를 보내면, Actor는 메시지를 처리하고 결과를 다시 보내준다.</p>
+
+<p>하나의 Actor는 동시에 작업을 수행하지 않고 동기적으로 하나씩 처리하기 때문에, 데이터 동기화가 보장된다.</p>
+
+<p>액터 모델 패턴을 실생활로 비유하자면, 액터는 어떤 특정한 기능을 전문적으로 수행하는 사람이다. 다른 사람은 이 사람과 메시지 채팅으로 소통을 할 수 있다.</p>
+
+<ul>
+  <li>특징
+    <ul>
+      <li>작업을 메시지를 받는 순서대로 처리한다. (메시지 큐)</li>
+      <li>순서대로 처리하므로 별도의 동기화를 해줄 필요가 없다.</li>
+      <li>메시지 별로 분기하여 독립적인 작업을 수행하기 때문에, 다른 방식 대비 코드가 더 직관적이고 간결하다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3 id="최종-구현-방식">최종 구현 방식</h3>
+
+<p><strong>Actor</strong>, 여러 방식을 적용해보면서, 개인적으로 코드가 가장 직관적이면서 관리하기 편했고 코루틴에 최적화 되어 있어 이를 선택했다.</p>
+
+<p><strong>! 가장 좋은 방식을 뽑는다면 정답이 없다고 할 수 있다.</strong></p>
+
+<h2 id="구현-코드">구현 코드</h2>
+
+<h3 id="cachemanager">CacheManager</h3>
+
+<p>캐시 관리 기능을 담당하는 클래스이다. 캐시를 저장하고, 불러오고, 삭제하는 기능을 제공한다.</p>
+
+<ul>
+  <li>defaultCacheExpiryTime : 캐시의 기본 유효 시간</li>
+  <li>cleaningInterval : 캐시 정리 주기</li>
+  <li>cacheMaxSize : 캐시 최대 개수</li>
+</ul>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">abstract</span> <span class="kd">class</span> <span class="nc">CacheManager</span><span class="p">&lt;</span><span class="nc">K</span><span class="p">,</span> <span class="nc">V</span><span class="p">&gt;(</span>
+    <span class="k">protected</span> <span class="kd">val</span> <span class="py">defaultCacheExpiryTime</span><span class="p">:</span> <span class="nc">Long</span><span class="p">,</span>
+    <span class="k">protected</span> <span class="kd">val</span> <span class="py">cleaningInterval</span><span class="p">:</span> <span class="nc">Long</span><span class="p">,</span>
+    <span class="k">protected</span> <span class="kd">val</span> <span class="py">cacheMaxSize</span><span class="p">:</span> <span class="nc">Int</span>
+<span class="p">)</span> <span class="p">{</span>
+    <span class="k">abstract</span> <span class="k">suspend</span> <span class="k">fun</span> <span class="nf">get</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nc">K</span><span class="p">):</span> <span class="nc">CacheState</span><span class="p">&lt;</span><span class="nc">V</span><span class="p">&gt;</span>
+
+    <span class="k">abstract</span> <span class="k">suspend</span> <span class="k">fun</span> <span class="nf">remove</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nc">K</span><span class="p">):</span> <span class="nc">Boolean</span>
+
+    <span class="k">abstract</span> <span class="k">suspend</span> <span class="k">fun</span> <span class="nf">put</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nc">K</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nc">V</span><span class="p">,</span> <span class="n">cacheExpiryTime</span><span class="p">:</span> <span class="nc">Long</span> <span class="p">=</span> <span class="n">defaultCacheExpiryTime</span><span class="p">)</span>
+
+    <span class="k">abstract</span> <span class="k">suspend</span> <span class="k">fun</span> <span class="nf">entries</span><span class="p">():</span> <span class="nc">List</span><span class="p">&lt;</span><span class="nc">Pair</span><span class="p">&lt;</span><span class="nc">K</span><span class="p">,</span> <span class="nc">Cache</span><span class="p">&lt;</span><span class="nc">V</span><span class="p">&gt;&gt;&gt;</span>
+
+    <span class="k">sealed</span> <span class="kd">interface</span> <span class="nc">CacheState</span><span class="p">&lt;</span><span class="k">out</span> <span class="nc">V</span><span class="p">&gt;</span> <span class="p">{</span>
+        <span class="kd">data class</span> <span class="nc">Hit</span><span class="p">&lt;</span><span class="nc">V</span><span class="p">&gt;(</span><span class="kd">val</span> <span class="py">value</span><span class="p">:</span> <span class="nc">V</span><span class="p">)</span> <span class="p">:</span> <span class="nc">CacheState</span><span class="p">&lt;</span><span class="nc">V</span><span class="p">&gt;</span>
+        <span class="n">data</span> <span class="kd">object</span> <span class="nc">Miss</span> <span class="p">:</span> <span class="nc">CacheState</span><span class="p">&lt;</span><span class="nc">Nothing</span><span class="p">&gt;</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="cachecleaner">CacheCleaner</h3>
+
+<p>코루틴 작업으로 에약되어 설정한 주기마다 자동으로 만료된 캐시를 정리하는 기능을 on/off 할 수 있는 인터페이스이다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">interface</span> <span class="nc">CacheCleaner</span> <span class="p">{</span>
+    <span class="k">fun</span> <span class="nf">start</span><span class="p">()</span>
+    <span class="k">fun</span> <span class="nf">stop</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="cache">Cache</h3>
+
+<p>Map으로 키와 함께 저장되는 캐시 값이다.</p>
+
+<ul>
+  <li>value : 캐시 값</li>
+  <li>cacheExpiryTime : 캐시 유효 시간</li>
+  <li>addedTime : 캐시 추가 시간</li>
+</ul>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">data class</span> <span class="nc">Cache</span><span class="p">&lt;</span><span class="nc">V</span><span class="p">&gt;(</span>
+    <span class="kd">val</span> <span class="py">value</span><span class="p">:</span> <span class="nc">V</span><span class="p">,</span> <span class="kd">val</span> <span class="py">cacheExpiryTime</span><span class="p">:</span> <span class="nc">Long</span><span class="p">,</span> <span class="kd">val</span> <span class="py">addedTime</span><span class="p">:</span> <span class="nc">Long</span> <span class="p">=</span> <span class="nc">System</span><span class="p">.</span><span class="nf">currentTimeMillis</span><span class="p">()</span>
+<span class="p">)</span> <span class="p">{</span>
+    <span class="k">fun</span> <span class="nf">isExpired</span><span class="p">(</span><span class="n">now</span><span class="p">:</span> <span class="nc">Long</span> <span class="p">=</span> <span class="nc">System</span><span class="p">.</span><span class="nf">currentTimeMillis</span><span class="p">()):</span> <span class="nc">Boolean</span> <span class="p">=</span> <span class="n">now</span> <span class="p">-</span> <span class="n">addedTime</span> <span class="p">&gt;</span> <span class="n">cacheExpiryTime</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="cachemanagerimpl실제-구현체">CacheManagerImpl(실제 구현체)</h3>
+
+<p>위 추상클래스와 인터페이스를 구현한 클래스이다.</p>
+
+<ul>
+  <li>cacheExpiryTime : 캐시의 기본 유효 시간</li>
+  <li>cleaningInterval : 캐시 정리 주기</li>
+  <li>cacheMaxSize : 캐시 최대 개수</li>
+  <li>dispatcher : 코루틴 디스패처</li>
+  <li>cacheActor : 캐시 관리 기능을 담당하는 Actor</li>
+  <li>isCacheCleanerRunning : 캐시 정리 작업이 실행중인지 여부</li>
+  <li>waitTimeForCacheCleaning : 캐시 정리 작업이 실행중일 때, 대기할 시간</li>
+  <li>cacheCleanerJob : 캐시 정리 코루틴 작업</li>
+</ul>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kd">class</span> <span class="nc">CacheManagerImpl</span><span class="p">&lt;</span><span class="nc">K</span><span class="p">,</span> <span class="nc">V</span><span class="p">&gt;(</span>
+    <span class="n">cacheExpiryTime</span><span class="p">:</span> <span class="nc">Duration</span> <span class="p">=</span> <span class="nc">Duration</span><span class="p">.</span><span class="nf">ofMinutes</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span>
+    <span class="n">cleaningInterval</span><span class="p">:</span> <span class="nc">Duration</span> <span class="p">=</span> <span class="nc">Duration</span><span class="p">.</span><span class="nf">ofMinutes</span><span class="p">(</span><span class="mi">5</span><span class="p">),</span>
+    <span class="n">cacheMaxSize</span><span class="p">:</span> <span class="nc">Int</span> <span class="p">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">dispatcher</span><span class="p">:</span> <span class="nc">CoroutineDispatcher</span>
+<span class="p">)</span> <span class="p">:</span> <span class="nc">CacheManager</span><span class="p">&lt;</span><span class="nc">K</span><span class="p">,</span> <span class="nc">V</span><span class="p">&gt;(</span><span class="n">cacheExpiryTime</span><span class="p">.</span><span class="nf">toMillis</span><span class="p">(),</span> <span class="n">cleaningInterval</span><span class="p">.</span><span class="nf">toMillis</span><span class="p">(),</span> <span class="n">cacheMaxSize</span><span class="p">),</span> <span class="nc">CacheCleaner</span><span class="p">,</span>
+    <span class="nc">CoroutineScope</span> <span class="k">by</span> <span class="nc">CoroutineScope</span><span class="p">(</span><span class="n">dispatcher</span><span class="p">)</span> <span class="p">{</span>
+
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">cacheActor</span> <span class="p">=</span> <span class="nf">cacheManagerActor</span><span class="p">()</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">isCacheCleanerRunning</span> <span class="p">=</span> <span class="nc">AtomicBoolean</span><span class="p">(</span><span class="k">false</span><span class="p">)</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">waitTimeForCacheCleaning</span> <span class="p">=</span> <span class="mi">20L</span>
+    <span class="k">private</span> <span class="kd">var</span> <span class="py">cacheCleanerJob</span><span class="p">:</span> <span class="nc">Job</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>
+
+    <span class="nf">init</span> <span class="p">{</span>
+        <span class="nf">start</span><span class="p">()</span>
+    <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">start</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">cacheCleanerJob</span><span class="o">?.</span><span class="n">isActive</span> <span class="p">==</span> <span class="k">true</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">return</span>
+        <span class="p">}</span>
+
+        <span class="n">cacheCleanerJob</span> <span class="p">=</span> <span class="nf">launch</span><span class="p">(</span><span class="nc">SupervisorJob</span><span class="p">())</span> <span class="p">{</span>
+            <span class="k">while</span> <span class="p">(</span><span class="k">true</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nf">delay</span><span class="p">(</span><span class="n">cleaningInterval</span><span class="p">)</span>
+
+                <span class="n">isCacheCleanerRunning</span><span class="p">.</span><span class="nf">getAndSet</span><span class="p">(</span><span class="k">true</span><span class="p">)</span>
+
+                <span class="kd">val</span> <span class="py">response</span> <span class="p">=</span> <span class="nc">CompletableDeferred</span><span class="p">&lt;</span><span class="nc">Int</span><span class="p">&gt;()</span>
+                <span class="n">cacheActor</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="nc">CacheMessage</span><span class="p">.</span><span class="nc">Clear</span><span class="p">(</span><span class="n">response</span><span class="p">))</span>
+                <span class="n">response</span><span class="p">.</span><span class="nf">await</span><span class="p">()</span>
+
+                <span class="n">isCacheCleanerRunning</span><span class="p">.</span><span class="nf">getAndSet</span><span class="p">(</span><span class="k">false</span><span class="p">)</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">fun</span> <span class="nf">stop</span><span class="p">()</span> <span class="p">{</span>
+        <span class="nf">launch</span> <span class="p">{</span>
+            <span class="k">while</span> <span class="p">(</span><span class="n">isCacheCleanerRunning</span><span class="p">.</span><span class="k">get</span><span class="p">())</span> <span class="p">{</span>
+                <span class="nf">delay</span><span class="p">(</span><span class="n">waitTimeForCacheCleaning</span><span class="p">)</span>
+            <span class="p">}</span>
+            <span class="n">cacheCleanerJob</span><span class="o">?.</span><span class="nf">cancel</span><span class="p">()</span>
+            <span class="n">cacheCleanerJob</span> <span class="p">=</span> <span class="k">null</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">suspend</span> <span class="k">fun</span> <span class="nf">get</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nc">K</span><span class="p">):</span> <span class="nc">CacheState</span><span class="p">&lt;</span><span class="nc">V</span><span class="p">&gt;</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="py">response</span> <span class="p">=</span> <span class="nc">CompletableDeferred</span><span class="p">&lt;</span><span class="nc">CacheState</span><span class="p">&lt;</span><span class="nc">V</span><span class="p">&gt;&gt;()</span>
+        <span class="n">cacheActor</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="nc">CacheMessage</span><span class="p">.</span><span class="nc">Get</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">response</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">response</span><span class="p">.</span><span class="nf">await</span><span class="p">()</span>
+    <span class="p">}</span>
+
+
+    <span class="k">override</span> <span class="k">suspend</span> <span class="k">fun</span> <span class="nf">put</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nc">K</span><span class="p">,</span> <span class="n">value</span><span class="p">:</span> <span class="nc">V</span><span class="p">,</span> <span class="n">cacheExpiryTime</span><span class="p">:</span> <span class="nc">Long</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">cacheActor</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="nc">CacheMessage</span><span class="p">.</span><span class="nc">Put</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">cacheExpiryTime</span><span class="p">))</span>
+    <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">suspend</span> <span class="k">fun</span> <span class="nf">remove</span><span class="p">(</span><span class="n">key</span><span class="p">:</span> <span class="nc">K</span><span class="p">):</span> <span class="nc">Boolean</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="py">response</span> <span class="p">=</span> <span class="nc">CompletableDeferred</span><span class="p">&lt;</span><span class="nc">Boolean</span><span class="p">&gt;()</span>
+        <span class="n">cacheActor</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="nc">CacheMessage</span><span class="p">.</span><span class="nc">Remove</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">response</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">response</span><span class="p">.</span><span class="nf">await</span><span class="p">()</span>
+    <span class="p">}</span>
+
+    <span class="k">override</span> <span class="k">suspend</span> <span class="k">fun</span> <span class="nf">entries</span><span class="p">():</span> <span class="nc">List</span><span class="p">&lt;</span><span class="nc">Pair</span><span class="p">&lt;</span><span class="nc">K</span><span class="p">,</span> <span class="nc">Cache</span><span class="p">&lt;</span><span class="nc">V</span><span class="p">&gt;&gt;&gt;</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="py">response</span> <span class="p">=</span> <span class="nc">CompletableDeferred</span><span class="p">&lt;</span><span class="nc">List</span><span class="p">&lt;</span><span class="nc">Pair</span><span class="p">&lt;</span><span class="nc">K</span><span class="p">,</span> <span class="nc">Cache</span><span class="p">&lt;</span><span class="nc">V</span><span class="p">&gt;&gt;&gt;&gt;()</span>
+        <span class="n">cacheActor</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="nc">CacheMessage</span><span class="p">.</span><span class="nc">Entries</span><span class="p">(</span><span class="n">response</span><span class="p">))</span>
+        <span class="k">return</span> <span class="n">response</span><span class="p">.</span><span class="nf">await</span><span class="p">()</span>
+    <span class="p">}</span>
+
+    <span class="nd">@OptIn</span><span class="p">(</span><span class="nc">ObsoleteCoroutinesApi</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
+    <span class="k">private</span> <span class="k">fun</span> <span class="nc">CoroutineScope</span><span class="p">.</span><span class="nf">cacheManagerActor</span><span class="p">(</span>
+    <span class="p">)</span> <span class="p">=</span> <span class="n">actor</span><span class="p">&lt;</span><span class="nc">CacheMessage</span><span class="p">&lt;</span><span class="nc">K</span><span class="p">,</span> <span class="nc">V</span><span class="p">&gt;&gt;(</span><span class="n">start</span> <span class="p">=</span> <span class="nc">CoroutineStart</span><span class="p">.</span><span class="nc">LAZY</span><span class="p">)</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="py">cacheMap</span> <span class="p">=</span> <span class="nc">LruCache</span><span class="p">&lt;</span><span class="nc">K</span><span class="p">,</span> <span class="nc">Cache</span><span class="p">&lt;</span><span class="nc">V</span><span class="p">&gt;&gt;(</span><span class="n">cacheMaxSize</span><span class="p">)</span>
+        <span class="k">for</span> <span class="p">(</span><span class="n">msg</span> <span class="k">in</span> <span class="n">channel</span><span class="p">)</span> <span class="p">{</span>
+            <span class="n">msg</span><span class="p">.</span><span class="nf">process</span><span class="p">(</span><span class="n">cacheMap</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="k">private</span> <span class="k">sealed</span> <span class="kd">interface</span> <span class="nc">CacheMessage</span><span class="p">&lt;</span><span class="nc">K</span><span class="p">,</span> <span class="nc">V</span><span class="p">&gt;</span> <span class="p">{</span>
+        <span class="k">fun</span> <span class="nf">process</span><span class="p">(</span><span class="n">cacheMap</span><span class="p">:</span> <span class="nc">LruCache</span><span class="p">&lt;</span><span class="nc">K</span><span class="p">,</span> <span class="nc">Cache</span><span class="p">&lt;</span><span class="nc">V</span><span class="p">&gt;&gt;)</span>
+
+        <span class="kd">data class</span> <span class="nc">Put</span><span class="p">&lt;</span><span class="nc">K</span><span class="p">,</span> <span class="nc">V</span><span class="p">&gt;(</span><span class="kd">val</span> <span class="py">key</span><span class="p">:</span> <span class="nc">K</span><span class="p">,</span> <span class="kd">val</span> <span class="py">value</span><span class="p">:</span> <span class="nc">V</span><span class="p">,</span> <span class="kd">val</span> <span class="py">expiryTime</span><span class="p">:</span> <span class="nc">Long</span><span class="p">)</span> <span class="p">:</span> <span class="nc">CacheMessage</span><span class="p">&lt;</span><span class="nc">K</span><span class="p">,</span> <span class="nc">V</span><span class="p">&gt;</span> <span class="p">{</span>
+            <span class="k">override</span> <span class="k">fun</span> <span class="nf">process</span><span class="p">(</span><span class="n">cacheMap</span><span class="p">:</span> <span class="nc">LruCache</span><span class="p">&lt;</span><span class="nc">K</span><span class="p">,</span> <span class="nc">Cache</span><span class="p">&lt;</span><span class="nc">V</span><span class="p">&gt;&gt;)</span> <span class="p">{</span>
+                <span class="n">cacheMap</span><span class="p">.</span><span class="nf">put</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="nc">Cache</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="n">expiryTime</span><span class="p">))</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="kd">data class</span> <span class="nc">Remove</span><span class="p">&lt;</span><span class="nc">K</span><span class="p">,</span> <span class="nc">V</span><span class="p">&gt;(</span><span class="kd">val</span> <span class="py">key</span><span class="p">:</span> <span class="nc">K</span><span class="p">,</span> <span class="kd">val</span> <span class="py">response</span><span class="p">:</span> <span class="nc">CompletableDeferred</span><span class="p">&lt;</span><span class="nc">Boolean</span><span class="p">&gt;)</span> <span class="p">:</span> <span class="nc">CacheMessage</span><span class="p">&lt;</span><span class="nc">K</span><span class="p">,</span> <span class="nc">V</span><span class="p">&gt;</span> <span class="p">{</span>
+            <span class="k">override</span> <span class="k">fun</span> <span class="nf">process</span><span class="p">(</span><span class="n">cacheMap</span><span class="p">:</span> <span class="nc">LruCache</span><span class="p">&lt;</span><span class="nc">K</span><span class="p">,</span> <span class="nc">Cache</span><span class="p">&lt;</span><span class="nc">V</span><span class="p">&gt;&gt;)</span> <span class="p">{</span>
+                <span class="n">response</span><span class="p">.</span><span class="nf">complete</span><span class="p">(</span><span class="n">cacheMap</span><span class="p">.</span><span class="nf">remove</span><span class="p">(</span><span class="n">key</span><span class="p">)</span> <span class="p">!=</span> <span class="k">null</span><span class="p">)</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="kd">data class</span> <span class="nc">Clear</span><span class="p">&lt;</span><span class="nc">K</span><span class="p">,</span> <span class="nc">V</span><span class="p">&gt;(</span><span class="kd">val</span> <span class="py">response</span><span class="p">:</span> <span class="nc">CompletableDeferred</span><span class="p">&lt;</span><span class="nc">Int</span><span class="p">&gt;)</span> <span class="p">:</span> <span class="nc">CacheMessage</span><span class="p">&lt;</span><span class="nc">K</span><span class="p">,</span> <span class="nc">V</span><span class="p">&gt;</span> <span class="p">{</span>
+            <span class="k">override</span> <span class="k">fun</span> <span class="nf">process</span><span class="p">(</span><span class="n">cacheMap</span><span class="p">:</span> <span class="nc">LruCache</span><span class="p">&lt;</span><span class="nc">K</span><span class="p">,</span> <span class="nc">Cache</span><span class="p">&lt;</span><span class="nc">V</span><span class="p">&gt;&gt;)</span> <span class="p">{</span>
+                <span class="kd">val</span> <span class="py">now</span> <span class="p">=</span> <span class="nc">System</span><span class="p">.</span><span class="nf">currentTimeMillis</span><span class="p">()</span>
+                <span class="kd">var</span> <span class="py">removedCount</span> <span class="p">=</span> <span class="mi">0</span>
+                <span class="n">cacheMap</span><span class="p">.</span><span class="nf">snapshot</span><span class="p">().</span><span class="nf">forEach</span> <span class="p">{</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">cache</span><span class="p">)</span> <span class="p">-&gt;</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="n">cache</span><span class="p">.</span><span class="nf">isExpired</span><span class="p">(</span><span class="n">now</span><span class="p">))</span> <span class="p">{</span>
+                        <span class="n">cacheMap</span><span class="p">.</span><span class="nf">remove</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+                        <span class="n">removedCount</span><span class="p">++</span>
+                    <span class="p">}</span>
+                <span class="p">}</span>
+                <span class="n">response</span><span class="p">.</span><span class="nf">complete</span><span class="p">(</span><span class="n">removedCount</span><span class="p">)</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="kd">data class</span> <span class="nc">Get</span><span class="p">&lt;</span><span class="nc">K</span><span class="p">,</span> <span class="nc">V</span><span class="p">&gt;(</span>
+            <span class="kd">val</span> <span class="py">key</span><span class="p">:</span> <span class="nc">K</span><span class="p">,</span> <span class="kd">val</span> <span class="py">response</span><span class="p">:</span> <span class="nc">CompletableDeferred</span><span class="p">&lt;</span><span class="nc">CacheState</span><span class="p">&lt;</span><span class="nc">V</span><span class="p">&gt;&gt;</span>
+        <span class="p">)</span> <span class="p">:</span> <span class="nc">CacheMessage</span><span class="p">&lt;</span><span class="nc">K</span><span class="p">,</span> <span class="nc">V</span><span class="p">&gt;</span> <span class="p">{</span>
+            <span class="k">override</span> <span class="k">fun</span> <span class="nf">process</span><span class="p">(</span><span class="n">cacheMap</span><span class="p">:</span> <span class="nc">LruCache</span><span class="p">&lt;</span><span class="nc">K</span><span class="p">,</span> <span class="nc">Cache</span><span class="p">&lt;</span><span class="nc">V</span><span class="p">&gt;&gt;)</span> <span class="p">{</span>
+                <span class="kd">val</span> <span class="py">cacheState</span> <span class="p">=</span> <span class="n">cacheMap</span><span class="p">[</span><span class="n">key</span><span class="p">]</span><span class="o">?.</span><span class="nf">run</span> <span class="p">{</span>
+                    <span class="k">if</span> <span class="p">(</span><span class="nf">isExpired</span><span class="p">())</span> <span class="p">{</span>
+                        <span class="nc">CacheState</span><span class="p">.</span><span class="nc">Miss</span>
+                    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+                        <span class="nc">CacheState</span><span class="p">.</span><span class="nc">Hit</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
+                    <span class="p">}</span>
+                <span class="p">}</span> <span class="o">?:</span> <span class="nf">run</span> <span class="p">{</span>
+                    <span class="nc">CacheState</span><span class="p">.</span><span class="nc">Miss</span>
+                <span class="p">}</span>
+                <span class="n">response</span><span class="p">.</span><span class="nf">complete</span><span class="p">(</span><span class="n">cacheState</span><span class="p">)</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="kd">data class</span> <span class="nc">Entries</span><span class="p">&lt;</span><span class="nc">K</span><span class="p">,</span> <span class="nc">V</span><span class="p">&gt;(</span>
+            <span class="kd">val</span> <span class="py">response</span><span class="p">:</span> <span class="nc">CompletableDeferred</span><span class="p">&lt;</span><span class="nc">List</span><span class="p">&lt;</span><span class="nc">Pair</span><span class="p">&lt;</span><span class="nc">K</span><span class="p">,</span> <span class="nc">Cache</span><span class="p">&lt;</span><span class="nc">V</span><span class="p">&gt;&gt;&gt;&gt;</span>
+        <span class="p">)</span> <span class="p">:</span> <span class="nc">CacheMessage</span><span class="p">&lt;</span><span class="nc">K</span><span class="p">,</span> <span class="nc">V</span><span class="p">&gt;</span> <span class="p">{</span>
+            <span class="k">override</span> <span class="k">fun</span> <span class="nf">process</span><span class="p">(</span><span class="n">cacheMap</span><span class="p">:</span> <span class="nc">LruCache</span><span class="p">&lt;</span><span class="nc">K</span><span class="p">,</span> <span class="nc">Cache</span><span class="p">&lt;</span><span class="nc">V</span><span class="p">&gt;&gt;)</span> <span class="p">{</span>
+                <span class="n">response</span><span class="p">.</span><span class="nf">complete</span><span class="p">(</span><span class="n">cacheMap</span><span class="p">.</span><span class="nf">snapshot</span><span class="p">().</span><span class="nf">map</span> <span class="p">{</span> <span class="n">it</span><span class="p">.</span><span class="n">key</span> <span class="n">to</span> <span class="n">it</span><span class="p">.</span><span class="n">value</span> <span class="p">})</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="actor">Actor</h4>
+
+<p>코루틴 스코프 내에서 Actor를 생성하였다.</p>
+
+<p>CacheManagerImpl 인스턴스의 생명주기(앱 실행 ~ 종료)와 동일하다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="k">fun</span> <span class="nc">CoroutineScope</span><span class="p">.</span><span class="nf">cacheManagerActor</span><span class="p">(</span>
+    <span class="p">)</span> <span class="p">=</span> <span class="n">actor</span><span class="p">&lt;</span><span class="nc">CacheMessage</span><span class="p">&lt;</span><span class="nc">K</span><span class="p">,</span> <span class="nc">V</span><span class="p">&gt;&gt;(</span><span class="n">start</span> <span class="p">=</span> <span class="nc">CoroutineStart</span><span class="p">.</span><span class="nc">LAZY</span><span class="p">)</span> <span class="p">{</span> <span class="p">}</span>
+</code></pre></div></div>
+
+<ul>
+  <li>가능한 작업
+    <ul>
+      <li>Get : 캐시를 불러온다.</li>
+      <li>Put : 캐시를 저장한다.</li>
+      <li>Remove : 캐시를 삭제한다.</li>
+      <li>Clear : 캐시를 모두 삭제한다.</li>
+      <li>Entries : 캐시를 모두 불러온다.</li>
+    </ul>
+  </li>
+</ul>
+
+<h4 id="cachecleanerjob-캐시-자동-정리기">cacheCleanerJob, 캐시 자동 정리기</h4>
+
+<p>캐시 매니저를 사용할 떄 수동으로 캐시 정리 코드를 만드는 수고를 덜기 위해, 캐시 자동 정리기를 구현하였다.</p>
+
+<p><code class="language-plaintext highlighter-rouge">cleaningInterval</code> 주기마다 캐시 정리 작업을 Actor에게 요청한다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">cacheCleanerJob</span> <span class="p">=</span> <span class="nf">launch</span><span class="p">(</span><span class="nc">SupervisorJob</span><span class="p">())</span> <span class="p">{</span>
+    <span class="k">while</span> <span class="p">(</span><span class="k">true</span><span class="p">)</span> <span class="p">{</span>
+        <span class="nf">delay</span><span class="p">(</span><span class="n">cleaningInterval</span><span class="p">)</span>
+
+        <span class="n">isCacheCleanerRunning</span><span class="p">.</span><span class="nf">getAndSet</span><span class="p">(</span><span class="k">true</span><span class="p">)</span>
+
+        <span class="kd">val</span> <span class="py">response</span> <span class="p">=</span> <span class="nc">CompletableDeferred</span><span class="p">&lt;</span><span class="nc">Int</span><span class="p">&gt;()</span>
+        <span class="n">cacheActor</span><span class="p">.</span><span class="nf">send</span><span class="p">(</span><span class="nc">CacheMessage</span><span class="p">.</span><span class="nc">Clear</span><span class="p">(</span><span class="n">response</span><span class="p">))</span>
+        <span class="n">response</span><span class="p">.</span><span class="nf">await</span><span class="p">()</span>
+
+        <span class="n">isCacheCleanerRunning</span><span class="p">.</span><span class="nf">getAndSet</span><span class="p">(</span><span class="k">false</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h4 id="캐시-클리너-onoff">캐시 클리너 on/off</h4>
+
+<p>앱에서 캐시 클리너를 on/off 할 수 있도록 구현하였다.</p>
+
+<p>앱이 닫힌 상태라면 캐시 클리너를 굳이 실행할 필요가 없기 때문에, 앱이 닫힌 상태(액티비티 onStop)가 될 때 코루틴 작업을 취소시키고, 다시 앱이 실행될 때(액티비티 onRestart) 코루틴 작업을 다시 시작한다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">override</span> <span class="k">fun</span> <span class="nf">stop</span><span class="p">()</span> <span class="p">{</span>
+    <span class="nf">launch</span> <span class="p">{</span>
+        <span class="k">while</span> <span class="p">(</span><span class="n">isCacheCleanerRunning</span><span class="p">.</span><span class="k">get</span><span class="p">())</span> <span class="p">{</span>
+            <span class="nf">delay</span><span class="p">(</span><span class="n">waitTimeForCacheCleaning</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="n">cacheCleanerJob</span><span class="o">?.</span><span class="nf">cancel</span><span class="p">()</span>
+        <span class="n">cacheCleanerJob</span> <span class="p">=</span> <span class="k">null</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<p><code class="language-plaintext highlighter-rouge">stop()</code>을 호출하면 <code class="language-plaintext highlighter-rouge">cacheCleanerJob</code>을 취소시키는데, 만약 캐시 정리를 진행 중이라면 캐시 정리 작업이 끝날 때 까지 대기한다.</p>
+
+<p>대기하다가 캐시 정리가 끝나면 그때 <code class="language-plaintext highlighter-rouge">cacheCleanerJob</code>을 취소시킨다.</p>
+
+<p>캐시 정리 작업 진행여부를 확실하게 동기화 시키기 위해 <code class="language-plaintext highlighter-rouge">AtomicBoolean</code>을 사용해서 <code class="language-plaintext highlighter-rouge">isCacheCleanerRunning</code>을 만들었다.</p>
+
+<h2 id="실제-적용">실제 적용</h2>
+
+<p>대기질 정보를 가져오는 기능을 구현하면서 적용해보았다.</p>
+
+<p>구조는 다음과 같다.</p>
+
+<p><img src="https://github.com/pknujsp/pknujsp/assets/48265129/b604642b-eaaa-4ab2-963a-7334249928b6" alt="제목 없는 다이어그램-페이지-4"></p>
+
+<ul>
+  <li>AirQualityRepository : 대기질 정보를 가져오는 기능을 담당</li>
+  <li>RepositoryCacheManager : AirQualityRepository내 캐시 매니저의 자동 클리너 기능을 on/off 할 수 있도록 함</li>
+  <li>GlobalRepositoryCacheManager : CacheManager를 사용하는 Repository의 캐시 클리너를 일괄적으로 다룸
+    <ul>
+      <li>Activity 생명주기에 따라 ActivityViewModel을 통해 호출된다</li>
+    </ul>
+  </li>
+</ul>
+
+<h2 id="테스트">테스트</h2>
+
+<p><code class="language-plaintext highlighter-rouge">LruCache</code>는 android 의존성이 있기 때문에, <strong>Robolectric</strong>을 사용하여 테스트했고, 모두 통과했다.</p>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="nd">@RunWith</span><span class="p">(</span><span class="nc">RobolectricTestRunner</span><span class="o">::</span><span class="k">class</span><span class="p">)</span>
+<span class="nd">@Config</span><span class="p">(</span><span class="n">manifest</span> <span class="p">=</span> <span class="nc">Config</span><span class="p">.</span><span class="nc">NONE</span><span class="p">)</span>
+<span class="kd">class</span> <span class="nc">CacheManagerImplTest</span> <span class="p">{</span>
+    <span class="k">private</span> <span class="k">lateinit</span> <span class="kd">var</span> <span class="py">cacheManager</span><span class="p">:</span> <span class="nc">CacheManagerImpl</span><span class="p">&lt;</span><span class="nc">String</span><span class="p">,</span> <span class="nc">FakeCache</span><span class="p">&gt;</span>
+    <span class="k">private</span> <span class="kd">val</span> <span class="py">testDispatcher</span> <span class="p">=</span> <span class="nc">UnconfinedTestDispatcher</span><span class="p">()</span>
+
+    <span class="nd">@Test</span>
+    <span class="k">fun</span> <span class="nf">put_and_get</span><span class="p">()</span> <span class="p">=</span> <span class="nf">runTest</span> <span class="p">{</span>
+        <span class="n">cacheManager</span> <span class="p">=</span> <span class="nc">CacheManagerImpl</span><span class="p">(</span><span class="n">dispatcher</span> <span class="p">=</span> <span class="n">testDispatcher</span><span class="p">)</span>
+        <span class="kd">val</span> <span class="py">fakeHitCache</span> <span class="p">=</span> <span class="nc">FakeCache</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="s">"test"</span><span class="p">)</span>
+        <span class="n">cacheManager</span><span class="p">.</span><span class="nf">put</span><span class="p">(</span><span class="n">fakeHitCache</span><span class="p">.</span><span class="n">key</span><span class="p">,</span> <span class="n">fakeHitCache</span><span class="p">)</span>
+
+        <span class="c1">// 간단하게 캐시를 저장하고 불러오는 기능을 테스트</span>
+        <span class="nf">assert</span><span class="p">(</span><span class="n">cacheManager</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="n">fakeHitCache</span><span class="p">.</span><span class="n">key</span><span class="p">)</span> <span class="k">is</span> <span class="nc">CacheManager</span><span class="p">.</span><span class="nc">CacheState</span><span class="p">.</span><span class="nc">Hit</span><span class="p">)</span>
+        <span class="nf">assert</span><span class="p">(</span><span class="n">cacheManager</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="s">"missKey"</span><span class="p">)</span> <span class="k">is</span> <span class="nc">CacheManager</span><span class="p">.</span><span class="nc">CacheState</span><span class="p">.</span><span class="nc">Miss</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="nd">@Test</span>
+    <span class="k">fun</span> <span class="nf">test_lru_cache_only</span><span class="p">()</span> <span class="p">=</span> <span class="nf">runTest</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="py">cacheMaxSize</span> <span class="p">=</span> <span class="mi">3</span>
+        <span class="n">cacheManager</span> <span class="p">=</span> <span class="nc">CacheManagerImpl</span><span class="p">(</span><span class="n">dispatcher</span> <span class="p">=</span> <span class="n">testDispatcher</span><span class="p">,</span> <span class="n">cacheMaxSize</span> <span class="p">=</span> <span class="n">cacheMaxSize</span><span class="p">)</span>
+        <span class="kd">val</span> <span class="py">fakeCaches</span> <span class="p">=</span> <span class="nc">List</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nc">FakeCache</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="s">"test $it"</span><span class="p">).</span><span class="nf">apply</span> <span class="p">{</span>
+                <span class="n">cacheManager</span><span class="p">.</span><span class="nf">put</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="k">this</span><span class="p">)</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+        <span class="c1">// 추가한 목록에서 키 0, 1 은 캐시 miss</span>
+        <span class="c1">// 키 2, 3, 4는 캐시 hit가 되어야 한다</span>
+        <span class="kd">val</span> <span class="py">missKeys</span> <span class="p">=</span> <span class="p">(</span><span class="mi">0</span><span class="o">..</span><span class="p">&lt;(</span><span class="n">fakeCaches</span><span class="p">.</span><span class="n">size</span> <span class="p">-</span> <span class="n">cacheMaxSize</span><span class="p">)).</span><span class="nf">toList</span><span class="p">()</span>
+        <span class="kd">val</span> <span class="py">hitKeys</span> <span class="p">=</span> <span class="p">(</span><span class="n">fakeCaches</span><span class="p">.</span><span class="n">size</span> <span class="p">-</span> <span class="n">cacheMaxSize</span> <span class="n">until</span> <span class="n">fakeCaches</span><span class="p">.</span><span class="n">size</span><span class="p">).</span><span class="nf">toList</span><span class="p">()</span>
+
+        <span class="n">missKeys</span><span class="p">.</span><span class="nf">forEach</span> <span class="p">{</span>
+            <span class="nf">assert</span><span class="p">(</span><span class="n">cacheManager</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="n">fakeCaches</span><span class="p">[</span><span class="n">it</span><span class="p">].</span><span class="n">key</span><span class="p">)</span> <span class="k">is</span> <span class="nc">CacheManager</span><span class="p">.</span><span class="nc">CacheState</span><span class="p">.</span><span class="nc">Miss</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="n">hitKeys</span><span class="p">.</span><span class="nf">forEach</span> <span class="p">{</span>
+            <span class="nf">assert</span><span class="p">(</span><span class="n">cacheManager</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="n">fakeCaches</span><span class="p">[</span><span class="n">it</span><span class="p">].</span><span class="n">key</span><span class="p">)</span> <span class="k">is</span> <span class="nc">CacheManager</span><span class="p">.</span><span class="nc">CacheState</span><span class="p">.</span><span class="nc">Hit</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="nd">@Test</span>
+    <span class="k">fun</span> <span class="nf">test_time_out_only</span><span class="p">()</span> <span class="p">=</span> <span class="nf">runBlocking</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="py">cacheExpiryTime</span> <span class="p">=</span> <span class="nc">Duration</span><span class="p">.</span><span class="nf">ofSeconds</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">cacheManager</span> <span class="p">=</span> <span class="nc">CacheManagerImpl</span><span class="p">(</span><span class="n">dispatcher</span> <span class="p">=</span> <span class="n">testDispatcher</span><span class="p">,</span> <span class="n">cacheExpiryTime</span> <span class="p">=</span> <span class="n">cacheExpiryTime</span><span class="p">)</span>
+
+        <span class="kd">val</span> <span class="py">fakeCaches</span> <span class="p">=</span> <span class="nc">List</span><span class="p">(</span><span class="mi">6</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nc">FakeCache</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="s">"test $it"</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="c1">// miss 유도</span>
+        <span class="kd">val</span> <span class="py">missList</span> <span class="p">=</span> <span class="n">fakeCaches</span><span class="p">.</span><span class="nf">subList</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+        <span class="c1">// hit 유도</span>
+        <span class="kd">val</span> <span class="py">hitList</span> <span class="p">=</span> <span class="n">fakeCaches</span><span class="p">.</span><span class="nf">subList</span><span class="p">(</span><span class="n">missList</span><span class="p">.</span><span class="n">size</span><span class="p">,</span> <span class="n">fakeCaches</span><span class="p">.</span><span class="n">size</span><span class="p">)</span>
+
+        <span class="n">missList</span><span class="p">.</span><span class="nf">forEach</span> <span class="p">{</span>
+            <span class="n">cacheManager</span><span class="p">.</span><span class="nf">put</span><span class="p">(</span><span class="n">it</span><span class="p">.</span><span class="n">key</span><span class="p">,</span> <span class="n">it</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="nf">delay</span><span class="p">(</span><span class="n">cacheExpiryTime</span><span class="p">.</span><span class="nf">toMillis</span><span class="p">())</span>
+
+        <span class="n">hitList</span><span class="p">.</span><span class="nf">forEach</span> <span class="p">{</span>
+            <span class="n">cacheManager</span><span class="p">.</span><span class="nf">put</span><span class="p">(</span><span class="n">it</span><span class="p">.</span><span class="n">key</span><span class="p">,</span> <span class="n">it</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="n">missList</span><span class="p">.</span><span class="nf">forEach</span> <span class="p">{</span>
+            <span class="nf">assert</span><span class="p">(</span><span class="n">cacheManager</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="n">it</span><span class="p">.</span><span class="n">key</span><span class="p">)</span> <span class="k">is</span> <span class="nc">CacheManager</span><span class="p">.</span><span class="nc">CacheState</span><span class="p">.</span><span class="nc">Miss</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="n">hitList</span><span class="p">.</span><span class="nf">forEach</span> <span class="p">{</span>
+            <span class="nf">assert</span><span class="p">(</span><span class="n">cacheManager</span><span class="p">.</span><span class="k">get</span><span class="p">(</span><span class="n">it</span><span class="p">.</span><span class="n">key</span><span class="p">)</span> <span class="k">is</span> <span class="nc">CacheManager</span><span class="p">.</span><span class="nc">CacheState</span><span class="p">.</span><span class="nc">Hit</span><span class="p">)</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+
+    <span class="nd">@Test</span>
+    <span class="k">fun</span> <span class="nf">cache_cleaner_removes_expired_items</span><span class="p">()</span> <span class="p">=</span> <span class="nf">runBlocking</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="py">cacheExpiryTime</span> <span class="p">=</span> <span class="nc">Duration</span><span class="p">.</span><span class="nf">ofMillis</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+        <span class="kd">val</span> <span class="py">cleaningInterval</span> <span class="p">=</span> <span class="nc">Duration</span><span class="p">.</span><span class="nf">ofMillis</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+        <span class="kd">val</span> <span class="py">fakeCaches</span> <span class="p">=</span> <span class="nc">List</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nc">FakeCache</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="s">"test $it"</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="n">cacheManager</span> <span class="p">=</span> <span class="nc">CacheManagerImpl</span><span class="p">(</span><span class="n">dispatcher</span> <span class="p">=</span> <span class="n">testDispatcher</span><span class="p">,</span>
+            <span class="n">cacheMaxSize</span> <span class="p">=</span> <span class="mi">100</span><span class="p">,</span>
+            <span class="n">cacheExpiryTime</span> <span class="p">=</span> <span class="n">cacheExpiryTime</span><span class="p">,</span>
+            <span class="n">cleaningInterval</span> <span class="p">=</span> <span class="n">cleaningInterval</span><span class="p">)</span>
+
+        <span class="n">fakeCaches</span><span class="p">.</span><span class="nf">forEach</span> <span class="p">{</span>
+            <span class="n">cacheManager</span><span class="p">.</span><span class="nf">put</span><span class="p">(</span><span class="n">it</span><span class="p">.</span><span class="n">key</span><span class="p">,</span> <span class="n">it</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="c1">// 자동으로 캐시가 정리되어 캐시맵은 비어있어야 한다.</span>
+        <span class="nf">delay</span><span class="p">(</span><span class="n">cleaningInterval</span><span class="p">.</span><span class="nf">toMillis</span><span class="p">()</span> <span class="p">+</span> <span class="mi">10</span><span class="p">)</span>
+        <span class="nf">assertTrue</span><span class="p">(</span><span class="n">cacheManager</span><span class="p">.</span><span class="nf">entries</span><span class="p">().</span><span class="nf">isEmpty</span><span class="p">())</span>
+    <span class="p">}</span>
+
+    <span class="nd">@Test</span>
+    <span class="k">fun</span> <span class="nf">items_should_not_be_deleted_if_cache_cleaner_didnt_work</span><span class="p">()</span> <span class="p">=</span> <span class="nf">runBlocking</span> <span class="p">{</span>
+        <span class="kd">val</span> <span class="py">cacheExpiryTime</span> <span class="p">=</span> <span class="nc">Duration</span><span class="p">.</span><span class="nf">ofMillis</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span>
+        <span class="kd">val</span> <span class="py">cleaningInterval</span> <span class="p">=</span> <span class="nc">Duration</span><span class="p">.</span><span class="nf">ofSeconds</span><span class="p">(</span><span class="mi">10</span><span class="p">)</span>
+
+        <span class="kd">val</span> <span class="py">fakeCaches</span> <span class="p">=</span> <span class="nc">List</span><span class="p">(</span><span class="mi">100</span><span class="p">)</span> <span class="p">{</span>
+            <span class="nc">FakeCache</span><span class="p">(</span><span class="n">it</span><span class="p">,</span> <span class="s">"test $it"</span><span class="p">)</span>
+        <span class="p">}</span>
+
+        <span class="n">cacheManager</span> <span class="p">=</span> <span class="nc">CacheManagerImpl</span><span class="p">(</span><span class="n">dispatcher</span> <span class="p">=</span> <span class="n">testDispatcher</span><span class="p">,</span>
+            <span class="n">cacheMaxSize</span> <span class="p">=</span> <span class="mi">100</span><span class="p">,</span>
+            <span class="n">cacheExpiryTime</span> <span class="p">=</span> <span class="n">cacheExpiryTime</span><span class="p">,</span>
+            <span class="n">cleaningInterval</span> <span class="p">=</span> <span class="n">cleaningInterval</span><span class="p">)</span>
+
+        <span class="n">fakeCaches</span><span class="p">.</span><span class="nf">forEach</span> <span class="p">{</span>
+            <span class="n">cacheManager</span><span class="p">.</span><span class="nf">put</span><span class="p">(</span><span class="n">it</span><span class="p">.</span><span class="n">key</span><span class="p">,</span> <span class="n">it</span><span class="p">)</span>
+        <span class="p">}</span>
+        <span class="c1">// 캐시 클리너가 동작하지 않았으므로 아이템의 개수는 유지되어야 한다</span>
+        <span class="nf">assertTrue</span><span class="p">(</span><span class="n">cacheManager</span><span class="p">.</span><span class="nf">entries</span><span class="p">().</span><span class="n">size</span> <span class="p">==</span> <span class="n">fakeCaches</span><span class="p">.</span><span class="n">size</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="kd">data class</span> <span class="nc">FakeCache</span><span class="p">(</span><span class="kd">val</span> <span class="py">id</span><span class="p">:</span> <span class="nc">Int</span><span class="p">,</span> <span class="kd">val</span> <span class="py">value</span><span class="p">:</span> <span class="nc">String</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kd">val</span> <span class="py">key</span><span class="p">:</span> <span class="nc">String</span> <span class="p">=</span> <span class="n">id</span><span class="p">.</span><span class="nf">toString</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h2 id="실제-테스트-결과">실제 테스트 결과</h2>
+
+<p>아래 화면은 각 지역을 선택하면 날씨 정보 화면으로 전환되는 기능을 제공한다.</p>
+
+<p>테스트를 위해 캐시의 크기를 4로 설정했고, 다음 순서로 지역을 선택해나갔다.</p>
+
+<ol>
+  <li>청주시</li>
+  <li>영동군</li>
+  <li>의령군</li>
+  <li>김해시 내동</li>
+  <li>경산시 내동</li>
+  <li>청주시</li>
+  <li>의령군</li>
+</ol>
+
+<p><img src="https://github.com/pknujsp/pknujsp/assets/48265129/51461281-f494-4f8d-960d-e1cb3e555428" alt="스크린샷 2023-12-12 210558"></p>
+
+<p>다음과 같이 의도대로 정확하게 동작한다.</p>
+
+<ol>
+  <li>청주시 : Miss -&gt; 서버에서 데이터를 가져옴</li>
+  <li>영동군 : Miss -&gt; 서버에서 데이터를 가져옴</li>
+  <li>의령군 : Miss -&gt; 서버에서 데이터를 가져옴</li>
+  <li>김해시 내동 : Miss -&gt; 서버에서 데이터를 가져옴</li>
+  <li>경산시 내동 : Miss -&gt; 서버에서 데이터를 가져옴</li>
+  <li>청주시 : Miss
+    <ul>
+      <li>5번째 경산시를 선택하면서 청주시의 캐시가 삭제되었기 때문에, 다시 서버에서 데이터를 가져옴</li>
+    </ul>
+  </li>
+  <li>의령군 : Hit
+    <ul>
+      <li>만약 8번째에서 다른 지역을 선택한다면, 그 때 의령군이 캐시에서 삭제된다.</li>
+    </ul>
+  </li>
+</ol>
+
+<p><img src="https://github.com/pknujsp/pknujsp/assets/48265129/ca2c20a0-10a8-4a4f-b133-90538fdb2c6b" alt="image"></p>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/android/2023/11/27/%EB%B9%88%ED%98%88-%EB%8F%84%EB%A9%94%EC%9D%B8-%EB%AA%A8%EB%8D%B8,-%EC%93%B8%EB%AA%A8%EC%97%86%EB%8A%94-%EC%9C%A0%EC%8A%A4%EC%BC%80%EC%9D%B4%EC%8A%A4,-%EB%B9%84%EB%8C%80%ED%95%9C-%EB%B7%B0%EB%AA%A8%EB%8D%B8%EC%97%90-%EB%8C%80%ED%95%98%EC%97%AC-DroidKnights-2023.html" title="DroidKnights 2023 '빈혈 도메인 모델과 쓸모없는 유스케이스 그리고 비대한 뷰모델에 대해 생각해보기'내용 정리">DroidKnights 2023 '빈혈 도메인...</a><a class="next" href="/jekyll-theme-yat/private/2023/12/30/2023%EB%85%84%EC%9D%84-%EB%8F%8C%EC%95%84%EB%B3%B4%EB%A9%B0.html" title="2023년을 돌아보며">2023년을 돌아보며</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li>
+<span><a class="post-link" href="/jekyll-theme-yat/data/communication/2023/06/14/%EB%8D%B0%EC%9D%B4%ED%84%B0-%ED%86%B5%EC%8B%A0-%EC%A0%95%EB%A6%AC.html" title="2023년을 돌아보며">데이터 통신 정리</a></span><span>
+            <time class="dt-published datetime" datetime="2023-06-14T00:00:00+09:00" itemprop="datePublished">2023-06-14, Wed
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/compose/2023/05/09/Android-Compose-%EC%B2%AB-%EB%8F%84%EC%9E%85-%ED%9B%84%EA%B8%B0.html" title="2023년을 돌아보며">Android Compose 첫 도입 후기</a></span><span>
+            <time class="dt-published datetime" datetime="2023-05-09T00:00:00+09:00" itemprop="datePublished">2023-05-09, Tue
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/data/communication/2023/06/13/Wired-LANs-Ethernet.html" title="2023년을 돌아보며">13. Wired LANs Ethernet</a></span><span>
+            <time class="dt-published datetime" datetime="2023-06-13T00:00:00+09:00" itemprop="datePublished">2023-06-13, Tue
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/compiler/2023/06/16/Code-shape-&amp;-Instruction-selection.html" title="2023년을 돌아보며">Compiler backend</a></span><span>
+            <time class="dt-published datetime" datetime="2023-06-16T00:00:00+09:00" itemprop="datePublished">2023-06-16, Fri
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/kotlin/2023/06/18/%EC%88%9C%EC%97%B4,%EC%A1%B0%ED%95%A9%EC%9D%84-Kotlin%EC%9C%BC%EB%A1%9C-%EA%B5%AC%ED%98%84%ED%95%98%EA%B8%B0.html" title="2023년을 돌아보며">순열, 조합 by Kotlin</a></span><span>
+            <time class="dt-published datetime" datetime="2023-06-18T00:00:00+09:00" itemprop="datePublished">2023-06-18, Sun
+            </time></span>
+        </li>
+</ul>
+    </div>
+<div class="post-comments">
+<div id="utterances-placeholder"></div>
+<script>
+
+const utterancesThemeFromDataTheme = () => {
+    const dataTheme = document.documentElement.getAttribute('data-theme');
+    return `github-${dataTheme}`;
+  };
+
+  const setUtterancesTheme = () => {
+    const iframe = document.querySelector('.utterances-frame');
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: utterancesThemeFromDataTheme()
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+    }
+  }
+
+  // dynamic change
+  const observer = new MutationObserver((mutationsList, observer) => {
+    for (let mutation of mutationsList) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        setUtterancesTheme();
+      }
+    }
+  });
+  observer.observe(document.documentElement, { attributes: true, childList: false, subtree: false });
+
+  let utterancesScript = document.createElement('script');
+  utterancesScript.async = true;
+  utterancesScript.src = 'https://utteranc.es/client.js';
+  utterancesScript.crossOrigin = 'anonymous';
+  utterancesScript.setAttribute('issue-term', 'pathname');
+  utterancesScript.setAttribute('label', 'comments');
+  utterancesScript.setAttribute('repo', 'pknujsp/Blogcomments');
+  utterancesScript.setAttribute('theme', utterancesThemeFromDataTheme());
+
+  const placeholder = document.getElementById('utterances-placeholder');
+  placeholder.parentNode.replaceChild(utterancesScript, placeholder);
+</script>
+</div></section>
+</div>
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">Contents</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">· ' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>2024 @ Junsung Park</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>

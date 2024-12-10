@@ -1,0 +1,1438 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-translate-customization" content="108d9124921d80c3-80e20d618ff053c8-g4f02ec6f3dba68b7-c">
+<!-- Begin Jekyll SEO tag v2.8.0 -->
+<title>Android 시스템 바(상태바, 네비게이션바) 색상 자동 변경 처리하기 | Jsp Notes</title>
+<meta name="generator" content="Jekyll v4.3.4">
+<meta property="og:title" content="Android 시스템 바(상태바, 네비게이션바) 색상 자동 변경 처리하기">
+<meta name="author" content="Junsung Park">
+<meta property="og:locale" content="ko">
+<meta name="description" content="Android 시스템 바(상태바, 네비게이션바) 색상 자동 변경 처리하기">
+<meta property="og:description" content="Android 시스템 바(상태바, 네비게이션바) 색상 자동 변경 처리하기">
+<link rel="canonical" href="https://pknujsp.github.io//jekyll-theme-yat/android/2023/07/30/Android-%EC%83%81%ED%83%9C%EB%B0%94%EC%99%80-%EB%84%A4%EB%B9%84%EA%B2%8C%EC%9D%B4%EC%85%98%EB%B0%94-%EC%83%89%EC%83%81-%EC%9E%90%EB%8F%99-%EB%B3%80%EA%B2%BD-%EC%B2%98%EB%A6%AC%ED%95%98%EA%B8%B0.html">
+<meta property="og:url" content="https://pknujsp.github.io//jekyll-theme-yat/android/2023/07/30/Android-%EC%83%81%ED%83%9C%EB%B0%94%EC%99%80-%EB%84%A4%EB%B9%84%EA%B2%8C%EC%9D%B4%EC%85%98%EB%B0%94-%EC%83%89%EC%83%81-%EC%9E%90%EB%8F%99-%EB%B3%80%EA%B2%BD-%EC%B2%98%EB%A6%AC%ED%95%98%EA%B8%B0.html">
+<meta property="og:site_name" content="Jsp Notes">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2023-07-30T00:00:00+09:00">
+<meta name="twitter:card" content="summary">
+<meta property="twitter:title" content="Android 시스템 바(상태바, 네비게이션바) 색상 자동 변경 처리하기">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Junsung Park"},"dateModified":"2023-07-30T00:00:00+09:00","datePublished":"2023-07-30T00:00:00+09:00","description":"Android 시스템 바(상태바, 네비게이션바) 색상 자동 변경 처리하기","headline":"Android 시스템 바(상태바, 네비게이션바) 색상 자동 변경 처리하기","mainEntityOfPage":{"@type":"WebPage","@id":"https://pknujsp.github.io//jekyll-theme-yat/android/2023/07/30/Android-%EC%83%81%ED%83%9C%EB%B0%94%EC%99%80-%EB%84%A4%EB%B9%84%EA%B2%8C%EC%9D%B4%EC%85%98%EB%B0%94-%EC%83%89%EC%83%81-%EC%9E%90%EB%8F%99-%EB%B3%80%EA%B2%BD-%EC%B2%98%EB%A6%AC%ED%95%98%EA%B8%B0.html"},"url":"https://pknujsp.github.io//jekyll-theme-yat/android/2023/07/30/Android-%EC%83%81%ED%83%9C%EB%B0%94%EC%99%80-%EB%84%A4%EB%B9%84%EA%B2%8C%EC%9D%B4%EC%85%98%EB%B0%94-%EC%83%89%EC%83%81-%EC%9E%90%EB%8F%99-%EB%B3%80%EA%B2%BD-%EC%B2%98%EB%A6%AC%ED%95%98%EA%B8%B0.html"}</script>
+<!-- End Jekyll SEO tag -->
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css">
+  <link rel="icon" href="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/jekyll-theme-yat/assets/css/main.css">
+  <script src="/jekyll-theme-yat/assets/js/main.js"></script>
+
+  <!-- tipuesearch -->
+  <link rel="stylesheet" href="/assets/tipuesearch/css/tipuesearch.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_content.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch_set.js"></script>
+  <script src="/assets/tipuesearch/tipuesearch.min.js"></script><link type="application/atom+xml" rel="alternate" href="https://pknujsp.github.io//jekyll-theme-yat/feed.xml" title="Jsp Notes">
+<!-- Global Site Tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-LZC1TDTS26"></script>
+<script>
+  function initGoogleAnalytics() {
+    var doNotTrack = (window.doNotTrack === "1" || navigator.doNotTrack === "1" ||
+      navigator.doNotTrack === "yes" || navigator.msDoNotTrack === "1");
+    var enableDNT = "true" == "true";
+
+    if (!enableDNT || !doNotTrack) {
+      /*
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'G-LZC1TDTS26', 'auto');
+      ga('send', 'pageview');
+      */
+
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { window.dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', 'G-LZC1TDTS26');
+    }
+  }
+  window.addEventListener("load", initGoogleAnalytics);
+
+</script><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/intellij-light.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/go.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/kotlin.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/python.min.js"></script>
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/json.min.js"></script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+// Init highlight js
+document.addEventListener('DOMContentLoaded', function(event) {
+  var els = document.querySelectorAll('pre code')
+
+  function addLangData(block) {
+    var outer = block.parentElement.parentElement.parentElement;
+    var lang = block.getAttribute('data-lang');
+    for (var i = 0; i < outer.classList.length; i++) {
+      var cls = outer.classList[i];
+      if (cls.startsWith('language-')) {
+        lang = cls;
+        break;
+      }
+    }
+    if (!lang) {
+      cls = block.getAttribute('class');
+      lang = cls ? cls.replace('hljs ', '') : '';
+    }
+    if (lang.startsWith('language-')) {
+      lang = lang.substr(9);
+    }
+    block.setAttribute('class', 'hljs ' + lang);
+    block.parentNode.setAttribute('data-lang', lang);
+  }
+
+  function addBadge(block) {
+    var enabled = ('true' || 'true').toLowerCase();
+    if (enabled == 'true') {
+      var pre = block.parentElement;
+      pre.classList.add('badge');
+    }
+  }
+
+  function handle(block) {
+    addLangData(block);
+    addBadge(block)
+    hljs.highlightBlock(block);
+  }
+
+  for (var i = 0; i < els.length; i++) {
+    var el = els[i];
+    handle(el);
+  }
+});
+</script>
+
+<style>
+  /* code language badge */
+  pre.badge::before {
+    content: attr(data-lang);
+    color: #fff;
+    background-color: #7800ff;
+    padding: 0 .5em;
+    border-radius: 0 2px;
+    text-transform: lowercase;
+    text-align: center;
+    min-width: 32px;
+    display: inline-block;
+    position: absolute;
+    right: 0;
+  }
+
+  /* fix wrong badge display for firefox browser */
+  code > table pre::before {
+    display: none;
+  }
+</style>
+</head>
+<body>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<header class="site-header " role="banner">
+
+  <div class="wrapper">
+    <div class="site-header-inner">
+<span class="site-brand"><a class="site-brand-inner" rel="author" href="/jekyll-theme-yat/">
+  <img class="site-favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+  <img class="site-white_favicon" src="https://github.com/user-attachments/assets/d9f28cd7-e92b-4874-bf49-a761b6b6d592">
+</a></span><nav class="site-nav">
+          <input type="checkbox" id="nav-trigger" class="nav-trigger">
+          <label for="nav-trigger">
+            <span class="menu-icon">
+              <svg viewbox="0 0 18 15" width="18px" height="15px">
+                <path d="M18,1.484c0,0.82-0.665,1.484-1.484,1.484H1.484C0.665,2.969,0,2.304,0,1.484l0,0C0,0.665,0.665,0,1.484,0 h15.032C17.335,0,18,0.665,18,1.484L18,1.484z M18,7.516C18,8.335,17.335,9,16.516,9H1.484C0.665,9,0,8.335,0,7.516l0,0 c0-0.82,0.665-1.484,1.484-1.484h15.032C17.335,6.031,18,6.696,18,7.516L18,7.516z M18,13.516C18,14.335,17.335,15,16.516,15H1.484 C0.665,15,0,14.335,0,13.516l0,0c0-0.82,0.665-1.483,1.484-1.483h15.032C17.335,12.031,18,12.695,18,13.516L18,13.516z"></path>
+              </svg>
+            </span>
+          </label>
+
+          <div class="trigger">
+<a class="page-link" href="/jekyll-theme-yat/about.html">About</a><a class="page-link" href="/jekyll-theme-yat/categories.html">Categories</a><a class="page-link" href="/jekyll-theme-yat/">Home</a><a class="page-link" href="/jekyll-theme-yat/posts.html">Posts</a><a class="page-link" href="/jekyll-theme-yat/tags.html">Tags</a><input id="tipue_search_input" type="search" placeholder="Search" aria-label="Search" title="Please enter at least 1 character" required>
+
+          <script>
+            document.getElementById("tipue_search_input").addEventListener("keydown", function (event) {
+              if (event.keyCode === 13) {
+                event.preventDefault();
+                window.location.href = "../search?q=" + this.value;
+              }
+            });
+          </script>
+<!--
+
+
+
+
+
+
+
+
+
+<span class="page-link">
+
+
+
+<div id="google_translate_element" style="display: none;">
+</div>
+
+<span class="ct-language">
+  <ul class="list-unstyled ct-language-dropdown">
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="en">
+        
+        <img src="https://cdn.countryflags.com/thumbs/united-states-of-america/flag-400.png" title="English">
+        to English
+        
+      </a>
+    </li>
+    
+    <li>
+      <a href="#" class="lang-select" data-lang="ko">
+        
+        <img src="https://cdn.countryflags.com/thumbs/south-korea/flag-400.png" title="Korean">
+        to Korean
+        
+      </a>
+    </li>
+    
+  </ul>
+</span>
+
+<script type="text/javascript">
+  function googleTranslateElementInit() {
+    new google.translate.TranslateElement({
+      pageLanguage: 'ko',
+      autoDisplay: false,
+      layout: google.translate.TranslateElement.InlineLayout.VERTICAL
+    }, 'google_translate_element');
+
+    // Links to cross-origin destinations are unsafe
+    var gll = document.getElementsByClassName('goog-logo-link')[0];
+    if (gll) {
+      gll.setAttribute('rel', 'noopener');
+    }
+
+    function restoreLang() {
+      var iframe = document.getElementsByClassName('goog-te-banner-frame')[0];
+      if (!iframe) return;
+
+      var innerDoc = iframe.contentDocument || iframe.contentWindow.document;
+      var restore_el = innerDoc.getElementsByTagName("button");
+
+      for (var i = 0; i < restore_el.length; i++) {
+        if (restore_el[i].id.indexOf("restore") >= 0) {
+          restore_el[i].click();
+          var close_el = innerDoc.getElementsByClassName("goog-close-link");
+          close_el[0].click();
+          return;
+        }
+      }
+    }
+
+    function triggerHtmlEvent(element, eventName) {
+      var event;
+      if (document.createEvent) {
+        event = document.createEvent('HTMLEvents');
+        event.initEvent(eventName, true, true);
+        element.dispatchEvent(event);
+      } else {
+        event = document.createEventObject();
+        event.eventType = eventName;
+        element.fireEvent('on' + event.eventType, event);
+      }
+    }
+
+    var googleCombo = document.querySelector("select.goog-te-combo");
+    var langSelect = document.querySelector('.ct-language');
+    langSelect.addEventListener('click', function (event) {
+      if (!event.target) {
+        return;
+      }
+
+      var selected = document.querySelector('.ct-language .ct-language-selected');
+      if (selected) {
+        selected.classList.remove('ct-language-selected');
+      }
+
+      var target = event.target;
+      while (target && target !== langSelect) {
+        if (target.matches('.lang-select')) {
+          break;
+        }
+        target = target.parentElement;
+      }
+
+      if (target && target.matches('.lang-select')) {
+        var lang = target.getAttribute('data-lang');
+        if (googleCombo.value == lang) {
+          restoreLang();
+        } else if (lang == 'ko') {
+          var googleTranslateElement = document.getElementById('google_translate_element');
+          if (googleTranslateElement) {
+            googleTranslateElement.parentNode.removeChild(googleTranslateElement);
+            $('#google_translate_element').empty();
+          }
+        } else {
+          target.parentElement.classList.add('ct-language-selected');
+          googleCombo.value = lang;
+          triggerHtmlEvent(googleCombo, 'change');
+        }
+      }
+
+      event.preventDefault();
+    });
+  }
+</script>
+
+<script type="text/javascript"
+  src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script></span>-->
+          </div>
+
+          
+        </nav>
+</div>
+  </div>
+</header>
+
+<script>
+  function initHeader() {
+    var lastScrollY = getScrollPos().y;
+    var documentElement = document.documentElement;
+
+    function storeScrollData() {
+      var y = getScrollPos().y;var scrollStatus = "";
+
+      if (y <= 0) {
+        scrollStatus = "top";
+      } else if ((window.innerHeight + y) >= document.body.offsetHeight) {
+        scrollStatus = "bottom";
+      } else {
+        var isScrollDown = (y - lastScrollY > 0) ? true : false;
+        scrollStatus = isScrollDown ? "down" : "up";
+      }
+
+      lastScrollY = y;
+      documentElement.setAttribute("data-scroll-status", scrollStatus);
+    }
+
+    window.addEventListener('scroll', function(e) {
+      storeScrollData();
+    });
+
+    storeScrollData();
+  }
+  document.addEventListener('DOMContentLoaded', initHeader);
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+  function hashLocate(hashValue) {
+    hashValue = hashValue.replace(/^.*#h-/, '');
+    hashValue = decodeURIComponent(hashValue);
+    var element = document.getElementById(hashValue);
+
+    if (!element) {
+      return;
+    }
+
+    var header = document.querySelector('header.site-header');
+    var headerRect = header.getBoundingClientRect();
+    var headerTop = Math.floor(headerRect.top);
+    var headerHeight = Math.floor(headerRect.height);
+    var scrollPos = getScrollPos();
+    var offsetY = element.offsetTop - (headerTop + headerHeight + 20);
+
+    if (offsetY == scrollPos.y) {
+      return;
+    }
+
+    if (headerTop == 0  && offsetY > scrollPos.y) {
+      offsetY += headerHeight + 2;
+    } else if (headerTop < 0  && offsetY < scrollPos.y) {
+      offsetY -= headerHeight - 2;
+    }
+
+    smoothScrollTo(offsetY);
+  }
+
+  // The first event occurred
+  window.addEventListener('load', function(event) {
+    if (window.location.hash) {
+      hashLocate(window.location.hash);
+    }
+  });
+
+  // The first event occurred
+  window.addEventListener('click', function(event) {
+    if (event.target.tagName.toLowerCase() == 'a') {
+      hashLocate(event.target.getAttribute('href'));
+    }
+  });
+</script>
+<div class="theme-toggle">
+  <input type="checkbox" id="theme-switch">
+  <label for="theme-switch">
+    <div class="toggle"></div>
+    <div class="names">
+      <p class="light">Light</p>
+      <p class="dark">Dark</p>
+    </div>
+  </label>
+</div>
+
+
+
+
+<script>
+  (function() {
+    var sw = document.getElementById('theme-switch');
+    var html = document.getElementsByTagName('html')[0];
+    var nightModeOption = ('manual' || 'auto').toLowerCase();
+    var storage = nightModeOption === 'manual'
+        ? localStorage
+        : sessionStorage;
+    var themeData = loadThemeData();
+
+    function saveThemeData(data) {
+      storage.setItem('theme', JSON.stringify(data));
+    }
+
+    function loadThemeData() {
+      var data = storage.getItem('theme');
+      try {
+        data = JSON.parse(data ? data : '');
+      } catch(e) {
+        data = { nightShift: undefined, autoToggleAt: 0 };
+        saveThemeData(data);
+      }
+      return data;
+    }
+
+    function handleThemeToggle(nightShift) {
+      themeData.nightShift = nightShift;
+      saveThemeData(themeData);
+      html.dataset.theme = nightShift ? 'dark' : 'light';
+      setTimeout(function() {
+        sw.checked = nightShift ? true : false;
+      }, 50);
+    }
+
+    function autoThemeToggle() {
+      // Next time point of theme toggle
+      var now = new Date();
+      var toggleAt = new Date();
+      var hours = now.getHours();
+      var nightShift = !(hours >= 2 && hours <=5);
+
+      if (nightShift) {
+        if (hours > 5) {
+          toggleAt.setDate(toggleAt.getDate() + 1);
+        }
+        toggleAt.setHours(5);
+      } else {
+        toggleAt.setHours(2);
+      }
+
+      toggleAt.setMinutes(0);
+      toggleAt.setSeconds(0);
+      toggleAt.setMilliseconds(0)
+
+      var delay = toggleAt.getTime() - now.getTime();
+
+      // auto toggle theme mode
+      setTimeout(function() {
+        handleThemeToggle(!nightShift);
+      }, delay);
+
+      return {
+        nightShift: nightShift,
+        toggleAt: toggleAt.getTime()
+      };
+    }
+
+    // Listen the theme toggle event
+    sw.addEventListener('change', function(event) {
+      handleThemeToggle(event.target.checked);
+    });
+
+    if (nightModeOption == 'auto') {
+      var data = autoThemeToggle();
+
+      // Toggle theme by local setting
+      if (data.toggleAt > themeData.autoToggleAt) {
+        themeData.autoToggleAt = data.toggleAt;
+        handleThemeToggle(data.nightShift);
+      } else {
+        handleThemeToggle(themeData.nightShift);
+      }
+    } else if (nightModeOption == 'manual') {
+      handleThemeToggle(themeData.nightShift);
+    } else {
+      var nightShift = themeData.nightShift;
+      if (nightShift === undefined) {
+        nightShift = nightModeOption === 'on';
+      }
+      handleThemeToggle(nightShift);
+    }
+  })();
+</script>
+<div id="click-to-top" class="click-to-top">
+  <i class="fa fa-arrow-up"></i>
+</div>
+<script>
+  (function () {
+    const clickToTop = document.getElementById('click-to-top');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToTop.classList.add('show')
+      }else {
+        clickToTop.classList.remove('show')
+      }
+    });
+    clickToTop.addEventListener('click', () => {
+      window.smoothScrollTo(0);
+    });
+  })();
+</script>
+<div id="click-to-bottom" class="click-to-bottom">
+  <i class="fa fa-arrow-down"></i>
+</div>
+<script>
+  (function () {
+    const clickToBottom = document.getElementById('click-to-bottom');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 50) {
+        clickToBottom.classList.add('show')
+      }else {
+        clickToBottom.classList.remove('show')
+      }
+    });
+    clickToBottom.addEventListener('click', () => {
+      window.smoothScrollTo(document.body.scrollHeight);
+    });
+  })();
+</script>
+<main class="page-content" aria-label="Content">
+      <div class="wrapper">
+        <div class="framework">
+  <section class="main">
+
+     <div class="post">
+  <section>
+
+
+
+
+
+
+
+
+
+<header class="post-header">
+  <h1 class="post-title p-name" itemprop="name headline">Android 시스템 바(상태바, 네비게이션바) 색상 자동 변경 처리하기</h1>
+  <h2 class="post-subtitle">Bitmap, Flow, Coroutines, FragmentLifecycleCallbacks을 활용하여 자동으로 색상 변경되도록 하는 방법</h2>
+
+  <p class="post-meta">
+    <time class="dt-published" datetime="2023-07-30T00:00:00+09:00" itemprop="datePublished">2023-07-30, Sun
+    </time>
+
+    
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    <span class="post-reading-time left-vsplit"><i class="fa fa-clock-o"></i> Read time : 11 minutes</span>
+  </p>
+<div class="post-tags"><a class="post-tag" href="/jekyll-theme-yat/tags.html#Android">#Android</a></div></header>
+<article class="post h-entry" itemscope itemtype="http://schema.org/BlogPosting">
+
+    <div class="post-content e-content" itemprop="articleBody">
+
+      <h2 id="android-시스템-바상태바-네비게이션바-색상-자동-변경-처리하기">Android 시스템 바(상태바, 네비게이션바) 색상 자동 변경 처리하기</h2>
+
+<h3 id="아래의-내용을-통하여-시스템-바의-색상레이아웃을-변경하는-방법을-확인할-수-있습니다">아래의 내용을 통하여 시스템 바의 색상/레이아웃을 변경하는 방법을 확인할 수 있습니다.</h3>
+
+<p><a href="https://pknujsp.github.io/android/2023/07/22/Android-%EC%8B%9C%EC%8A%A4%ED%85%9C%EB%B0%94-%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83-%EB%B3%80%EA%B2%BD%ED%95%98%EA%B8%B0.html">Android 시스템 바 레이아웃 변경하기</a></p>
+
+<h2 id="시스템-바-색상-변경시-생기는-문제점">시스템 바 색상 변경시 생기는 문제점</h2>
+<hr>
+<blockquote>
+  <p>아래와 같이 배경 색상이 다른 화면이 표시되는 경우, 화면의 배경색과 시스템 바의 색상이 겹쳐서 보이지 않는 문제가 발생합니다.</p>
+</blockquote>
+
+<table>
+  <thead>
+    <tr>
+      <th style="text-align: center"> </th>
+      <th style="text-align: center"> </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td style="text-align: center"><img src="https://github.com/pknu-wap/2023_1_WAP_APP_TEAM_MEDI/assets/48265129/c34fbf7e-9425-45d4-8f92-445c7c7e629b"></td>
+      <td style="text-align: center"><img src="https://github.com/pknu-wap/2023_1_WAP_APP_TEAM_MEDI/assets/48265129/d5b8cff1-51ac-42e0-9c77-62af784ec02c"></td>
+    </tr>
+  </tbody>
+</table>
+
+<p><strong>Activity</strong>, <strong>Fragment</strong>, <strong>Compose</strong> 화면 구성 요소가 변경될 때 이와 같은 상황이 발생하게 됩니다.</p>
+
+<p><strong>본 글에서는 Fragment가 변경될 때의 경우에 대처하는 방법을 설명하겠습니다.</strong></p>
+
+<h2 id="화면이-변경될-떄-마다-대처하는-방법">화면이 변경될 떄 마다 대처하는 방법</h2>
+
+<ul>
+  <li>
+<strong>Activity</strong> 가 변경되는 경우
+    <ul>
+      <li>
+<code class="language-plaintext highlighter-rouge">onCreate()</code>에서 색상 변경 코드를 작성</li>
+      <li>XML에서 미리 지정해놓은 테마(스타일)적용</li>
+    </ul>
+  </li>
+  <li>
+<strong>Fragment</strong> 가 변경되는 경우
+    <ul>
+      <li>시스템 바의 색상이 변경되어야 하는 Fragment 마다 각각 색상 변경 코드를 작성하여야 함</li>
+    </ul>
+  </li>
+</ul>
+
+<p>위와 같은 방법은 코드의 중복이 발생하고, 상당히 번거로운 작업이 됩니다.</p>
+
+<p>특히 수 많은 Fragment가 변경되는 경우라면 굉장한 반복 작업이 될 것입니다.</p>
+
+<p>이러한 고된 작업을 하지 않기 위해서 우선 <strong>FragmentLifecycleCallbacks</strong> 사용을 고려할 수 있습니다.</p>
+
+<h2 id="fragmentlifecyclecallbacks으로-fragment의-상태를-감지하기">FragmentLifecycleCallbacks으로 Fragment의 상태를 감지하기</h2>
+<hr>
+
+<blockquote>
+  <p><strong>FragmentLifecycleCallbacks</strong>를 <strong>FragmentManager</strong> 에 등록하여 Fragment의 상태(생명주기)를 감지할 수 있습니다.</p>
+</blockquote>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="n">supportFragmentManager</span><span class="p">.</span><span class="nf">registerFragmentLifecycleCallbacks</span><span class="p">(</span>
+    <span class="kd">object</span> <span class="err">: </span><span class="nc">FragmentManager</span><span class="p">.</span><span class="nc">FragmentLifecycleCallbacks</span><span class="p">()</span> <span class="p">{</span>
+        <span class="k">override</span> <span class="k">fun</span> <span class="nf">onFragmentResumed</span><span class="p">(</span><span class="n">fm</span><span class="p">:</span> <span class="nc">FragmentManager</span><span class="p">,</span> <span class="n">f</span><span class="p">:</span> <span class="nc">Fragment</span><span class="p">)</span> <span class="p">{</span>
+            <span class="k">super</span><span class="p">.</span><span class="nf">onFragmentResumed</span><span class="p">(</span><span class="n">fm</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+
+            <span class="c1">// 이 함수는 아래에서 설명하겠습니다.</span>
+            <span class="n">systemBarColorAnalyzer</span><span class="p">.</span><span class="nf">convert</span><span class="p">()</span>
+        <span class="p">}</span>
+    <span class="p">},</span>
+    <span class="k">true</span><span class="p">,</span>
+<span class="p">)</span>
+</code></pre></div></div>
+
+<ul>
+  <li>
+<strong>Callback</strong>을 등록할 <strong>FragmentManager</strong>는 <strong>Activity</strong>에서 <strong>FragmentManager</strong>를 사용하는 것을 권장합니다.
+    <ul>
+      <li>
+<code class="language-plaintext highlighter-rouge">registerFragmentLifecycleCallbacks()</code>를 사용할 때 Argument로 true를 전달하면 View에 표시되는 모든 Fragment의 상태를 감지를 할 수 있습니다.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>이제 Fragment의 상태를 한 곳에서 감지할 수 있게 되었습니다.</p>
+
+<p>본격적으로 시스템 바의 색상을 자동으로 변경하는 방법을 알아봅시다.</p>
+
+<h2 id="시스템-바의-색상을-자동으로-변경하는-방법">시스템 바의 색상을 자동으로 변경하는 방법</h2>
+
+<p>Fragment의 개수가 2 ~ 3개 정도로 아주 적으면, 경우에 따라 각각의 Fragment에서 시스템 바의 색상을 변경하는 코드를 작성하거나 위 Callback의 <code class="language-plaintext highlighter-rouge">onFragmentResumed()</code>에서 Fragment 별로 분기문을 만들어 색상을 변경하는 방법이 더 효율적일 수 있습니다.</p>
+
+<p><strong>그러나</strong>, Fragment의 개수는 수십 개, 많으면 수백 개가 될 수 있습니다.</p>
+
+<p>이러한 경우에는 분기문으로 처리하는 것은 당연히 매우 부적절한 방법입니다.</p>
+
+<p>따라서, <strong>Fragment</strong>가 <strong>Resumed</strong> 상태가 되었을 때, 시스템 바 위치에 있는 <strong>View</strong>의 배경색을 분석하여 색상을 변경하는 방법을 사용하도록 하겠습니다.</p>
+
+<p>로직을 간단히 설명하면 아래와 같습니다.</p>
+
+<ol>
+  <li>Fragment <code class="language-plaintext highlighter-rouge">onResumed</code> 응답을 받고 색상변경 요청을 합니다.</li>
+  <li>시스템 바 색상을 분석합니다.</li>
+  <li>색상을 흑백으로 변환합니다.</li>
+  <li>변환된 흑백 값에 따라 시스템 바의 색상을 변경합니다.</li>
+</ol>
+
+<h2 id="상세-로직">상세 로직</h2>
+
+<h3 id="1-색상변경-작업을-구현하는-클래스-초기화">1. 색상변경 작업을 구현하는 클래스 초기화</h3>
+
+<blockquote>
+  <p>색상 변경을 담당하는 <strong>SystemBarColorProcessor</strong> 클래스를 만들었습니다.</p>
+</blockquote>
+
+<blockquote>
+  <p><strong>SystemBarColorProcessor</strong> 클래스를 초기화합니다.</p>
+</blockquote>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">override</span> <span class="k">fun</span> <span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">:</span> <span class="nc">Bundle</span><span class="p">?)</span> <span class="p">{</span>
+    <span class="k">super</span><span class="p">.</span><span class="nf">onCreate</span><span class="p">(</span><span class="n">savedInstanceState</span><span class="p">)</span>
+    <span class="nf">setContentView</span><span class="p">(</span><span class="nc">R</span><span class="p">.</span><span class="n">layout</span><span class="p">.</span><span class="n">activity_main</span><span class="p">)</span>
+
+    <span class="c1">// SystemBarColorProcessor를 초기화합니다.</span>
+    <span class="nc">SystemBarColorProcessor</span><span class="p">.</span><span class="nf">init</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">lifecycle</span><span class="p">)</span>
+
+    <span class="c1">// FragmentLifecycleCallbacks를 등록합니다.</span>
+    <span class="n">supportFragmentManager</span><span class="p">.</span><span class="nf">registerFragmentLifecycleCallbacks</span><span class="p">(</span>
+        <span class="kd">object</span> <span class="err">: </span><span class="nc">FragmentManager</span><span class="p">.</span><span class="nc">FragmentLifecycleCallbacks</span><span class="p">()</span> <span class="p">{</span>
+            <span class="k">override</span> <span class="k">fun</span> <span class="nf">onFragmentResumed</span><span class="p">(</span><span class="n">fm</span><span class="p">:</span> <span class="nc">FragmentManager</span><span class="p">,</span> <span class="n">f</span><span class="p">:</span> <span class="nc">Fragment</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">super</span><span class="p">.</span><span class="nf">onFragmentResumed</span><span class="p">(</span><span class="n">fm</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+                <span class="n">systemBarColorProcessor</span><span class="p">.</span><span class="nf">convert</span><span class="p">()</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+        <span class="k">true</span><span class="p">,</span>
+    <span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="kd">var</span> <span class="py">_window</span><span class="p">:</span> <span class="nc">Window</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>
+<span class="k">private</span> <span class="kd">val</span> <span class="py">window</span><span class="p">:</span> <span class="nc">Window</span>
+    <span class="k">get</span><span class="p">()</span> <span class="p">=</span> <span class="n">_window</span><span class="o">!!</span>
+
+<span class="k">private</span> <span class="kd">var</span> <span class="py">_windowInsetsController</span><span class="p">:</span> <span class="nc">WindowInsetsControllerCompat</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>
+<span class="k">private</span> <span class="kd">val</span> <span class="py">windowInsetsController</span><span class="p">:</span> <span class="nc">WindowInsetsControllerCompat</span>
+    <span class="k">get</span><span class="p">()</span> <span class="p">=</span> <span class="n">_windowInsetsController</span><span class="o">!!</span>
+
+
+<span class="k">fun</span> <span class="nf">init</span><span class="p">(</span><span class="n">window</span><span class="p">:</span> <span class="nc">Window</span><span class="p">,</span> <span class="n">lifecycle</span><span class="p">:</span> <span class="nc">Lifecycle</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">_window</span> <span class="p">=</span> <span class="n">window</span>
+    <span class="n">_windowInsetsController</span> <span class="p">=</span> <span class="nc">WindowCompat</span><span class="p">.</span><span class="nf">getInsetsController</span><span class="p">(</span><span class="n">window</span><span class="p">,</span> <span class="n">window</span><span class="p">.</span><span class="n">decorView</span><span class="p">)</span>
+
+    <span class="n">lifecycle</span><span class="p">.</span><span class="nf">addObserver</span><span class="p">(</span>
+        <span class="kd">object</span> <span class="err">: </span><span class="nc">DefaultLifecycleObserver</span> <span class="p">{</span>
+            <span class="k">override</span> <span class="k">fun</span> <span class="nf">onStart</span><span class="p">(</span><span class="n">owner</span><span class="p">:</span> <span class="nc">LifecycleOwner</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">super</span><span class="p">.</span><span class="nf">onStart</span><span class="p">(</span><span class="n">owner</span><span class="p">)</span>
+                <span class="c1">// Activity가 Start될 때, 색상변경 처리를 합니다.</span>
+                <span class="nf">convert</span><span class="p">()</span>
+            <span class="p">}</span>
+
+            <span class="k">override</span> <span class="k">fun</span> <span class="nf">onDestroy</span><span class="p">(</span><span class="n">owner</span><span class="p">:</span> <span class="nc">LifecycleOwner</span><span class="p">)</span> <span class="p">{</span>
+                <span class="k">super</span><span class="p">.</span><span class="nf">onDestroy</span><span class="p">(</span><span class="n">owner</span><span class="p">)</span>
+                <span class="c1">// Activity가 Destroy될 때, 메모리 누수를 방지하기 위한 작업을 해줍니다.</span>
+                <span class="n">coroutineScope</span><span class="p">.</span><span class="nf">cancel</span><span class="p">()</span>
+                <span class="n">_window</span> <span class="p">=</span> <span class="k">null</span>
+                <span class="n">_windowInsetsController</span> <span class="p">=</span> <span class="k">null</span>
+            <span class="p">}</span>
+        <span class="p">},</span>
+    <span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<h3 id="2-fragment-onresumed-응답을-받고-색상변경-요청">2. Fragment onResumed 응답을 받고, 색상변경 요청</h3>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">override</span> <span class="k">fun</span> <span class="nf">onFragmentResumed</span><span class="p">(</span><span class="n">fm</span><span class="p">:</span> <span class="nc">FragmentManager</span><span class="p">,</span> <span class="n">f</span><span class="p">:</span> <span class="nc">Fragment</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">super</span><span class="p">.</span><span class="nf">onFragmentResumed</span><span class="p">(</span><span class="n">fm</span><span class="p">,</span> <span class="n">f</span><span class="p">)</span>
+    <span class="nc">SystemBarColorProcessor</span><span class="p">.</span><span class="nf">convert</span><span class="p">()</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="kd">val</span> <span class="py">waitLock</span> <span class="p">=</span> <span class="nc">Mutex</span><span class="p">()</span>
+<span class="k">private</span> <span class="kd">var</span> <span class="py">waiting</span><span class="p">:</span> <span class="nc">Job</span><span class="p">?</span> <span class="p">=</span> <span class="k">null</span>
+<span class="k">private</span> <span class="kd">val</span> <span class="py">coroutineScope</span> <span class="p">=</span> <span class="nc">MainScope</span><span class="p">()</span> <span class="p">+</span> <span class="nc">CoroutineName</span><span class="p">(</span><span class="s">"SystemBarColorProcessor"</span><span class="p">)</span>
+<span class="k">private</span> <span class="kd">val</span> <span class="py">onChangedFragmentFlow</span> <span class="p">=</span> <span class="nc">MutableSharedFlow</span><span class="p">&lt;</span><span class="nc">Unit</span><span class="p">&gt;(</span><span class="n">onBufferOverflow</span> <span class="p">=</span> <span class="nc">BufferOverflow</span><span class="p">.</span><span class="nc">SUSPEND</span><span class="p">,</span> <span class="n">replay</span> <span class="p">=</span> <span class="mi">0</span><span class="p">,</span> <span class="n">extraBufferCapacity</span> <span class="p">=</span> <span class="mi">2</span><span class="p">)</span>
+<span class="k">private</span> <span class="kd">val</span> <span class="py">delayTime</span> <span class="p">=</span> <span class="mi">80L</span>
+
+<span class="k">fun</span> <span class="nf">convert</span><span class="p">()</span> <span class="p">{</span>
+    <span class="n">coroutineScope</span><span class="p">.</span><span class="nf">launch</span> <span class="p">{</span>
+        <span class="n">waitLock</span><span class="p">.</span><span class="nf">withLock</span> <span class="p">{</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">waiting</span><span class="o">?.</span><span class="n">isActive</span> <span class="p">==</span> <span class="k">true</span><span class="p">)</span> <span class="n">waiting</span><span class="o">?.</span><span class="nf">cancel</span><span class="p">()</span>
+            <span class="n">waiting</span> <span class="p">=</span> <span class="nf">launch</span><span class="p">(</span><span class="nc">Dispatchers</span><span class="p">.</span><span class="nc">Default</span><span class="p">)</span> <span class="p">{</span>
+                <span class="nf">delay</span><span class="p">(</span><span class="n">delayTime</span><span class="p">)</span>
+                <span class="n">onChangedFragmentFlow</span><span class="p">.</span><span class="nf">emit</span><span class="p">(</span><span class="nc">Unit</span><span class="p">)</span>
+            <span class="p">}</span>
+        <span class="p">}</span>
+
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ol>
+  <li>
+<code class="language-plaintext highlighter-rouge">onResumed</code> 응답 수신</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">convert()</code>, 시스템 바 색상변경 요청</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">convert()</code> 함수가 호출되면, 비동기로 처리합니다.</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">waiting Job</code>이 존재하면, 취소합니다.</li>
+  <li>새로운 <code class="language-plaintext highlighter-rouge">waiting Job</code>을 생성하고, <code class="language-plaintext highlighter-rouge">delayTime : 80ms</code> 시간동안 대기합니다.</li>
+  <li>만약 <code class="language-plaintext highlighter-rouge">delayTime</code>이내에 추가 요청이 발생하면, 2번 작업을 다시 수행합니다.</li>
+  <li>
+<code class="language-plaintext highlighter-rouge">delayTime</code>이내에 추가 요청이 없으면, <code class="language-plaintext highlighter-rouge">onChangedFragmentFlow</code>에 새로운 요청이 발생했음을 알립니다.</li>
+</ol>
+
+<h3 id="3-시스템-바-색상-분석-픽셀-값-변환-색상-변경">3. 시스템 바 색상 분석, 픽셀 값 변환, 색상 변경</h3>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="k">enum</span> <span class="kd">class</span> <span class="nc">ColorType</span> <span class="p">{</span>
+    <span class="nc">BLACK</span><span class="p">,</span> <span class="nc">WHITE</span>
+<span class="p">}</span>
+
+<span class="k">private</span> <span class="kd">data class</span> <span class="nc">ConvertedColor</span><span class="p">(</span><span class="kd">val</span> <span class="py">statusBarColor</span><span class="p">:</span> <span class="nc">ColorType</span><span class="p">,</span> <span class="kd">val</span> <span class="py">navBarColor</span><span class="p">:</span> <span class="nc">ColorType</span><span class="p">)</span>
+
+
+<span class="nf">init</span> <span class="p">{</span>
+    <span class="n">coroutineScope</span><span class="p">.</span><span class="nf">launch</span><span class="p">(</span><span class="nc">Dispatchers</span><span class="p">.</span><span class="nc">Default</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">onChangedFragmentFlow</span><span class="p">.</span><span class="nf">collect</span> <span class="p">{</span>
+            <span class="kd">val</span> <span class="py">convertJob</span> <span class="p">=</span> <span class="nf">launch</span><span class="p">(</span><span class="n">start</span> <span class="p">=</span> <span class="nc">CoroutineStart</span><span class="p">.</span><span class="nc">LAZY</span><span class="p">)</span> <span class="p">{</span>
+                <span class="kd">val</span> <span class="py">convertedColor</span> <span class="p">=</span> <span class="nf">startConvert</span><span class="p">()</span>
+                <span class="nf">withContext</span><span class="p">(</span><span class="nc">Dispatchers</span><span class="p">.</span><span class="nc">Main</span><span class="p">)</span> <span class="p">{</span>
+                    <span class="nf">setStyle</span><span class="p">(</span><span class="n">convertedColor</span><span class="p">)</span>
+                <span class="p">}</span>
+            <span class="p">}</span>
+
+            <span class="n">window</span><span class="p">.</span><span class="n">decorView</span><span class="p">.</span><span class="nf">doOnPreDraw</span> <span class="p">{</span>
+                <span class="n">convertJob</span><span class="p">.</span><span class="nf">start</span><span class="p">()</span>
+            <span class="p">}</span>
+            <span class="n">convertJob</span><span class="p">.</span><span class="nf">join</span><span class="p">()</span>
+        <span class="p">}</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="k">private</span> <span class="k">fun</span> <span class="nf">setStyle</span><span class="p">(</span><span class="n">convertedColor</span><span class="p">:</span> <span class="nc">ConvertedColor</span><span class="p">)</span> <span class="p">{</span>
+    <span class="n">windowInsetsController</span><span class="p">.</span><span class="nf">apply</span> <span class="p">{</span>
+        <span class="c1">// 상태바 색상 변경</span>
+        <span class="n">isAppearanceLightStatusBars</span> <span class="p">=</span> <span class="p">(</span><span class="n">statusBarColor</span> <span class="p">==</span> <span class="nc">ColorType</span><span class="p">.</span><span class="nc">BLACK</span><span class="p">)</span>
+        <span class="n">isAppearanceLightNavigationBars</span> <span class="p">=</span> <span class="p">(</span><span class="n">navBarColor</span> <span class="p">==</span> <span class="nc">ColorType</span><span class="p">.</span><span class="nc">BLACK</span><span class="p">)</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="k">suspend</span> <span class="k">fun</span> <span class="nf">startConvert</span><span class="p">():</span> <span class="nc">ConvertedColor</span> <span class="p">{</span>
+    <span class="c1">// 비트맵 생성</span>
+    <span class="kd">val</span> <span class="py">statusBarBitmap</span> <span class="p">=</span> <span class="nc">WeakReference</span><span class="p">(</span><span class="nc">Bitmap</span><span class="p">.</span><span class="nf">createBitmap</span><span class="p">(</span><span class="n">decorView</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">statusBarHeight</span><span class="p">,</span> <span class="nc">Bitmap</span><span class="p">.</span><span class="nc">Config</span><span class="p">.</span><span class="nc">ARGB_8888</span><span class="p">)).</span><span class="k">get</span><span class="p">()</span><span class="o">!!</span>
+    <span class="kd">val</span> <span class="py">navBarBitmap</span> <span class="p">=</span> <span class="nc">WeakReference</span><span class="p">(</span><span class="nc">Bitmap</span><span class="p">.</span><span class="nf">createBitmap</span><span class="p">(</span><span class="n">decorView</span><span class="p">.</span><span class="n">width</span><span class="p">,</span> <span class="n">navBarHeight</span><span class="p">,</span> <span class="nc">Bitmap</span><span class="p">.</span><span class="nc">Config</span><span class="p">.</span><span class="nc">ARGB_8888</span><span class="p">)).</span><span class="k">get</span><span class="p">()</span><span class="o">!!</span>
+
+    <span class="c1">// View에서 시스템 바 위치의 픽셀 값을 비트맵에 복사</span>
+    <span class="n">window</span><span class="p">.</span><span class="n">decorView</span><span class="p">.</span><span class="nf">run</span> <span class="p">{</span>
+        <span class="nf">pixelCopy</span><span class="p">(</span><span class="nc">Rect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">statusBarHeight</span><span class="p">),</span> <span class="n">statusBarBitmap</span><span class="p">)</span>
+        <span class="nf">pixelCopy</span><span class="p">(</span><span class="nc">Rect</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">height</span> <span class="p">-</span> <span class="n">navBarHeight</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">height</span><span class="p">),</span> <span class="n">navBarBitmap</span><span class="p">)</span>
+    <span class="p">}</span>
+
+    <span class="c1">// 비트맵 좌표 (10, 10)의 픽셀 값을 최종 시스템 바 색상으로 변환</span>
+    <span class="kd">val</span> <span class="py">statusBarColor</span> <span class="p">=</span> <span class="n">statusBarBitmap</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">].</span><span class="nf">toColor</span><span class="p">()</span>
+    <span class="kd">val</span> <span class="py">navBarColor</span> <span class="p">=</span> <span class="n">navBarBitmap</span><span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">].</span><span class="nf">toColor</span><span class="p">()</span>
+
+    <span class="c1">// 비트맵 메모리 회수</span>
+    <span class="n">statusBarBitmap</span><span class="p">.</span><span class="nf">recycle</span><span class="p">()</span>
+    <span class="n">navBarBitmap</span><span class="p">.</span><span class="nf">recycle</span><span class="p">()</span>
+
+    <span class="k">return</span> <span class="nc">ConvertedColor</span><span class="p">(</span><span class="n">statusBarColor</span><span class="p">,</span> <span class="n">navigationBarColor</span><span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="k">suspend</span> <span class="k">fun</span> <span class="nf">pixelCopy</span><span class="p">(</span><span class="n">rect</span><span class="p">:</span> <span class="nc">Rect</span><span class="p">,</span> <span class="n">bitmap</span><span class="p">:</span> <span class="nc">Bitmap</span><span class="p">)</span> <span class="p">=</span> <span class="nf">suspendCancellableCoroutine</span> <span class="p">{</span> <span class="n">cancellableContinuation</span> <span class="p">-&gt;</span>
+    <span class="c1">// Window에서 사각형 영역의 픽셀 값을 비트맵에 복사</span>
+    <span class="nc">PixelCopy</span><span class="p">.</span><span class="nf">request</span><span class="p">(</span>
+        <span class="n">window</span><span class="p">,</span> <span class="n">rect</span><span class="p">,</span> <span class="n">bitmap</span><span class="p">,</span>
+        <span class="p">{</span>
+            <span class="n">cancellableContinuation</span><span class="p">.</span><span class="nf">resume</span><span class="p">(</span><span class="n">it</span> <span class="p">==</span> <span class="nc">PixelCopy</span><span class="p">.</span><span class="nc">SUCCESS</span><span class="p">)</span>
+        <span class="p">},</span>
+        <span class="nc">Handler</span><span class="p">(</span><span class="nc">Looper</span><span class="p">.</span><span class="nf">getMainLooper</span><span class="p">()),</span>
+    <span class="p">)</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<div class="language-kotlin highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">private</span> <span class="kd">val</span> <span class="py">criteriaColor</span> <span class="p">=</span> <span class="mi">140</span>
+
+<span class="k">private</span> <span class="k">fun</span> <span class="nc">Int</span><span class="p">.</span><span class="nf">toColor</span><span class="p">()</span> <span class="p">:</span> <span class="nc">ColorType</span> <span class="p">{</span> 
+    <span class="kd">val</span> <span class="py">r</span> <span class="p">=</span> <span class="nc">Color</span><span class="p">.</span><span class="nf">red</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
+    <span class="kd">val</span> <span class="py">g</span> <span class="p">=</span> <span class="nc">Color</span><span class="p">.</span><span class="nf">green</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
+    <span class="kd">val</span> <span class="py">b</span> <span class="p">=</span> <span class="nc">Color</span><span class="p">.</span><span class="nf">blue</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
+    <span class="kd">val</span> <span class="py">a</span> <span class="p">=</span> <span class="nc">Color</span><span class="p">.</span><span class="nf">alpha</span><span class="p">(</span><span class="k">this</span><span class="p">)</span>
+
+    <span class="kd">val</span> <span class="py">gray</span> <span class="p">=</span> <span class="k">if</span> <span class="p">(</span><span class="n">a</span> <span class="p">==</span> <span class="mi">0</span><span class="p">)</span> <span class="p">-</span><span class="mi">1</span>
+    <span class="k">else</span> <span class="p">(</span><span class="mf">0.2989</span> <span class="p">*</span> <span class="n">r</span> <span class="p">+</span> <span class="mf">0.5870</span> <span class="p">*</span> <span class="n">g</span> <span class="p">+</span> <span class="mf">0.1140</span> <span class="p">*</span> <span class="n">b</span><span class="p">).</span><span class="nf">toInt</span><span class="p">()</span>
+
+    <span class="c1">// -1 : 투명</span>
+    <span class="c1">// 0 : 검은색</span>
+    <span class="c1">// 255 : 흰색</span>
+    <span class="c1">// 기준 값에 따라 검은색, 흰색으로 분류</span>
+    <span class="k">return</span> <span class="k">if</span> <span class="p">(</span><span class="n">gray</span> <span class="p">==</span> <span class="mi">0</span> <span class="p">||</span> <span class="n">gray</span> <span class="p">==</span> <span class="p">-</span><span class="mi">1</span><span class="p">)</span> <span class="nc">WHITE</span>
+    <span class="k">else</span> <span class="k">if</span> <span class="p">(</span><span class="n">gray</span> <span class="p">&lt;=</span> <span class="n">criteriaColor</span><span class="p">)</span> <span class="nc">WHITE</span>
+    <span class="k">else</span> <span class="nc">BLACK</span>
+<span class="p">}</span>
+</code></pre></div></div>
+
+<ol>
+  <li>Window의 DecorView에 일회성 <code class="language-plaintext highlighter-rouge">OnPreDrawListener</code>를 등록합니다.
+    <ol>
+      <li>
+<code class="language-plaintext highlighter-rouge">KTX 라이브러리</code>를 사용한다면 <code class="language-plaintext highlighter-rouge">doOnPreDraw</code>로 간편하게 등록할 수 있습니다.</li>
+      <li>
+<code class="language-plaintext highlighter-rouge">OnPreDrawListener</code>는 View가 그려지기 전에 호출되는 리스너입니다.</li>
+      <li>
+<code class="language-plaintext highlighter-rouge">OnDrawListener</code>도 있으나, <code class="language-plaintext highlighter-rouge">OnDrawListener</code>는 View가 그려진 후에 호출되기 때문에, 조금이라도 더 빠르게 색상변경을 하기위해 <code class="language-plaintext highlighter-rouge">OnPreDrawListener</code>를 사용합니다.</li>
+    </ol>
+  </li>
+  <li>
+<code class="language-plaintext highlighter-rouge">startConvert()</code>, 색상 분석 및 변환을 시작합니다.</li>
+  <li>변환된 시스템 바 색상을 적용시킵니다.
+    <ol>
+      <li>MainThread에서 실행되어야 하기 때문에, <code class="language-plaintext highlighter-rouge">withContext(Dispatchers.Main)</code>을 사용합니다.</li>
+    </ol>
+  </li>
+</ol>
+
+<p>요청 순서대로 작업을 수행하기 위해 지연시작으로 코루틴을 동작시키도록 하였습니다.</p>
+
+<h2 id="결과">결과</h2>
+
+<blockquote>
+  <p>위와 같은 작업을 실시간으로 수행하면서 색상이 변경됨을 확인할 수 있습니다.</p>
+</blockquote>
+
+<p><img src="https://github.com/pknu-wap/2023_1_WAP_APP_TEAM_MEDI/assets/48265129/382f30d5-a3ce-4229-b25c-6d75011c663d" alt="android_systembar_updating"></p>
+
+<p><img src="https://github.com/pknu-wap/2023_1_WAP_APP_TEAM_MEDI/assets/48265129/ce1a5548-ece2-4f23-b953-6f1fd1df681e" alt="android_systembar"></p>
+
+
+    </div>
+
+</article>
+<div class="post-nav">
+<a class="previous" href="/jekyll-theme-yat/android/2023/07/22/Android-%EC%8B%9C%EC%8A%A4%ED%85%9C%EB%B0%94-%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83-%EB%B3%80%EA%B2%BD%ED%95%98%EA%B8%B0.html" title="Android 시스템 바 레이아웃 변경하기">Android 시스템 바 레이아웃...</a><a class="next" href="/jekyll-theme-yat/kotlin/2023/08/03/Kotlin-sealed-class-%EC%83%81%ED%83%9C%EB%B3%84-%ED%95%A8%EC%88%98-%EC%9E%90%EB%8F%99-%EC%83%9D%EC%84%B1%ED%95%98%EA%B8%B0.html" title="Kotlin sealed class/interface 사용 시 하위 클래스에 대응되는 함수를 자동으로 만드는 방법">Kotlin sealed class/interface 사용...</a>
+</div>
+<div class="post-related">
+      <div>Related Articles</div>
+      <ul>
+        <li>
+<span><a class="post-link" href="/jekyll-theme-yat/kotlin/coroutines/2023/11/12/%EC%BD%94%EB%A3%A8%ED%8B%B4%EC%97%90%EC%84%9C%EC%9D%98-%EC%98%88%EC%99%B8-%EC%B2%98%EB%A6%AC.html" title="Kotlin sealed class/interface 사용 시 하위 클래스에 대응되는 함수를 자동으로 만드는 방법">코루틴에서의 예외 처리 정리</a></span><span>
+            <time class="dt-published datetime" datetime="2023-11-12T00:00:00+09:00" itemprop="datePublished">2023-11-12, Sun
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/android/2023/05/31/Android-%EC%BB%A4%EC%8A%A4%ED%85%80-%EB%A0%88%EC%9D%B4%EC%95%84%EC%9B%83%EC%9C%BC%EB%A1%9C-%EC%95%B1-%EC%9C%84%EC%A0%AF-%EB%A7%8C%EB%93%A4%EA%B8%B0.html" title="Kotlin sealed class/interface 사용 시 하위 클래스에 대응되는 함수를 자동으로 만드는 방법">Android 커스텀 레이아웃으로 앱 위젯 만들기</a></span><span>
+            <time class="dt-published datetime" datetime="2023-05-31T00:00:00+09:00" itemprop="datePublished">2023-05-31, Wed
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/compiler/2023/04/24/Compiler-Context-sensitive-analysis.html" title="Kotlin sealed class/interface 사용 시 하위 클래스에 대응되는 함수를 자동으로 만드는 방법">Compiler Context-sensitive analysis</a></span><span>
+            <time class="dt-published datetime" datetime="2023-04-24T00:00:00+09:00" itemprop="datePublished">2023-04-24, Mon
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/private/2023/12/30/2023%EB%85%84%EC%9D%84-%EB%8F%8C%EC%95%84%EB%B3%B4%EB%A9%B0.html" title="Kotlin sealed class/interface 사용 시 하위 클래스에 대응되는 함수를 자동으로 만드는 방법">2023년을 돌아보며</a></span><span>
+            <time class="dt-published datetime" datetime="2023-12-30T00:00:00+09:00" itemprop="datePublished">2023-12-30, Sat
+            </time></span>
+        </li>
+<li>
+<span><a class="post-link" href="/jekyll-theme-yat/swm/2024/12/09/SKY-%EB%A9%98%ED%86%A0%EB%8B%98%EC%9C%BC%EB%A1%9C%EB%B6%80%ED%84%B0-%EC%B4%9D-5,760%EB%B6%84%EC%9D%98-%EB%A9%98%ED%86%A0%EB%A7%81%EC%9D%84-%EB%B0%9B%EA%B3%A0-%EB%82%98%EC%84%9C.html" title="Kotlin sealed class/interface 사용 시 하위 클래스에 대응되는 함수를 자동으로 만드는 방법">SKY 멘토님으로부터 총 5,760분의 멘토링을 받고 나서</a></span><span>
+            <time class="dt-published datetime" datetime="2024-12-09T00:00:00+09:00" itemprop="datePublished">2024-12-09, Mon
+            </time></span>
+        </li>
+</ul>
+    </div>
+<div class="post-comments">
+<div id="utterances-placeholder"></div>
+<script>
+
+const utterancesThemeFromDataTheme = () => {
+    const dataTheme = document.documentElement.getAttribute('data-theme');
+    return `github-${dataTheme}`;
+  };
+
+  const setUtterancesTheme = () => {
+    const iframe = document.querySelector('.utterances-frame');
+    if (iframe) {
+      const message = {
+        type: 'set-theme',
+        theme: utterancesThemeFromDataTheme()
+      };
+      iframe.contentWindow.postMessage(message, 'https://utteranc.es');
+    }
+  }
+
+  // dynamic change
+  const observer = new MutationObserver((mutationsList, observer) => {
+    for (let mutation of mutationsList) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'data-theme') {
+        setUtterancesTheme();
+      }
+    }
+  });
+  observer.observe(document.documentElement, { attributes: true, childList: false, subtree: false });
+
+  let utterancesScript = document.createElement('script');
+  utterancesScript.async = true;
+  utterancesScript.src = 'https://utteranc.es/client.js';
+  utterancesScript.crossOrigin = 'anonymous';
+  utterancesScript.setAttribute('issue-term', 'pathname');
+  utterancesScript.setAttribute('label', 'comments');
+  utterancesScript.setAttribute('repo', 'pknujsp/Blogcomments');
+  utterancesScript.setAttribute('theme', utterancesThemeFromDataTheme());
+
+  const placeholder = document.getElementById('utterances-placeholder');
+  placeholder.parentNode.replaceChild(utterancesScript, placeholder);
+</script>
+</div></section>
+</div>
+
+  </section>
+  <section class="sidebar" style="margin-left: 15px;">
+    <!-- Get sidebar items --><style type="text/css" media="screen">
+.post-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+</style>
+
+<div class="post-menu">
+  <div class="post-menu-title">Contents</div>
+  <div class="post-menu-content"></div>
+</div>
+
+<script>
+  function generateContent() {
+    var menu = document.querySelector(".post-menu");
+    var menuContent =  menu.querySelector(".post-menu-content");
+    var headings = document.querySelector(".post-content").querySelectorAll("h2, h3, h4, h5, h6");
+
+    // Hide menu when no headings
+    if (headings.length === 0) {
+      return menu.style.display = "none";
+    }
+
+    // Generate post menu
+    var menuHTML = '';
+    for (var i = 0; i < headings.length; i++) {
+      var h = headings[i];
+      menuHTML += (
+        '<li class="h-' + h.tagName.toLowerCase() + '">'
+        + '<a href="#h-' + h.getAttribute('id') + '">· ' + h.textContent + '</a></li>');
+    }
+
+    menuContent.innerHTML = '<ul>' + menuHTML + '</ul>';
+
+    // The header element
+    var header = document.querySelector('header.site-header');
+
+    function doMenuCollapse(index, over_items) {
+      var items = menuContent.firstChild.children;
+
+      if (over_items == undefined) {
+        over_items = 20;
+      }
+
+      if (items.length < over_items) {
+        return;
+      }
+
+      var activeItem = items[index];
+      var beginItem = activeItem
+      var endItem = activeItem
+      var beginIndex = index;
+      var endIndex = index + 1;
+      while (beginIndex >= 0
+        && !items[beginIndex].classList.contains('h-h2')) {
+        beginIndex -= 1;
+      }
+      while (endIndex < items.length
+        && !items[endIndex].classList.contains('h-h2')) {
+        endIndex += 1;
+      }
+      for (var i = 0; i < beginIndex; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+      for (var i = beginIndex + 1; i < endIndex; i++) {
+        item = items[i]
+        // if (!item.classList.contains('h-h2')) {
+          item.style.display = '';
+        // }
+      }
+      for (var i = endIndex; i < items.length; i++) {
+        item = items[i]
+        if (!item.classList.contains('h-h2')) {
+          item.style.display = 'none';
+        }
+      }
+    }
+
+    // Init menu collapsed
+    doMenuCollapse(-1);
+
+    // Active the menu item
+    window.addEventListener('scroll', function (event) {
+      var lastActive = menuContent.querySelector('.active');
+      var changed = true;
+      var activeIndex = -1;
+      for (var i = headings.length - 1; i >= 0; i--) {
+        var h = headings[i];
+        var headingRect = h.getBoundingClientRect();
+        var headerRect = header.getBoundingClientRect();
+        var headerTop = Math.floor(headerRect.top);
+        var headerHeight = Math.floor(headerRect.height);
+        var headerHeight = headerTop + headerHeight + 20;
+        if (headingRect.top <= headerHeight) {
+          var id = 'h-' + h.getAttribute('id');
+          var a = menuContent.querySelector('a[href="#' + id  + '"]');
+          var curActive = a.parentNode;
+          if (curActive) {
+            curActive.classList.add('active');
+            activeIndex = i;
+          }
+          if (lastActive == curActive) {
+            changed = false;
+          }
+          break;
+        }
+      }
+      if (changed) {
+        if (lastActive) {
+          lastActive.classList.remove('active');
+        }
+        doMenuCollapse(activeIndex);
+      }
+      event.preventDefault();
+    });
+  }
+  generateContent();
+</script>
+</section>
+</div>
+
+      </div>
+    </main><footer class="site-footer h-card">
+  <data class="u-url" href="/jekyll-theme-yat/"></data>
+
+  <div class="wrapper">
+    <div class="site-footer-inner">
+<div>2024 @ Junsung Park</div>
+      <div>Powered by <a title="Jekyll is a simple, blog-aware, static site
+      generator." href="https://jekyllrb.com/">Jekyll</a> &amp; <a title="Yat, yet
+      another theme." href="https://github.com/jeffreytse/jekyll-theme-yat">Yat Theme</a>.</div>
+    </div>
+  </div>
+</footer>
+</body>
+</html>
